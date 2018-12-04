@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import ObjectDoesNotExist
 
 class Supplier(models.Model):
     identificacion_proveedor = models.CharField(primary_key=True, max_length=16)
@@ -19,3 +20,14 @@ class Supplier(models.Model):
         db_table = 'proveedor'
         verbose_name_plural = 'Proveedores'
         ordering = ['tipo_provedor', 'nombre']
+    
+    @classmethod
+    def get_all(self):
+        return True
+
+    @classmethod
+    def get_by_ruc(self, id_supplier):
+        try:
+            return Supplier.objects.get(pk=id_supplier)
+        except ObjectDoesNotExist:
+            return None 

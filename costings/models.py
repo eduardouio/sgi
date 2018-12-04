@@ -26,4 +26,7 @@ class Ledger(models.Model):
         unique_together = (('nro_pedido', 'id_parcial', 'name'),)
         verbose_name_plural = 'Mayores Liquidaciones'
         ordering = ['nro_pedido', 'id_parcial','name','tipo']
-
+    
+    @classmethod
+    def get_by_order(self):
+        return None
