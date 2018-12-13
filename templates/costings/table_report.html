@@ -1,0 +1,40 @@
+{% extends "base/base.html" %}
+{% block title_content %}
+<div class="container text-center">
+    <h5>Reporte de provisiones Cordovez</h5>
+</div>
+<table class="table table-condensed table-striped table-hover">
+<thead>
+<tr>
+<th>#</th>
+<th>Concepto</th>
+<th>Tipo</th>
+<th>Fecha</th>
+<th>Pedido</th>
+<th>R</th>
+<th>Parcial</th>
+<th>Valor Provisionado</th>
+<th>Valor Justificado</th>
+<th>Saldo</th>
+</tr>
+</thead>
+<tbody>
+{% for p in provisions %}
+{% if p.order != None %}
+<tr>
+<td>{{ forloop.counter }}</td>
+<td>{{ p.concepto }}</td>
+<td>{{ p.tipo }}</td>
+<td>{{ p.fecha }}</td>
+<td>{{ p.order }}</td>
+<td>{{ p.order.regimen }}</td>
+<td>{{ p.id_parcial }}</td>
+<td>{{ p.valor_provisionado }}</td>
+<td>{{ p.invoiced }}</td>
+<td>{{ p.sale }}</td>
+</tr>
+{% endif %}
+{% endfor %}
+</tbody>
+</table>
+{% endblock %}

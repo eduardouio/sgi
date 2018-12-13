@@ -1,0 +1,205 @@
+{% extends "base/base.html" %}
+{% block title_content %}
+<div class="row border">
+   <div class="col-6">
+      <i class="fa fa-cog"></i>
+         Contabilizar Gastos Cierre Pedido a Consumo
+         {% if order.bg_isclosed  == 0 %}
+            <span class="badge badge-success">Abierto</span>
+         {% else %}
+            <span class="badge badge-dark">Liquidado y Cerrado</span>
+         {% endif %}
+   </div>
+   <div class="col-6 text-right">
+      Refrendo: <strong>{{ order.nro_refrendo }}</strong>
+      |
+      Liquidación Aduana: <strong>{{ order.nro_liquidacion }}</strong>
+   </div>
+</div>
+{% endblock title_content %}
+{% block content %}
+<div class="row">
+   <div class="col-12">
+      <table class="table table-bordered table-condensed">
+         <tbody>
+            <tr>
+               <td style="width:100px;" class="text-right bg-light">Pedido:</td>
+               <td>{{ order.nro_pedido }}</td>
+               <td style="width:100px;" class="text-right bg-light">Proveedor:</td>
+               <td>{{ order.proveedor }}</td>
+               <td style="width:100px;" class="text-right bg-light">Factura:</td>
+               <td>
+                {{ order.order_invoice.id_factura_proveedor }}
+               </td>
+               <td style="width:100px;" class="text-right bg-light">Moneda:</td>
+               <td>{{ order.order_invoice.moneda }}</td>
+               <td style="width:100px;" class="text-right bg-light">T/C:</td>
+               <td>{{ order.order_invoice.tipo_cambio }}</td>
+            </tr>
+            <tr>               
+               <td style="width:100px;" class="text-right bg-light">Incoterm:</td>
+               <td>{{ order.incoterm }}</td>               
+               <td style="width:100px;" class="text-right bg-light">Pais Origen:</td>
+               <td>{{ order.pais_origen }}</td>               
+               <td style="width:100px;" class="text-right bg-light">Ciudad Origen:</td>
+               <td>{{ order.ciudad_origen }}</td>               
+               <td style="width:100px;" class="text-right bg-light">Registrado Por:</td>
+               <td>Pendiete</td>
+               <td style="width:100px;" class="text-right bg-light">Fecha Registro:</td>
+               <td>{{ order.date_create }}</td>
+            </tr>        
+            <tr>
+               <td style="width:100px;" class="text-right bg-light">Comentarios:</td>
+               <td colspan="9">{{ order.observaciones }} {{ order.comentarios }}</td>
+            </tr> 
+         </tbody>
+      </table>
+   </div>
+</div>
+<div class="row">
+   <div class="col-7 div-bordered">
+      <div class="text-tittle"> RESUMEN DE ESTADO GASTOS </div>
+      <table class="table table-hover table-condensed table-striped table-bordered">
+         <tbody>
+            <tr style="background-color: #fff;">
+               <th class="text-center">VER</th>
+               <th class="text-center">CONCEPTO</th>
+               <th class="text-center">VALOR</th>
+               <th class="text-center">FACTURADO</th>
+               <th class="text-center">SALDO</th>
+               <th class="text-center">MAYOR</th>
+            </tr>
+            <tr>
+               <td class="text-center text-primary"><i class="fa fa-plus"></i></td>
+               <td>FACTURA PROVEEDOR INTERNACIONAL</td>
+               <td>{{ order.order_invoice.valor }}</td>
+               <td>1733.993</td>
+               <td>2133.98</td>
+               <td>2133.98</td>
+            </tr>
+            <tr>
+               <td class="text-center text-primary"><i class="fa fa-plus"></i></td>
+               <td>SENAE TRIBUTOS</td>
+               <td>{{ order.order_invoice.valor }}</td>
+               <td>1733.993</td>
+               <td>2133.98</td>
+               <td>2133.98</td>
+            </tr>              
+            {% for expense in order.init_expenses %}
+               <tr>
+               <td class="text-center text-primary"><i class="fa fa-plus"></i></td>
+               <td> <span class="badge badge-success">J</span> {{ expense.concepto }}</td>
+               <td>{{ expense.valor_provisionado }}</td>
+               <td>{{ expense.invoiced_value }}</td>   
+               <td>{{ expense.sale }}</td>   
+               <td>{{ expense.ledger }}</td>   
+               </tr> 
+            {% endfor %}
+            <tr>
+               <th colspan="2">Sumas</th>
+               <th>1733.993</th>
+               <th>1733.993</th>
+               <th>2133.98</th>
+               <th>2133.98</th>
+               </tr>
+         </tbody>
+      </table>
+      <br />
+      <span class="text-right">Fecha de LLegada Del Producto:
+         <strong class="text-success">{{ order.fecha_llegada_cliente }}</strong>
+      </span>
+      <br />
+      <br>
+      <a href="{{ BASE_URL }}">
+         <button> <span class="fa fa-file-pdf"></span> Reporte Gastos </button>
+      </a>
+      <a href="{{ BASE_URL }}">
+         <button><span class="fa fa-arrow-left"></span> Ficha Pedido</button>
+      </a>
+      <a href="{{ BASE_URL }}">
+         <button>
+            <span class="fa fa-money-bill-alt"></span> Tributos Iniciales
+         </button>
+      </a>
+      <a href="{{ BASE_URL }}">
+         <button>
+            <span class="fa fa-list"></span> Lista Parciales
+         </button>
+      </a>
+      <a href="{{ BASE_URL }}">
+         <button>
+            <span class="fa fa-money-bill"></span> Reliquidación
+         </button>
+      </a>
+      <br />
+      <br />
+   </div>
+   <div class="col-5 div-bordered">      
+      <div class="text-tittle"> DESCRIPCIÓN DE GASTO </div>
+      <br> 
+      <div class="row">
+         <div class="col-12 text-center">
+            <h6 class="text-primary">{{ order.current_expese.concepto }}</h6>
+         </div>
+      </div>    
+      <div class="row">
+         <div class="col-12">
+         <table class="table table-condensed table-bordered">
+            <thead>
+               <tr>
+                  <th>Ver</th>
+                  <th>Proveedor</th>
+                  <th>Nro Factura</th>
+                  <th>Fecha</th>
+                  <th>Valor</th>
+                  <th>En Mayor</th>
+               </tr>
+            </thead>
+            <tbody>
+            {% for paid in order.current_expese.paids  %}
+            <tr>
+            <td class="text-center text-primary"><i class="fa fa-eye"></i></td>
+            <td>{{paid.id_documento_pago.identificacion_proveedor}}</td>
+            <td>{{paid.id_documento_pago}}</td>
+            <td>{{paid.id_documento_pago.fecha_emision}}</td>
+            <td>{{ paid.valor }}</td>
+            <td>
+            <div class="custom-control custom-checkbox">
+               <input type="checkbox" class="custom-control-input" id="customCheck1">
+               <label class="custom-control-label" for="customCheck1">NO</label>
+            </div>
+            </td>   
+      </tr>     
+            {% endfor %}
+      <tr>
+               <th colspan="5">Sumas</th>               
+               <th>2133.98</th>
+               <th>--</th>
+               </tr>
+            </tbody>
+         </table>
+         <a href="" class="pull-right">
+         <button>
+          <i class="fa fa-save"></i> Guardar
+         </button>
+         </a>         
+         </div>
+      </div>  
+      <br>
+      <div class="row">
+         <div class="col-4 text-center">
+         <h6>{{order.current_expese.valor_provisionado}}</h6>
+         <strong class="text-secondary">Valor</strong>
+         </div>
+         <div class="col-4 text-center">
+         <h6>{{order.current_expese.invoiced_value}}</h6>
+         <strong class="text-success">Facturado</strong>
+         </div>
+         <div class="col-4 text-center">
+         <h6>{{order.current_expese.ledger}}</h6>
+         <strong class="text-warning">Provisión</strong>
+         </div>
+      </div>      
+   </div>
+</div>
+{% endblock content %}
