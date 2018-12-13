@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Ledger
+from costings.models.Ledger import Ledger
 
 class LedgerAdmin(admin.ModelAdmin):
     pass

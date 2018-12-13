@@ -1,4 +1,5 @@
 from django.db import models
+from logs.app_log import loggin
 
 class Ledger(models.Model):
     id_mayor = models.AutoField(primary_key=True)
@@ -28,5 +29,23 @@ class Ledger(models.Model):
         ordering = ['nro_pedido', 'id_parcial','name','tipo']
     
     @classmethod
-    def get_by_order(self):
-        return None
+    def get_by_order(self, order):
+        if(order.regimen == '70'):
+            loggin('e', 'Se esta solicitando un mayor del pedido {nro_pedido} R70'.format(nro_pedido=order.nro_pedido))
+            return None
+            
+        items = self.objects.filter(nro_pedido = order.nro_pedido)
+        if items.count() == 0:
+            loggin('w', 'El pedido {nro_pedido} no tiene registrado ningun mayor'.format(nro_pedido=order.nro_pedido))
+            return None
+
+        return items
+
+    @classmethod
+    def get_by_parcial(self, partial):
+        items = self.objects.filter(id_parcial=partial.id_parcial)
+        if items.count() == 0:
+            loggin('w', 'El parcial {id_parcial} no registra un mayor'.format(id_parcial=partial.id_parcial))
+            return None
+        
+        return items
