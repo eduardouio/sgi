@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product
+from products.models.Product import Product
 
 class ProductAdmin(admin.ModelAdmin):
     pass
