@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Supplier
+from suppliers.models.Supplier import Supplier
 
 class SupplierAdmin(admin.ModelAdmin):
     pass

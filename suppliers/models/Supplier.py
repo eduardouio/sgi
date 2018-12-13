@@ -23,11 +23,11 @@ class Supplier(models.Model):
     
     @classmethod
     def get_all(self):
-        return True
+        return self.objects.all()
 
     @classmethod
     def get_by_ruc(self, id_supplier):
         try:
-            return Supplier.objects.get(pk=id_supplier)
+            return self.objects.get(pk=id_supplier)
         except ObjectDoesNotExist:
             return None 
