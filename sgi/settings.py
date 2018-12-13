@@ -25,11 +25,10 @@ SECRET_KEY = 'sj-z02b^$ifmzup+&qb+6!fi4mgbah_n3ddss@9m4=e0u$fdrr'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*',]
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -37,7 +36,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'guardian'
+    'simple_history',
+    'guardian',
+    'rest_framework',
+    'authentication',
+    'costings',
+    'suppliers',
+    'orders',
+    'paids',
+    'partials',
+    'products',
+    'warenhouse',
 ]
 
 MIDDLEWARE = [
@@ -48,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'simple_history.middleware.HistoryRequestMiddleware',
 ]
 
 ROOT_URLCONF = 'sgi.urls'
@@ -55,7 +65,7 @@ ROOT_URLCONF = 'sgi.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -63,13 +73,13 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'sgi.contextprocesor.base_url',
             ],
         },
     },
 ]
 
 WSGI_APPLICATION = 'sgi.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
@@ -85,6 +95,16 @@ DATABASES = {
 }
 
 
+#import sys
+#if 'test' in sys.argv:
+#   DATABASES['default'] = {
+#       'ENGINE': 'django.db.backends.mysql',
+#       'NAME': 'cordovezAppTEST',
+#       'USER' : 'root',
+#       'PASSWORD' : 'elian.2011',
+#       'PORT' : '3306',
+#   }
+    
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
@@ -117,9 +137,21 @@ USE_L10N = True
 
 USE_TZ = True
 
+AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend', 'guardian.backends.ObjectPermissionBackend')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
+#STATIC_ROOT = os.sep.join(os.path.abspath(__file__).split(os.sep)[:-2]+['static'])
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+    os.sep.join(os.path.abspath(__file__).split(os.sep)[:-2]+['static']),
+]
+
 STATIC_URL = '/static/'
-#MEDIA_URL = '/media/'
+
+
+MEDIA_ROOT = os.sep.join(os.path.abspath(__file__).split(os.sep)[:-2]+['media'])
+MEDIA_URL = '/media/'
+
+BASE_URL = 'http://localhost:8000/'
