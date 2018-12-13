@@ -1,5 +1,9 @@
 from django.contrib import admin
-from .models import Partial, Apportionment, ApportionmentDetail, InfoInvoice, InfoInvoiceDetail
+from partials.models.Partial import Partial
+from partials.models.Apportionment import Apportionment
+from partials.models.ApportionmentDetail import ApportionmentDetail
+from partials.models.InfoInvoice import InfoInvoice
+from partials.models.InfoInvoiceDetail import InfoInvoiceDetail
 
 class PartialAdmin(admin.ModelAdmin):
     pass
