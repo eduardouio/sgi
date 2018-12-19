@@ -124,3 +124,51 @@ class Order(models.Model):
     @classmethod
     def reopen_order(self, nro_order):
         pass
+    
+    @classmethod
+    def get_paid_taxes(self, nro_order):
+        order =  self.get_by_order(nro_order)        
+        if order is None or order.regimen == '70':
+            loggin('w', 'No se obtener los tributos del pedido {nro_order} pedido inexistente o regimen = 70'.format(nro_order=nro_order))
+            return {}    
+
+        taxes =  {
+            'arancel_advalorem' : order.arancel_advalorem_pagar_pagado,
+            'arancel_especifico' : order.arancel_especifico_pagar_pagado,
+            'fondinfa' : order.fodinfa_pagado,
+            'ice_advalorem' : order.ice_advalorem_pagado,
+            'ice_especifico' : order.ice_especifico_pagado,
+            'iva' : order.iva_pagado,
+            'exoneracion_arancel' : order.exoneracion_arancel,
+            'tipo_cambio' : (bool(order.tipo_cambio_impuestosr10) == False) and 1 or order.tipo_cambio_impuestosr10,
+            'nro_liquidacion' : order.nro_liquidacion,
+            'fecha_liquidacion' : order.fecha_liquidacion,
+            'total_pagado' : (
+                    order.arancel_advalorem_pagar_pagado
+                    + order.arancel_especifico_pagar_pagado
+                    + order.fodinfa_pagado
+                    + order.ice_advalorem_pagado
+                    + order.ice_especifico_pagado
+                    + order.iva_pagado
+            ),
+            'arancel_advalorem_provisionado' : order.arancel_advalorem_pagar,
+            'arancel_especifico_provisionado' : order.arancel_especifico_pagar,
+            'fondinfa_provisionado' : order.fodinfa,
+            'ice_advalorem_provisionado' : order.ice_advalorem,
+            'ice_especifico_provisionado' : order.ice_especifico,
+            'iva_provisionado' : order.iva,
+            'total_provisionado' : (
+                    order.arancel_advalorem_pagar
+                    + order.arancel_especifico_pagar
+                    + order.fodinfa
+                    + order.ice_advalorem
+                    + order.ice_especifico
+                    + order.iva
+            ),
+            'complete' : False            
+        }
+
+        if (round(taxes['total_provisionado'],2) == round(taxes['total_pagado'],2)):
+            taxes['complete'] = True
+        
+        return taxes

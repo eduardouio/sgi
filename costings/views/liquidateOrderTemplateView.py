@@ -10,7 +10,7 @@ class liquidateOrderTemplateView(TemplateView):
     def get(self, request, nro_order , *args, **kwargs):
         context = super(liquidateOrderTemplateView, self).get_context_data(*args, **kwargs)        
         complete_order = CompleteOrderInfo().get_data(nro_order)
-        complete_order.current_expese = complete_order.init_expenses.first()
+        print(complete_order)
         context.update({'order': complete_order})
         return self.render_to_response(context)
     

@@ -50,3 +50,7 @@ class OrderInvoice(models.Model):
             loggin('e', 'Existe mas de una factura para el pedido {nro_order}'.format(nro_order=nro_order))
 
         return order_invoice.first()
+    
+    @classmethod
+    def get_isd_by_order(self, nro_order):
+        pass

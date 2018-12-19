@@ -2,6 +2,7 @@ from django.db import models
 from products.models.Product import Product
 from orders.models.OrderInvoice import OrderInvoice
 from django.core.exceptions import ObjectDoesNotExist
+from logs.app_log import loggin
 
 class OrderInvoiceDetail(models.Model):
     detalle_pedido_factura = models.AutoField(primary_key=True)
@@ -87,6 +88,17 @@ class OrderInvoiceDetail(models.Model):
     @classmethod
     def get_by_id_order_invoice(self, id_order_invoice):
         order_invoice = OrderInvoice.get_by_id(id_order_invoice)
-        if order_invoice:
-            return OrderInvoiceDetail.objects.filter(id_pedido_factura = 10)
-        return None
+        if order_invoice is None:
+            return None
+
+        order_items =  self.objects.filter(id_pedido_factura = order_invoice.id_pedido_factura)
+
+        if order_items.count() == 0:
+            loggin('w', 'La factura de producto {id_order_invoice} no tiene items registrados'.format(id_order_invoice=id_order_invoice))
+            return []
+        
+        for item in order_items:
+            if not bool(item.product):
+                item.product = item.cod_contable.nombre
+
+        return order_items
