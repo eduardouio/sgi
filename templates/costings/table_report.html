@@ -25,7 +25,7 @@
 <td>{{ forloop.counter }}</td>
 <td>{{ p.concepto }}</td>
 <td>{{ p.tipo }}</td>
-<td>{{ p.fecha }}</td>
+<td>{{ p.fecha | date:"d/M/Y" }}</td>
 <td>{{ p.order }}</td>
 <td>{{ p.order.regimen }}</td>
 <td>{{ p.id_parcial }}</td>

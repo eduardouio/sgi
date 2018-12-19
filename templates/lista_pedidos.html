@@ -1,8 +1,20 @@
+
 {% extends "base/base.html" %}
 
-<li>
-{{ data }}
-{% for x in data %}
-   <li> {{x}} </li> 
+{% block content %}
+
+<table class="table table-condensed">
+<tr>
+<td>
+Pedidos
+</td>
+</tr>
+{% for x in orders %}
+   <tr>
+   <td>
+   {{x.pedido}} {{ x.proveedor }}
+   </td>
+   </tr> 
 {% endfor %}
-</li>
+</table>
+{% endblock content %}
