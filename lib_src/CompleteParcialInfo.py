@@ -146,7 +146,7 @@ class CompleteParcialInfo(object):
         apportionment = Apportionment.get_by_parcial(self.partial)
         if apportionment is None:
             self.status_parcial['apportioment'] = False
-            pass
+            return None
         
         apportionment.apportionment_detail = ApportionmentDetail.get_by_apportionment(apportionment)
 

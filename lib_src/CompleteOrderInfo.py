@@ -7,6 +7,7 @@ from paids.models.PaidInvoiceDetail import PaidInvoiceDetail
 from suppliers.models.Supplier import Supplier
 from partials.models.Partial import Partial
 from costings.models.Ledger import Ledger
+from lib_src.CompleteParcialInfo import CompleteParcialInfo
 from lib_src.serializers import OrderSerializer
 from lib_src.serializers import OrderInvoiceSerializer
 from lib_src.serializers import OrderInvoiceDetailSerializer
@@ -14,13 +15,10 @@ from lib_src.serializers import ExpenseSerializer
 from lib_src.serializers import PaidInvoiceSerializer
 from lib_src.serializers import PaidInvoiceDetailSerializer
 from lib_src.serializers import SupplierSerializer
-from lib_src.serializers import PartialSerializer
 from lib_src.serializers import LedgerSerializer
 from logs.app_log import loggin
-from lib_src.CompleteParcialInfo import CompleteParcialInfo
 
 class CompleteOrderInfo(object):
-    '''Returns all info of de order'''
 
     def __init__(self):
         self.status_order = {
@@ -28,31 +26,47 @@ class CompleteOrderInfo(object):
             'order_invoice' : True,
             'order_invoice_details' : True,
             'ledger' : True,
+            'taxes' : True,
         }
-
+        self.init_ledger = 0
         self.serialized = False
         self.nro_order = None
-   
 
-    def get_data(self, nro_order, serialized = False):        
+
+    def get_data(self, nro_order, serialized = False):
+        """
+        Returns all data of order 
+        Args:
+            nro_order (string) : numero de pedido 000-00
+        
+        from lib_src.serializers import LedgerSerializer
+            serialized (bool) default False: modo de retorno arreglo | objeto 
+        Returns:
+            dict | object CompleteOrderInfo
+        """       
         self.nro_order = nro_order
         self.serialized = serialized
-
+        loggin(
+            'i',
+            'Recopilacion de informacion completa del pedido {nro_order}'
+            .format(nro_order = self.nro_order)
+            )
         return ({
             'order': self.get_order(),
             'order_invoice':self.get_order_invoice(),
             'parcials':self.get_parcials(),
             'expenses':self.get_expenses(),
+            'taxes' : self.get_taxes(),
             'ledger' : self.get_ledger(),
+            'init_ledger' : self.init_ledger,
             'status' : self.status_order,
             })
 
-    
+
     def get_order(self):
         order = Order.get_by_order(nro_order=self.nro_order)
-        
         if order is None:
-            self.status_order['order'] = False
+            self.status_order['order'] = False            
             return None
         
         if self.serialized:
@@ -66,7 +80,7 @@ class CompleteOrderInfo(object):
         order_items = {
             'order_invoice' : None,
             'supplier' : None,
-            'order_invoice_detail' : None
+            'order_invoice_details' : None
         }
 
         order_invoice = OrderInvoice.get_by_order(self.nro_order)
@@ -76,10 +90,22 @@ class CompleteOrderInfo(object):
         
         order_items['order_invoice'] = order_invoice
         order_items['order_invoice_details'] = OrderInvoiceDetail.get_by_id_order_invoice(order_invoice.id_pedido_factura)
-        order_items['supplier'] = Supplier.get_by_ruc(order_invoice.identificacion_proveedor)
+        order_items['supplier'] = Supplier.get_by_ruc(order_invoice.identificacion_proveedor_id)
+        order_items['totals'] = {
+            'items' : order_items['order_invoice_details'].count(),
+            'boxes' : 0,
+            'value' : 0,
+            'bottles' : 0,
+        }       
 
         if order_items['order_invoice_details'] is None:
-            self.status_order['order_invoice_details'] = False        
+            self.status_order['order_invoice_details'] = False
+
+        for line_item in order_items['order_invoice_details']:
+            order_items['totals']['bottles'] += (line_item.nro_cajas * line_item.cod_contable.cantidad_x_caja)
+            order_items['totals']['boxes'] += line_item.nro_cajas
+            order_items['totals']['value']  += (line_item.nro_cajas * line_item.costo_caja)
+            self.init_ledger  += (line_item.nro_cajas * line_item.costo_caja)
 
         if self.serialized:
             order_invoice_serializer = OrderInvoiceSerializer(order_items['order_invoice'])
@@ -89,7 +115,11 @@ class CompleteOrderInfo(object):
             return {
                 'order_invoice' : order_invoice_serializer.data,
                 'supplier' : supplier_serializer.data,
-                'order_invoice_detail' : order_invoice_det_serializer.data
+                'order_invoice_detail' : order_invoice_det_serializer.data,
+                'order_invoice_detail_sums' : order_items['totals'],
+                'parcial' : False,
+                'provision' : (order_items['order_invoice'].valor != order_items['totals']['value']),
+                'complete' : (order_items['order_invoice'].valor == order_items['totals']['value'])
             }
 
         return order_items
@@ -112,7 +142,7 @@ class CompleteOrderInfo(object):
     def get_expenses(self):
         data_expenses = []       
         expenses = Expense.get_by_order(self.nro_order)
-
+        
         if expenses is None:
             return None
 
@@ -120,7 +150,13 @@ class CompleteOrderInfo(object):
             paids = []                
             item.paids = PaidInvoiceDetail.get_by_expense(item)
             item.invoiced_value = 0
-            item.ledger = 0            
+            item.ledger = 0
+            if item.concepto == 'ISD':
+                #el ISD es un caso especial, se registra de forma automatica en el sistema
+                item.invoiced_value = item.valor_provisionado
+                item.ledger = item.valor_provisionado
+                item.bg_closed = 1
+                item.paids = OrderInvoice.get_isd_by_order()
 
             for paid in item.paids:
                 item.invoiced_value += paid.valor
@@ -162,8 +198,11 @@ class CompleteOrderInfo(object):
                     'invoiced_value' : item.invoiced_value,
                     'sale' : item.sale,
                     'legder' : item.ledger,
+                    'parcial' : (bool(item.sale) and (item.sale != item.valor_provisionado)),
+                    'provision' : (item.sale == item.valor_provisionado),
+                    'complete' : bool(item.bg_closed),
                 })
-        
+
         if self.serialized:
             return data_expenses
 
@@ -171,9 +210,12 @@ class CompleteOrderInfo(object):
     
     def get_ledger(self):
         order = Order.get_by_order(self.nro_order)
+        if order is None:
+            return None
+            
         ledger_order = Ledger.get_by_order(order)
-        if ledger_order is None and order.regimen == '10':
-            self.status_order['ledger'] = False
+        if ledger_order is None and order.regimen == '70':
+            self.status_order['ledger'] = True
             return None
         
         if self.serialized:
@@ -181,4 +223,8 @@ class CompleteOrderInfo(object):
             return ledger_serializer.data
         
         return ledger_order
-            
+
+
+    def get_taxes(self):
+        taxes =  Order.get_paid_taxes(self.nro_order)       
+        return taxes
