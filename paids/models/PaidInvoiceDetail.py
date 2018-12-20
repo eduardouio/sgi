@@ -2,6 +2,7 @@ from django.db import models
 from paids.models.PaidInvoice import PaidInvoice
 from paids.models.Expense import Expense
 from logs.app_log import loggin
+from simple_history.models import HistoricalRecords
 
 class PaidInvoiceDetail(models.Model):
     id_detalle_documento_pago = models.AutoField(primary_key=True)
@@ -14,12 +15,14 @@ class PaidInvoiceDetail(models.Model):
     id_user = models.SmallIntegerField(default=0)
     date_create = models.DateTimeField(blank=True, null=True)
     last_update = models.DateTimeField(blank=True, null=True)
+    history = HistoricalRecords()
 
     def __str__(self):
         return str(self.id_detalle_documento_pago)
 
     class Meta:
-        managed = False
+        #managed = False
+        managed = True
         db_table = 'detalle_documento_pago'
         unique_together = (('id_documento_pago', 'id_gastos_nacionalizacion'),)
         verbose_name_plural = 'Detalle Documento Pago'

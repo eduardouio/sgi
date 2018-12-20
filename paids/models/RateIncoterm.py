@@ -1,4 +1,5 @@
 from django.db import models
+from simple_history.models import HistoricalRecords
 
 class RateIncoterm(models.Model):
     id_incoterm = models.AutoField(primary_key=True)
@@ -11,12 +12,14 @@ class RateIncoterm(models.Model):
     id_user = models.SmallIntegerField(default=0)
     date_create = models.DateTimeField(blank=True, null=True)
     last_update = models.DateTimeField(blank=True, null=True)
+    history = HistoricalRecords()
 
     def __str__(self):
         return ''.join([self.tipo, ' ', self.pais, ' ', self.incoterms])
 
     class Meta:
-        managed = False
+        #managed = False
+        managed = True
         db_table = 'tarifa_incoterm'
         unique_together = (('pais', 'ciudad', 'incoterms', 'tipo'),)
         ordering = ['tipo','pais','ciudad','incoterms']

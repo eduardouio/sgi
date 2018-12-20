@@ -3,6 +3,7 @@ from products.models.Product import Product
 from orders.models.OrderInvoice import OrderInvoice
 from django.core.exceptions import ObjectDoesNotExist
 from logs.app_log import loggin
+from simple_history.models import HistoricalRecords
 
 class OrderInvoiceDetail(models.Model):
     detalle_pedido_factura = models.AutoField(primary_key=True)
@@ -74,12 +75,14 @@ class OrderInvoiceDetail(models.Model):
     id_user = models.SmallIntegerField(default=0)
     date_create = models.DateTimeField(blank=True, null=True)
     last_update = models.DateTimeField(blank=True, null=True)
+    history = HistoricalRecords()
 
     def __str__(self):
         return str(self.detalle_pedido_factura)
 
     class Meta:
-        managed = False
+        #managed = False
+        managed = True
         db_table = 'detalle_pedido_factura'
         unique_together = (('id_pedido_factura', 'cod_contable', 'grado_alcoholico', 'date_create'),)
         ordering = ['id_pedido_factura','detalle_pedido_factura']

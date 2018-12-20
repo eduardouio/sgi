@@ -5,6 +5,7 @@ from suppliers.models.Supplier import Supplier
 from partials.models.Partial import Partial
 from django.db.models import QuerySet
 from logs.app_log import loggin
+from simple_history.models import HistoricalRecords
 
 
 
@@ -27,12 +28,14 @@ class InfoInvoice(models.Model):
     id_user = models.SmallIntegerField(default=0)
     date_create = models.DateTimeField(blank=True, null=True)
     last_update = models.DateTimeField(blank=True, null=True)
+    history = HistoricalRecords()
 
     def __str__(self):
         return self.nro_factura_informativa
 
     class Meta:
-        managed = False
+        #managed = False
+        managed = True
         db_table = 'factura_informativa'
         ordering = ['fecha_emision', 'id_parcial']
         verbose_name_plural = 'Facturas Infomativas'

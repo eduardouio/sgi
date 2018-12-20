@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 from logs.app_log import loggin
+from simple_history.models import HistoricalRecords    
 
 class Order(models.Model):
     nro_pedido = models.CharField(primary_key=True, max_length=6)
@@ -69,12 +70,14 @@ class Order(models.Model):
     path_dai_1 = models.FileField(upload_to='dai_pedido/',max_length=600, blank=True, null=True)
     path_dai_2 = models.FileField(upload_to='dai_pedido/',max_length=600, blank=True, null=True)
     path_dai_3 = models.FileField(upload_to='dai_pedido/',max_length=600, blank=True, null=True)
+    history = HistoricalRecords()
 
     def __str__(self):
         return ''.join([self.nro_pedido])
 
     class Meta:
-        managed = False
+        #managed = False
+        managed = True
         db_table = 'pedido'
         ordering = ['nro_pedido']
         verbose_name_plural = 'Pedidos'

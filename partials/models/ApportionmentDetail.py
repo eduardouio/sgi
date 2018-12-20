@@ -1,6 +1,7 @@
 from django.db import models
 from partials.models.Apportionment import Apportionment
 from logs.app_log import loggin
+from simple_history.models import HistoricalRecords
 
 class ApportionmentDetail(models.Model):
     id_prorrateo_detalle = models.AutoField(primary_key=True)
@@ -13,12 +14,14 @@ class ApportionmentDetail(models.Model):
     id_user = models.SmallIntegerField(default=0)
     date_create = models.DateTimeField(blank=True, null=True)
     last_update = models.DateTimeField(blank=True, null=True)
+    history = HistoricalRecords()
 
     def __str__(self):
         return str(self.id_prorrateo)
 
     class Meta:
-        managed = False
+        #managed = False
+        managed = True
         db_table = 'prorrateo_detalle'
         unique_together = (('id_gastos_nacionalizacion', 'id_prorrateo'),)
         verbose_name_plural = 'Detalle de Prorrateos'

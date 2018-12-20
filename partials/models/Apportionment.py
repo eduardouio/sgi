@@ -1,6 +1,7 @@
 from django.db import models
 from partials.models.Partial import Partial
 from logs.app_log import loggin
+from simple_history.models import HistoricalRecords
 
 class Apportionment(models.Model):
     id_prorrateo = models.AutoField(primary_key=True)
@@ -21,12 +22,14 @@ class Apportionment(models.Model):
     id_user = models.SmallIntegerField(default=0)
     date_create = models.DateTimeField(blank=True, null=True)
     last_update = models.DateTimeField(blank=True, null=True)
+    history = HistoricalRecords()
 
     def __str__(self):
         return str(self.id_prorrateo)
 
     class Meta:
-        managed = False
+        #managed = False
+        managed = True
         db_table = 'prorrateo'
         verbose_name_plural = 'Prorrateos De Parciales'
         ordering = ['id_parcial']

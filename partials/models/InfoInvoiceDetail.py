@@ -2,6 +2,7 @@ from django.db import models
 from orders.models.OrderInvoiceDetail import OrderInvoiceDetail
 from partials.models.InfoInvoice import InfoInvoice
 from logs.app_log import loggin
+from simple_history.models import HistoricalRecords
 
 class InfoInvoiceDetail(models.Model):
     id_factura_informativa_detalle = models.AutoField(primary_key=True)
@@ -73,12 +74,14 @@ class InfoInvoiceDetail(models.Model):
     id_user = models.SmallIntegerField(default=0)
     date_create = models.DateTimeField(blank=True, null=True)
     last_update = models.DateTimeField(blank=True, null=True)
+    history = HistoricalRecords()
 
     def __str__(self):
         return self.nro_factura_informativa
 
     class Meta:
-        managed = False
+        #managed = False
+        managed = True
         db_table = 'factura_informativa_detalle'
         unique_together = (('id_factura_informativa', 'detalle_pedido_factura', 'date_create'),)
         verbose_name_plural = 'Factura Informativa Detalle'
@@ -88,7 +91,7 @@ class InfoInvoiceDetail(models.Model):
     def get_by_info_invoice(self, info_invoice):
         info_invoice_items = self.objects.filter(id_factura_informativa=info_invoice.id_factura_informativa)
         if info_invoice_items.count() == 0:
-            loggin('w', 'La factura informativa {id_info_invoice} no tiene detalles'.format(id_info_invoice=info_invoice.id.id_factura_informativa))
+            loggin('w', 'La factura informativa {id_info_invoice} no tiene detalles'.format(id_info_invoice=info_invoice.id_factura_informativa))
             return None
         
         return info_invoice_items

@@ -4,6 +4,7 @@ from orders.models.Order import Order
 from partials.models.Partial import Partial
 from suppliers.models.Supplier import Supplier
 from logs.app_log import loggin
+from simple_history.models import HistoricalRecords
 
 class Expense(models.Model):
     id_gastos_nacionalizacion = models.AutoField(primary_key=True)
@@ -23,13 +24,15 @@ class Expense(models.Model):
     id_user = models.SmallIntegerField(default=0)
     date_create = models.DateTimeField(blank=True, null=True)
     last_update = models.DateTimeField(blank=True, null=True)
+    history = HistoricalRecords()
 
     def __str__(self):
         return  ''.join([str(self.id_gastos_nacionalizacion), ' ', self.concepto]) 
 
 
     class Meta:
-        managed = False
+        #managed = False
+        managed = True
         db_table = 'gastos_nacionalizacion'
         unique_together = (('nro_pedido', 'id_parcial', 'concepto'),)
         ordering = ['concepto','nro_pedido','id_parcial','tipo']
@@ -72,7 +75,7 @@ class Expense(models.Model):
             return []
         
         for p in provisions:
-            if p.nro_pedido_id == '000-00':                
+            if p.nro_pedido_id == '000-00':       
                p.order = Partial.get_order_by_parcial(p.id_parcial)
                pass
             else:
@@ -80,5 +83,5 @@ class Expense(models.Model):
             
             if p.id_parcial == 0:
                 p.id_parcial =1
-
+                
         return provisions

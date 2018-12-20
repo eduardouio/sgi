@@ -2,6 +2,7 @@ from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 from orders.models.Order import Order
 from logs.app_log import loggin
+from simple_history.models import HistoricalRecords
 
 
 class Partial(models.Model):
@@ -53,12 +54,14 @@ class Partial(models.Model):
     id_user = models.SmallIntegerField(default=0)
     date_create = models.DateTimeField(blank=True, null=True)
     last_update = models.DateTimeField(blank=True, null=True)
+    history = HistoricalRecords()
 
     def __str__(self):
         return str(self.id_parcial)
 
     class Meta:
-        managed = False
+        #managed = False
+        managed = True
         db_table = 'parcial'
         verbose_name_plural = 'Parciales'
         ordering = ['nro_pedido', 'id_parcial']

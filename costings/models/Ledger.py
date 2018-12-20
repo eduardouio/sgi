@@ -1,5 +1,6 @@
 from django.db import models
 from logs.app_log import loggin
+from simple_history.models import HistoricalRecords
 
 class Ledger(models.Model):
     id_mayor = models.AutoField(primary_key=True)
@@ -17,12 +18,15 @@ class Ledger(models.Model):
     id_user = models.SmallIntegerField(default=0)
     date_create = models.DateTimeField(blank=True, null=True)
     last_update = models.DateTimeField(blank=True, null=True)
+    history = HistoricalRecords()
+
 
     def __str__(self):
         return self.name
 
     class Meta:
-        managed = False
+        #managed = False
+        managed = True
         db_table = 'mayor'
         unique_together = (('nro_pedido', 'id_parcial', 'name'),)
         verbose_name_plural = 'Mayores Liquidaciones'

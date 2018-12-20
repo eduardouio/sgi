@@ -1,6 +1,7 @@
 from django.db import models
 from suppliers.models.Supplier import Supplier
 from orders.models.Order import Order
+from simple_history.models import HistoricalRecords
 
 class RateExpense(models.Model):
     id_tarifa_gastos = models.AutoField(primary_key=True)
@@ -16,12 +17,14 @@ class RateExpense(models.Model):
     id_user = models.SmallIntegerField(default=0)
     date_create = models.DateTimeField(blank=True, null=True)
     last_update = models.DateTimeField(blank=True, null=True)
+    history = HistoricalRecords()
 
     def __str__(self):
         return ''.join([self.concepto ,' ', self.regimen])
 
     class Meta:
-        managed = False
+        #managed = False
+        managed = True     
         db_table = 'tarifa_gastos'
         unique_together = (('identificacion_proveedor', 'concepto', 'pais_origen', 'valor', 'tipo_gasto'),)
         ordering = ['identificacion_proveedor','regimen','concepto','valor']

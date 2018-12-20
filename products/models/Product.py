@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 from suppliers.models.Supplier import Supplier
+from simple_history.models import HistoricalRecords
 
 class Product(models.Model):
     cod_contable = models.CharField(primary_key=True, max_length=20)
@@ -19,12 +20,14 @@ class Product(models.Model):
     id_user = models.SmallIntegerField()
     date_create = models.DateTimeField(blank=True, null=True)
     last_update = models.DateTimeField(blank=True, null=True)
+    history = HistoricalRecords()
 
     def __str__(self):
         return self.nombre
 
     class Meta:
-        managed = False
+        #managed = False
+        managed = True
         db_table = 'producto'
         ordering = ['identificacion_proveedor', 'nombre']
         verbose_name_plural = 'Productos'

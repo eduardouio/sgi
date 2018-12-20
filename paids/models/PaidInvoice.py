@@ -1,6 +1,7 @@
 from django.db import models
 from suppliers.models.Supplier import Supplier
 from logs.app_log import loggin
+from simple_history.models import HistoricalRecords
 
 class PaidInvoice(models.Model):
     id_documento_pago = models.SmallIntegerField( primary_key=True)
@@ -15,12 +16,14 @@ class PaidInvoice(models.Model):
     id_user = models.SmallIntegerField(default=0)
     date_create = models.DateTimeField(blank=True, null=True)
     last_update = models.DateTimeField(blank=True, null=True)
+    history = HistoricalRecords()
 
     def __str__(self):
         return str(self.id_documento_pago)
 
     class Meta:
-        managed = False
+        #managed = False
+        managed = True
         db_table = 'documento_pago'
         unique_together = (('identificacion_proveedor', 'nro_factura'),)
         ordering = ['nro_factura']

@@ -3,7 +3,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from orders.models.Order import Order
 from suppliers.models.Supplier import Supplier
 from logs.app_log import loggin
-import uuid
+from simple_history.models import HistoricalRecords
 
 class OrderInvoice(models.Model):
     id_pedido_factura = models.AutoField(primary_key=True)
@@ -22,12 +22,14 @@ class OrderInvoice(models.Model):
     last_update = models.DateTimeField(blank=True, null=True)
     bg_isclosed = models.IntegerField(blank=True, null=True,default=0)
     gasto_origen = models.DecimalField(max_digits=10, decimal_places=3,default=0)
+    history = HistoricalRecords()
 
     def __str__(self):
         return str(self.id_factura_proveedor)
 
     class Meta:
-        managed = False
+        #managed = False
+        managed = True
         db_table = 'pedido_factura'
         unique_together = (('identificacion_proveedor', 'id_factura_proveedor'),)
         verbose_name_plural = 'Facturas de Pedido'  
@@ -50,7 +52,3 @@ class OrderInvoice(models.Model):
             loggin('e', 'Existe mas de una factura para el pedido {nro_order}'.format(nro_order=nro_order))
 
         return order_invoice.first()
-    
-    @classmethod
-    def get_isd_by_order(self, nro_order):
-        pass
