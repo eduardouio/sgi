@@ -4,7 +4,7 @@ from rest_framework.generics import (
                             UpdateAPIView, 
                             RetrieveAPIView
                             )
-from orders.models import Order
+from orders.models.Order import Order
 from lib_src.serializers import OrderSerializer
 
 class OrderCreateView(CreateAPIView):

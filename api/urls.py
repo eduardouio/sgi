@@ -118,9 +118,9 @@ urlpatterns = [
     path('ledger/update/<pk>/', LedgerUpdateView.as_view(), name='update-ledger'),
     #Order
     path('order/create/', OrderCreateView.as_view(), name='create-order'),
-    path('order/delete/', OrderDeleteView.as_view(), name='delete-order'),
-    path('order/detail/', OrderDetailView.as_view(), name='detail-order'),
-    path('order/update/', OrderUpdateView.as_view(), name='update-order'),
+    path('order/delete/<pk>/', OrderDeleteView.as_view(), name='delete-order'),
+    path('order/detail/<pk>/', OrderDetailView.as_view(), name='detail-order'),
+    path('order/update/<pk>/', OrderUpdateView.as_view(), name='update-order'),
     #OrderInvoice
     path('order-invoice/create/', OrderInvoiceCreateView.as_view(), name='create-order-invoice'),
     path('order-invoice/delete/<pk>/', OrderInvoiceDeleteView.as_view(), name='delete-order-invoice'),
