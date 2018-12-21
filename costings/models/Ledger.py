@@ -23,7 +23,6 @@ class Ledger(models.Model):
         return self.tipo
 
     class Meta:
-        #managed = False
         managed = True
         db_table = 'mayor'
         unique_together = (('nro_pedido', 'id_parcial', 'tipo'),)
