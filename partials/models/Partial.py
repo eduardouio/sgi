@@ -53,7 +53,17 @@ class Partial(models.Model):
     path_dai_3 = models.FileField(upload_to='dais_parciales/', max_length=600, blank=True, null=True)
     id_user = models.SmallIntegerField(default=0)
     date_create = models.DateTimeField(blank=True, null=True)
-    last_update = models.DateTimeField(blank=True, null=True)
+    last_update = models.DateTimeField(blank=True, null=True) 
+    fecha_solicitud_salida_almagro = models.DateField(blank=True, null=True)
+    agente_aduana = models.CharField(max_length=100, blank=True, null=True)
+    ruc_agente_aduana = models.CharField(max_length=13, blank=True, null=True)
+    fecha_declaracion_inicial = models.DateField(blank=True, null=True)  
+    fecha_entrega_etiquetas_senae = models.DateField(blank=True, null=True)
+    fecha_pegado_etiquetas = models.DateField(blank=True, null=True)
+    etiquetas_pegadas = models.IntegerField(blank=True, null=True)
+    fecha_aforo_fisico = models.DateField(blank=True, null=True)
+    fecha_aprovacion_dai = models.DateField(blank=True, null=True)
+    punto_lledada = models.CharField(max_length=60, blank=True, null=True)
     history = HistoricalRecords()
 
     def __str__(self):

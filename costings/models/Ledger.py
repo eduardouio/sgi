@@ -2,19 +2,17 @@ from django.db import models
 from logs.app_log import loggin
 from simple_history.models import HistoricalRecords
 
-class Ledger(models.Model):
+class Ledger(models.Model):    
     id_mayor = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=50)
+    #Inicial | Gastos Iniciales | Gastos Parciales Nparcials 
     tipo = models.CharField(max_length=50)
     nro_pedido = models.CharField(max_length=6)
     id_parcial = models.PositiveSmallIntegerField(default=0)
-    valor_inicial = models.DecimalField(max_digits=10, decimal_places=3, blank=True, null=True)
-    valor_inicial_facturado = models.DecimalField(max_digits=10, decimal_places=3, blank=True, null=True)
-    saldo_inicial_facturado = models.DecimalField(max_digits=10, decimal_places=3, blank=True, null=True)
-    valor_distribuido = models.DecimalField(max_digits=10, decimal_places=3, blank=True, null=True)
-    valor_distribuido_facturado = models.DecimalField(max_digits=10, decimal_places=3, blank=True, null=True)
-    saldo_distribuido_facturado = models.DecimalField(max_digits=10, decimal_places=3, blank=True, null=True)
-    valor_por_distribuir = models.DecimalField(max_digits=10, decimal_places=3, blank=True, null=True)
+    valor_en_provisiones = models.DecimalField(max_digits=15, decimal_places=3, blank=True, null=True)
+    valor_en_facturas = models.DecimalField(max_digits=15, decimal_places=3, blank=True, null=True)
+    valor_prorrateado = models.DecimalField(max_digits=15, decimal_places=3, blank=True, null=True)    
+    precio_de_indirectos_entrega = models.DecimalField(max_digits=15, decimal_places=3, blank=True, null=True)
+    saldo_mayor_a_liquidacion = models.DecimalField(max_digits=15, decimal_places=3, blank=True, null=True)
     id_user = models.SmallIntegerField(default=0)
     date_create = models.DateTimeField(blank=True, null=True)
     last_update = models.DateTimeField(blank=True, null=True)
@@ -22,15 +20,15 @@ class Ledger(models.Model):
 
 
     def __str__(self):
-        return self.name
+        return self.tipo
 
     class Meta:
         #managed = False
         managed = True
         db_table = 'mayor'
-        unique_together = (('nro_pedido', 'id_parcial', 'name'),)
+        unique_together = (('nro_pedido', 'id_parcial', 'tipo'),)
         verbose_name_plural = 'Mayores Liquidaciones'
-        ordering = ['nro_pedido', 'id_parcial','name','tipo']
+        ordering = ['nro_pedido', 'id_parcial','tipo']
     
     @classmethod
     def get_by_order(self, order):
