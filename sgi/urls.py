@@ -25,4 +25,5 @@ urlpatterns = [
     path('', include('authentication.urls', namespace='autehtications')),
     path('costos/', include('costings.urls', namespace='costings')),
     path('pedidos/', include('orders.urls', namespace='orders')),
+    path('api/', include('api.urls', namespace='api_urls')),
 ]

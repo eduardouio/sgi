@@ -40,11 +40,13 @@ INSTALLED_APPS = [
     'guardian',
     'rest_framework',
     'authentication',
+    'api',
     'costings',
     'suppliers',
     'orders',
     'paids',
     'partials',
+    'migrationSAP',
     'products',
     'warenhouse',
 ]
@@ -93,17 +95,6 @@ DATABASES = {
         'PORT' : '3306',
     }
 }
-
-
-#import sys
-#if 'test' in sys.argv:
-#   DATABASES['default'] = {
-#       'ENGINE': 'django.db.backends.mysql',
-#       'NAME': 'cordovezAppTEST',
-#       'USER' : 'root',
-#       'PASSWORD' : 'elian.2011',
-#       'PORT' : '3306',
-#   }
     
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
