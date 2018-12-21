@@ -9,23 +9,19 @@
  * @since    Version 1.0.0
  * @filesource
  */
-
 .border{
 	padding: 3px;
 	margin: 3px;
 	border-radius: 4px;
-	color:  #7b1fa2;
+	color:  teal;
 	font-size: 13px;
 }
-
 tr:hover{
 	background-color: #ff9;
 }
-
 .full-width{
 	width: 100%;
 }
-
 .no-warp > td{
 	white-space: nowrap;
 }
@@ -581,12 +577,9 @@ th {
     flex: 1 1 auto;
     padding: 1.25rem;
 }
-
 .card-title {
     margin-bottom: .75rem;
 }
-
-
 .center {
     display: block;
     margin-left: auto;
