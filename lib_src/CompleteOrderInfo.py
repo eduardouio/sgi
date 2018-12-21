@@ -17,6 +17,7 @@ from lib_src.serializers import PaidInvoiceDetailSerializer
 from lib_src.serializers import SupplierSerializer
 from lib_src.serializers import LedgerSerializer
 from logs.app_log import loggin
+import decimal
 
 class CompleteOrderInfo(object):
 
@@ -28,28 +29,30 @@ class CompleteOrderInfo(object):
             'ledger' : True,
             'taxes' : True,
         }
+        self.request = None
         self.init_ledger = 0
         self.serialized = False
         self.nro_order = None
 
 
-    def get_data(self, nro_order, serialized = False):
+    def get_data(self, nro_order, serialized=False, request=None):
         """
         Returns all data of order 
         Args:
             nro_order (string) : numero de pedido 000-00
-        
-        from lib_src.serializers import LedgerSerializer
             serialized (bool) default False: modo de retorno arreglo | objeto 
+            request (module-request): detalle de sesion de usuario
         Returns:
             dict | object CompleteOrderInfo
         """       
         self.nro_order = nro_order
         self.serialized = serialized
+        self.request = request
         loggin(
             'i',
             'Recopilacion de informacion completa del pedido {nro_order}'
-            .format(nro_order = self.nro_order)
+            .format(nro_order = self.nro_order),
+            self.request
             )
         return ({
             'order': self.get_order(),
@@ -156,7 +159,7 @@ class CompleteOrderInfo(object):
                 item.invoiced_value = item.valor_provisionado
                 item.ledger = item.valor_provisionado
                 item.bg_closed = 1
-                item.paids = OrderInvoice.get_isd_by_order()
+                item.paids = []    
 
             for paid in item.paids:
                 item.invoiced_value += paid.valor
