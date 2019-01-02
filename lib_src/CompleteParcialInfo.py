@@ -32,6 +32,7 @@ class CompleteParcialInfo(object):
             'info_invoice_detail' : True,
             'apportioment' : True,
             'ledger' : True,
+            'is_closed' : False,
         }
     
 
@@ -49,6 +50,9 @@ class CompleteParcialInfo(object):
 
 
     def get_partial(self):                
+        if self.partial.bg_isclosed:
+            self.is_closed = True
+
         if self.serialized:
             partia_serializer = PartialSerializer(self.partial)
             return partia_serializer.data
@@ -58,15 +62,26 @@ class CompleteParcialInfo(object):
 
     def get_info_invoice(self):      
         info_invoice = InfoInvoice.get_by_id_partial(self.partial.id_parcial)        
+        partial_items = {
+            'items' : 0,
+            'boxes' : 0,
+            'value' : 0,
+            'bottles' : 0,
+        }
+
         if info_invoice is None:
             self.status_parcial['info_invoice'] = False
             return None
-        
+        partial_items['total'] = info_invoice.total_value        
         info_invoice.supplier = Supplier.get_by_ruc(info_invoice.identificacion_proveedor_id)
-        info_invoice.info_invoice_details= InfoInvoiceDetail.get_by_info_invoice(info_invoice)
+        info_invoice.info_invoice_details= InfoInvoiceDetail.get_by_info_invoice(info_invoice)        
 
         if info_invoice.info_invoice_details is None:
             self.status_parcial['info_invoice_detail'] = False            
+        else:
+            for item in info_invoice.info_invoice_details:
+                partial_items['boxes'] += item.nro_cajas                        
+
 
         if self.serialized:
             info_invoice_serializer = InfoInvoiceSerializer(info_invoice)
@@ -76,9 +91,11 @@ class CompleteParcialInfo(object):
             return {
                 'info_invoice' : info_invoice_serializer.data,
                 'info_invoice_details' : inf_invoice_detail_serializer.data,
+                'info_invoice_details_sums' : partial_items,
                 'supplier' : supplier_serializer.data,
                 }         
         
+        info_invoice.info_invoice_details_sums = partial_items
         return info_invoice
 
 

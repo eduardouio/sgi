@@ -14,9 +14,8 @@ from partials.models.ApportionmentDetail import ApportionmentDetail
 from partials.models.Partial import Partial
 from products.models.Product import Product
 from suppliers.models.Supplier import Supplier
-
-
 from rest_framework.serializers import ModelSerializer
+from rest_framework import serializers
 
 class LedgerSerializer(ModelSerializer):
     class Meta:
@@ -43,6 +42,8 @@ class OrderInvoiceDetailSerializer(ModelSerializer):
 
 
 class ExpenseSerializer(ModelSerializer):
+    ordinal_parcial = serializers.IntegerField()    
+
     class Meta:
         model = Expense
         fields = ('__all__')
@@ -73,6 +74,7 @@ class RateIncotermSerializer(ModelSerializer):
 
 
 class InfoInvoiceSerializer(ModelSerializer):
+    total_value =serializers.FloatField()
     class Meta:
         model = InfoInvoice
         fields = ('__all__')
@@ -97,6 +99,9 @@ class ApportionmentDetailSerializer(ModelSerializer):
 
 
 class PartialSerializer(ModelSerializer):
+    ordinal_parcial = serializers.IntegerField()
+    partial_url = serializers.CharField()
+    
     class Meta:
         model = Partial
         fields = ('__all__')
