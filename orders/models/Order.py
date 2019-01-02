@@ -86,6 +86,7 @@ class Order(models.Model):
     fecha_aprovacion_dai = models.DateField(blank=True, null=True)
     punto_lledada = models.CharField(max_length=60, blank=True, null=True)
     etiquetas_pegadas = models.IntegerField(blank=True, null=True)
+    #liquidated_init_expenses = models.BooleanField(default=False, blank=True, null=True)
     history = HistoricalRecords()
 
     def __str__(self):
@@ -168,7 +169,13 @@ class Order(models.Model):
                     + order.fodinfa_pagado
                     + order.ice_advalorem_pagado
                     + order.ice_especifico_pagado
-                    + order.iva_pagado
+            ),
+            'total_pagado_sin_iva' : (
+                    order.arancel_advalorem_pagar_pagado
+                    + order.arancel_especifico_pagar_pagado
+                    + order.fodinfa_pagado
+                    + order.ice_advalorem_pagado
+                    + order.ice_especifico_pagado
             ),
             'arancel_advalorem_provisionado' : order.arancel_advalorem_pagar,
             'arancel_especifico_provisionado' : order.arancel_especifico_pagar,
@@ -182,7 +189,6 @@ class Order(models.Model):
                     + order.fodinfa
                     + order.ice_advalorem
                     + order.ice_especifico
-                    + order.iva
             ),
             'complete' : False            
         }
