@@ -354,6 +354,10 @@ body {
 	margin: 30px auto;
 }
 
+.modal-lg {
+    max-width: 1100px;
+}
+
 .table>tbody>tr.total-row>td, .table>tbody>tr.total-row>th, .table>tbody>tr>td.total-row,
 	.table>tbody>tr>th.total-row, .table>tfoot>tr.total-row>td, .table>tfoot>tr.total-row>th,
 	.table>tfoot>tr>td.total-row, .table>tfoot>tr>th.total-row, .table>thead>tr.total-row>td,

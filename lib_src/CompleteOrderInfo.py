@@ -33,6 +33,9 @@ class CompleteOrderInfo(object):
         self.init_ledger = 0
         self.serialized = False
         self.nro_order = None
+        self.tributes = None
+        self.total_expenses = 0
+        self.total_invoiced = 0
 
 
     def get_data(self, nro_order, serialized=False, request=None):
@@ -61,21 +64,52 @@ class CompleteOrderInfo(object):
             'expenses':self.get_expenses(),
             'taxes' : self.get_taxes(),
             'ledger' : self.get_ledger(),
-            'init_ledger' : self.init_ledger,
             'status' : self.status_order,
+            'tributes' : self.tributes,
+            'init_ledger' : self.init_ledger,
+            'total_expenses' : (self.total_expenses + self.init_ledger),
+            'total_invoiced' : self.total_invoiced + self.init_ledger
             })
 
 
     def get_order(self):
         order = Order.get_by_order(nro_order=self.nro_order)
+        self.tributes = {
+            'exoneracion' : 0,
+            'arancel_advalorem' : 0,
+            'arancel_especifico' : 0,
+            'fondinfa' : 0,
+            'ice_advalorem' : 0,
+            'ice_especifico' : 0,
+            'total' : 0,
+        }
+
         if order is None:
             self.status_order['order'] = False            
             return None
         
+        if order.regimen == '10':
+            self.tributes['arancel_advalorem'] = order.arancel_advalorem_pagar_pagado
+            self.tributes['arancel_advalorem'] = order.exoneracion_arancel
+            self.tributes['arancel_especifico'] = order.arancel_especifico_pagar_pagado
+            self.tributes['fondinfa'] = order.fodinfa_pagado
+            self.tributes['ice_advalorem'] = order.ice_especifico_pagado
+            self.tributes['ice_especifico'] = order.ice_advalorem_pagado
+
+            self.tributes['total'] = (
+                        order.arancel_advalorem_pagar_pagado
+                        + order.arancel_especifico_pagar_pagado
+                        + order.fodinfa_pagado
+                        + order.ice_especifico_pagado
+                        + order.ice_advalorem_pagado
+            )
+
+        self.init_ledger += self.tributes['total']
+
         if self.serialized:
             order_serializer = OrderSerializer(order)
             return order_serializer.data
-        
+
         return order
 
 
@@ -108,7 +142,7 @@ class CompleteOrderInfo(object):
             order_items['totals']['bottles'] += (line_item.nro_cajas * line_item.cod_contable.cantidad_x_caja)
             order_items['totals']['boxes'] += line_item.nro_cajas
             order_items['totals']['value']  += (line_item.nro_cajas * line_item.costo_caja)
-            self.init_ledger  += (line_item.nro_cajas * line_item.costo_caja)
+            self.init_ledger  += (line_item.nro_cajas * line_item.costo_caja) * order_invoice.tipo_cambio
 
         if self.serialized:
             order_invoice_serializer = OrderInvoiceSerializer(order_items['order_invoice'])
@@ -154,14 +188,18 @@ class CompleteOrderInfo(object):
             item.paids = PaidInvoiceDetail.get_by_expense(item)
             item.invoiced_value = 0
             item.ledger = 0
+            self.total_expenses += item.valor_provisionado
+
             if item.concepto == 'ISD':
-                #el ISD es un caso especial, se registra de forma automatica en el sistema
+                #se usa para mostrar el gasto en la app Vue
                 item.invoiced_value = item.valor_provisionado
                 item.ledger = item.valor_provisionado
+                self.total_invoiced += item.valor_provisionado
                 item.bg_closed = 1
                 item.paids = []    
 
             for paid in item.paids:
+                self.total_invoiced += paid.valor
                 item.invoiced_value += paid.valor
                 paid.invoice = PaidInvoice.get_by_id(paid.id_documento_pago_id)
                 paid.supplier = Supplier.get_by_ruc(paid.invoice.identificacion_proveedor_id)
