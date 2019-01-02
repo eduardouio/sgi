@@ -2,6 +2,7 @@ from django.db import models
 from suppliers.models.Supplier import Supplier
 from logs.app_log import loggin
 from simple_history.models import HistoricalRecords
+from django.core.exceptions import ObjectDoesNotExist
 
 class PaidInvoice(models.Model):
     id_documento_pago = models.SmallIntegerField( primary_key=True)
@@ -31,8 +32,10 @@ class PaidInvoice(models.Model):
     
     @classmethod
     def  get_by_id(self, id_invoice):        
-        invoice = self.objects.get(pk = id_invoice)
-        if invoice:
-            return invoice
-        loggin('w', 'No se puede encontrar la factura {id_invoice}'.format(id_invoice=id_invoice))
-        return None
+        try:
+            invoice = self.objects.get(pk = id_invoice)
+        except ObjectDoesNotExist:
+            loggin('w', 'No se puede encontrar la factura {id_invoice}'.format(id_invoice=id_invoice))
+            return None
+        
+        return invoice

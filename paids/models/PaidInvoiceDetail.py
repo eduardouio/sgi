@@ -27,6 +27,7 @@ class PaidInvoiceDetail(models.Model):
         unique_together = (('id_documento_pago', 'id_gastos_nacionalizacion'),)
         verbose_name_plural = 'Detalle Documento Pago'
 
+
     @classmethod
     def get_by_expense(self, expense):
         paids_detail = self.objects.filter(id_gastos_nacionalizacion = expense.id_gastos_nacionalizacion)
@@ -36,3 +37,13 @@ class PaidInvoiceDetail(models.Model):
             return []
 
         return paids_detail
+    
+
+    @classmethod
+    def get_by_paid_invoice(self, id_paid_invoice):        
+        details = self.objects.filter(id_documento_pago = id_paid_invoice)
+        if details.count() == 0:
+            loggin('w', 'El documento pago {id_paid_invoice} no tiene detalles que presentar'.format(id_paid_invoice = id_paid_invoice))
+            return None
+        
+        return details

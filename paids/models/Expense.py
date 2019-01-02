@@ -4,6 +4,7 @@ from orders.models.Order import Order
 from partials.models.Partial import Partial
 from suppliers.models.Supplier import Supplier
 from logs.app_log import loggin
+from django.core.exceptions import ObjectDoesNotExist
 from simple_history.models import HistoricalRecords
 
 class Expense(models.Model):
@@ -39,6 +40,21 @@ class Expense(models.Model):
         verbose_name_plural = 'Gastos Nacionalizacion'
     
 
+    @property
+    def ordinal_parcial(self):
+        return Partial.get_ordinal_number(self.id_parcial)
+
+    @classmethod
+    def get_by_id_expense(self, id_expense):
+        try:
+            expense = self.objects.get(pk=id_expense)
+        except ObjectDoesNotExist:
+            loggin('w', 'La provision {id_expense} no existe'.format(id_expense=id_expense))
+            return None
+        
+        return expense
+
+
     @classmethod
     def get_by_order(self, nro_order):
         expenses =  self.objects.filter(nro_pedido = nro_order)
@@ -56,11 +72,6 @@ class Expense(models.Model):
             return None
         
         return provisions
-
-    
-    @classmethod
-    def get_by_supplier(self, id_supplier):
-        pass
 
 
     @classmethod
@@ -84,4 +95,4 @@ class Expense(models.Model):
             if p.id_parcial == 0:
                 p.id_parcial =1
                 
-        return provisions
+        return provisions    
