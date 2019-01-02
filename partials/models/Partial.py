@@ -3,6 +3,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from orders.models.Order import Order
 from logs.app_log import loggin
 from simple_history.models import HistoricalRecords
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class Partial(models.Model):
@@ -76,6 +77,15 @@ class Partial(models.Model):
         verbose_name_plural = 'Parciales'
         ordering = ['nro_pedido', 'id_parcial']
     
+
+    @property
+    def ordinal_parcial(self):
+        return self.get_ordinal_number(self.id_parcial)
+
+    @property
+    def partial_url(self):
+        return ''.join([self.nro_pedido_id, '/' , str(self.ordinal_parcial) , '/'])
+    
     @classmethod
     def get_by_order(self, nro_order):
         parcials =  self.objects.filter(nro_pedido= nro_order)
@@ -85,6 +95,18 @@ class Partial(models.Model):
         
         return parcials
     
+
+    @classmethod
+    def get_by_id(self, id_partial):
+        try:
+            partial = self.objects.get(pk=id_partial)
+        except ObjectDoesNotExist:
+            loggin('w', 'El Parcial {id_partial} no existe'.format(id_partial=id_partial))
+            return None
+        
+        return partial
+
+    
     @classmethod
     def get_by_arrived_local_warenhouse(self, date_start, date_end):
         pass
@@ -93,9 +115,21 @@ class Partial(models.Model):
     def get_info_invoice(self, if_parcial):
         pass
     
+
     @classmethod
-    def get_ordinal_number(self, parcial):
-        pass
+    def get_ordinal_number(self, id_partial):
+        ''' Ordinal from parcial '''
+        current_partial = self.get_by_id(id_partial)
+        if current_partial is None:
+            return 0
+        
+        all_partials = self.get_by_order(current_partial.nro_pedido)
+        ordinal = 1 
+        for p in all_partials:
+            if p.id_parcial == current_partial.id_parcial:
+                return ordinal
+            ordinal += 1
+
 
     @classmethod
     def get_order_by_parcial(self, id_parcial):

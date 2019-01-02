@@ -40,6 +40,10 @@ class InfoInvoice(models.Model):
         ordering = ['fecha_emision', 'id_parcial']
         verbose_name_plural = 'Facturas Infomativas'
 
+    
+    @property
+    def total_value(self):
+        return self.gasto_origen + self.valor
 
     @classmethod
     def get_by_order(self, nro_order):
