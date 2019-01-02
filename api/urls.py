@@ -56,7 +56,8 @@ from api.views.PaidInvoice import(
     PaidInvoiceCreateView,
     PaidInvoiceDeleteView,
     PaidInvoiceDetailView,
-    PaidInvoiceUpdateView
+    PaidInvoiceUpdateView,
+    CompletePaidView,
 )
 from api.views.PaidInvoiceDetail import(
     PaidInvoiceDetailCreateView,
@@ -136,6 +137,7 @@ urlpatterns = [
     path('paid-invoice/delete/<pk>/', PaidInvoiceDeleteView.as_view(), name='delete-paid-invoice' ),
     path('paid-invoice/detail/<pk>/', PaidInvoiceDetailView.as_view(), name='detail-paid-invoice' ),
     path('paid-invoice/update/<pk>/', PaidInvoiceUpdateView.as_view(), name='update-paid-invoice' ),
+    path('paid-invoice/all/<id_paid>/', CompletePaidView.as_view(), name='all_paid_invoice'),
     #PaidInvoiceDetail
     path('paid-invoice-detail/create/', PaidInvoiceDetailCreateView.as_view(), name='create-paid-invoice-detail'),
     path('paid-invoice-detail/delete/<pk>/', PaidInvoiceDetailDeleteView.as_view(), name='delete-paid-invoice-detail'),

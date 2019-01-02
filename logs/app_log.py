@@ -19,6 +19,7 @@ def loggin(type_log , message, request=None):
         's':'SUCCESS',
         'w':'WARNING',
         'i':' INFO  ',
+        't':'TESTING'
         }   
     user_id = 0
     user_name = ''

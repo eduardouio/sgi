@@ -1,4 +1,5 @@
 from django.db import models
+from simple_history.models import HistoricalRecords    
 
 class Migrations(models.Model):
     nro_pedido = models.CharField(primary_key=True, max_length=6)
@@ -39,12 +40,14 @@ class Migrations(models.Model):
     last_update = models.DateTimeField(blank=True, null=True)
     gasto_origen = models.DecimalField(max_digits=11, decimal_places=3, blank=True, null=True)
     docentry = models.IntegerField(blank=True, null=True)
+    history = HistoricalRecords()
 
     def __str__(self):
         return ''.join([self.nro_pedido, ' -> ', self.proveedor ])
 
     class Meta:
-        managed = False
+        #managed = False
+        managed = True
         db_table = 'migracion'
         verbose_name_plural = 'Cabeceras Migraciones SAP'
         ordering = ['nro_pedido']
@@ -67,12 +70,14 @@ class MigrationsDetail(models.Model):
     id_user = models.SmallIntegerField(default=0)
     date_create = models.DateTimeField(blank=True, null=True)
     last_update = models.DateTimeField(blank=True, null=True)
+    history = HistoricalRecords()
 
     def __str__(self):
         return str(self.id_migracion_detalle)
 
     class Meta:
-        managed = False
+        #managed = False
+        managed = True
         db_table = 'migracion_detalle'
         verbose_name_plural = 'Detalle Migraciones SAP'
         ordering = ['nro_pedido','id_migracion_detalle']
