@@ -1,3 +1,4 @@
+{# plantilla manejada por Django y Vue#}
 {% extends "base/base.html" %}
 {% load static %}
 {% block header %}
@@ -19,11 +20,10 @@
     {% endif %}
   </div>
   <div class="col-8 text-right">
-    <span>| Ref: {{ order.order.nro_refrendo }}</span>
+    <span>| <a href="{{ order.order.url_dai_1 }}"> Ref: {{ order.order.nro_refrendo }} </a></span>
+    <span>| Exaduana</span>
     <span>| Liq: {{ order.order.nro_liquidacion }}</span>
     <span>| F. Llegada: {{ order.order.fecha_llegada_cliente }}</span>
-    <span>| Exaduana</span>
-    <span>| Fac Proveedor</span>
     {% if order.order.regiem == '70'%}
     <span>| Parciales</span>
     {% endif %}
@@ -62,7 +62,7 @@
           </tr>
           <tr>
             <td style="width:100px;" class="text-right bg-light">Incoterm:</td>
-            <td>{{ order.order.incoterm }}</td>
+            <td class="text-danger">{{ order.order.incoterm }}</td>
             <td style="width:100px;" class="text-right bg-light">Pais Origen:</td>
             <td>{{ order.order.pais_origen }}</td>
             <td style="width:100px;" class="text-right bg-light">Ciudad Origen:</td>
@@ -80,13 +80,13 @@
       </table>
     </div>
   </div>
-  <div class="row">
+  <div class="row" v-if="ajax_request == false">
     <div class="col-7 div-bordered">
       <div class="text-tittle"> RESUMEN DE ESTADO GASTOS USD</div>
       <table class="table table-condensed table-striped table-bordered">
         <tbody>
           <tr style="background-color: #fff;">
-            <th class="text-center"><i class="fas fas-list"></i></th>
+            <th class="text-center"><i class="fa fa-list"></i></th>
             <th class="text-center">CONCEPTO</th>
             <th class="text-center">VALOR</th>
             <th class="text-center">FACTURADO</th>
@@ -94,10 +94,9 @@
             <th class="text-center">MAYOR</th>
           </tr>
           <tr @click="show_order_invoice_detail()">
-            <td class="text-center text-primary"><i class="fas fa-chevron-right"></i></td>
+            <td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td>
             <td>
-            <small class="text-success"><i class="fas fa-check-circle"></i></small>
-            <small class="text-danger"><i class="fas fa-exclamation-triangle"></i></small>
+            <small class="text-success"><i class="fa fa-check-circle"></i></small>
                FACTURA ${ order_data.order_invoice.supplier.nombre }
             </td>
             <td class="text-right">  ${ order_data.order_invoice.order_invoice.valor | money }</td>
@@ -105,11 +104,21 @@
             <td class="text-right">  ${ 0 | money }</td>
             <td class="text-right">  ${ order_data.order_invoice.order_invoice.valor | money }</td>
           </tr>
-          <tr @click="show_taxes_detail()">
-            <td class="text-center text-primary"><i class="fas fa-chevron-right"></i></td>
+            <tr @click="show_origin_expense()">
+            <td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td>
             <td>
-            <small class="text-success"><i class="fas fa-check-circle"></i></small>
-            <small class="text-danger"><i class="fas fa-exclamation-triangle"></i></small>
+            <small class="text-success"><i class="fa fa-check-circle"></i></small>
+               GASTOS ORIGEN
+            </td>
+            <td class="text-right">  ${ order_data.order.gasto_origen | money } </td>
+            <td class="text-right">  ${ order_data.order.gasto_origen | money } </td>
+            <td class="text-right">  ${ 0 | money }</td>
+            <td class="text-right">  ${ order_data.order.gasto_origen | money }</td>
+          </tr>
+          <tr @click="show_taxes_detail()" v-if="order_data.order.regimen === '10'">
+            <td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td>
+            <td>
+            <small class="text-success"><i class="fa fa-check-circle"></i></small>
             TRIBUTOS SENAE
             </td>
             <td class="text-right"> ${ order_data.taxes.total_provisionado | money  }</td>
@@ -118,11 +127,11 @@
             <td class="text-right"> ${ order_data.taxes.total_pagado | money  }</td>
           </tr>
           <tr v-for="item in order_data.expenses" @click="select_expense(item)">
-            <td class="text-center text-primary"><i class="fas fa-chevron-right"></i></td>
+            <td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td>
             <td>
-              <small class="text-secondary" v-if="item.parcial"><i class="fas fa-puzzle-piece"></i></small>
-              <small class="text-success" v-if="item.complete"><i class="fas fa-check-circle"></i></small>
-              <small class="text-danger" v-if="item.provision"><i class="fas fa-exclamation-triangle"></i></small>
+              <small class="text-secondary" v-if="item.parcial"><i class="fa fa-puzzle-piece"></i></small>
+              <small class="text-success" v-if="item.complete"><i class="fa fa-check-circle"></i></small>
+              <small class="text-danger" v-if="item.provision"><i class="fa fa-exclamation-triangle"></i></small>
               ${ item.expense.concepto }
             </td>
             <td class="text-right">${ item.expense.valor_provisionado | money }</td>
@@ -132,45 +141,25 @@
           </tr>
           <tr>
             <th colspan="2">Sumas</th>
-            <th>0</th>
-            <th>0</th>
-            <th>0</th>
-            <th>0</th>
+            <th class="text-right">${ order_data.total_expenses | money }</th>
+            <th class="text-right">${ order_data.total_invoiced |money }</th>
+            <th class="text-right">${ (order_data.total_expenses - order_data.total_invoiced) | money }</th>
+            <th class="text-right">${ mayor_sgi | money }</th>
           </tr>
         </tbody>
       </table>
-      <br />
       <span class="text-right">Fecha de LLegada Del Producto:
       <strong class="text-success">{{ order.fecha_llegada_cliente }}</strong>
       </span>
       <br />
       <br>
-      <a href="{{ BASE_URL }}">
-      <button> <span class="fa fa-file-pdf"></span> Reporte Gastos </button>
-      </a>
-      <a href="{{ BASE_URL }}">
-      <button><span class="fa fa-arrow-left"></span> Ficha Pedido</button>
-      </a>
-      <a href="{{ BASE_URL }}">
-      <button>
-      <span class="fa fa-money-bill-alt"></span> Tributos Iniciales
-      </button>
-      </a>
-      <a href="{{ BASE_URL }}">
-      <button>
-      <span class="fa fa-list"></span> Lista Parciales
-      </button>
-      </a>
-      <a href="{{ BASE_URL }}">
-      <button>
-      <span class="fa fa-money-bill"></span> Reliquidación
-      </button>
-      </a>
+      <a href="{{ BASE_URL }}" class="btn btn-outline-dark btn-sm">
+      <span class="far fa-file-pdf"></span> Reporte Gastos
+      </a>                  
       <br />
       <br />
     </div>
     <div class="col-5 div-bordered">
-      <br> 
       <div id="order_invoice" v-if="show_expense">
       <div class="text-tittle"> DESCRIPCIÓN DE GASTO </div>
       <br>
@@ -179,9 +168,9 @@
           <h6 class="text-dark"> ${current_expense.expense.concepto } </h6>
         </div>
         <div class="col-5 text-right">
-          <small class="text-secondary" v-if="current_expense.parcial"><i class="fas fa-puzzle-piece"></i> Justificación Parcial</small>
-          <small class="text-success" v-if="current_expense.complete"><i class="fas fa-check-circle"></i> Justificado</small>
-          <small class="text-danger" v-if="current_expense.provision"><i class="fas fa-exclamation-triangle"></i> Provisión</small>
+          <small class="text-secondary" v-if="current_expense.parcial"><i class="fa fa-puzzle-piece"></i> Justificación Parcial</small>
+          <small class="text-success" v-if="current_expense.complete"><i class="fa fa-check-circle"></i> Justificado</small>
+          <small class="text-danger" v-if="current_expense.provision"><i class="fa fa-exclamation-triangle"></i> Provisión</small>
         </div>
         </div>
           <div class="row">
@@ -199,7 +188,7 @@
             </thead>
             <tbody>
               <tr v-for="paid in current_expense.paids">
-                <td class="text-center text-primary"><i class="fa fa-eye"></i></td>
+                <td class="text-center text-primary" data-toggle="modal" data-target="#exampleModalCenter" @click="get_paid_invoice(paid.invoice.id_documento_pago)"><i class="fa fa-eye"></i></td>
                 <td> ${ paid.supplier.nombre }</td>
                 <td class="text-right"> ${ paid.invoice.nro_factura }</td>
                 <td class="text-right"> ${ paid.invoice.fecha_emision }</td>
@@ -220,8 +209,7 @@
               </tr>
               <tr>
                 <th colspan="4">Sumas</th>
-                <th>00</th>
-                <th>--</th>
+                <th colspan="2" class="text-center">$ ${ current_expense.invoiced_value | money}</th>
               </tr>
             </tbody>
           </table>
@@ -252,11 +240,11 @@
         </div>
         <div class="col-5 text-right">
           <small class="text-success" v-if="current_order_invoice.complete == true">
-          <i class="fas fa-check-circle"></i> 
+          <i class="fa fa-check-circle"></i> 
           Completa 
           </small>
           <small class="text-danger" v-else="">
-          <i class="fas fa-exclamation-triangle"></i>
+          <i class="fa fa-exclamation-triangle"></i>
           Incompleta
           </small>
               <div class="custom-control custom-checkbox">
@@ -295,8 +283,7 @@
                 <th colspan="3">Sumas</th>
                 <th>${ current_order_invoice.order_invoice_detail_sums.boxes | money }</th>
                 <th>${ current_order_invoice.order_invoice_detail_sums.bottles | int_val }</th>
-                <th>--</th>
-                <th>${ current_order_invoice.order_invoice_detail_sums.value | money }</th>
+                <th colspan="2">$ ${ current_order_invoice.order_invoice_detail_sums.value | money }</th>
               </tr>
             </tbody>
           </table>
@@ -328,7 +315,7 @@
         </div>
         <div class="col-5 text-right">
           <small class="text-success">
-          <i class="fas fa-check-circle"></i> 
+          <i class="fa fa-check-circle"></i> 
           Completa 
           </small>         
         </div>
@@ -400,7 +387,7 @@
               <tr>
                <td>ICE EXPECIFICO</td>
                <td>${ order_data.order.nro_liquidacion }</td>
-               <td class="text-right">$ ${ order_data.order.ice_especifico_pagado }</td>
+               <td class="text-right">$ ${ order_data.order.ice_especifico_pagado | money }</td>
                <td class="text-right">
                    <div class="custom-control custom-checkbox">
                     <input type="checkbox" class="custom-control-input" checked>
@@ -410,6 +397,11 @@
                   </div>
                </td>
                </tr>
+            <tr>
+            <th colspan="2">Sumas</th>
+            <th class="text-right">$ ${ order_data.taxes.total_pagado_sin_iva | money}</th>
+            <th>--</th>
+            </tr>
             </tbody>
             </table>
             </div>
@@ -434,7 +426,7 @@
       <div class="row">
         <div class="col-4">
           <div class="fomr-group"><label for="">Saldo Mayor Sap</label>
-            <input type="text" class="form-control form-control-sm text-right" v-model="mayor_sap">
+            <input type="number" class="form-control form-control-sm text-right" v-model="mayor_sap" step="0.001">
           </div>
         </div>
         <div class="col-4">
@@ -448,8 +440,23 @@
           </div>
         </div>
       </div>
+           <hr>
+      <div class="row">
+        <div class="col-12 text-right">
+          <a href="{{BASE_URL}}" class="btn btn-outline-primary btn-sm" v-if="order_data.order.regimen === '10'">
+           <i class="fa fa-cart-arrow-down"></i> Liquidar Costos
+          </a>
+          <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#exampleModal" v-else="">
+            <i class="fa fa-bars"></i> Parciales
+        </button>          
+        </div>
+      </div>
     </div>
   </div>
+{% include 'js/modal_complete_paid.html' %}
+{% if order.order.regimen == '70' %}
+  {% include 'js/modal_parcials_list.html' %}
+{% endif %}
 </div>
 </div>
 {% endif %}

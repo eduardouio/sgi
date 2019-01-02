@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 from simple_history.models import HistoricalRecords
+from logs.app_log import loggin
 
 class Supplier(models.Model):
     identificacion_proveedor = models.CharField(primary_key=True, max_length=16)
@@ -33,4 +34,5 @@ class Supplier(models.Model):
         try:
             return self.objects.get(pk=id_supplier)
         except ObjectDoesNotExist:
+            loggin('w', 'El proveedor {id_supplier} no existe en el sistema'.format(id_supplier=id_supplier))
             return None 
