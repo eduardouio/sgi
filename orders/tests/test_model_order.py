@@ -1,18 +1,12 @@
 from django.test import TestCase
 from orders.models.Order import Order
-from datetime import datetime
-from django.db.models.query import QuerySet
-from lib_src.populate_test_database import populate_all
+from lib_src.moocks.pedido import pedidos
 
 class TestModelOrder(TestCase):
-    
-    def setUp(self):
 
-        return super().setUp()
-    
-    def tearDown(self):
+    def test_create_order(self):
+        pass
         
-        return super().tearDown()
-    
-    def test_create_orders(self):
-    
+
+    def test(self):
+        self.assertTrue(True)
