@@ -6,6 +6,9 @@ from rest_framework.generics import (
     DestroyAPIView,
     RetrieveAPIView
 )
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from lib_src.CompletePaidInfo import CompletePaidinfo
 
 class PaidInvoiceCreateView(CreateAPIView):
     queryset = PaidInvoice.objects.all()
@@ -25,3 +28,11 @@ class PaidInvoiceDetailView(RetrieveAPIView):
 class PaidInvoiceUpdateView(UpdateAPIView):
     queryset = PaidInvoice.objects.all()
     serializer_class = PaidInvoiceSerializer
+
+
+
+class CompletePaidView(APIView):
+    def get(self, request, id_paid, format=None):
+        complete_paid_info = CompletePaidinfo(id_paid)
+        data =  complete_paid_info.get_data(serialized=True)
+        return Response(data)
