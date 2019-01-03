@@ -1,0 +1,104 @@
+{% extends 'base/base.html' %}
+{% block title_content %}
+<div class="row border">
+  <div class="col-10 text-danger">
+    <span class="fa fa-exclamation-triangle"></span>
+    El pedido solicitado no puede ser liquidado, revise la información de abajo
+  </div>
+  <div class="col-2 text-secondary text-right">
+    <small>Huston tenemos problemas ☹ </small>
+  </div>
+</div>
+{% endblock title_content %}
+{% block content %}
+<br>
+{% if data.status.order == False %}
+<div class="row text-center">
+    <div class="col-2"></div>
+    <div class="col-8 text-info">
+    <h3>El Pedido no existe en el sistema </h3>
+    </div>
+    <div class="col-2"></div>
+</div>
+{% endif %}
+<div class="row">
+    <div class="col-2"></div>
+    <div class="col-8">
+    <table class="table table-bordered table-condensed">
+    <thead>
+        <tr>
+            <th>Problema</th>
+            <th>Responsable</th>
+            <th>Detalle</th>
+            <th>Status</th>
+            <tbody>
+                <tr>
+                    <td class="text-right table-active" ><strong>Pedido:</strong></td>      
+                    <td class="tect-center">Importaciones</td>         
+                    {% if data.status.order %}
+                        <td>El pedido se encuentra registrado</td>                         
+                        <td class="text-success text-center"><span class="fa fa-check"></span></td>                         
+                    {% else %}                    
+                        <td>El pedido al que intenta acceder no esta registrado en el sistema</td>                         
+                        <td class="text-danger text-center"><span class="fa fa-exclamation-triangle"></span></td>                         
+                    {% endif %}                       
+                </tr>
+                <tr>
+                    <td class="text-right table-active"><strong>Factura de Productos</strong></td>
+                    <td class="tect-center">Importaciones</td>         
+                    {% if data.status.order_invoice and data.status.order_invoice_details %}
+                    <td>La factura de productos del proveedor Internacional completa</td>                         
+                    <td class="text-success text-center"><span class="fa fa-check"></span></td>            
+                    {% else %}
+                    <td>La factura de productos del proveedor Internacional no existe o se encuentra incompleta</td>                         
+                    <td class="text-danger text-center"><span class="fa fa-exclamation-triangle"></span></td>                          
+                    {% endif %}
+                </tr>
+                <tr>
+                    <td class="text-right table-active"><strong>Gastos Iniciales</strong></td>
+                    <td class="tect-center">Importaciones</td>         
+                    {% if data.status.init_expenses %}
+                    <td>El pedido registra gastos iniciales</td>                         
+                    <td class="text-success text-center"><span class="fa fa-check"></span></td>            
+                    {% else %}
+                    <td>No se registran gastos en el pedido</td>                         
+                    <td class="text-danger text-center"><span class="fa fa-exclamation-triangle"></span></td>                          
+                    {% endif %}
+                </tr>
+                <tr>
+                    <td class="text-right table-active"><strong>Libro Mayor</strong></td>
+                    <td class="tect-center">Sistema SGI</td>         
+                    {% if data.status.ledger %}
+                    <td>El pedido registra libro mayor</td>                         
+                    <td class="text-success text-center"><span class="fa fa-check"></span></td>            
+                    {% else %}
+                    <td>No se encuentra un libro mayor en el sistema</td>                         
+                    <td class="text-danger text-center"><span class="fa fa-exclamation-triangle"></span></td>                          
+                    {% endif %}
+                </tr>
+                <tr>
+                    <td class="text-right table-active"><strong>Liquidacion de Aduana</strong></td>
+                    <td class="tect-center">Importaciones</td>         
+                    {% if data.status.taxes %}
+                    <td>La liquidacion de aduana se encuentra ingresada</td>                         
+                    <td class="text-success text-center"><span class="fa fa-check"></span></td>            
+                    {% else %}
+                    <td>No está ingresada la liquidacion de aduana</td>                         
+                    <td class="text-danger text-center"><span class="fa fa-exclamation-triangle"></span></td>                          
+                    {% endif %}
+                </tr>
+            </tbody>
+        </tr>
+    </thead>
+</table>
+    </div>
+    <div class="col-2"></div>
+</div>
+<div class="row">
+<div class="col-12">
+{% if data.status.order == False %}
+    <a href="{{ BASE_URL }}admin/orders/order/" class="btn btn-sm btn-outline-dark">Lista Pedidos</a>
+{% endif %}    
+</div>
+</div>
+{% endblock content %}
