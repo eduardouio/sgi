@@ -1,19 +1,21 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="description" content="Aplicacion de Manejo de importaciones">
     <meta name="author" content="Eduardo Villota eduardouio7@gmail.com">
-    <link rel="stylesheet" href="{% static "css/bootstrap.css" %}">
-    <link rel="stylesheet" href="{% static "css/cordovez.css" %}">
+    <meta name="description" content="Aplicacion de Manejo de importaciones">
+    <link rel="stylesheet" href="{{ static('css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ static('css/cordovez.css') }}">
+    <style>@page {size: auto;}</style>
+    <link rel="stylesheet" href="{{ static('css/animate.css') }}">
+    <link rel="icon" href="{{ static('favicon.ico') }}" type="image/x-icon"/>
+	  <link rel="shortcut icon" href="{{ static('favicon.ico') }} type="image/x-icon"/>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
     {% block header %} {% endblock %}
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-    {#<link rel="stylesheet" href=" {% static "css/all.css" %}">#}
-    <title>{{ title_page }}</title>
+    <title>{{ data.title_page }}</title>
 </head>
 <body>    
     <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
@@ -65,23 +67,30 @@
     {% block title_content %}{% endblock title_content %}
     {% block content %} {% endblock %}
   </div>
+  <br>
   <footer class="footer">
-  <div class="container-fluid">
+  <div class="container-fluid">  
   <div class="row">
-  <div class="col-12">
-    <small> &copy; Todos los Derechos reservados Importadora Cordovez 2018 <br>
-        Desarrollado por Eduardo Villota <a href="mailto:eduardouio7@gmail.com">eduardouio7@gmail.com 
-      </a></small>
+  <div class="col-12 text-right" style="line-height: 1">
+  <div style="border-right:0.04rem solid teal;padding:0.3rem">
+  <small>
+        🏢 &copy;Todos los Derechos reservados AGENCIAS Y REPRESENTACIONES CORDOVEZ S.A.<br>
+        💻: Eduardo Villota M.
+        <br />
+        📧: <a href="mailto:eduardouio7@gmail.com">eduardouio7@gmail.com</a>
+      </small>
+  </div>
   </div>
   </div>
   </div>
 </footer>
-<script src="{% static "js/jquery-3.3.1.slim.min.js" %}"></script>
-<script src="{% static "js/bootstrap.min.js" %}"></script>
+<script src="{{ static("js/jquery-3.3.1.slim.min.js") }}"></script>
+<script src="{{ static("js/bootstrap.min.js") }}"></script>
 <script>
-    {% block script %}
-    {% endblock script %}
+  {% block script %}
+  {% endblock script %}
 </script>
-{% block footer %} {% endblock %}
+{% block footer %}
+{% endblock %}
 </body>
 </html>

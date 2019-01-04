@@ -1,14 +1,6 @@
-{# plantilla manejada por Django #}
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h6 class="modal-title" id="exampleModalLabel">Parciales Pedido  {{ order.order.nro_pedido }} [{{ order.order.incoterm }}] </h6>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
+{% extends 'base/base.html' %}
+{% block content %}
+Para continuar seleccione el parcial que desea liquidar
         <table class="table table-condensed table-bordered">
         <thead>
         <tr>
@@ -25,9 +17,10 @@
         </tr>
         </thead>
         <tbody>
-        {% for partial in order.parcials  %}
+        {% if data.parcials %}
+        {% for partial in data.parcials  %}
         <tr>        
-            <td> <a href="{{ BASE_URL }}costos/parciales/{{partial.partial.partial_url}}"><i class="fa fa-chevron-right"></i> Parcial {{ forloop.counter }}</a> </td>
+            <td> <a href="{{ BASE_URL }}costos/parciales/{{partial.partial.partial_url}}"><i class="fa fa-chevron-right"></i> Parcial {{ loop.index }}</a> </td>
             <td> 
             {% if partial.partial.bg_isclosed %}
               <span class="text-dark"> <i class="far fa-folder"></i> Cerrado </span>
@@ -42,10 +35,9 @@
             {% endif %}
             </td>
             <td class="text-right">{{ partial.info_invoice.nro_factura_informativa }}</td>
-            <td class="text-right">{{ partial.info_invoice.fecha_emision | date:"d/m/Y" }}</td>
-            <td class="text-right">{{ partial.partial.fecha_llegada_cliente | date:"d/m/Y" }}</td>
-            <td class="text-right">{{ partial.info_invoice.nro_refrendo }}</td>
-            <td class="text-right">{{ partial.info_invoice.info_invoice_details_sums.boxes }}</td>
+            <td class="text-right">{{ partial.info_invoice.fecha_emision  }}</td>
+            <td class="text-right">{{ partial.partial.fecha_llegada_cliente  }}</td>
+            <td class="text-right">{{ partial.info_invoice.nro_refrendo }}</td>      
             <td class="text-right">
             {% if partial.info_invoice.tipo_cambio != 1 %} 
               EUROS
@@ -57,13 +49,8 @@
             <td class="text-right">{{ partial.info_invoice.total_value }} </td>
         </tr>
         {% endfor %}
+        {% endif %}
         <tr></tr>
         </tbody>
-        </table>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline-dark btn-sm" data-dismiss="modal"> <i class="fa fa-check"></i> Ok</button>
-      </div>
-    </div>
-  </div>
-</div>
+        </table>      
+        {% endblock content %}

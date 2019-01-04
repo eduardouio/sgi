@@ -19,6 +19,7 @@
 tr:hover{
 	background-color: #ff9;
 }
+
 .full-width{
 	width: 100%;
 }
@@ -370,6 +371,15 @@ body {
 	width: 100%;
 	/**background-color: #337ab7;**/
 	background-color: #8698a7;	
+	color: #fff;
+	border-radius: 5px;
+	text-transform: uppercase;
+	text-align: center;
+}
+
+.text-tittle-success {
+	width: 100%;
+	background-color:#639657 ;	
 	color: #fff;
 	border-radius: 5px;
 	text-transform: uppercase;

@@ -24,8 +24,6 @@ from lib_src.serializers import (
 class CompleteParcialInfo(object):
 
     def __init__(self):
-        self.serialized = False
-        self.partial = None
         self.status_parcial = {
             'parial' : True,
             'info_invoice' : True,
@@ -34,6 +32,13 @@ class CompleteParcialInfo(object):
             'ledger' : True,
             'is_closed' : False,
         }
+        self.request = None
+        self.init_ledger = 0
+        self.tributes = None
+        self.total_expenses = 0
+        self.total_invoiced = 0
+        self.serialized = False
+        self.partial = None
     
 
     def get_data(self, partial, serialized = False):        

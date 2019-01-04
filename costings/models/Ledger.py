@@ -1,26 +1,30 @@
 from django.db import models
 from logs.app_log import loggin
 from simple_history.models import HistoricalRecords
+from django.conf import settings
+from django.utils import timezone
 
 class Ledger(models.Model):    
+    TYPE_LEDGER = (('incial', 'Mayor Inicial'),('verificacion', 'Mayor Verificacion'),('parcial', 'Mayor Parcial'))
     id_mayor = models.AutoField(primary_key=True)
-    #Inicial | Gastos Iniciales | Gastos Parciales Nparcials 
-    tipo = models.CharField(max_length=50)
+    tipo = models.CharField(max_length=50, choices=TYPE_LEDGER)
     nro_pedido = models.CharField(max_length=6)
     id_parcial = models.PositiveSmallIntegerField(default=0)
-    valor_en_provisiones = models.DecimalField(max_digits=15, decimal_places=3, blank=True, null=True)
-    valor_en_facturas = models.DecimalField(max_digits=15, decimal_places=3, blank=True, null=True)
-    valor_prorrateado = models.DecimalField(max_digits=15, decimal_places=3, blank=True, null=True)    
-    precio_de_indirectos_entrega = models.DecimalField(max_digits=15, decimal_places=3, blank=True, null=True)
-    saldo_mayor_a_liquidacion = models.DecimalField(max_digits=15, decimal_places=3, blank=True, null=True)
-    id_user = models.SmallIntegerField(default=0)
-    date_create = models.DateTimeField(blank=True, null=True)
+    precio_entrega = models.DecimalField(max_digits=15, decimal_places=3, default=0)
+    costo_producto = models.DecimalField(max_digits=15, decimal_places=3, default=0)
+    mayor_sap = models.DecimalField(max_digits=15, decimal_places=3, default=0)
+    provisiones_sap = models.DecimalField(max_digits=15, decimal_places=3, default=0)
+    mayor_sgi = models.DecimalField(max_digits=15, decimal_places=3, default=0)
+    provisiones_sgi = models.DecimalField(max_digits=15, decimal_places=3, default=0)
+    facturas_sgi = models.DecimalField(max_digits=15, decimal_places=3, default=0)
+    reliquidacion_ice = models.DecimalField(max_digits=15, decimal_places=3, default=0)
+    date_create = models.DateTimeField(blank=True, null=True, default=timezone.now)
     last_update = models.DateTimeField(blank=True, null=True)
+    id_user = models.PositiveIntegerField(blank=True, null=True)
     history = HistoricalRecords()
 
-
     def __str__(self):
-        return self.tipo
+        return ''.join([self.tipo, ' ', self.nro_pedido, ' -> ', self.id_parcial]) 
 
     class Meta:
         managed = True
@@ -29,6 +33,7 @@ class Ledger(models.Model):
         verbose_name_plural = 'Mayores Liquidaciones'
         ordering = ['nro_pedido', 'id_parcial','tipo']
     
+
     @classmethod
     def get_by_order(self, order):
         if(order.regimen == '70'):

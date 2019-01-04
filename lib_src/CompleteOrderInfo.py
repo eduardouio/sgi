@@ -24,11 +24,13 @@ class CompleteOrderInfo(object):
     def __init__(self):
         self.status_order = {
             'order' : True,
-            'order_invoice' : True,
-            'order_invoice_details' : True,
-            'ledger' : True,
-            'taxes' : True,
+            'order_invoice' : False,
+            'order_invoice_details' : False,
+            'init_expenses' : False,
+            'ledger' : False,
+            'taxes' : False
         }
+
         self.request = None
         self.init_ledger = 0
         self.serialized = False
@@ -85,24 +87,28 @@ class CompleteOrderInfo(object):
         }
 
         if order is None:
-            self.status_order['order'] = False            
+            self.status_order['order'] = False           
             return None
-        
-        if order.regimen == '10':
+
+        if order.regimen == '10' and order.bg_isliquidated == 1 :
+            self.status_order['taxes'] = True
             self.tributes['arancel_advalorem'] = order.arancel_advalorem_pagar_pagado
             self.tributes['arancel_advalorem'] = order.exoneracion_arancel
             self.tributes['arancel_especifico'] = order.arancel_especifico_pagar_pagado
             self.tributes['fondinfa'] = order.fodinfa_pagado
             self.tributes['ice_advalorem'] = order.ice_especifico_pagado
             self.tributes['ice_especifico'] = order.ice_advalorem_pagado
-
+                
             self.tributes['total'] = (
-                        order.arancel_advalorem_pagar_pagado
-                        + order.arancel_especifico_pagar_pagado
-                        + order.fodinfa_pagado
-                        + order.ice_especifico_pagado
-                        + order.ice_advalorem_pagado
+                        + (order.arancel_advalorem_pagar_pagado)
+                        + (order.arancel_especifico_pagar_pagado)
+                        + (order.fodinfa_pagado)
+                        + (order.ice_especifico_pagado)
+                        + (order.ice_advalorem_pagado)
             )
+        elif order.regimen == '70':
+            self.status_order['taxes'] = True
+            
 
         self.init_ledger += self.tributes['total']
 
@@ -121,22 +127,22 @@ class CompleteOrderInfo(object):
         }
 
         order_invoice = OrderInvoice.get_by_order(self.nro_order)
-        if order_invoice is None:
-            self.status_order['order_invoice'] = False
+        if order_invoice is None:           
             return None
+        self.status_order['order_invoice'] = True
         
         order_items['order_invoice'] = order_invoice
         order_items['order_invoice_details'] = OrderInvoiceDetail.get_by_id_order_invoice(order_invoice.id_pedido_factura)
         order_items['supplier'] = Supplier.get_by_ruc(order_invoice.identificacion_proveedor_id)
         order_items['totals'] = {
-            'items' : order_items['order_invoice_details'].count(),
+            'items' : int(order_items['order_invoice_details'].count()),
             'boxes' : 0,
             'value' : 0,
             'bottles' : 0,
         }       
 
-        if order_items['order_invoice_details'] is None:
-            self.status_order['order_invoice_details'] = False
+        if order_items['order_invoice_details']:
+            self.status_order['order_invoice_details'] = True
 
         for line_item in order_items['order_invoice_details']:
             order_items['totals']['bottles'] += (line_item.nro_cajas * line_item.cod_contable.cantidad_x_caja)
@@ -183,6 +189,7 @@ class CompleteOrderInfo(object):
         if expenses is None:
             return None
 
+        self.status_order['init_expenses'] = True
         for item in expenses:
             paids = []                
             item.paids = PaidInvoiceDetail.get_by_expense(item)

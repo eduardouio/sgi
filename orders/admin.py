@@ -23,7 +23,7 @@ class OrderAdmin(admin.ModelAdmin):
     )
 
     def liquidar(self, obj):
-        return format_html('<a href="{base_url}costos/liquidar/{name_link}">{name_link}</a>'.format(base_url= settings.BASE_URL,name_link=obj.nro_pedido))    
+        return format_html('<a href="{base_url}costos/pedido/{name_link}">{name_link}</a>'.format(base_url= settings.BASE_URL,name_link=obj.nro_pedido))    
 
     search_fields = [
         'nro_pedido',

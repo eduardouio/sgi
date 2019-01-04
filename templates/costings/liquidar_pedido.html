@@ -1,44 +1,38 @@
-{# plantilla manejada por Django y Vue#}
 {% extends "base/base.html" %}
-{% load static %}
 {% block header %}
-<script src="{% static "js/vue.js" %}"></script>
-<script src="{% static "js/vue-resource.js" %}"></script>
+<script src="{{ static("js/vue.js") }}"></script>
+<script src="{{ static("js/vue-resource.js") }}"></script>
 {% endblock header %}
 {% block title_content %}
-{% if order.status.order == False %}
-    {% include  'errors.html' %}
-    {% else %}
     <div class="row border">
-  <div class="col-4">
+    <div class="col-4">
     <i class="fa fa-cog"></i>
-    Gastos Iniciales Pedido {{ order.order.nro_pedido }}
-    {% if order.bg_isclosed  == 0 %}
+    Liquidar Pedido A consumo {{ data.order.nro_pedido }}
+    {% if data.bg_isclosed  == 0 %}
     <span class="badge badge-success">Abierto</span>
     {% else %}
     <span class="badge badge-dark">Liquidado y Cerrado</span>
     {% endif %}
   </div>
   <div class="col-8 text-right">
-    <span>| <a href="{{ order.order.url_dai_1 }}"> Ref: {{ order.order.nro_refrendo }} </a></span>
+    <span>| <a href="{{ data.order.url_dai_1 }}"> Ref: {{ data.order.nro_refrendo }} </a></span>
     <span>| Exaduana</span>
-    <span>| Liq: {{ order.order.nro_liquidacion }}</span>
-    <span>| F. Llegada: {{ order.order.fecha_llegada_cliente }}</span>
-    {% if order.order.regiem == '70'%}
+    <span>| Liq: {{ data.order.nro_liquidacion }}</span>
+    <span>| F. Llegada: {{ data.order.fecha_llegada_cliente.strftime('%d/%m/%Y') if data.order.fecha_llegada_cliente is not none else 'En Tránsito' }}</span>
+    {% if data.order.regiem == '70'%}
     <span>| Parciales</span>
     {% endif %}
     <span>| </span>
   </div>
 </div>
-{% endif %}
 {% endblock title_content %}
 {% block content %}
-{% if order.status.order == True %}
+{% if data.status.order == True %}
 <div id="app">
 <div class="row" v-if="ajax_request == true">
 <div class="col-4"></div>
 <div class="col-4">
-<img src="{% static 'img/Loading_icon.gif'%}">
+<img src="{{ static('img/Loading_icon.gif') }}">
 </div>
 <div class="col-4"></div>
  </div>
@@ -48,39 +42,42 @@
         <tbody>
           <tr>
             <td style="width:100px;" class="text-right bg-light">Pedido:</td>
-            <td>{{ order.order.nro_pedido }}</td>
+            <td>{{ data.order.nro_pedido }}</td>
             <td style="width:100px;" class="text-right bg-light">Proveedor:</td>
-            <td>{{ order.order_invoice.supplier }} ID:{{ order.order_invoice.supplier.identificacion_proveedor }} </td>
+            <td>{{ data.order_invoice.supplier }} ID:{{ data.order_invoice.supplier.identificacion_proveedor }} </td>
             <td style="width:100px;" class="text-right bg-light">Factura:</td>
             <td>
-              {{ order.order_invoice.order_invoice.id_factura_proveedor }}
+              {{ data.order_invoice.order_invoice.id_factura_proveedor | upper }}
             </td>
             <td style="width:100px;" class="text-right bg-light">Moneda:</td>
-            <td>{{ order.order_invoice.order_invoice.moneda }}</td>
+            <td>{{ data.order_invoice.order_invoice.moneda }}</td>
             <td style="width:100px;" class="text-right bg-light">T/C:</td>
-            <td>{{ order.order_invoice.order_invoice.tipo_cambio }}</td>
+            <td>{{ data.order_invoice.order_invoice.tipo_cambio }}</td>
           </tr>
           <tr>
             <td style="width:100px;" class="text-right bg-light">Incoterm:</td>
-            <td class="text-danger">{{ order.order.incoterm }}</td>
+            <td class="text-danger">{{ data.order.incoterm }}</td>
             <td style="width:100px;" class="text-right bg-light">Pais Origen:</td>
-            <td>{{ order.order.pais_origen }}</td>
+            <td>{{ data.order.pais_origen }}</td>
             <td style="width:100px;" class="text-right bg-light">Ciudad Origen:</td>
-            <td>{{ order.order.ciudad_origen }}</td>
+            <td>{{ data.order.ciudad_origen }}</td>
             <td style="width:100px;" class="text-right bg-light">Registrado Por:</td>
             <td>Pendiete</td>
             <td style="width:100px;" class="text-right bg-light">Fecha Registro:</td>
-            <td>{{ order.order.date_create | date:"d/M/Y" }}</td>
+            <td>{{ data.order.date_create.strftime('%d/%m/%Y') }}</td>
           </tr>
           <tr>
             <td style="width:100px;" class="text-right bg-light">Comentarios:</td>
-            <td colspan="9">{{ order.order.observaciones }} {{ order.order.comentarios }}</td>
+            <td colspan="9">{{ data.order.observaciones }} {{ data.order.comentarios }}</td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
-  <div class="row" v-if="ajax_request == false">
+  <div v-if="show_costings == true" class="animated fadeInUp">  
+    {% include 'costings/productos_pedido.html'  %}
+  </div>
+  <div class="row animated fadeIn" v-if="ajax_request == false && show_costings == false" >  
     <div class="col-7 div-bordered">
       <div class="text-tittle"> RESUMEN DE ESTADO GASTOS USD</div>
       <table class="table table-condensed table-striped table-bordered">
@@ -149,7 +146,7 @@
         </tbody>
       </table>
       <span class="text-right">Fecha de LLegada Del Producto:
-      <strong class="text-success">{{ order.fecha_llegada_cliente }}</strong>
+      <strong class="text-success">{{ data.order.fecha_llegada_cliente if data.order.fecha_llegada_cliente is not none else 'Producto en tránsito' }}</strong>
       </span>
       <br />
       <br>
@@ -442,25 +439,17 @@
       </div>
            <hr>
       <div class="row">
-        <div class="col-12 text-right">
-          <a href="{{BASE_URL}}" class="btn btn-outline-primary btn-sm" v-if="order_data.order.regimen === '10'">
-           <i class="fa fa-cart-arrow-down"></i> Liquidar Costos
-          </a>
-          <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#exampleModal" v-else="">
-            <i class="fa fa-bars"></i> Parciales
-        </button>          
+        <div class="col-12 text-right">          
+           <button class="btn btn-sm btn-primary" @click="show_costings = true"><i class="fa fa-cart-arrow-down"></i> Costeo Producto</button>          
         </div>
       </div>
     </div>
   </div>
 {% include 'js/modal_complete_paid.html' %}
-{% if order.order.regimen == '70' %}
-  {% include 'js/modal_parcials_list.html' %}
-{% endif %}
 </div>
 </div>
 {% endif %}
 {% endblock content %}
 {% block script %}
-   {% include "js/app_costings.js" %}
+   {% include "js/app_order_costings.js" %}
 {% endblock script %}

@@ -3,7 +3,7 @@
 <div class="row border">
   <div class="col-10 text-danger">
     <span class="fa fa-exclamation-triangle"></span>
-    El pedido solicitado no puede ser liquidado, revise la información de abajo
+    El pedido solicitado no puede ser liquidado, revise la información de abajo para mas detalles
   </div>
   <div class="col-2 text-secondary text-right">
     <small>Huston tenemos problemas ☹ </small>
@@ -34,7 +34,7 @@
             <tbody>
                 <tr>
                     <td class="text-right table-active" ><strong>Pedido:</strong></td>      
-                    <td class="tect-center">Importaciones</td>         
+                    <td class="text-center">Importaciones</td>         
                     {% if data.status.order %}
                         <td>El pedido se encuentra registrado</td>                         
                         <td class="text-success text-center"><span class="fa fa-check"></span></td>                         
@@ -45,7 +45,7 @@
                 </tr>
                 <tr>
                     <td class="text-right table-active"><strong>Factura de Productos</strong></td>
-                    <td class="tect-center">Importaciones</td>         
+                    <td class="text-center">Importaciones</td>         
                     {% if data.status.order_invoice and data.status.order_invoice_details %}
                     <td>La factura de productos del proveedor Internacional completa</td>                         
                     <td class="text-success text-center"><span class="fa fa-check"></span></td>            
@@ -56,7 +56,7 @@
                 </tr>
                 <tr>
                     <td class="text-right table-active"><strong>Gastos Iniciales</strong></td>
-                    <td class="tect-center">Importaciones</td>         
+                    <td class="text-center">Importaciones</td>         
                     {% if data.status.init_expenses %}
                     <td>El pedido registra gastos iniciales</td>                         
                     <td class="text-success text-center"><span class="fa fa-check"></span></td>            
@@ -67,7 +67,7 @@
                 </tr>
                 <tr>
                     <td class="text-right table-active"><strong>Libro Mayor</strong></td>
-                    <td class="tect-center">Sistema SGI</td>         
+                    <td class="text-center">Sistema SGI</td>         
                     {% if data.status.ledger %}
                     <td>El pedido registra libro mayor</td>                         
                     <td class="text-success text-center"><span class="fa fa-check"></span></td>            
@@ -78,7 +78,7 @@
                 </tr>
                 <tr>
                     <td class="text-right table-active"><strong>Liquidacion de Aduana</strong></td>
-                    <td class="tect-center">Importaciones</td>         
+                    <td class="text-center">Importaciones</td>         
                     {% if data.status.taxes %}
                     <td>La liquidacion de aduana se encuentra ingresada</td>                         
                     <td class="text-success text-center"><span class="fa fa-check"></span></td>            

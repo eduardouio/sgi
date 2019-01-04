@@ -119,7 +119,9 @@ class Order(models.Model):
         return order
 
 
-        
+    @property
+    def diferencia_ice_senae(self):
+        return 0
 
     @classmethod
     def get_all(self):
@@ -148,7 +150,7 @@ class Order(models.Model):
     @classmethod
     def get_paid_taxes(self, nro_order):
         order =  self.get_by_order(nro_order)        
-        if order is None or order.regimen == '70':
+        if order is None or order.regimen == '70' or order.bg_isliquidated == 0:
             loggin('w', 'No se obtener los tributos del pedido {nro_order} pedido inexistente o regimen = 70'.format(nro_order=nro_order))
             return {}    
 

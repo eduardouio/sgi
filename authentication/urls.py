@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import LoginTemplateView
+from authentication.views import LoginTemplateView
 app_name = 'authentication'
 
 urlpatterns = [
