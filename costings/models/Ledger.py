@@ -1,14 +1,17 @@
-from django.db import models
-from logs.app_log import loggin
-from simple_history.models import HistoricalRecords
 from django.conf import settings
+from django.db import models
 from django.utils import timezone
 
+from logs.app_log import loggin
+from orders.models.Order import Order
+from simple_history.models import HistoricalRecords
+
+
 class Ledger(models.Model):    
-    TYPE_LEDGER = (('incial', 'Mayor Inicial'),('verificacion', 'Mayor Verificacion'),('parcial', 'Mayor Parcial'))
+    TYPE_LEDGER = (('inicial', 'Mayor Inicial'),('verificacion', 'Mayor Verificacion'),('parcial', 'Mayor Parcial'))
     id_mayor = models.AutoField(primary_key=True)
     tipo = models.CharField(max_length=50, choices=TYPE_LEDGER)
-    nro_pedido = models.CharField(max_length=6)
+    nro_pedido = models.ForeignKey(Order, models.PROTECT, db_column='nro_pedido')
     id_parcial = models.PositiveSmallIntegerField(default=0)
     precio_entrega = models.DecimalField(max_digits=15, decimal_places=3, default=0)
     costo_producto = models.DecimalField(max_digits=15, decimal_places=3, default=0)
@@ -24,7 +27,7 @@ class Ledger(models.Model):
     history = HistoricalRecords()
 
     def __str__(self):
-        return ''.join([self.tipo, ' ', self.nro_pedido, ' -> ', self.id_parcial]) 
+        return ''.join([self.tipo, ' ', self.nro_pedido, ' -> ', str(self.id_parcial)])
 
     class Meta:
         managed = True
@@ -35,23 +38,43 @@ class Ledger(models.Model):
     
 
     @classmethod
-    def get_by_order(self, order):
-        if(order.regimen == '70'):
-            loggin('e', 'Se esta solicitando un mayor del pedido {nro_pedido} R70'.format(nro_pedido=order.nro_pedido))
+    def get_by_order(self, nro_order):
+        ''' Get last complete ledger for order '''
+
+        order = Order.get_by_order(nro_order)
+        if order is None:
             return None
-            
+        
+        if(order.regimen == '70'):
+            loggin(
+                'e', 
+                'No se debe solicitar un mayor de un pedido R70 {}'
+                .format(order.nro_pedido)
+                )
+            return None
+
         items = self.objects.filter(nro_pedido = order.nro_pedido)
         if items.count() == 0:
-            loggin('w', 'El pedido {nro_pedido} no tiene registrado ningun mayor'.format(nro_pedido=order.nro_pedido))
+            loggin(
+                'w', 
+                'El pedido {nro_pedido} no tiene registrado ningun mayor'
+                .format(nro_pedido=order.nro_pedido)
+                )
             return None
 
         return items
 
+
     @classmethod
     def get_by_parcial(self, partial):
+        '''Return ledger from partial include init expenses'''
         items = self.objects.filter(id_parcial=partial.id_parcial)
         if items.count() == 0:
-            loggin('w', 'El parcial {id_parcial} no registra un mayor'.format(id_parcial=partial.id_parcial))
+            loggin(
+                'w', 
+                'El parcial {} no registra un mayor'
+                .format(partial.id_parcial)
+                )
             return None
         
         return items
