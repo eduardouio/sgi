@@ -164,4 +164,4 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.sep.join(os.path.abspath(__file__).split(os.sep)[:-2]+['media'])
 MEDIA_URL = '/media/'
 
-BASE_URL = 'http://192.168.0.92/'
+BASE_URL = 'http://localhost:8000/'
