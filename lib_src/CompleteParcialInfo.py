@@ -1,3 +1,12 @@
+from costings.models.Ledger import Ledger
+from lib_src.CompleteOrderInfo import CompleteOrderInfo
+from lib_src.serializers import (ApportionmentDetailSerializer,
+                                 ApportionmentSerializer, ExpenseSerializer,
+                                 InfoInvoiceDetailSerializer,
+                                 InfoInvoiceSerializer, LedgerSerializer,
+                                 PaidInvoiceDetailSerializer,
+                                 PaidInvoiceSerializer, PartialSerializer,
+                                 SupplierSerializer)
 from paids.models.Expense import Expense
 from paids.models.PaidInvoice import PaidInvoice
 from paids.models.PaidInvoiceDetail import PaidInvoiceDetail
@@ -6,23 +15,12 @@ from partials.models.ApportionmentDetail import ApportionmentDetail
 from partials.models.InfoInvoice import InfoInvoice
 from partials.models.InfoInvoiceDetail import InfoInvoiceDetail
 from suppliers.models.Supplier import Supplier
-from costings.models.Ledger import Ledger
-from lib_src.serializers import (
-                                ApportionmentSerializer,
-                                ApportionmentDetailSerializer,
-                                ExpenseSerializer,
-                                InfoInvoiceSerializer,
-                                InfoInvoiceDetailSerializer,
-                                PaidInvoiceDetailSerializer,
-                                PaidInvoiceSerializer,
-                                PartialSerializer,
-                                SupplierSerializer,
-                                LedgerSerializer,
-                                SupplierSerializer,
-                            )
+
 
 class CompleteParcialInfo(object):
-
+    '''
+    Return all information from parcial include order data and int Expenses
+    '''
     def __init__(self):
         self.status_parcial = {
             'parial' : True,

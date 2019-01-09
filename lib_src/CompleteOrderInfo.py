@@ -1,25 +1,26 @@
+import decimal
+
+from costings.models.Ledger import Ledger
+from lib_src.serializers import (ExpenseSerializer, LedgerSerializer,
+                                 OrderInvoiceDetailSerializer,
+                                 OrderInvoiceSerializer, OrderSerializer,
+                                 PaidInvoiceDetailSerializer,
+                                 PaidInvoiceSerializer, RateExpenseSerializer,
+                                 SupplierSerializer)
+from logs.app_log import loggin
 from orders.models.Order import Order
 from orders.models.OrderInvoice import OrderInvoice
 from orders.models.OrderInvoiceDetail import OrderInvoiceDetail
 from paids.models.Expense import Expense
 from paids.models.PaidInvoice import PaidInvoice
 from paids.models.PaidInvoiceDetail import PaidInvoiceDetail
-from suppliers.models.Supplier import Supplier
+from paids.models.RateExpense import RateExpense
 from partials.models.Partial import Partial
-from costings.models.Ledger import Ledger
-from lib_src.CompleteParcialInfo import CompleteParcialInfo
-from lib_src.serializers import OrderSerializer
-from lib_src.serializers import OrderInvoiceSerializer
-from lib_src.serializers import OrderInvoiceDetailSerializer
-from lib_src.serializers import ExpenseSerializer
-from lib_src.serializers import PaidInvoiceSerializer
-from lib_src.serializers import PaidInvoiceDetailSerializer
-from lib_src.serializers import SupplierSerializer
-from lib_src.serializers import LedgerSerializer
-from logs.app_log import loggin
-import decimal
+from suppliers.models.Supplier import Supplier
+
 
 class CompleteOrderInfo(object):
+    ''' Get complete order R10 info '''
 
     def __init__(self):
         self.status_order = {
@@ -38,6 +39,7 @@ class CompleteOrderInfo(object):
         self.tributes = None
         self.total_expenses = 0
         self.total_invoiced = 0
+        self.total_provisions = 0 
 
 
     def get_data(self, nro_order, serialized=False, request=None):
@@ -62,7 +64,6 @@ class CompleteOrderInfo(object):
         return ({
             'order': self.get_order(),
             'order_invoice':self.get_order_invoice(),
-            'parcials':self.get_parcials(),
             'expenses':self.get_expenses(),
             'taxes' : self.get_taxes(),
             'ledger' : self.get_ledger(),
@@ -70,7 +71,9 @@ class CompleteOrderInfo(object):
             'tributes' : self.tributes,
             'init_ledger' : self.init_ledger,
             'total_expenses' : (self.total_expenses + self.init_ledger),
-            'total_invoiced' : self.total_invoiced + self.init_ledger
+            'init_expenses' : self.total_expenses,
+            'total_invoiced' : self.total_invoiced + self.init_ledger,
+            'total_provisions' : self.total_provisions,
             })
 
 
@@ -93,7 +96,6 @@ class CompleteOrderInfo(object):
         if order.regimen == '10' and order.bg_isliquidated == 1 :
             self.status_order['taxes'] = True
             self.tributes['arancel_advalorem'] = order.arancel_advalorem_pagar_pagado
-            self.tributes['arancel_advalorem'] = order.exoneracion_arancel
             self.tributes['arancel_especifico'] = order.arancel_especifico_pagar_pagado
             self.tributes['fondinfa'] = order.fodinfa_pagado
             self.tributes['ice_advalorem'] = order.ice_especifico_pagado
@@ -164,27 +166,13 @@ class CompleteOrderInfo(object):
                 'provision' : (order_items['order_invoice'].valor != order_items['totals']['value']),
                 'complete' : (order_items['order_invoice'].valor == order_items['totals']['value'])
             }
-
+            
         return order_items
-
-
-    def get_parcials(self):
-        parcials = Partial.get_by_order(self.nro_order)
-        parcials_data = []
-        if parcials is None:
-            return None
-        
-        for p in parcials:
-            parcials_data.append(
-                CompleteParcialInfo().get_data(p, self.serialized)
-                )
-
-        return parcials_data
 
 
     def get_expenses(self):
         data_expenses = []       
-        expenses = Expense.get_by_order(self.nro_order)
+        expenses = Expense.get_all_by_orderR10(self.nro_order)
         
         if expenses is None:
             return None
@@ -222,7 +210,8 @@ class CompleteOrderInfo(object):
                 if paid.bg_mayor == 1:
                     item.ledger += paid.valor
 
-            item.sale = (item.valor_provisionado - item.invoiced_value)            
+            item.sale = (item.valor_provisionado - item.invoiced_value)    
+            self.total_provisions += item.sale
 
             if self.serialized:
                 expense_serializer = ExpenseSerializer(item)                    
@@ -256,23 +245,39 @@ class CompleteOrderInfo(object):
 
         return expenses
     
+
     def get_ledger(self):
+        '''Return last ledger from order'''
         order = Order.get_by_order(self.nro_order)
-        if order is None:
-            return None
-            
-        ledger_order = Ledger.get_by_order(order)
-        if ledger_order is None and order.regimen == '70':
-            self.status_order['ledger'] = True
+        if order is None or order.bg_isclosed == 0:
+            loggin(
+            'w', 
+            'No se puede retornar el mayor del pedido {} abierto o inexistente'
+            .format(self.nro_order)
+            )            
             return None
         
-        if self.serialized:
-            ledger_serializer = LedgerSerializer(ledger_order, many=True)
+        ledger = Ledger().get_by_order(self.nro_order)
+
+        if self.serialized and ledger:
+            ledger_serializer = LedgerSerializer(ledger, many=True)
             return ledger_serializer.data
         
-        return ledger_order
-
+        return ledger
+        
 
     def get_taxes(self):
-        taxes =  Order.get_paid_taxes(self.nro_order)       
+        taxes =  Order.get_paid_taxes(self.nro_order)
         return taxes
+    
+    
+    def get_taxes_params(self):
+        rates = RateExpense().get_taxes_params()
+        if rates is None:
+            return None
+
+        if self.serialized:
+            rate_serializer = RateExpenseSerializer(rates, many=True)
+            return rate_serializer.data
+        
+        return rates

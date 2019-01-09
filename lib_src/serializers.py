@@ -30,6 +30,8 @@ class OrderSerializer(ModelSerializer):
 
 
 class OrderInvoiceSerializer(ModelSerializer):
+    valor_tasa_trimestral = serializers.FloatField()
+    
     class Meta:
         model = OrderInvoice
         fields = ('__all__')
