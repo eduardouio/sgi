@@ -13,6 +13,7 @@ class OrderInvoice(models.Model):
     proveedor = models.CharField(max_length=100, blank=True, null=True)
     fecha_emision = models.DateField(blank=True, null=True)
     valor = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True)
+    fob_tasa_trimestral = models.DecimalField(max_digits=12, decimal_places=3, blank=True, null=True)
     moneda = models.CharField(max_length=45)
     tipo_cambio = models.DecimalField(max_digits=16, decimal_places=12)
     vencimiento_pago = models.DateField(blank=True, null=True)
@@ -22,6 +23,7 @@ class OrderInvoice(models.Model):
     last_update = models.DateTimeField(blank=True, null=True)
     bg_isclosed = models.IntegerField(blank=True, null=True,default=0)
     gasto_origen = models.DecimalField(max_digits=10, decimal_places=3,default=0)
+    gasto_origen_tasa_trimestral = models.DecimalField(max_digits=12, decimal_places=3, blank=True, null=True)
     history = HistoricalRecords()
 
     def __str__(self):
@@ -33,6 +35,11 @@ class OrderInvoice(models.Model):
         db_table = 'pedido_factura'
         unique_together = (('identificacion_proveedor', 'id_factura_proveedor'),)
         verbose_name_plural = 'Facturas de Pedido'  
+
+    @property
+    def valor_tasa_trimestral(self):
+        return (self.valor * self.tipo_cambio)
+
 
     @classmethod
     def get_by_id(self, id_invoice):
