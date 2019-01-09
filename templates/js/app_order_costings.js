@@ -3,29 +3,38 @@ var app = new Vue({
     delimiters: ['${', '}'],
     data: {
       order_data: {},
+      comentarios : '',
+      liquidated_order : false,
       current_expense : null,
-      show_costings : true,
       current_order_invoice : {},
       current_taxes: {},
       current_paid : null,
-      init_ledger : parseFloat('{{ data.init_ledger }}'.replace(',','.')),
-      mayor_sgi : 0.0,
-      mayor_sap : 0.0,
+      init_ledger : parseFloat('{{ data.init_ledger }}'.replace(',','.')),      
       diferecia_mayores : 0.0,
       ajax_request : true,
+      show_costings : false,
       show_expense : false,
       show_order_invoice : false,
       show_taxes : false,
-      order_ledger : {
-        'tipo': 'inicial',
-        'nro_pedido': {{ data.order.nro_pedido }},
-        'id_parcial': 0,
-        'saldo_mayor_sap': 0.0,
-        'saldo_mayor_sgi': 0.0,
+      show_form_liquidated : false,
+      systems_ledger : {{ data.ledger if data.ledger else  'false' }},
+      current_ledger : {
+        'tipo' : 'inicial',
+        'nro_pedido' : '{{ data.order.nro_pedido }}',
+        'id_parcial' : 0,
+        'costo_producto' : {{ data.order_invoice.order_invoice.valor_tasa_trimestral }},
+        'facturas_sgi' : parseFloat('{{ data.total_invoiced }}'.replace(',','.')),
+        'mayor_sap' : 0,
+        'mayor_sgi' : 0,
+        'precio_entrega' : parseFloat('{{ data.costs.sums.indirectos }}'.replace(',','.')),
+        'provisiones_sap' : 0,
+        'provisiones_sgi' : parseFloat('{{ data.total_provisions }}'.replace(',','.')),
+        'reliquidacion_ice' : parseFloat('{{ data.costs.sums.ice_advalorem_reliquidado }}'.replace(',','.')),
       },
       csrftoken : Cookies.get('csrftoken'),
     },
     methods : {    
+
         select_expense : function(item){
             this.show_expense = true
             this.show_order_invoice  = false
@@ -33,8 +42,8 @@ var app = new Vue({
             return this.current_expense = item
         },
 
-        contabilized : function(paid){    
-            console.log('Envio actualizacion de pago')        
+        contabilized : function(paid){
+            console.log('Envio actualizacion de pago')
             if (paid.paid.bg_mayor){
                 paid.paid.bg_mayor = 0
                 this.current_expense.legder -= parseFloat(paid.paid.valor)
@@ -60,8 +69,8 @@ var app = new Vue({
                 var item = this.order_data.expenses[x]
                 ledger += parseFloat(item.legder)
             }    
-            this.mayor_sgi = 0
-            this.mayor_sgi = Math.round((parseFloat(this.init_ledger) + parseFloat(ledger))*100)/100
+            this.current_ledger.mayor_sgi = 0
+            this.current_ledger.mayor_sgi = Math.round((parseFloat(this.init_ledger) + parseFloat(ledger))*100)/100
         },
 
         show_order_invoice_detail : function(){
@@ -79,7 +88,7 @@ var app = new Vue({
 
         show_taxes_detail : function(){
             this.show_expense = false
-            this.show_order_invoice = false
+            this.show_order_invoice = false            
             this.show_taxes = true
         },
 
@@ -89,7 +98,32 @@ var app = new Vue({
               }, response => {
                 alert('Se produjo un error, por favor recargue la página');
               });
-        }
+        },
+
+        liquidate_order : function(){
+            var ledger_is_registered = false
+            var order_is_registered = false
+            this.liquidated_order = true
+            this.show_form_liquidated = false
+            console.log('Registrando Mayor...')
+            this.$http.post('{{BASE_URL}}api/ledger/create/', this.current_ledger, {headers: {"X-CSRFToken":this.csrftoken}} ).then(response => {                     
+                console.log('Mayor registrado correctamente en base de datos')
+                ledger_is_registered = true
+            }, response => {
+              alert('Se produjo un error, por favor recargue la página');
+            });
+
+            this.order_data.order.observaciones +=  this.comentarios
+            this.order_data.order.bg_isclosed = 1
+            console.log('Actualizando Pedido...')
+            this.$http.put('{{BASE_URL}}api/order/update/{{ data.order.nro_pedido}}/', this.order_data.order, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {                     
+                console.log('Pedido Actualizado correntamente, iniciando redireccionamiento')
+                alert('Que belleza!')
+                order_is_registered = true         
+              }, response => {
+                alert('Se produjo un error, por favor recargue la página');
+              });                       
+        },
     },
     mounted() {
             this.$http.get('{{BASE_URL}}pedidos/get_all_data/{{ data.order.nro_pedido }}/', {params: {}}).then(response => {          
@@ -102,7 +136,7 @@ var app = new Vue({
     },
     computed : {
         diff_ledgers : function(){
-            return Math.round((this.mayor_sap - this.mayor_sgi) *100)/100
+            return Math.round((this.current_ledger.mayor_sap - this.current_ledger.mayor_sgi) *100)/100
         },        
     },    
     filters : {

@@ -7,7 +7,7 @@
     <div class="row border">
     <div class="col-4">
     <i class="fa fa-cog"></i>
-    Liquidar Pedido A consumo {{ data.order.nro_pedido }}
+      Liquidar Pedido A consumo {{ data.order.nro_pedido }}
     {% if data.bg_isclosed  == 0 %}
     <span class="badge badge-success">Abierto</span>
     {% else %}
@@ -68,7 +68,7 @@
           </tr>
           <tr>
             <td style="width:100px;" class="text-right bg-light">Comentarios:</td>
-            <td colspan="9">{{ data.order.observaciones }} {{ data.order.comentarios }}</td>
+            <td colspan="9">${ order_data.order.observaciones } ${ order_data.order.comentarios } ${ comentarios }</td>
           </tr>
         </tbody>
       </table>
@@ -141,7 +141,7 @@
             <th class="text-right">${ order_data.total_expenses | money }</th>
             <th class="text-right">${ order_data.total_invoiced |money }</th>
             <th class="text-right">${ (order_data.total_expenses - order_data.total_invoiced) | money }</th>
-            <th class="text-right">${ mayor_sgi | money }</th>
+            <th class="text-right">${ current_ledger.mayor_sgi | money }</th>
           </tr>
         </tbody>
       </table>
@@ -170,6 +170,12 @@
           <small class="text-danger" v-if="current_expense.provision"><i class="fa fa-exclamation-triangle"></i> Provisión</small>
         </div>
         </div>
+               <div class="custom-control custom-checkbox text-right" v-if="current_expense.expense.concepto === 'ISD'">
+                    <input type="checkbox" class="custom-control-input" checked>
+                    <label class="custom-control-label">                    
+                    SI
+                    </label>
+                  </div>
           <div class="row">
         <div class="col-12">
           <table class="table table-condensed table-bordered" v-if="current_expense.expense.concepto != 'ISD'">
@@ -375,7 +381,7 @@
                <td class="text-right">
                    <div class="custom-control custom-checkbox">
                     <input type="checkbox" class="custom-control-input" checked>
-                    <label class="custom-control-label">                    
+                    <label class="custom-control-label">
                     SI                    
                     </label>
                   </div>
@@ -423,12 +429,12 @@
       <div class="row">
         <div class="col-4">
           <div class="fomr-group"><label for="">Saldo Mayor Sap</label>
-            <input type="number" class="form-control form-control-sm text-right" v-model="mayor_sap" step="0.001">
+            <input type="number" class="form-control form-control-sm text-right" v-model="current_ledger.mayor_sap" step="0.001">
           </div>
         </div>
         <div class="col-4">
           <div class="fomr-group"><label for="">Saldo Mayor SGI</label>
-            <input type="text" class="form-control form-control-sm text-right" readonly v-model="mayor_sgi" step="0.001">
+            <input type="text" class="form-control form-control-sm text-right" readonly v-model="current_ledger.mayor_sgi" step="0.001">
           </div>
         </div>
         <div class="col-4">
@@ -440,7 +446,7 @@
            <hr>
       <div class="row">
         <div class="col-12 text-right">          
-           <button class="btn btn-sm btn-primary" @click="show_costings = true"><i class="fa fa-cart-arrow-down"></i> Costeo Producto</button>          
+           <button class="btn btn-sm btn-outline-primary" @click="show_costings = true"><i class="fa fa-cart-arrow-down"></i> Costeo Producto</button>          
         </div>
       </div>
     </div>

@@ -3,28 +3,28 @@
     <div class="text-tittle-success"> PARAMETROS DE LIQUIDACION </div>
     <table class="table table-bordered table-condensed">
         <tr>
-        <td style="width:10%" class="bg-light text-right">T/C Trim:</td> <td class="text-right">{{ data.order_invoice.order_invoice.tipo_cambio }}</td>
+        <td style="width:10%" class="bg-light text-right">T/C Trim:</td> <td class="text-right">{{ "%.2f" | format(data.order_invoice.order_invoice.tipo_cambio) }}</td>
         <td style="width:10%" class="bg-light text-right">Moneda Pedido:</td> <td class="text-right">{{ data.order_invoice.order_invoice.moneda }}</td>
-        <td style="width:10%" class="bg-light text-right">Fecha Llegada:</td><td class="text-right">{{ data.order.fecha_llegada_cliente }}</td>
+        <td style="width:10%" class="bg-light text-right">Fecha Llegada:</td><td class="text-right">{{ data.order.fecha_llegada_cliente.strftime('%d/%m/%Y') }}</td>
         <td style="width:10%" class="bg-light text-right">Items:</td> <td class="text-right">{{ data.order_invoice.totals['items'] }}</td>
         <td style="width:10%" class="bg-light text-right">Cajas:</td> <td class="text-right">{{ data.order_invoice.totals.boxes }}</td>
         <td style="width:10%" class="bg-light text-right">Botellas:</td> <td class="text-right">{{ data.order_invoice.totals.bottles }}</td>
         </tr>
         <tr>
-        <td style="width:10%" class="bg-light text-right">F Pago Liquidacion:</td> <td class="text-right">{{ data.order.fecha_liquidacion}}</td>
-        <td style="width:10%" class="bg-light text-right">Base Advalorem: </td> <td class="text-right">{{ data.order.base_arancel_advalorem }}</td>
+        <td style="width:10%" class="bg-light text-right">F Pago Liquidacion:</td> <td class="text-right">{{ data.order.fecha_liquidacion.strftime('%d/%m/%Y')}}</td>
+        <td style="width:10%" class="bg-light text-right">Base Advalorem: </td> <td class="text-right">{{ data.order.base_ice_advalorem }}</td>
         <td style="width:10%" class="bg-light text-right">Base ICE:</td> <td class="text-right">{{ data.order.base_ice_especifico}}</td>
         <td style="width:10%" class="bg-light text-right">Base IVA:</td> <td class="text-right">{{ data.order.base_iva }}</td>
         <td style="width:10%" class="bg-light text-right">Liberacion A.:</td> <td class="text-right">{{ data.order.exoneracion_arancel}} %</td>
-        <td style="width:10%" class="bg-light text-right">Diferencia Senae:</td> <td class="text-right">{{ data.order.diferencia_ice_senae }}</td>
+        <td style="width:10%" class="bg-light text-right">Diferencia Senae:</td> <td class="text-right text-danger">{{ data.order.diferencia_ice_senae }}</td>
         </tr>
         <tr>
-        <td style="width:10%" class="bg-light text-right">Mayor SAP:</td> <td>x </td>
-        <td style="width:10%" class="bg-light text-right">Mayor SGI: </td> <td>x </td>
-        <td style="width:10%" class="bg-light text-right">Precion Entrega:</td> <td>x </td>
-        <td style="width:10%" class="bg-light text-right">Costo Producto:</td> <td>x </td>
-        <td style="width:10%" class="bg-light text-right">Provisiones SAP.:</td> <td>x </td>
-        <td style="width:10%" class="bg-light text-right">Provisiones SGI:</td> <td>x </td>
+        <td style="width:10%" class="bg-light text-right">Mayor SAP:</td> <td class="text-right">${ current_ledger.mayor_sap | money }</td>
+        <td style="width:10%" class="bg-light text-right">Mayor SGI: </td> <td class="text-right">${ current_ledger.mayor_sgi | money }</td>
+        <td style="width:10%" class="bg-light text-right">Precion Entrega:</td> <td class="text-right">${ current_ledger.precio_entrega | money }</td>
+        <td style="width:10%" class="bg-light text-right">Costo Producto:</td> <td class="text-right">${ current_ledger.costo_producto | money }</td>
+        <td style="width:10%" class="bg-light text-right">Provisiones SGI:</td> <td class="text-right">${ current_ledger.provisiones_sgi | money }</td>
+        <td style="width:10%" class="bg-light text-right">Provisiones SAP.:</td> <td class="text-right">${ ( current_ledger.mayor_sap - current_ledger.costo_producto-current_ledger.precio_entrega) | money }</td>
         </tr>
     </table>    
     </div>
@@ -32,15 +32,15 @@
 <br>
 <div class="row">    
     <div class="col-6 text-secondary">
-        SALDO SAP LUEGO CARGA COSTOS: <strong>$ 1010.91</strong>
+        SALDO SAP LUEGO CARGA COSTOS: <strong>${ (current_ledger.mayor_sgi - current_ledger.precio_entrega - current_ledger.costo_producto) | money }</strong>
     </div>
     <div class="col-6 text-danger text-right">
-        ICE RELIQUIDADO: <strong>$ 1010.91</strong>
+        ICE RELIQUIDADO: <strong>$ {{ data.costs.sums.ice_advalorem_reliquidado  + data.order.diferencia_ice_senae | float }} </strong>
     </div>
 </div>
 <div class="row">
 <div class="col-12">
-<div class="table-responsive">
+<div class="table-responsive" style="height:235px">
 <table class="table table-bordered table-condensed">
     <thead>
     <tr class="bg-light">
@@ -55,223 +55,119 @@
                <th>Flete A</th>
                <th>CIF</th>
                <th>Fodinfa</th>
+               <th>Ar Advalorem</th>
+               <th>Ar Expecifico</th>
                <th>Etiquetas Fiscales</th>
-            <th>Exaduana U</th>
-               <th>B Advalorem</th>
+                <th>Exaduana U</th>
                <th>Cap.</th>
                <th>% Alch</th>              
                <th>ICE Esp U</th>
                <th>ICE Adv U</th>
                <th>ICE Especifico</th>
-               <th>ICE Avalorem Reliquidado</th>
-               <th>ICE Avalorem Pagado </th>
-               <th>ICE Avalorem Diferencia Reliquidado</th>
+               <th>ICE Avalorem</th>
                <th>Total ICE</th>
                <th>Prorrateo Pedido</th>
-               <th>Costos Indirectos Precio Entrega</th>
-               <th>Total Costos</th>
+               <th>Costos Indirectos Precio E</th>
+               <th>T Costos</th>
                <th>Costo Caja</th>
                <th>Costo Botella</th>
             </tr>
     </thead>
     <tbody>
-      <tr>
-                      
-          	<td> 1 </td>
-            <td nowrap="">02021070070204010750</td>
-            <td nowrap="">RON HAVANA CLUB AÑEJO 3 AÑOS</td>
-            <td class="text-right"> 825 </td>
-            <td class="text-right"> 12 </td>
-            <td class="text-right">9900</td>
-            <td class="text-right">25.781,25</td>
-            <td class="text-right">108,37</td>
-            <td class="text-right">1.585,00</td>
-            <td class="text-right">27.474,62</td>
-                                    <td class="text-right">137,37</td>
-            <td class="text-right">1.287,00</td>
-                       
-            <td class="text-right">2,92</td>
-            <td class="text-right">3,24</td>
-            <td class="text-right">750,00</td>
-            <td class="text-right">40,00</td>
-            <td class="text-right">2,17</td>
-            <td class="text-right">0,00</td>
-            <td class="text-right">21.443,40</td>
-            <td class="text-right">0,00</td>
-            <td class="text-right">0,00</td>
-            <td class="text-right">0,00</td>
-            <td class="text-right">21.443,40</td>
-            <td class="text-right">5.538,36</td>
-            <td class="text-right">27.119,13</td>
-            <td class="text-right">52.900,38</td>
-            <td class="text-right">64,12</td>
-            <td class="text-right">5,34</td>
-            </tr>
+        {% for item in data.costs.taxes %}
             <tr>
-                      
-          	<td> 1 </td>
-            <td nowrap="">02021070070204010750</td>
-            <td nowrap="">RON HAVANA CLUB AÑEJO 3 AÑOS</td>
-            <td class="text-right"> 825 </td>
-            <td class="text-right"> 12 </td>
-            <td class="text-right">9900</td>
-            <td class="text-right">25.781,25</td>
-            <td class="text-right">108,37</td>
-            <td class="text-right">1.585,00</td>
-            <td class="text-right">27.474,62</td>
-                                    <td class="text-right">137,37</td>
-            <td class="text-right">1.287,00</td>
-                       
-            <td class="text-right">2,92</td>
-            <td class="text-right">3,24</td>
-            <td class="text-right">750,00</td>
-            <td class="text-right">40,00</td>
-            <td class="text-right">2,17</td>
-            <td class="text-right">0,00</td>
-            <td class="text-right">21.443,40</td>
-            <td class="text-right">0,00</td>
-            <td class="text-right">0,00</td>
-            <td class="text-right">0,00</td>
-            <td class="text-right">21.443,40</td>
-            <td class="text-right">5.538,36</td>
-            <td class="text-right">27.119,13</td>
-            <td class="text-right">52.900,38</td>
-            <td class="text-right">64,12</td>
-            <td class="text-right">5,34</td>
+            <td nowrap>{{loop.index}}</td>            
+            <td nowrap>{{ item.cod_contable_id }}</td>
+            <td nowrap>{{ item.product }}</td>
+            <td class="text-right">{{ "%.0f" | format(item.nro_cajas) }}</td>
+            <td class="text-right">{{ "%.2f" | format(item.cantidad_x_caja) }}</td>
+            <td class="text-right">{{ "%.0f" | format(item.unidades) }}</td>
+            <td class="text-right">{{ "%.3f" | format(item.fob_tasa_trimestral) }}</td>
+            <td class="text-right">{{ "%.3f" | format(item.seguro_aduana) }}</td>
+            <td class="text-right">{{ "%.3f" | format(item.flete_aduana) }}</td>
+            <td class="text-right">{{ "%.3f" | format(item.cif) }}</td>
+            <td class="text-right">{{ "%.3f" | format(item.fodinfa) }}</td>
+            <td class="text-right">{{ "%.3f" | format(item.arancel_advalorem_pagar) }}</td>
+            <td class="text-right">{{ "%.3f" | format(item.arancel_especifico_pagar) }}</td>
+            <td class="text-right">{{ "%.3f" | format(item.etiquetas_fiscales) }}</td>
+            <td class="text-right">{{ "%.3f" | format(item.ex_aduana_unitario) }}</td>
+            <td class="text-right">{{ "%.0f" | format(item.capacidad_ml) }}</td>
+            <td class="text-right">{{ "%.3f" | format(item.grado_alcoholico) }}</td>            
+            <td class="text-right">{{ "%.3f" | format(item.ice_especifico_unitario) }}</td>            
+            <td class="text-right">{{ "%.3f" | format(item.ice_advalorem_unitario ) }}</td>            
+            <td class="text-right">{{ "%.3f" | format(item.ice_especifico) }}</td>            
+            <td class="text-right">{{ "%.3f" | format(item.ice_advalorem_reliquidado) }}</td>
+            <td class="text-right">{{ "%.3f" | format(item.total_ice) }}</td>
+            <td class="text-right">{{ "%.3f" | format(item.prorrateos_total) }}</td>
+            <td class="text-right">{{ "%.3f" | format(item.indirectos) }}</td>
+            <td class="text-right">{{ "%.3f" | format(item.costo_total) }}</td>
+            <td class="text-right">{{ "%.3f" | format(item.costo_caja_final) }}</td>
+            <td class="text-right">{{ "%.3f" | format(item.costo_botella) }}</td>
             </tr>
-            <tr>
-                      
-          	<td> 1 </td>
-            <td nowrap="">02021070070204010750</td>
-            <td nowrap="">RON HAVANA CLUB AÑEJO 3 AÑOS</td>
-            <td class="text-right"> 825 </td>
-            <td class="text-right"> 12 </td>
-            <td class="text-right">9900</td>
-            <td class="text-right">25.781,25</td>
-            <td class="text-right">108,37</td>
-            <td class="text-right">1.585,00</td>
-            <td class="text-right">27.474,62</td>
-                                    <td class="text-right">137,37</td>
-            <td class="text-right">1.287,00</td>
-                       
-            <td class="text-right">2,92</td>
-            <td class="text-right">3,24</td>
-            <td class="text-right">750,00</td>
-            <td class="text-right">40,00</td>
-            <td class="text-right">2,17</td>
-            <td class="text-right">0,00</td>
-            <td class="text-right">21.443,40</td>
-            <td class="text-right">0,00</td>
-            <td class="text-right">0,00</td>
-            <td class="text-right">0,00</td>
-            <td class="text-right">21.443,40</td>
-            <td class="text-right">5.538,36</td>
-            <td class="text-right">27.119,13</td>
-            <td class="text-right">52.900,38</td>
-            <td class="text-right">64,12</td>
-            <td class="text-right">5,34</td>
-            </tr>
-            <tr>
-                      
-          	<td> 1 </td>
-            <td nowrap="">02021070070204010750</td>
-            <td nowrap="">RON HAVANA CLUB AÑEJO 3 AÑOS</td>
-            <td class="text-right"> 825 </td>
-            <td class="text-right"> 12 </td>
-            <td class="text-right">9900</td>
-            <td class="text-right">25.781,25</td>
-            <td class="text-right">108,37</td>
-            <td class="text-right">1.585,00</td>
-            <td class="text-right">27.474,62</td>
-                                    <td class="text-right">137,37</td>
-            <td class="text-right">1.287,00</td>
-                       
-            <td class="text-right">2,92</td>
-            <td class="text-right">3,24</td>
-            <td class="text-right">750,00</td>
-            <td class="text-right">40,00</td>
-            <td class="text-right">2,17</td>
-            <td class="text-right">0,00</td>
-            <td class="text-right">21.443,40</td>
-            <td class="text-right">0,00</td>
-            <td class="text-right">0,00</td>
-            <td class="text-right">0,00</td>
-            <td class="text-right">21.443,40</td>
-            <td class="text-right">5.538,36</td>
-            <td class="text-right">27.119,13</td>
-            <td class="text-right">52.900,38</td>
-            <td class="text-right">64,12</td>
-            <td class="text-right">5,34</td>
-            </tr>
-            <tr>
-                      
-          	<td> 1 </td>
-            <td nowrap="">02021070070204010750</td>
-            <td nowrap="">RON HAVANA CLUB AÑEJO 3 AÑOS</td>
-            <td class="text-right"> 825 </td>
-            <td class="text-right"> 12 </td>
-            <td class="text-right">9900</td>
-            <td class="text-right">25.781,25</td>
-            <td class="text-right">108,37</td>
-            <td class="text-right">1.585,00</td>
-            <td class="text-right">27.474,62</td>
-                                    <td class="text-right">137,37</td>
-            <td class="text-right">1.287,00</td>
-                       
-            <td class="text-right">2,92</td>
-            <td class="text-right">3,24</td>
-            <td class="text-right">750,00</td>
-            <td class="text-right">40,00</td>
-            <td class="text-right">2,17</td>
-            <td class="text-right">0,00</td>
-            <td class="text-right">21.443,40</td>
-            <td class="text-right">0,00</td>
-            <td class="text-right">0,00</td>
-            <td class="text-right">0,00</td>
-            <td class="text-right">21.443,40</td>
-            <td class="text-right">5.538,36</td>
-            <td class="text-right">27.119,13</td>
-            <td class="text-right">52.900,38</td>
-            <td class="text-right">64,12</td>
-            <td class="text-right">5,34</td>
-            </tr>  
-            <tr style="background-color:#2E86C1; color:#fff;">
-               <td colspan="3">Sumas:</td>
-               <td class="text-right">825</td>
-               <td class="text-center">--</td>
-               <td class="text-right">9900</td>
-               <td class="text-right">25.781,25</td>
-               <td class="text-right">108,37</td>
-               <td class="text-right">1.585,00</td>
-               <td class="text-right">27.474,62</td>
-                                             <td class="text-right">137,37</td>
-               <td class="text-right">1.287,00</td>
-                              <td class="text-center">--</td>
-               <td class="text-center">--</td>
-               <td class="text-center">--</td>
-               <td class="text-center"></td>
-               <td class="text-center">--</td>
-               <td class="text-center">--</td>
-               <td class="text-right">21.443,40</td>
-               <td class="text-right">0,00</td>
-               <td class="text-right">0,00</td>
-               <td class="text-right">0,00</td>
-               <td class="text-right">21.443,40</td>
-               <td class="text-right">5.538,36</td>
-               <td class="text-right">27.119,13</td>
-               <td class="text-right">52.900,38</td>
-               <td class="text-center">--</td>
-               <td class="text-center">--</td>
-            </tr>
+        {% endfor %}      
+        <tr class="table-success">
+        <td nowrap colspan="3" class="text-right"> <strong>Sumas:</strong></td>
+        <td nowrap class="text-right"> {{ data.costs.sums.nro_cajas }} </td>
+        <td nowrap class="text-right">-</td>
+        <td nowrap class="text-right"> {{ data.costs.sums.unidades }} </td>
+        <td nowrap class="text-right">$ {{ data.costs.sums.fob_tasa_trimestral }} </td>
+        <td nowrap class="text-right">$ {{ data.costs.sums.seguro_aduana }} </td>
+        <td nowrap class="text-right">$ {{ data.costs.sums.flete_aduana }} </td>
+        <td nowrap class="text-right">$ {{ data.costs.sums.cif }} </td>
+        <td nowrap class="text-right">$ {{ data.costs.sums.fodinfa }} </td>
+        <td nowrap class="text-right">$ {{ data.costs.sums.arancel_advalorem_pagar }} </td>
+        <td nowrap class="text-right">$ {{ data.costs.sums.arancel_especifico_pagar }} </td>
+        <td nowrap class="text-right">$ {{ data.costs.sums.etiquetas_fiscales }} </td>
+        <td nowrap class="text-center">-</td>
+        <td nowrap class="text-center">-</td>
+        <td nowrap class="text-center">-</td>
+        <td nowrap class="text-center">-</td>
+        <td nowrap class="text-center">-</td>
+        <td nowrap class="text-right">$ {{ data.costs.sums.ice_especifico }} </td>
+        <td nowrap class="text-right">$ {{ data.costs.sums.ice_advalorem_reliquidado }} </td>
+        <td nowrap class="text-right">$ {{ data.costs.sums.total_ice }} </td>
+        <td nowrap class="text-right">$ {{ data.costs.sums.prorrateos_total }} </td>
+        <td nowrap class="text-right">$ {{ data.costs.sums.indirectos }} </td>
+        <td nowrap class="text-right">$ {{ data.costs.sums.costo_total }} </td>
+        <td nowrap class="text-center">-</td>
+        <td nowrap class="text-center">-</td>
+        </tr>
     </tbody>
 </table>    
 </div>
 </div>
 </div>
 <br>
+<div class="row animate flash delay-1s" v-if="liquidated_order == true">
+    <div class="col-1"></div>
+    <div class="col-10 text-center">
+    <h1><i class="fa fa-check text-success"></i></h1>
+    <h3>Pedido Liquidado Y Cerrado 🐼 </h3>
+    <p>
+    Yo no es posible registrar provisiones en este pedido <span class="text-primary">${order_data.order.nro_pedido}</span>. 
+    <br>Desde éste punto todas las justificaciones ingresadas afectarán al mayor SAP   
+    <br>Será redireccionado en 3 Segundos...
+    </p>
+    <button class="btn btn-sm btn-outline-success"> <i class="fa fa-check"></i> ¡Entendido!</button>
+    </div>
+    <div class="col-1"></div>
+</div>
+<div class="row animate" v-if="show_form_liquidated" v-bind:class="{'fadeInDown' : show_form_liquidated}">
+    <div class="col-12 bg-light border border-primary">
+    <div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="basic-addon1">Comentarios:</span>
+  </div>
+  <input type="text" class="form-control" v-model="comentarios" placeholder="Ingrese comentarios de cierre">
+</div>
+    </div>
+</div>
+<br>
 <div class="row">
 <div class="col-12 text-right">
     <button class="btn btn-sm btn-outline-dark" @click="show_costings=false"><i class="fa fa-arrow-left"></i> Volver a Gastos</button>
-    <button class="btn btn-sm btn-outline-primary"><i class="fa fa-check"></i> Liquidar Pedido</button>
+    <button v-if="show_form_liquidated == false && liquidated_order == false"   class="btn btn-sm btn-outline-primary" @click="show_form_liquidated = true"><i class="fa fa-check"></i> Liquidar Pedido</button>
+    <button v-if="show_form_liquidated == true" class="btn btn-sm btn-outline-danger" @click="show_form_liquidated = false"><i class="fa fa-ban"></i> Cancelar</button>
+    <button v-if="show_form_liquidated == true" class="btn btn-sm btn-outline-primary" @click="liquidate_order()"><i class="fa fa-check"></i> Confirmar y Continuar </button>
 </div>
 </div>
