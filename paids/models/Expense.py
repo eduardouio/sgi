@@ -44,6 +44,7 @@ class Expense(models.Model):
     def ordinal_parcial(self):
         return Partial.get_ordinal_number(self.id_parcial)
 
+
     @classmethod
     def get_by_id_expense(self, id_expense):
         try:
@@ -56,43 +57,37 @@ class Expense(models.Model):
 
 
     @classmethod
-    def get_by_order(self, nro_order):
+    def get_all_by_orderR10(self, nro_order):
+        ''' Returns all expesnes from order R10 only '''
         expenses =  self.objects.filter(nro_pedido = nro_order)
+        order = Order.get_by_order(nro_order)
+        if order is None or order.regimen == '70':
+            loggin(
+                'w', 
+                'No se pueden obtener los gastos EL pedido {} no existe o es un regimen 70'
+                .format(nro_order)
+                )
+
         if expenses.count() is 0:
-            loggin('w', 'No existen gastos para el pedido {nro_order}'.format(nro_order = nro_order))
+            loggin('w', 'No existen gastos para el pedido {}'.format(nro_order))
             return None
+        
+        loggin('i', 'Obteniendo todos los gastos iniciales Pedido Consumo {}'.format(nro_order))
         return expenses
     
 
     @classmethod
     def get_by_parcial(self, partial):
+        ''' Returns all expesnes from a one parcial only '''
         provisions =  self.objects.filter(id_parcial = partial.id_parcial)
         if provisions.count() == 0:
-            loggin('w', 'El parcial {id_partial} no se tiene gastos'.format(id_partial=partial.id_parcial))
+            loggin('w', 'El parcial {} no se tiene gastos'.format(partial.id_parcial))
             return None
         
         return provisions
-
+    
 
     @classmethod
-    def get_by_concept(self, query_concept):
+    def get_all_by_orderR70(self, nro_order):
+        ''' Returns all expesnes from order R70 only '''
         pass
-
-
-    @classmethod
-    def get_all_open_provisions(self):
-        provisions = self.objects.filter(bg_closed=0).exclude(concepto='ISD')
-        if provisions.count() == 0:
-            return []
-        
-        for p in provisions:
-            if p.nro_pedido_id == '000-00':       
-               p.order = Partial.get_order_by_parcial(p.id_parcial)
-               pass
-            else:
-                p.order = p.nro_pedido
-            
-            if p.id_parcial == 0:
-                p.id_parcial =1
-                
-        return provisions    
