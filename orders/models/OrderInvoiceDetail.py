@@ -57,7 +57,6 @@ class OrderInvoiceDetail(models.Model):
     ice_unitario = models.DecimalField(max_digits=12, decimal_places=3, blank=True, null=True)
     id_parcial = models.DecimalField(max_digits=12, decimal_places=3, blank=True, null=True)
     id_user = models.SmallIntegerField(default=0)
-    id_user = models.SmallIntegerField(default=0)
     indirectos = models.DecimalField(max_digits=12, decimal_places=3, blank=True, null=True)
     iva = models.DecimalField(max_digits=12, decimal_places=3, blank=True, null=True)
     iva_total = models.DecimalField(max_digits=12, decimal_places=3, blank=True, null=True)
