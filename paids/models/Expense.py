@@ -77,11 +77,15 @@ class Expense(models.Model):
     
 
     @classmethod
-    def get_by_parcial(self, partial):
+    def get_by_parcial(self, id_partial):
         ''' Returns all expesnes from a one parcial only '''
-        provisions =  self.objects.filter(id_parcial = partial.id_parcial)
+        provisions =  self.objects.filter(id_parcial = id_partial)
         if provisions.count() == 0:
-            loggin('w', 'El parcial {} no se tiene gastos'.format(partial.id_parcial))
+            loggin(
+                'w', 
+                'El parcial {} no se tiene gastos'
+                .format(id_partial)
+                )
             return None
         
         return provisions

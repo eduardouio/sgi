@@ -1,12 +1,12 @@
 from django.db import models
+from django.db.models import QuerySet
+
+from logs.app_log import loggin
 from orders.models.Order import Order
 from orders.models.OrderInvoiceDetail import OrderInvoiceDetail
-from suppliers.models.Supplier import Supplier
 from partials.models.Partial import Partial
-from django.db.models import QuerySet
-from logs.app_log import loggin
 from simple_history.models import HistoricalRecords
-
+from suppliers.models.Supplier import Supplier
 
 
 class InfoInvoice(models.Model):
@@ -63,8 +63,16 @@ class InfoInvoice(models.Model):
     @classmethod
     def get_by_id_partial(self, id_partial):
         invoices = self.objects.filter(id_parcial = id_partial)
-        if invoices.count == 0:
-            loggin('e', 'El parcial {id_partial} no tiene facturas informaticas'.format(id_partial=id_partial)) 
-            return None
-        
-        return invoices.first()
+        if invoices.count() == 1:
+            loggin(
+                'i', 
+                'Factura informativa del parcial {} recuperada'
+                .format(id_partial)
+                )
+            return invoices.first()
+
+        loggin(
+            'e', 
+            'El parcial {id_partial} no tiene facturas informativas, o tiene mas de una'
+            .format(id_partial=id_partial)) 
+        return None

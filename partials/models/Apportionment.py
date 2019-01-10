@@ -34,14 +34,23 @@ class Apportionment(models.Model):
         verbose_name_plural = 'Prorrateos De Parciales'
         ordering = ['id_parcial']
     
-    @classmethod
-    def get_by_parcial(self, partial):
-        apportiment = self.objects.filter(id_parcial = partial.id_parcial)
-        if apportiment.count() == 0:
-            loggin('w', 'El parcial {id_parcial} no tiene prorrateos'.format(id_parcial = partial.id_parcial))
-            return None
-        
-        if apportiment.count() > 1:
-            loggin('e', 'El parcial {id_parcial} tiene mas de un prorrateo'.format(id_parcial = partial.id_parcial))
 
-        return apportiment.last()
+    @classmethod
+    def get_by_parcial(self,id_partial):
+        apportiment = self.objects.filter(id_parcial = id_partial)
+
+        if apportiment.count() == 1:
+            loggin(
+                's', 
+                'Prorrateo del parcial {} recuperado'
+                .format(id_partial)
+                )
+            return apportiment
+
+        loggin(
+            'e', 
+            'El parcial {} no tiene prorrateos, o tiene mas de uno'
+            .format(id_partial)
+            )
+            
+        return None

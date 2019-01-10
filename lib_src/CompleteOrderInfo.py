@@ -39,19 +39,21 @@ class CompleteOrderInfo(object):
         self.tributes = None
         self.total_expenses = 0
         self.total_invoiced = 0
-        self.total_provisions = 0 
+        self.total_provisions = 0
 
 
     def get_data(self, nro_order, serialized=False, request=None):
         """
-        Returns all data of order 
+        Returns all data of order
         Args:
             nro_order (string) : numero de pedido 000-00
-            serialized (bool) default False: modo de retorno arreglo | objeto 
-            request (module-request): detalle de sesion de usuario
+
+            serialized (bool) default False: modo de retorno arreglo | objeto
+
+            request (module-request): detalle de sesion de usuario para logs
         Returns:
             dict | object CompleteOrderInfo
-        """       
+        """
         self.nro_order = nro_order
         self.serialized = serialized
         self.request = request
@@ -90,7 +92,7 @@ class CompleteOrderInfo(object):
         }
 
         if order is None:
-            self.status_order['order'] = False           
+            self.status_order['order'] = False
             return None
 
         if order.regimen == '10' and order.bg_isliquidated == 1 :
@@ -100,7 +102,7 @@ class CompleteOrderInfo(object):
             self.tributes['fondinfa'] = order.fodinfa_pagado
             self.tributes['ice_advalorem'] = order.ice_especifico_pagado
             self.tributes['ice_especifico'] = order.ice_advalorem_pagado
-                
+
             self.tributes['total'] = (
                         + (order.arancel_advalorem_pagar_pagado)
                         + (order.arancel_especifico_pagar_pagado)
@@ -110,7 +112,7 @@ class CompleteOrderInfo(object):
             )
         elif order.regimen == '70':
             self.status_order['taxes'] = True
-            
+
 
         self.init_ledger += self.tributes['total']
 
@@ -125,14 +127,16 @@ class CompleteOrderInfo(object):
         order_items = {
             'order_invoice' : None,
             'supplier' : None,
-            'order_invoice_details' : None
+            'order_invoice_details' : None,
+            'totals' : None,
         }
 
         order_invoice = OrderInvoice.get_by_order(self.nro_order)
-        if order_invoice is None:           
+
+        if order_invoice is None:
             return None
+
         self.status_order['order_invoice'] = True
-        
         order_items['order_invoice'] = order_invoice
         order_items['order_invoice_details'] = OrderInvoiceDetail.get_by_id_order_invoice(order_invoice.id_pedido_factura)
         order_items['supplier'] = Supplier.get_by_ruc(order_invoice.identificacion_proveedor_id)
@@ -141,7 +145,7 @@ class CompleteOrderInfo(object):
             'boxes' : 0,
             'value' : 0,
             'bottles' : 0,
-        }       
+        }
 
         if order_items['order_invoice_details']:
             self.status_order['order_invoice_details'] = True
@@ -166,20 +170,20 @@ class CompleteOrderInfo(object):
                 'provision' : (order_items['order_invoice'].valor != order_items['totals']['value']),
                 'complete' : (order_items['order_invoice'].valor == order_items['totals']['value'])
             }
-            
+
         return order_items
 
 
     def get_expenses(self):
-        data_expenses = []       
+        data_expenses = []
         expenses = Expense.get_all_by_orderR10(self.nro_order)
-        
+
         if expenses is None:
             return None
 
         self.status_order['init_expenses'] = True
         for item in expenses:
-            paids = []                
+            paids = []
             item.paids = PaidInvoiceDetail.get_by_expense(item)
             item.invoiced_value = 0
             item.ledger = 0
@@ -191,7 +195,7 @@ class CompleteOrderInfo(object):
                 item.ledger = item.valor_provisionado
                 self.total_invoiced += item.valor_provisionado
                 item.bg_closed = 1
-                item.paids = []    
+                item.paids = []
 
             for paid in item.paids:
                 self.total_invoiced += paid.valor
@@ -210,11 +214,11 @@ class CompleteOrderInfo(object):
                 if paid.bg_mayor == 1:
                     item.ledger += paid.valor
 
-            item.sale = (item.valor_provisionado - item.invoiced_value)    
+            item.sale = (item.valor_provisionado - item.invoiced_value)
             self.total_provisions += item.sale
 
             if self.serialized:
-                expense_serializer = ExpenseSerializer(item)                    
+                expense_serializer = ExpenseSerializer(item)
                 paids_serialized = []
 
                 for p in paids:
@@ -244,40 +248,29 @@ class CompleteOrderInfo(object):
             return data_expenses
 
         return expenses
-    
+
 
     def get_ledger(self):
         '''Return last ledger from order'''
+        return None
         order = Order.get_by_order(self.nro_order)
         if order is None or order.bg_isclosed == 0:
             loggin(
-            'w', 
+            'w',
             'No se puede retornar el mayor del pedido {} abierto o inexistente'
             .format(self.nro_order)
-            )            
+            )
             return None
-        
+
         ledger = Ledger().get_by_order(self.nro_order)
 
         if self.serialized and ledger:
             ledger_serializer = LedgerSerializer(ledger, many=True)
             return ledger_serializer.data
-        
+
         return ledger
-        
+
 
     def get_taxes(self):
         taxes =  Order.get_paid_taxes(self.nro_order)
         return taxes
-    
-    
-    def get_taxes_params(self):
-        rates = RateExpense().get_taxes_params()
-        if rates is None:
-            return None
-
-        if self.serialized:
-            rate_serializer = RateExpenseSerializer(rates, many=True)
-            return rate_serializer.data
-        
-        return rates

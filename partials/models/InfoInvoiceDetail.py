@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 
 from logs.app_log import loggin
@@ -10,7 +11,6 @@ class InfoInvoiceDetail(models.Model):
     id_factura_informativa_detalle = models.AutoField(primary_key=True)
     id_factura_informativa = models.ForeignKey(InfoInvoice, models.PROTECT, db_column='id_factura_informativa')
     detalle_pedido_factura = models.ForeignKey(OrderInvoiceDetail, models.PROTECT, db_column='detalle_pedido_factura')
-
     arancel_advalorem = models.DecimalField(max_digits=12, decimal_places=3, blank=True, null=True)
     arancel_advalorem_liberado = models.DecimalField(max_digits=12, decimal_places=3, blank=True, null=True)
     arancel_advalorem_pagar = models.DecimalField(max_digits=12, decimal_places=3, blank=True, null=True)
@@ -94,10 +94,15 @@ class InfoInvoiceDetail(models.Model):
         ordering = ['id_factura_informativa']
     
     @classmethod
-    def get_by_info_invoice(self, info_invoice):
-        info_invoice_items = self.objects.filter(id_factura_informativa=info_invoice.id_factura_informativa)
+    def get_by_info_invoice(self, id_info_invoice):
+        info_invoice_items = self.objects.filter(id_factura_informativa=id_info_invoice)
         if info_invoice_items.count() == 0:
-            loggin('w', 'La factura informativa {id_info_invoice} no tiene detalles'.format(id_info_invoice=info_invoice.id_factura_informativa))
-            return None
+            loggin(
+                'w', 
+                'La factura informativa {} no tiene detalles'
+                .format(id_info_invoice)
+                )
+            return []
+        
         
         return info_invoice_items

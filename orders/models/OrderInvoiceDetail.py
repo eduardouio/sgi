@@ -89,19 +89,16 @@ class OrderInvoiceDetail(models.Model):
         unique_together = (('id_pedido_factura', 'cod_contable', 'grado_alcoholico', 'date_create'),)
         ordering = ['id_pedido_factura','detalle_pedido_factura']
         verbose_name_plural = 'Detalle Facturas Pedido'
-    
+
+
     @classmethod
     def get_by_id_order_invoice(self, id_order_invoice):
-        order_invoice = OrderInvoice.get_by_id(id_order_invoice)
-        if order_invoice is None:
-            return None
-
         order_items =  self.objects.filter(id_pedido_factura = order_invoice.id_pedido_factura)
 
         if order_items.count() == 0:
             loggin('w', 'La factura de producto {id_order_invoice} no tiene items registrados'.format(id_order_invoice=id_order_invoice))
             return []
-        
+
         for item in order_items:
             if not bool(item.product):
                 item.product = item.cod_contable.nombre

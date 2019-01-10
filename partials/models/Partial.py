@@ -9,8 +9,8 @@ from django.core.exceptions import ObjectDoesNotExist
 class Partial(models.Model):
     id_parcial = models.AutoField(primary_key=True)
     nro_pedido = models.ForeignKey(Order,models.PROTECT, db_column='nro_pedido')
-    fecha_nacionalizacion = models.DateField(blank=True, null=True)    
-    fecha_declaracion_inicial = models.DateField(blank=True, null=True)  
+    fecha_nacionalizacion = models.DateField(blank=True, null=True)
+    fecha_declaracion_inicial = models.DateField(blank=True, null=True)
     fecha_entrega_etiquetas_senae = models.DateField(blank=True, null=True)
     fecha_pegado_etiquetas = models.DateField(blank=True, null=True)
     fecha_solicitud_salida_almagro = models.DateField(blank=True, null=True)
@@ -70,7 +70,7 @@ class Partial(models.Model):
     id_user_cierre = models.PositiveSmallIntegerField(blank=True, null=True)
     id_user = models.SmallIntegerField(default=0)
     date_create = models.DateTimeField(blank=True, null=True)
-    last_update = models.DateTimeField(blank=True, null=True) 
+    last_update = models.DateTimeField(blank=True, null=True)
     history = HistoricalRecords()
 
     def __str__(self):
@@ -81,7 +81,7 @@ class Partial(models.Model):
         db_table = 'parcial'
         verbose_name_plural = 'Parciales'
         ordering = ['nro_pedido', 'id_parcial']
-    
+
 
     @property
     def ordinal_parcial(self):
@@ -99,9 +99,9 @@ class Partial(models.Model):
         if parcials.count() == 0:
             loggin('w', 'No existe informacion para el id del parcial indicado')
             return None
-        
+
         return parcials
-    
+
 
     @classmethod
     def get_by_id(self, id_partial):
@@ -110,10 +110,10 @@ class Partial(models.Model):
         except ObjectDoesNotExist:
             loggin('w', 'El Parcial {id_partial} no existe'.format(id_partial=id_partial))
             return None
-        
+
         return partial
 
-    
+
     @classmethod
     def get_by_arrived_local_warenhouse(self, date_start, date_end):
         pass
@@ -122,7 +122,7 @@ class Partial(models.Model):
     @classmethod
     def get_info_invoice(self, if_parcial):
         pass
-    
+
 
     @classmethod
     def get_ordinal_number(self, id_partial):
@@ -130,9 +130,9 @@ class Partial(models.Model):
         current_partial = self.get_by_id(id_partial)
         if current_partial is None:
             return 0
-        
+
         all_partials = self.get_by_order(current_partial.nro_pedido)
-        ordinal = 1 
+        ordinal = 1
         for p in all_partials:
             if p.id_parcial == current_partial.id_parcial:
                 return ordinal
@@ -146,10 +146,40 @@ class Partial(models.Model):
         except:
             loggin('e', 'El parcual no existe {id_parcial}'.format(id_parcial = id_parcial))
             return None
-        
+
         if parcial is None:
             loggin('w', 'No se puede recupear la order de un parcial que no existe {id_parcial}'.format(id_parcial=id_parcial))
             return None
 
         return Order.get_by_order(parcial.nro_pedido_id)
+
+
+    @classmethod
+    def get_paid_taxes(self, id_partial):
+        partial = self.get_by_id(id_partial)
+        if partial is None:
+            loggin('i', 'No se puede reotornar impuestos si el parcial {} no existe'.format(id_partial))
+            return None
         
+        taxes =  {
+        'total_pagado' : (
+                partial.arancel_advalorem_pagar_pagado
+                + partial.arancel_especifico_pagar_pagado
+                + partial.fodinfa_pagado
+                + partial.ice_advalorem_pagado
+                + partial.ice_especifico_pagado
+        ),
+        'total_pagado_sin_iva' : (
+                partial.arancel_advalorem_pagar_pagado
+                + partial.arancel_especifico_pagar_pagado
+                + partial.fodinfa_pagado
+                + partial.ice_advalorem_pagado
+                + partial.ice_especifico_pagado
+        ),
+        'total_provisionado' : (
+                partial.arancel_advalorem_pagar_pagado
+                + partial.arancel_especifico_pagar_pagado
+                + partial.fodinfa_pagado
+                + partial.ice_advalorem_pagado
+                + partial.ice_especifico_pagado
+        )}

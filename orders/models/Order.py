@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 from logs.app_log import loggin
-from simple_history.models import HistoricalRecords    
+from simple_history.models import HistoricalRecords
 
 class Order(models.Model):
     nro_pedido = models.CharField(primary_key=True, max_length=6)
@@ -60,7 +60,7 @@ class Order(models.Model):
     base_fodinfa = models.DecimalField(max_digits=16, decimal_places=3,blank=True, null=True, default=0)
     base_etiquetas = models.DecimalField(max_digits=16, decimal_places=3,blank=True, null=True, default=0)
     tipo_cambio_go = models.DecimalField(max_digits=12, decimal_places=2,blank=True, null=True, default=1)
-    id_user_cierre = models.PositiveSmallIntegerField(blank=True, null=True, default=0) 
+    id_user_cierre = models.PositiveSmallIntegerField(blank=True, null=True, default=0)
     gasto_origen = models.DecimalField(max_digits=16, decimal_places=3, blank=True, null=True, default=0 )
     notas_cierre = models.CharField(max_length=200, blank=True, null=True)
     bg_have_close_parcial = models.IntegerField(blank=True, null=True)
@@ -98,46 +98,46 @@ class Order(models.Model):
         db_table = 'pedido'
         ordering = ['nro_pedido']
         verbose_name_plural = 'Pedidos'
-    
+
     @classmethod
-    def get_by_order(self, nro_order):        
+    def get_by_order(self, nro_order):
         try:
             order = self.objects.get(pk=nro_order)
         except ObjectDoesNotExist:
             loggin('e', 'El pedido {nro_order} no existe'.format(nro_order=nro_order))
             return None
-        
+
         if order.proveedor is None or order.proveedor is '':
             order.proveedor = 'No Definido'
-        
+
         if order.nro_refrendo is None or order.nro_refrendo is '':
             order.nro_refrendo = 'Pendiente'
-        
+
         if order.nro_liquidacion is None or order.nro_liquidacion is '':
             order.nro_liquidacion = 'Sin Liquidación SENAE'
-        
+
         return order
 
 
     @property
     def diferencia_ice_senae(self):
         return (
-             self.ice_advalorem 
+             self.ice_advalorem
             + self.ice_especifico
             - self.ice_advalorem_pagado
             - self.ice_especifico_pagado
             )
-    
-    @property 
+
+    @property
     def reliquidacion_ice(self):
         return (
-            
+
         )
 
     @classmethod
     def get_all(self):
         return self.objects.all()
-    
+
     @classmethod
     def search(self, query):
         pass
@@ -145,7 +145,7 @@ class Order(models.Model):
     @classmethod
     def get_by_field(self, **args):
         pass
-    
+
     @classmethod
     def get_arrived_cellar_by_date(self, year, month):
         pass
@@ -153,29 +153,19 @@ class Order(models.Model):
     @classmethod
     def close_order(self, nro_order):
         pass
-    
+
     @classmethod
     def reopen_order(self, nro_order):
         pass
-    
+
     @classmethod
     def get_paid_taxes(self, nro_order):
-        order =  self.get_by_order(nro_order)        
+        order =  self.get_by_order(nro_order)
         if order is None or order.regimen == '70' or order.bg_isliquidated == 0:
             loggin('w', 'No se obtener los tributos del pedido {nro_order} pedido inexistente o regimen = 70'.format(nro_order=nro_order))
-            return {}    
+            return {}
 
         taxes =  {
-            'arancel_advalorem' : order.arancel_advalorem_pagar_pagado,
-            'arancel_especifico' : order.arancel_especifico_pagar_pagado,
-            'fondinfa' : order.fodinfa_pagado,
-            'ice_advalorem' : order.ice_advalorem_pagado,
-            'ice_especifico' : order.ice_especifico_pagado,
-            'iva' : order.iva_pagado,
-            'exoneracion_arancel' : order.exoneracion_arancel,
-            'tipo_cambio' : (bool(order.tipo_cambio_impuestosr10) == False) and 1 or order.tipo_cambio_impuestosr10,
-            'nro_liquidacion' : order.nro_liquidacion,
-            'fecha_liquidacion' : order.fecha_liquidacion,
             'total_pagado' : (
                     order.arancel_advalorem_pagar_pagado
                     + order.arancel_especifico_pagar_pagado
@@ -190,23 +180,16 @@ class Order(models.Model):
                     + order.ice_advalorem_pagado
                     + order.ice_especifico_pagado
             ),
-            'arancel_advalorem_provisionado' : order.arancel_advalorem_pagar,
-            'arancel_especifico_provisionado' : order.arancel_especifico_pagar,
-            'fondinfa_provisionado' : order.fodinfa,
-            'ice_advalorem_provisionado' : order.ice_advalorem,
-            'ice_especifico_provisionado' : order.ice_especifico,
-            'iva_provisionado' : order.iva,
             'total_provisionado' : (
                     order.arancel_advalorem_pagar_pagado
                     + order.arancel_especifico_pagar_pagado
                     + order.fodinfa_pagado
                     + order.ice_advalorem_pagado
                     + order.ice_especifico_pagado
-            ),
-            'complete' : False            
+            )
         }
 
         if (round(taxes['total_provisionado'],2) == round(taxes['total_pagado'],2)):
             taxes['complete'] = True
-        
+
         return taxes
