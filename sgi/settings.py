@@ -107,9 +107,10 @@ WSGI_APPLICATION = 'sgi.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'cordovezApp',
-        'USER' : 'root',
-        'PASSWORD' : 'elian.2011',
+        'NAME': 'cordovezAppDjango',
+        'USER' : 'appCordovez',
+        'PASSWORD' : '\DBGfW<7;vBa5(LB',
+        'HOST': '192.168.0.198',
         'PORT' : '3306',
     }
 }
