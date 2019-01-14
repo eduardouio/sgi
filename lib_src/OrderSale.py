@@ -98,4 +98,9 @@ class OrderSale(object):
 
 
     def get_expenses_sale(self):
-        pass
+        expenses = self.order_data['expenses']
+        partial_expenses = {
+            'expenses' : [],
+            'totals' : {}
+        }
+        return expenses
