@@ -1,21 +1,19 @@
 from costings.models.Ledger import Ledger
 from lib_src.CompleteOrderInfo import CompleteOrderInfo
-from lib_src.serializers import (ApportionmentDetailSerializer,
-                                 ApportionmentSerializer, ExpenseSerializer,
-                                 InfoInvoiceDetailSerializer,
-                                 InfoInvoiceSerializer, LedgerSerializer,
-                                 PaidInvoiceDetailSerializer,
-                                 PaidInvoiceSerializer, PartialSerializer,
-                                 SupplierSerializer)
+from lib_src.serializers import ApportionmentDetailSerializer, \
+    ApportionmentSerializer, ExpenseSerializer, InfoInvoiceDetailSerializer, \
+    InfoInvoiceSerializer, LedgerSerializer, PaidInvoiceDetailSerializer, \
+    PaidInvoiceSerializer, PartialSerializer, SupplierSerializer
 from logs.app_log import loggin
+from orders.models.OrderInvoiceDetail import OrderInvoiceDetail
 from paids.models.Expense import Expense
-from partials.models.Partial import Partial
 from paids.models.PaidInvoice import PaidInvoice
 from paids.models.PaidInvoiceDetail import PaidInvoiceDetail
 from partials.models.Apportionment import Apportionment
 from partials.models.ApportionmentDetail import ApportionmentDetail
 from partials.models.InfoInvoice import InfoInvoice
 from partials.models.InfoInvoiceDetail import InfoInvoiceDetail
+from partials.models.Partial import Partial
 from suppliers.models.Supplier import Supplier
 
 
@@ -27,7 +25,7 @@ class CompleteParcialInfo(object):
         self.status_parcial = {
             'parial' : False,
             'info_invoice' : False,
-            'info_invoice_detail' : False,
+            'info_invoice_details' : False,
             'apportioment' : False,
             'apportioment_detail' : False,
             'partial_expenses' : False,
@@ -134,7 +132,7 @@ class CompleteParcialInfo(object):
         
         self.status_parcial['info_invoice'] = True
         partial_items['info_invoice'] = info_invoice
-        partial_items['info_invoice_details'] = InfoInvoiceDetail.get_by_info_invoice(info_invoice.id_factura_infomativa)
+        partial_items['info_invoice_details'] = InfoInvoiceDetail.get_by_info_invoice(info_invoice.id_factura_informativa)
         partial_items['supplier'] = Supplier.get_by_ruc(info_invoice.identificacion_proveedor_id)
         partial_items['totals'] = {
             'items' : int(partial_items['info_invoice_details'].count()),
@@ -148,8 +146,9 @@ class CompleteParcialInfo(object):
         
         for line_item in partial_items['info_invoice_details']:
             partial_items['totals']['boxes'] += line_item.nro_cajas
-            partial_items['totals']['bottles'] += (line_item.nro_cajas * line_item.cantidad_x_caja)
-            partial_items['totals']['value'] += (line_item.nro_cajas * line_item.costo_caja)
+            order_ivoice_detail = OrderInvoiceDetail.get_by_id(line_item.detalle_pedido_factura_id)
+            partial_items['totals']['bottles'] += (line_item.nro_cajas * order_ivoice_detail.cod_contable.cantidad_x_caja)
+            partial_items['totals']['value'] += (line_item.nro_cajas * order_ivoice_detail.costo_caja)
         
         self.partial_ledger += (partial_items['totals']['value'] * self.type_change_trimestral)
 
@@ -241,9 +240,9 @@ class CompleteParcialInfo(object):
 
         self.status_parcial['apportioment'] = True        
 
-        apportionment.apportionment_detail = ApportionmentDetail.get_by_apportionment(apportionment)
-
+        apportionment.apportionment_detail = ApportionmentDetail.get_by_apportionment(apportionment.id_prorrateo)
         if apportionment.apportionment_detail:
+
             self.status_parcial['apportioment_detail'] = True
 
         if self.serialized:

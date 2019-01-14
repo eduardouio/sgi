@@ -45,7 +45,7 @@ class Apportionment(models.Model):
                 'Prorrateo del parcial {} recuperado'
                 .format(id_partial)
                 )
-            return apportiment
+            return apportiment.first()
 
         loggin(
             'e', 

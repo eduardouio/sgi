@@ -73,6 +73,7 @@ class Order(models.Model):
     path_dai_2 = models.FileField(upload_to='dai_pedido/',max_length=600, blank=True, null=True)
     path_dai_3 = models.FileField(upload_to='dai_pedido/',max_length=600, blank=True, null=True)
     nro_bl = models.CharField(max_length=70, blank=True, null=True)
+    nro_matricula = models.CharField(max_length=11, blank=True, null=True)
     numero_de_carga_mrn = models.CharField(max_length=30, blank=True, null=True)
     naviera = models.CharField(max_length=70, blank=True, null=True)
     agente_aduana = models.CharField(max_length=100, blank=True, null=True)

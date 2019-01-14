@@ -15,18 +15,18 @@ delete FROM `gastos_nacionalizacion` where `id_parcial` = 17 or `id_parcial` = 1
 
 
 -- Tabla de proveedores
-ALTER TABLE `cordovezApp`.`proveedor` 
+ALTER TABLE `cordovezAppDjango`.`proveedor` 
 ADD COLUMN  `id_proveedor` INT(11) NOT NULL AUTO_INCREMENT ,
 ADD UNIQUE INDEX `id_proveedor_UNIQUE` (`id_proveedor` ASC);
 
 
 -- tabla de productos
-ALTER TABLE `cordovezApp`.`producto` 
+ALTER TABLE `cordovezAppDjango`.`producto` 
 ADD COLUMN `id_producto` INT(11) NOT NULL AUTO_INCREMENT ,
 ADD UNIQUE INDEX `id_producto_UNIQUE` (`id_producto` ASC);
 
 
---pedidos
-ALTER TABLE `cordovezApp`.`pedido` 
+-- pedidos
+ALTER TABLE `cordovezAppDjango`.`pedido` 
 ADD COLUMN `id_pedido` INT(11) NOT NULL AUTO_INCREMENT ,
 ADD UNIQUE INDEX `id_pedido_UNIQUE` (`id_pedido` ASC);

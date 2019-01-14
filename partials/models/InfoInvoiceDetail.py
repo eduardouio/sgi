@@ -27,7 +27,7 @@ class InfoInvoiceDetail(models.Model):
     cif = models.DecimalField(max_digits=12, decimal_places=3, blank=True, null=True)
     cod_contable = models.CharField(max_length=20, blank=True, null=True)
     costo_botella = models.DecimalField(max_digits=12, decimal_places=3, blank=True, null=True)
-    costo_caja = models.DecimalField(max_digits=12, decimal_places=3, blank=True, null=True)
+    costo_caja = models.DecimalField(max_digits=12, decimal_places=6, blank=True, null=True)
     costo_caja_final = models.DecimalField(max_digits=12, decimal_places=3, blank=True, null=True)
     costo_total = models.DecimalField(max_digits=12, decimal_places=3, blank=True, null=True)
     costo_unidad = models.DecimalField(max_digits=12, decimal_places=3, blank=True, null=True)
@@ -43,6 +43,7 @@ class InfoInvoiceDetail(models.Model):
     fob = models.DecimalField(max_digits=12, decimal_places=3, blank=True, null=True)
     fob_tasa_trimestral = models.DecimalField(max_digits=12, decimal_places=3, blank=True, null=True)
     fob_percent = models.DecimalField(max_digits=12, decimal_places=3, blank=True, null=True)
+    fecha_liquidacion = models.DateField(blank=True, null=True)
     fodinfa = models.DecimalField(max_digits=12, decimal_places=3, blank=True, null=True)
     gasto_origen = models.DecimalField(max_digits=12, decimal_places=3, blank=True, null=True)
     gasto_origen_tasa_trimestral = models.DecimalField(max_digits=12, decimal_places=3, blank=True, null=True)
@@ -92,7 +93,10 @@ class InfoInvoiceDetail(models.Model):
         unique_together = (('id_factura_informativa', 'detalle_pedido_factura', 'date_create'),)
         verbose_name_plural = 'Factura Informativa Detalle'
         ordering = ['id_factura_informativa']
-    
+    @property
+    def cantidad_x_caja(self):
+        return self.detalle_pedido_factura.cantidad_x_caja
+
     @classmethod
     def get_by_info_invoice(self, id_info_invoice):
         info_invoice_items = self.objects.filter(id_factura_informativa=id_info_invoice)
@@ -104,5 +108,5 @@ class InfoInvoiceDetail(models.Model):
                 )
             return []
         
-        
+
         return info_invoice_items

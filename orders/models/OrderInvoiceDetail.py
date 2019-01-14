@@ -1,9 +1,11 @@
-from django.db import models
-from products.models.Product import Product
-from orders.models.OrderInvoice import OrderInvoice
 from django.core.exceptions import ObjectDoesNotExist
-from logs.app_log import loggin
+from django.db import models
 from simple_history.models import HistoricalRecords
+
+from logs.app_log import loggin
+from orders.models.OrderInvoice import OrderInvoice
+from products.models.Product import Product
+
 
 class OrderInvoiceDetail(models.Model):
     detalle_pedido_factura = models.AutoField(primary_key=True)
@@ -42,6 +44,7 @@ class OrderInvoiceDetail(models.Model):
     fob_tasa_trimestral = models.DecimalField(max_digits=12, decimal_places=3, blank=True, null=True)
     fob_percent = models.DecimalField(max_digits=12, decimal_places=3, blank=True, null=True)
     fodinfa = models.DecimalField(max_digits=12, decimal_places=3, blank=True, null=True)
+    fecha_liquidacion = models.DateField(blank=True, null=True)
     gasto_origen = models.DecimalField(max_digits=12, decimal_places=3, blank=True, null=True)
     gasto_origen_tasa_trimestral = models.DecimalField(max_digits=12, decimal_places=3, blank=True, null=True)
     grado_alcoholico = models.FloatField(default=0)
@@ -93,7 +96,8 @@ class OrderInvoiceDetail(models.Model):
 
     @classmethod
     def get_by_id_order_invoice(self, id_order_invoice):
-        order_items =  self.objects.filter(id_pedido_factura = order_invoice.id_pedido_factura)
+        loggin('i', 'Obteniendo la lista completa de los detalles de un pedido')
+        order_items =  self.objects.filter(id_pedido_factura = id_order_invoice)
 
         if order_items.count() == 0:
             loggin('w', 'La factura de producto {id_order_invoice} no tiene items registrados'.format(id_order_invoice=id_order_invoice))
@@ -104,3 +108,18 @@ class OrderInvoiceDetail(models.Model):
                 item.product = item.cod_contable.nombre
 
         return order_items
+    
+    @classmethod
+    def get_by_id(self, id_order_invoice_detail):
+        try:
+            return self.objects.get(pk = id_order_invoice_detail)
+        except ObjectDoesNotExist:
+            loggin(
+                'e', 
+                'El detalle {} de pedido factura que busca no existe'
+                .format(id_order_invoice_detail)
+                )
+            return None
+
+            
+

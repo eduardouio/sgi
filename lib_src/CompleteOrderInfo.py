@@ -6,7 +6,7 @@ from lib_src.serializers import (ExpenseSerializer, LedgerSerializer,
                                  OrderInvoiceSerializer, OrderSerializer,
                                  PaidInvoiceDetailSerializer,
                                  PaidInvoiceSerializer, RateExpenseSerializer,
-                                 SupplierSerializer)
+                                 SupplierSerializer, PartialSerializer)
 from logs.app_log import loggin
 from orders.models.Order import Order
 from orders.models.OrderInvoice import OrderInvoice
@@ -43,17 +43,19 @@ class CompleteOrderInfo(object):
 
 
     def get_data(self, nro_order, serialized=False, request=None):
-        """
-        Returns all data of order
-        Args:
-            nro_order (string) : numero de pedido 000-00
-
-            serialized (bool) default False: modo de retorno arreglo | objeto
-
-            request (module-request): detalle de sesion de usuario para logs
+        '''[summary]
+        
+        Arguments:
+            nro_order {string} -- Nro de pedido
+        
+        Keyword Arguments:
+            serialized {bool} -- indica si el resultado es serializado (default: {False})
+            request {[type]} -- django session object (default: {None})
+        
         Returns:
-            dict | object CompleteOrderInfo
-        """
+            [type] -- [description]
+        '''
+
         self.nro_order = nro_order
         self.serialized = serialized
         self.request = request
@@ -69,6 +71,7 @@ class CompleteOrderInfo(object):
             'expenses':self.get_expenses(),
             'taxes' : self.get_taxes(),
             'ledger' : self.get_ledger(),
+            'partials' : self.get_partials(),
             'status' : self.status_order,
             'tributes' : self.tributes,
             'init_ledger' : self.init_ledger,
@@ -274,3 +277,17 @@ class CompleteOrderInfo(object):
     def get_taxes(self):
         taxes =  Order.get_paid_taxes(self.nro_order)
         return taxes
+    
+    
+    def get_partials(self):
+        partials = Partial.get_by_order(self.nro_order)
+
+        if partials is None:
+            return None
+
+        if self.serialized:
+            partial_serializer = PartialSerializer(partials, many=True)
+            return partial_serializer.data
+        
+        return partials
+            

@@ -28,8 +28,8 @@ class ApportionmentDetail(models.Model):
         ordering = ['id_prorrateo', 'concepto']
 
     @classmethod
-    def get_by_apportionment(self, apportionment):
-        details = self.objects.filter(id_prorrateo = apportionment.id_prorrateo)
+    def get_by_apportionment(self, id_apportionment):
+        details = self.objects.filter(id_prorrateo = id_apportionment)
         if details.count() == 0:
             loggin('w', 'El prorrateo {id_prorrateo} no tiene detalles'.format(id_prorrateo=apportionment.id_prorrateo))
             return None

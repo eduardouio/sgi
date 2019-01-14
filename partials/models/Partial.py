@@ -98,7 +98,7 @@ class Partial(models.Model):
         parcials =  self.objects.filter(nro_pedido= nro_order)
         if parcials.count() == 0:
             loggin('w', 'No existe informacion para el id del parcial indicado')
-            return None
+            return []
 
         return parcials
 
