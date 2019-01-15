@@ -7,7 +7,26 @@ from paids.models.PaidInvoiceDetail import PaidInvoiceDetail
 
 
 class ExpensesAdmin(admin.ModelAdmin):
-    pass
+    list_display = (
+    'id_gastos_nacionalizacion',
+    'nro_pedido',
+    'id_parcial',
+    'concepto',
+    'tipo',
+    'valor_provisionado',
+    'fecha',
+    'fecha_fin',
+    'bg_closed',
+    'id_user',
+    )
+
+    search_fields = (
+    'id_gastos_nacionalizacion',
+    'concepto',
+    'tipo',
+    'valor_provisionado',
+    'fecha',
+    )
 
 
 class RateExpenseAdmin(admin.ModelAdmin):

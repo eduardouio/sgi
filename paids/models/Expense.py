@@ -61,6 +61,9 @@ class Expense(models.Model):
         ''' Returns all expesnes from order R10 only '''
         expenses =  self.objects.filter(nro_pedido = nro_order)
         order = Order.get_by_order(nro_order)
+        
+        loggin('i', 'Obteniendo todos los gastos iniciales Pedido Consumo {}'.format(nro_order))
+        
         if order is None or order.regimen == '70':
             loggin(
                 'w', 
@@ -70,9 +73,7 @@ class Expense(models.Model):
 
         if expenses.count() is 0:
             loggin('w', 'No existen gastos para el pedido {}'.format(nro_order))
-            return None
         
-        loggin('i', 'Obteniendo todos los gastos iniciales Pedido Consumo {}'.format(nro_order))
         return expenses
     
 

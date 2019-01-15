@@ -9,6 +9,18 @@
  * @since    Version 1.0.0
  * @filesource
  */
+ @media (min-width: 992px){
+.navbar-expand-lg .navbar-collapse {
+	display: -ms-flexbox !important;
+    display: flex !important;
+    -ms-flex-preferred-size: auto;
+	flex-basis: auto;
+	background-color: #fff;
+	border-radius: 2.5px;
+	}
+}
+
+
 .border{
 	padding: 3px;
 	margin: 3px;
@@ -370,7 +382,7 @@ body {
 .text-tittle {
 	width: 100%;
 	/**background-color: #337ab7;**/
-	background-color: #8698a7;	
+	background-color: #005092;	
 	color: #fff;
 	border-radius: 5px;
 	text-transform: uppercase;

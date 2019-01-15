@@ -11,18 +11,20 @@ from orders.models.Order import Order
 class OrderSaleTemplateView(TemplateView):
     template_name = "orders/saldo_pedido.html"
 
-    def get(self, request, nro_order, *args, **kwargs):
-        order = Order.get_by_order(nro_order)
-        context = self.get_context_data(**kwargs)
-
-        if order is None:
-            data = {
-                'title_page': 'Pedido No encontrado',
-            }
-            context.update({'data': data})
-            return self.render_to_response(context)
+    def get(self, request, *args, **kwargs):
         
-        data = OrderSale().get_all_data(nro_order)
-        data['title_page'] = 'Saldo Pedido {}'.format(nro_order)
+        context = self.get_context_data(**kwargs)
+        orders = Order.get_open_orders()
+        sales_summary = []
+
+        for o in orders:
+            sales_summary.append(OrderSale().get_all_data(o.nro_pedido))
+
+
+        data = {
+            'title_page': 'Saldo General de Pedidos 📂',
+            'sales' : sales_summary,
+        }
+        
         context.update({'data':data})
         return self.render_to_response(context)

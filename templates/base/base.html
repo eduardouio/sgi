@@ -19,7 +19,7 @@
 </head>
 <body>    
     <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-      <a class="navbar-brand" href="{{ BASE_URL }}">Agencia y Representaciones Cordovez</a>
+      <a class="navbar-brand" href="{{ url }}">Agencia y Representaciones Cordovez</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -65,6 +65,7 @@
   </body>
   <div class="container-fluid">
     {% block title_content %}{% endblock title_content %}
+    <div class="row" style="padding:1px"></div>
     {% block content %} {% endblock %}
   </div>
   <br>

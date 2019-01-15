@@ -106,7 +106,7 @@ class InfoInvoiceDetail(models.Model):
                 'La factura informativa {} no tiene detalles'
                 .format(id_info_invoice)
                 )
-            return []
+            return self.objects.none()
         
 
         return info_invoice_items

@@ -6,6 +6,6 @@ app_name = 'authentication'
 
 urlpatterns = [
     path('get_all_data/<nro_order>/', get_complete_order_info ,name="validate_order"),    
-    path('saldos/<nro_order>/', OrderSaleTemplateView.as_view() ,name="sales_of_order"),    
+    path('saldos/', OrderSaleTemplateView.as_view() ,name="sales_of_order"),    
     path('listado', pedidos_lista ,name="lista"),    
 ]

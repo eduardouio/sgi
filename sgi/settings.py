@@ -111,6 +111,7 @@ DATABASES = {
         'USER' : 'appCordovez',
         'PASSWORD' : '\DBGfW<7;vBa5(LB',
         'HOST': '179.49.60.158',
+        #'HOST': '192.168.0.198',
         'PORT' : '3306',
     }
 }

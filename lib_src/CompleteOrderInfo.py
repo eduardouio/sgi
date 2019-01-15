@@ -40,6 +40,8 @@ class CompleteOrderInfo(object):
         self.total_expenses = 0
         self.total_invoiced = 0
         self.total_provisions = 0
+        self.tipo_cambio_trimestral = 1
+        self.incoterm = None
 
 
     def get_data(self, nro_order, serialized=False, request=None):
@@ -68,6 +70,7 @@ class CompleteOrderInfo(object):
         return ({
             'order': self.get_order(),
             'order_invoice':self.get_order_invoice(),
+            'tipo_cambio_trimestral': self.tipo_cambio_trimestral, 
             'expenses':self.get_expenses(),
             'taxes' : self.get_taxes(),
             'ledger' : self.get_ledger(),
@@ -97,7 +100,8 @@ class CompleteOrderInfo(object):
         if order is None:
             self.status_order['order'] = False
             return None
-
+        self.incoterm = order.incoterm
+        
         if order.regimen == '10' and order.bg_isliquidated == 1 :
             self.status_order['taxes'] = True
             self.tributes['arancel_advalorem'] = order.arancel_advalorem_pagar_pagado
@@ -139,6 +143,7 @@ class CompleteOrderInfo(object):
         if order_invoice is None:
             return None
 
+        self.tipo_cambio_trimestral = order_invoice.tipo_cambio
         self.status_order['order_invoice'] = True
         order_items['order_invoice'] = order_invoice
         order_items['order_invoice_details'] = OrderInvoiceDetail.get_by_id_order_invoice(order_invoice.id_pedido_factura)
@@ -181,8 +186,8 @@ class CompleteOrderInfo(object):
         data_expenses = []
         expenses = Expense.get_all_by_orderR10(self.nro_order)
 
-        if expenses is None:
-            return None
+        if expenses.count() == 0:
+            return expenses
 
         self.status_order['init_expenses'] = True
         for item in expenses:
@@ -200,12 +205,21 @@ class CompleteOrderInfo(object):
                 item.bg_closed = 1
                 item.paids = []
 
+            
+            if item.concepto == 'FLETE' and self.incoterm == 'CFR':
+                #El flete de los CFRS se registran como pagados
+                item.invoiced_value = item.valor_provisionado
+                item.ledger = item.valor_provisionado
+                self.total_invoiced += item.valor_provisionado
+                item.bg_closed = 1
+                item.paids = []
+
             for paid in item.paids:
                 self.total_invoiced += paid.valor
                 item.invoiced_value += paid.valor
                 paid.invoice = PaidInvoice.get_by_id(paid.id_documento_pago_id)
                 paid.supplier = Supplier.get_by_ruc(paid.invoice.identificacion_proveedor_id)
-
+                
                 paids.append(
                     {
                         'paid' : paid,
