@@ -29,7 +29,7 @@ class ApportionmentPartialCalc(object):
             'prorrateos_inciales' : None,
             'warenhouses' : None,
         }
-    
+
 
     def get_fob_partial():
         fobs_partial =  {

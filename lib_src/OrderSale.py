@@ -98,9 +98,23 @@ class OrderSale(object):
 
 
     def get_expenses_sale(self):
-        expenses = self.order_data['expenses']
-        partial_expenses = {
+        all_expenses = {
             'expenses' : [],
-            'totals' : {}
+            'totals' : {
+                'invoiced' : 0.0,
+                'provision' : 0.0,
+                'sale' : 0.0,
+            }
         }
-        return expenses
+
+        for expense in  self.order_data['expenses']:
+            print(expense)
+            all_expenses['expense'].append(expense)
+            all_expenses['totals']['invoiced'] += expense.invoiced_value
+        
+
+
+        if self.order_data['order'].regimen == '70':
+            pass
+
+        return []

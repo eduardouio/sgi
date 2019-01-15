@@ -110,7 +110,7 @@ DATABASES = {
         'NAME': 'cordovezAppDjango',
         'USER' : 'appCordovez',
         'PASSWORD' : '\DBGfW<7;vBa5(LB',
-        'HOST': '192.168.0.198',
+        'HOST': '179.49.60.158',
         'PORT' : '3306',
     }
 }
