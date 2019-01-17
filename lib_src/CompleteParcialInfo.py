@@ -74,6 +74,7 @@ class CompleteParcialInfo(object):
             'apportiomen' : self.get_apportioment(),
             'status' : self.status_parcial,
             'prorrateos' : {},
+            'taxes' : self.get_taxes()
             })
 
 
@@ -259,3 +260,6 @@ class CompleteParcialInfo(object):
 
     def get_ledger(self):
         pass
+    
+    def get_taxes(self):
+        return Partial.get_paid_taxes(self.id_partial)

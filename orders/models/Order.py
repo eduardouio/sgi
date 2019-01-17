@@ -173,12 +173,18 @@ class Order(models.Model):
 
     @classmethod
     def get_paid_taxes(self, nro_order):
+        taxes =  {
+            'total_pagado' : 0,
+            'total_pagado_sin_iva' : 0,
+            'total_provisionado' : 0,
+            }
+
         order =  self.get_by_order(nro_order)
         if order is None or order.regimen == '70' or order.bg_isliquidated == 0:
             loggin('w', 'No se obtener los tributos del pedido {nro_order} pedido inexistente o regimen = 70'.format(nro_order=nro_order))
-            return {}
+            return taxes
 
-        taxes =  {
+        return {
             'total_pagado' : (
                     order.arancel_advalorem_pagar_pagado
                     + order.arancel_especifico_pagar_pagado
@@ -201,8 +207,3 @@ class Order(models.Model):
                     + order.ice_especifico_pagado
             )
         }
-
-        if (round(taxes['total_provisionado'],2) == round(taxes['total_pagado'],2)):
-            taxes['complete'] = True
-
-        return taxes

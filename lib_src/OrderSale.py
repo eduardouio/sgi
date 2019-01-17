@@ -30,7 +30,6 @@ class OrderSale(object):
         self.nro_order = nro_order
         self.order_data = CompleteOrderInfo().get_data(self.nro_order)
         self.type_change_trim = self.order_data['tipo_cambio_trimestral']
-        print(self.order_data['tipo_cambio_trimestral'])
         
         if self.order_data['partials']:
             for partial in self.order_data['partials']:
@@ -83,7 +82,6 @@ class OrderSale(object):
                     sale_product['totals']['nationalized'] = sale_product['totals']['imported']
                     sale_product['totals']['sale'] = 0
 
-            
             sale_product['products'].append(product)
 
         #partials Liquidates
@@ -106,19 +104,47 @@ class OrderSale(object):
                         if product['detalle_pedido_factura'] == int(line_item.detalle_pedido_factura_id):
                             nationalized += float(line_item.nro_cajas)
 
-
         return (nationalized)
 
 
     def get_expenses_sale(self):
+
+        def get_taxes_paid():
+            if self.order_data['order'].regimen == '10' :
+                return float(self.order_data['taxes']['total_pagado'])
+            
+            total_taxes = 0
+
+            for partial in self.partials_data:
+                total_taxes += partial['taxes']['total_pagado']
+
+            loggin('i', 'Recupernado Tributos Parcial %d'%total_taxes)
+            return float(total_taxes)
+            
+        def get_descargas():
+            total_descargas = 0;
+
+            for partial in self.partials_data:
+                if partial['partial'].bg_isclosed:
+                    for line_item in partial['info_invoice']['info_invoice_details']:
+                        if partial['partial'].id_parcial == 127:
+                            try:
+                                total_descargas += line_item['indirectos']
+                            except:
+                                total_descargas += 0
+            return total_descargas             
+
         all_expenses = {
             'expenses' : [],
-            'totals' : {
-                'provision' : 0,
-                'invoiced' : 0,
-                'sale' : 0,
+            'type_change' : self.order_data['tipo_cambio_trimestral'],
+            'taxes' : get_taxes_paid(),
+            'indirectos' : get_descargas(),
+                'totals' : {
+                    'provision' : 0,
+                    'invoiced' : 0,
+                    'sale' : 0,
+                }
             }
-        }
         
         for exp in self.order_data['expenses']:
             all_expenses['expenses'].append(exp)
@@ -128,7 +154,6 @@ class OrderSale(object):
 
         if self.order_data['order'].regimen != '70':
             return all_expenses
-
         
         for partial in self.partials_data:
             if partial['expenses']:
@@ -137,5 +162,5 @@ class OrderSale(object):
                     all_expenses['totals']['provision'] += float(exp.valor_provisionado)
                     all_expenses['totals']['invoiced'] += float(exp.invoiced_value)
                     all_expenses['totals']['sale'] += float(exp.sale)
-
+        
         return all_expenses

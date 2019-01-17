@@ -87,7 +87,6 @@ class Partial(models.Model):
     def ordinal_parcial(self):
         return self.get_ordinal_number(self.id_parcial)
 
-
     @property
     def partial_url(self):
         return ''.join([self.nro_pedido_id, '/' , str(self.ordinal_parcial) , '/'])
@@ -116,11 +115,6 @@ class Partial(models.Model):
 
     @classmethod
     def get_by_arrived_local_warenhouse(self, date_start, date_end):
-        pass
-
-
-    @classmethod
-    def get_info_invoice(self, if_parcial):
         pass
 
 
@@ -156,12 +150,18 @@ class Partial(models.Model):
 
     @classmethod
     def get_paid_taxes(self, id_partial):
-        partial = self.get_by_id(id_partial)
-        if partial is None:
-            loggin('i', 'No se puede reotornar impuestos si el parcial {} no existe'.format(id_partial))
-            return None
-        
         taxes =  {
+            'total_pagado' : 0,
+            'total_pagado_sin_iva' : 0,
+            'total_provisionado' : 0
+            }
+
+        partial = self.get_by_id(id_partial)
+        if partial is None or partial.bg_isliquidated == 0:
+            loggin('i', 'No se puede reotornar impuestos si el parcial {} no existe'.format(id_partial))
+            return taxes
+        
+        return {
         'total_pagado' : (
                 partial.arancel_advalorem_pagar_pagado
                 + partial.arancel_especifico_pagar_pagado
