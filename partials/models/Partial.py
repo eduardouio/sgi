@@ -97,7 +97,7 @@ class Partial(models.Model):
         parcials =  self.objects.filter(nro_pedido= nro_order)
         if parcials.count() == 0:
             loggin('w', 'No existe informacion para el id del parcial indicado')
-            return []
+            return self.objects.none()
 
         return parcials
 
@@ -114,7 +114,7 @@ class Partial(models.Model):
 
 
     @classmethod
-    def get_by_arrived_local_warenhouse(self, date_start, date_end):
+    def get_last_partial(self, nro_order):
         pass
 
 

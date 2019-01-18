@@ -7,12 +7,12 @@ class Apportionment(models.Model):
     id_prorrateo = models.AutoField(primary_key=True)
     id_parcial = models.ForeignKey(Partial, models.PROTECT, db_column='id_parcial')
     porcentaje_parcial = models.DecimalField(max_digits=15, decimal_places=12)
-    fob_parcial_razon_inicial = models.DecimalField(max_digits=17, decimal_places=3)
-    fob_parcial_razon_saldo = models.DecimalField(max_digits=17, decimal_places=3)
-    fob_proximo_parcial = models.DecimalField(max_digits=10, decimal_places=3)
-    fob_inicial = models.DecimalField(max_digits=16, decimal_places=3)
-    fob_saldo = models.DecimalField(max_digits=16, decimal_places=3)
-    fob_parcial = models.DecimalField(max_digits=10, decimal_places=3)
+    fob_parcial_razon_inicial = models.DecimalField(max_digits=15, decimal_places=6)
+    fob_parcial_razon_saldo = models.DecimalField(max_digits=15, decimal_places=6)
+    fob_proximo_parcial = models.DecimalField(max_digits=15, decimal_places=6)
+    fob_inicial = models.DecimalField(max_digits=15, decimal_places=6)
+    fob_saldo = models.DecimalField(max_digits=15, decimal_places=6)
+    fob_parcial = models.DecimalField(max_digits=15, decimal_places=6)
     almacenaje_parcial = models.DecimalField(max_digits=15, decimal_places=10)
     almacenaje_anterior = models.DecimalField(max_digits=15, decimal_places=10)
     almacenaje_aplicado = models.DecimalField(max_digits=16, decimal_places=3)
@@ -54,3 +54,13 @@ class Apportionment(models.Model):
             )
             
         return None
+    
+
+    @classmethod
+    def get_last_apportionment(self, nro_order):
+        loggin('i', 'obteniendo el ultimo prorrateo de un pedido')
+        last_partial = Partial.get_last_partial(nro_order)
+        if last_partial is None:
+            return None
+        
+        return self.get_by_parcial(last_partial.id_parcial)
