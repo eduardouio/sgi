@@ -171,7 +171,6 @@ class CompletePartialInfo(object):
                 'provision' : (partial_items['info_invoice'].valor != partial_items['totals']['value']),
                 'complete' : (partial_items['info_invoice'].valor != partial_items['totals']['value']),
             }
-
         
         return partial_items
 
@@ -241,6 +240,7 @@ class CompletePartialInfo(object):
     def get_apportioment(self):
         apportionment = Apportionment.get_by_parcial(self.id_partial)
         if apportionment is None:
+            loggin('w','Este parcial {} no tiene prorrateos'. format(self.id_partial))
             return None
 
         self.status_parcial['apportioment'] = True        

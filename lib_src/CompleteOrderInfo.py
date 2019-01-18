@@ -17,6 +17,7 @@ from paids.models.PaidInvoiceDetail import PaidInvoiceDetail
 from paids.models.RateExpense import RateExpense
 from partials.models.Partial import Partial
 from suppliers.models.Supplier import Supplier
+from partials.models.Apportionment import Apportionment
 
 
 class CompleteOrderInfo(object):
@@ -46,6 +47,7 @@ class CompleteOrderInfo(object):
         self.total_provisions = 0
         self.tipo_cambio_trimestral = 1
         self.incoterm = None
+        self.last_apportionment = None 
 
 
     def get_data(self, nro_order, serialized=False, request=None):
@@ -92,6 +94,7 @@ class CompleteOrderInfo(object):
             'init_expenses' : self.total_expenses,
             'total_invoiced' : self.total_invoiced + self.init_ledger,
             'total_provisions' : self.total_provisions,
+            'last_apportionment' : self.last_apportionment,
             }
 
 
@@ -308,6 +311,10 @@ class CompleteOrderInfo(object):
 
         if partials is None:
             return None
+        
+        last_partial = Partial.get_last_partial(self.nro_order)
+        if last_partial:
+            self.last_apportionment = Apportionment.get_by_parcial(last_partial.id_parcial)
 
         if self.serialized:
             partial_serializer = PartialSerializer(partials, many=True)

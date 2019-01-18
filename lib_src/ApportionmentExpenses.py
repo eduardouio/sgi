@@ -10,7 +10,7 @@ class ApportionmentExpenses(object):
     Esta es una libreria dependiente sin acceso a la DB
     '''
 
-    def __init__(self, **args):
+    def __init__(self, **kwargs):
         '''
         Arguments:
             complete_order_info {dict}: Informacion completa del pedido
@@ -20,16 +20,17 @@ class ApportionmentExpenses(object):
         loggin(
             'i', 
             'Iniciando librerria de prorrateo de costos par liquidacion del pacial {}'
-            .format(args['id_current_partial'])
+            .format(kwargs['ordinal_current_partial'])
             )
 
-        self.complete_order_info = args['complete_order_info']
-        self.partials = args['all_partials']
-        self.id_current_partial = args['current_ordinal_partial']
+        self.complete_order_info = kwargs['complete_order_info']
+        self.all_partials = kwargs['all_partials']
+        self.ordinal_current_partial = kwargs['ordinal_current_partial']
         self.apportionment_detail = []
         self.apportioment_header = {}
         self.indirect_costs = 0
         self.tc_trimestral = 1
+        self.current_partial_data = self.all_partials[self.ordinal_current_partial -1 ]
     
 
     def get_data(self):
@@ -37,7 +38,7 @@ class ApportionmentExpenses(object):
             Retorna los valores de costos indirectos para un parcial 
         '''
         return {
-            'fobs_partials' : self._get_fobs_partial(),
+            'fobs' : self.get_fobs(),
             'droped_expenses' : {},
             'init_expenses' : {},
             'partial_expenses': {},
@@ -48,9 +49,32 @@ class ApportionmentExpenses(object):
         }
     
 
-    def _get_fobs_partial(self):
-        return 0
-    
+    def get_fobs(self):
+        fobs = {
+            'fob_inicial': 0,
+            'fob_parcial': 0,
+            'fob_parcial_razon_inicial': 0,
+            'fob_parcial_razon_saldo': 0,
+            'fob_saldo': 0,
+            'fob_proximo_parcial': 0,
+        }
+        
+        fobs['fob_inicial'] = float(self.complete_order_info['order_invoice']['totals']['value'])
+        fobs['fob_parcial'] = float(self.current_partial_data['info_invoice']['totals']['value'])
+        fobs['fob_parcial_razon_inicial'] = round(
+                                                    float(fobs['fob_parcial']) 
+                                                    / float(fobs['fob_inicial'])
+                                                ,6)
+        fobs['fob_saldo'] = fobs['fob_inicial'] - fobs['fob_parcial']
+        fobs['fob_parcial_razon_saldo'] = round((fobs['fob_parcial'] / fobs['fob_inicial']),6)
+        
+        
+        if self.ordinal_current_partial > 1:
+           pass
+
+        fobs['fob_proximo_parcial'] =  8605.800000
+        return fobs
+
 
     def _get_warenhouses(self):
         return 0
