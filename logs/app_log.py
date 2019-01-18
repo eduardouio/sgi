@@ -11,6 +11,7 @@ def loggin(type_log , message, request=None):
                             s -> SUCCESS
                             w -> WARNING
                             i -> INFO
+                            t -> TEST
         message (string): log message
         request (django-request): session data for get current user info
     '''

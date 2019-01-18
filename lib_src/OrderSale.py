@@ -2,7 +2,7 @@ import re
 
 import products
 from lib_src.CompleteOrderInfo import CompleteOrderInfo
-from lib_src.CompleteParcialInfo import CompleteParcialInfo
+from lib_src.CompletePartialInfo import CompletePartialInfo
 from logs.app_log import loggin
 
 
@@ -33,7 +33,7 @@ class OrderSale(object):
         
         if self.order_data['partials']:
             for partial in self.order_data['partials']:
-                self.partials_data.append(CompleteParcialInfo().get_data(partial.id_parcial))
+                self.partials_data.append(CompletePartialInfo().get_data(partial.id_parcial))
                 self.have_partials = True
 
         data = {

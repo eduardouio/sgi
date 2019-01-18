@@ -22,17 +22,18 @@ class Expense(models.Model):
     bg_is_visible_gi = models.IntegerField(default=1)
     bg_iscontabilizado = models.IntegerField(default=0)
     bg_iscontabilizado_por = models.IntegerField(blank=True, null=True, default=0)
+    bg_isdrop = models.BooleanField(blank=True,null=True,default=False) #indica si el gasto es arrastrado similar a los gastos de bodega
     id_user = models.SmallIntegerField(default=0)
     date_create = models.DateTimeField(blank=True, null=True)
     last_update = models.DateTimeField(blank=True, null=True)
     history = HistoricalRecords()
 
+    
     def __str__(self):
         return  ''.join([str(self.id_gastos_nacionalizacion), ' ', self.concepto]) 
 
 
     class Meta:
-        #managed = False
         managed = True
         db_table = 'gastos_nacionalizacion'
         unique_together = (('nro_pedido', 'id_parcial', 'concepto'),)

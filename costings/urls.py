@@ -1,10 +1,10 @@
 from django.urls import path, include
-from costings.views.liquidateOrderTemplateView import liquidateOrderTemplateView
-#from costings.views.liquidatePartialsTemplateView import liquidatePartialsTemplateView
-from costings.views.AllProvisionsTemplateView import AllProvisionsTemplateView
+from costings.views.LiquidateOrderTemplateView import LiquidateOrderTemplateView
+from costings.views.LiquidatePartialTemplateView import LiquidatePartialTemplateView
 app_name = 'authentication'
 
+
 urlpatterns = [
-    path('pedido/<nro_order>/',liquidateOrderTemplateView.as_view(),name="validate_order"),    
-    #path('parcial/<nro_order>/<ordinal_parcial>/',liquidatePartialsTemplateView.as_view(),name="validate_order"),    
+    path('pedido/<nro_order>/',LiquidateOrderTemplateView.as_view(),name="validate_order"),
+    path('parcial/<nro_order>/<ordinal_parcial>/',LiquidatePartialTemplateView.as_view(),name="validate_order"),    
 ]

@@ -20,7 +20,11 @@ from suppliers.models.Supplier import Supplier
 
 
 class CompleteOrderInfo(object):
-    ''' Get complete order R10 info '''
+    ''' 
+    Obtiene la informacion completa de in pedido
+        Gastos iniciales a detalle
+        listado de parciales
+    '''
 
     def __init__(self):
         self.status_order = {
@@ -45,19 +49,20 @@ class CompleteOrderInfo(object):
 
 
     def get_data(self, nro_order, serialized=False, request=None):
-        '''[summary]
-        
+        '''
+        [summary]
+        retorna la informacion del pedido luego de acceder a las base de datos
+
         Arguments:
             nro_order {string} -- Nro de pedido
         
         Keyword Arguments:
             serialized {bool} -- indica si el resultado es serializado (default: {False})
-            request {[type]} -- django session object (default: {None})
+            request {http-request} -- django session object (default: {None})
         
         Returns:
             [type] -- [description]
         '''
-
         self.nro_order = nro_order
         self.serialized = serialized
         self.request = request
@@ -67,8 +72,13 @@ class CompleteOrderInfo(object):
             .format(nro_order = self.nro_order),
             self.request
             )
-        return ({
-            'order': self.get_order(),
+        order  = self.get_order()
+
+        if order is None:
+            return None
+
+        return {
+            'order': order,
             'order_invoice':self.get_order_invoice(),
             'tipo_cambio_trimestral': self.tipo_cambio_trimestral, 
             'expenses':self.get_expenses(),
@@ -82,7 +92,7 @@ class CompleteOrderInfo(object):
             'init_expenses' : self.total_expenses,
             'total_invoiced' : self.total_invoiced + self.init_ledger,
             'total_provisions' : self.total_provisions,
-            })
+            }
 
 
     def get_order(self):
@@ -100,6 +110,7 @@ class CompleteOrderInfo(object):
         if order is None:
             self.status_order['order'] = False
             return None
+
         self.incoterm = order.incoterm
         
         if order.regimen == '10' and order.bg_isliquidated == 1 :
@@ -119,7 +130,6 @@ class CompleteOrderInfo(object):
             )
         elif order.regimen == '70':
             self.status_order['taxes'] = True
-
 
         self.init_ledger += self.tributes['total']
 

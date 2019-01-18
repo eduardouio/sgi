@@ -4,7 +4,6 @@ from django.urls import path, include
 admin.site.site_title = 'SGI'
 admin.site.site_header = 'Agencia Y Representaciones Cordovez S.A.'
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('authentication.urls', namespace='autehtications')),
