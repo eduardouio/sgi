@@ -197,7 +197,7 @@ class CompleteOrderInfo(object):
 
     def get_expenses(self):
         data_expenses = []
-        expenses = Expense.get_all_by_orderR10(self.nro_order)
+        expenses = Expense.get_all_by_order(self.nro_order)
 
         if expenses.count() == 0:
             return expenses
@@ -312,7 +312,8 @@ class CompleteOrderInfo(object):
         if partials is None:
             return None
         
-        last_partial = Partial.get_last_partial(self.nro_order)
+        last_partial = Partial.get_last_close_partial(self.nro_order)
+        
         if last_partial:
             self.last_apportionment = Apportionment.get_by_parcial(last_partial.id_parcial)
 

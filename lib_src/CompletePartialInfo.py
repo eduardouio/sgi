@@ -133,8 +133,8 @@ class CompletePartialInfo(object):
         info_invoice = InfoInvoice.get_by_id_partial(self.id_partial)
 
         if info_invoice is None:
-            return None 
-        
+            return None
+
         self.status_parcial['info_invoice'] = True
         partial_items['info_invoice'] = info_invoice
         partial_items['info_invoice_details'] = InfoInvoiceDetail.get_by_info_invoice(info_invoice.id_factura_informativa)
@@ -148,13 +148,13 @@ class CompletePartialInfo(object):
 
         if partial_items['info_invoice_details']:
             self.status_parcial['info_invoice_details'] = True
-        
+
         for line_item in partial_items['info_invoice_details']:
             partial_items['totals']['boxes'] += line_item.nro_cajas
             order_ivoice_detail = OrderInvoiceDetail.get_by_id(line_item.detalle_pedido_factura_id)
             partial_items['totals']['bottles'] += (line_item.nro_cajas * order_ivoice_detail.cod_contable.cantidad_x_caja)
             partial_items['totals']['value'] += (line_item.nro_cajas * order_ivoice_detail.costo_caja)
-        
+
         self.partial_ledger += (partial_items['totals']['value'] * self.type_change_trimestral)
 
         if self.serialized:
@@ -171,17 +171,18 @@ class CompletePartialInfo(object):
                 'provision' : (partial_items['info_invoice'].valor != partial_items['totals']['value']),
                 'complete' : (partial_items['info_invoice'].valor != partial_items['totals']['value']),
             }
-        
-        return partial_items
 
+        return partial_items
 
     def get_expenses(self):
         data_expenses = []
         expenses = Expense.get_by_parcial(self.id_partial)
-        
+
         if expenses is None:
             return None
+        
         self.status_parcial['expenses'] = True
+        self.status_parcial['partial_expenses'] = True
 
         for item in expenses:
             paids = []
@@ -243,7 +244,7 @@ class CompletePartialInfo(object):
             loggin('w','Este parcial {} no tiene prorrateos'. format(self.id_partial))
             return None
 
-        self.status_parcial['apportioment'] = True        
+        self.status_parcial['apportioment'] = True
 
         apportionment.apportionment_detail = ApportionmentDetail.get_by_apportionment(apportionment.id_prorrateo)
         if apportionment.apportionment_detail:
@@ -264,6 +265,6 @@ class CompletePartialInfo(object):
 
     def get_ledger(self):
         pass
-    
+
     def get_taxes(self):
         return Partial.get_paid_taxes(self.id_partial)
