@@ -58,20 +58,13 @@ class Expense(models.Model):
 
 
     @classmethod
-    def get_all_by_orderR10(self, nro_order):
-        ''' Returns all expesnes from order R10 only '''
+    def get_all_by_order(self, nro_order):
+        ''' Obtiene los gastos inciales de un pedido '''
         expenses =  self.objects.filter(nro_pedido = nro_order)
         order = Order.get_by_order(nro_order)
         
         loggin('i', 'Obteniendo todos los gastos iniciales Pedido Consumo {}'.format(nro_order))
         
-        if order is None or order.regimen == '70':
-            loggin(
-                'w', 
-                'No se pueden obtener los gastos EL pedido {} no existe o es un regimen 70'
-                .format(nro_order)
-                )
-
         if expenses.count() is 0:
             loggin('w', 'No existen gastos para el pedido {}'.format(nro_order))
         
@@ -91,9 +84,3 @@ class Expense(models.Model):
             return None
         
         return provisions
-    
-
-    @classmethod
-    def get_all_by_orderR70(self, nro_order):
-        ''' Returns all expesnes from order R70 only '''
-        pass

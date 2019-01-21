@@ -7,8 +7,8 @@ class Apportionment(models.Model):
     id_prorrateo = models.AutoField(primary_key=True)
     id_parcial = models.ForeignKey(Partial, models.PROTECT, db_column='id_parcial')
     porcentaje_parcial = models.DecimalField(max_digits=15, decimal_places=12)
-    fob_parcial_razon_inicial = models.DecimalField(max_digits=15, decimal_places=6)
-    fob_parcial_razon_saldo = models.DecimalField(max_digits=15, decimal_places=6)
+    fob_parcial_razon_inicial = models.DecimalField(max_digits=15, decimal_places=10)
+    fob_parcial_razon_saldo = models.DecimalField(max_digits=15, decimal_places=10)
     fob_proximo_parcial = models.DecimalField(max_digits=15, decimal_places=6)
     fob_inicial = models.DecimalField(max_digits=15, decimal_places=6)
     fob_saldo = models.DecimalField(max_digits=15, decimal_places=6)
@@ -19,6 +19,10 @@ class Apportionment(models.Model):
     almacenaje_proximo_parcial = models.DecimalField(max_digits=16, decimal_places=3)
     prorrateo_flete_aduana = models.DecimalField(max_digits=15, decimal_places=10)
     prorrateo_seguro_aduana = models.DecimalField(max_digits=15, decimal_places=10)
+    gastos_drop_parcial = models.DecimalField(max_digits=15, decimal_places=6,default=0)
+    gastos_drop_parcial_anterior = models.DecimalField(max_digits=15, decimal_places=6,default=0)
+    gastos_drop_parcial_aplicado = models.DecimalField(max_digits=15, decimal_places=6,default=0)
+    gastos_drop_parcial_proximo_parcial = models.DecimalField(max_digits=15, decimal_places=6,default=0)
     id_user = models.SmallIntegerField(default=0)
     date_create = models.DateTimeField(blank=True, null=True)
     last_update = models.DateTimeField(blank=True, null=True)
@@ -28,7 +32,6 @@ class Apportionment(models.Model):
         return str(self.id_prorrateo)
 
     class Meta:
-        #managed = False
         managed = True
         db_table = 'prorrateo'
         verbose_name_plural = 'Prorrateos De Parciales'
@@ -45,6 +48,7 @@ class Apportionment(models.Model):
                 'Prorrateo del parcial {} recuperado'
                 .format(id_partial)
                 )
+
             return apportiment.first()
 
         loggin(
@@ -59,7 +63,8 @@ class Apportionment(models.Model):
     @classmethod
     def get_last_apportionment(self, nro_order):
         loggin('i', 'obteniendo el ultimo prorrateo de un pedido')
-        last_partial = Partial.get_last_partial(nro_order)
+        last_partial = Partial.get_last_close_partial(nro_order)
+        
         if last_partial is None:
             return None
         

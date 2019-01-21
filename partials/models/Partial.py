@@ -115,7 +115,42 @@ class Partial(models.Model):
 
     @classmethod
     def get_last_partial(self, nro_order):
-        pass
+        partials = self.get_by_order(nro_order)
+        
+        if partials is None:
+            return None
+        
+        return partials.last()
+        
+
+    @classmethod
+    def get_last_close_partial(self, nro_order, id_partial = None):
+        '''Retorna el ultimo parcial liquidado, si el pedido es R10 o no
+        tiene parciales retorna None
+        
+        Arguments:
+            nro_order {string} -- Especifica el pedido del que se quiere obtener
+        
+        Keyword Arguments:
+            id_partial {int} -- Si se indica, retorta el parcial anterior liquidado
+                                si no retorna el ultimo del pedido 
+                                (default: {None})
+        
+        Returns:
+            {QuerySet} | {None}
+        '''
+
+        if id_partial:
+            partials = self.objects.filter(nro_pedido=nro_order, bg_isclosed=1, id_parcial__lte = id_partial)
+        else:
+            partials = self.objects.filter(nro_pedido=nro_order, bg_isclosed=1)
+        
+        if partials.count() == 0:
+            loggin('i', 'El pedido {}, no tiene parciales cerrados'.format(nro_order))
+            return None
+        
+        return partials.last()
+        
 
 
     @classmethod
@@ -138,7 +173,7 @@ class Partial(models.Model):
         try:
             parcial = self.objects.get(pk = id_parcial)
         except:
-            loggin('e', 'El parcual no existe {id_parcial}'.format(id_parcial = id_parcial))
+            loggin('e', 'El parcial no existe {id_parcial}'.format(id_parcial = id_parcial))
             return None
 
         if parcial is None:
