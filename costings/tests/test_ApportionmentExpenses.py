@@ -7,61 +7,99 @@ from logs.app_log import loggin
 from partials.models.Partial import Partial
 
 
-class TestApportionmentExpenses(TestCase):
+class TestApportionmentExpensesP1(TestCase):
     '''
-    Los test de esta clase se los realiza usando la documentacionde del pedido
-    071/18 al momento con 3 parciales cerrados y saldo activo en el sistema
+    Test de liquidacion para el primer parcial
     '''
-
-    def test_get_fob_partial_1(self):
-        loggin('t', 'Testenado Fobs del primer parcial')
-        fobs_1p = {
-            'fob_inicial': 28191.000000,
-            'fob_parcial': 13500.00000,
-            'fob_parcial_razon_inicial': 0.478876,
-            'fob_parcial_razon_saldo': 0.478876,
-            'fob_saldo': 14691.000000,
-            'fob_proximo_parcial': 14691.000000,
-        }
+    def setUp(self):
+        loggin('t', 'Testing de liquidacion parcial 1')
         partials = Partial.get_by_order('071-18') 
-        all_partials = []
+        self.all_partials = []
 
         for p in partials:
-            all_partials.append(CompletePartialInfo().get_data(p.id_parcial))
-
-        result = ApportionmentExpenses(
+            self.all_partials.append(CompletePartialInfo().get_data(p.id_parcial))
+        
+        self.result = ApportionmentExpenses(
                     complete_order_info = CompleteOrderInfo().get_data('071-18'),
-                    all_partials =  all_partials, 
+                    all_partials =  self.all_partials, 
                     ordinal_current_partial =  1
                 ).get_data()
 
-        self.assertDictEqual(fobs_1p, result['fobs'])
-    
+        #redondeamos valores a la DB
+        for cat in self.result:
+            if isinstance(self.result[cat], dict):
+                for i in self.result[cat]:
+                    self.result[cat][i] = round(self.result[cat][i],10)
 
-    def test_get_fob_partial_2(self):
-        loggin('t', 'Testenado Fobs del segundo parcial')
-        fobs_2p = {
+        return super().setUp()
+
+
+    def test_get_fob_partial(self):
+        fobs_1p = {
             'fob_inicial': 28191.000000,
-            'fob_parcial': 6085.200000,
-            'fob_parcial_razon_inicial': 0.215856,
-            'fob_parcial_razon_saldo': 00.414213,
-            'fob_saldo': 14691.000000,
-            'fob_proximo_parcial': 8605.800000,
+            'fob_parcial': 13500.00000,
+            'fob_parcial_razon_inicial': 0.4788762371,
+            'fob_parcial_razon_saldo': 0.4788762371,
+            'fob_saldo': 28191.000000,
+            'fob_proximo_parcial': 14691.0000,
         }
-        partials = Partial.get_by_order('071-18') 
-        all_partials = []
+        self.assertDictEqual(fobs_1p, self.result['fobs'])
+    
+    
+    def test_get_warenhouses(self):
+        warenhousing = {
+            'almacenaje_parcial' : 503.00,
+            'almacenaje_anterior' : 0,
+            'almacenaje_aplicado' : 240.8747472613,
+            'almacenaje_proximo_parcial' : 262.1252527387,
+        }
 
-        for p in partials:
-            all_partials.append(CompletePartialInfo().get_data(p.id_parcial))
+        self.assertDictEqual(self.result['warenhousing'], warenhousing),
 
-        result = ApportionmentExpenses(
-                    complete_order_info = CompleteOrderInfo().get_data('071-18'),
-                    all_partials =  all_partials, 
-                    ordinal_current_partial =  2
-                ).get_data()
 
-        self.assertEqual(fobs_2p['fob_inicial'], result['fobs']['fob_inicial'])
-        self.assertEqual(fobs_2p['fob_parcial'], result['fobs']['fob_parcial'])
-        self.assertEqual(fobs_2p['fob_parcial_razon_inicial'], result['fobs']['fob_parcial_razon_inicial'])
-        self.assertEqual(fobs_2p['fob_saldo'], result['fobs']['fob_saldo'])
-        self.assertEqual(fobs_2p['fob_parcial_razon_saldo'], result['fobs']['fob_parcial_razon_saldo'])
+    def test_get_apportionment_expenses(self):
+        total_iniciales = 4359.715087
+        total_recibido = 0.0
+
+        for item in self.result['apportionment_expenses']:
+            total_recibido += item['valor_prorrateado']
+
+        self.assertEqual(self.result['apportionment_expenses'].__len__(), 20)
+        self.assertEqual(total_iniciales, round(total_recibido,6))
+    
+    def test_get_droped_expenses(self):
+        droped_expenses = {
+            'gastos_drop_parcial' : 0,
+            'gastos_drop_parcial_anterior' : 0,
+            'gastos_drop_parcial_aplicado' : 0,
+            'gastos_drop_parcial_proximo_parcial  ' : 0,
+        }
+        self.assertTrue(self.result['droped_expenses'])
+
+
+#test de liquidacion para el segundo parcial
+#crear metodo para liquidacion de segundo parcial gastos simolares a bodega
+#def get_fob_partial_2(self):
+#        '''Testeo pendiente, se debe cerrar el primer parcial'''
+#
+#        fobs_2p = {
+#            'fob_inicial': 28191.00000,
+#            'fob_parcial': 6085.200000,
+#            'fob_saldo': 14691.000000,
+#            'fob_parcial_razon_inicial': 0.215856,
+#            'fob_parcial_razon_saldo': 0.414213,
+#            'fob_proximo_parcial': 8605.800000,
+#        }
+#        partials = Partial.get_by_order('071-18') 
+#        all_partials = []
+#
+#        for p in partials:
+#            all_partials.append(CompletePartialInfo().get_data(p.id_parcial))
+#
+#        result = ApportionmentExpenses(
+#                    complete_order_info = CompleteOrderInfo().get_data('071-18'),
+#                    all_partials =  all_partials, 
+#                    ordinal_current_partial =  2
+#                ).get_data()
+#
+#        self.assertEqual(fobs_2p['fob_saldo'], result['fobs']['fob_saldo'])
