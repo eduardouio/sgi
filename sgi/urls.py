@@ -5,6 +5,7 @@ admin.site.site_title = 'SGI'
 admin.site.site_header = 'Agencia Y Representaciones Cordovez S.A.'
 
 urlpatterns = [
+    path('grappelli/', include('grappelli.urls')),
     path('admin/', admin.site.urls),
     path('', include('authentication.urls', namespace='autehtications')),
     path('costos/', include('costings.urls', namespace='costings')),

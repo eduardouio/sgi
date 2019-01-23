@@ -30,6 +30,7 @@ ALLOWED_HOSTS = ['*',]
 
 # Application definition
 INSTALLED_APPS = [
+    'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
     'simple_history',
     'guardian',
     'rest_framework',
+    'import_export',
     'authentication',
     'api',
     'costings',
@@ -166,7 +168,7 @@ AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend', 'guardia
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-#STATIC_ROOT = os.sep.join(os.path.abspath(__file__).split(os.sep)[:-2]+['static'])
+STATIC_ROOT = os.sep.join(os.path.abspath(__file__).split(os.sep)[:-2]+['static_django'])
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     os.sep.join(os.path.abspath(__file__).split(os.sep)[:-2]+['static']),
@@ -179,3 +181,6 @@ MEDIA_ROOT = os.sep.join(os.path.abspath(__file__).split(os.sep)[:-2]+['media'])
 MEDIA_URL = '/media/'
 
 BASE_URL = 'http://localhost:8000/'
+
+#GRAPELLI CAMABIOS
+GRAPPELLI_ADMIN_TITLE = 'A&R CORDOVEZ S.A.'

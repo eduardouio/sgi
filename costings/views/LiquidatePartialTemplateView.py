@@ -7,7 +7,7 @@ from logs.app_log import loggin
 
 
 class LiquidatePartialTemplateView(TemplateView):
-    template_name = "costings/revisar_gastos_parciales.html"
+    template_name = "costings/liquidar_parcial.html"
 
     def get(self, request, nro_order , ordinal_parcial , *args, **kwargs):
         """
@@ -17,6 +17,9 @@ class LiquidatePartialTemplateView(TemplateView):
         Return: TemplateView
         """
         context = super(LiquidatePartialTemplateView, self).get_context_data(*args, **kwargs)
+        context['data'] = {}
+        return self.render_to_response(context)
+
         complete_order_info = CompleteOrderInfo().get_data(nro_order)
         complete_partial_info = CompletePartialInfo()
         if complete_order_info is None or complete_order_info['partials'] is None:
