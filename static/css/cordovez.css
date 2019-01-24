@@ -440,9 +440,9 @@ th {
 .nav-tabs {
 	border-bottom: 1px solid #c6c8cb;
 	font-size: 13;
-	background: #fbfbfb;
+	background: #efefef;
 	font-weight: bold;
-	padding: 5px;
+	padding: 0px;
 }
 
 .nav-tabs>li {
@@ -648,9 +648,14 @@ th {
 	border-bottom-left-radius: 0.25rem;
 	border-top-right-radius: 0;
 	margin-right: -1px;
+	color: #0084a1 !important;
   }
+.nav-link {
+    display: block;
+    padding: 1rem 0rem;
+}
   .nav-tabs--left .nav-link.active:hover {
-	background-color: #007bff !important;
+	background-color: #fff999 !important;
+	color:#8E44AD;
 	border-color: #17a2b8 !important #007bff !important #17a2b8 !important #17a2b8 !important;
   }
-  
