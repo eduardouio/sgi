@@ -1,9 +1,9 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
-from django.core.exceptions import ObjectDoesNotExist
-from orders.models.Order import Order
-from logs.app_log import loggin
 from simple_history.models import HistoricalRecords
-from django.core.exceptions import ObjectDoesNotExist
+
+from logs.app_log import loggin
+from orders.models.Order import Order
 
 
 class Partial(models.Model):

@@ -1,0 +1,38 @@
+var app = new Vue({
+    el: '#app',
+    delimiters: ['${', '}'],
+    data: {
+      order_data: {},
+      comentarios : '',
+      liquidated_order : false,
+      current_expense : null,
+      current_order_invoice : {},
+      current_taxes: {},
+      current_paid : null,
+      init_ledger : parseFloat('{{ data.init_ledger }}'.replace(',','.')),      
+      diferecia_mayores : 0.0,
+      ajax_request : true,
+      show_costings : false,
+      show_expense : false,
+      show_order_invoice : false,
+      show_taxes : false,
+      show_form_liquidated : false,
+      systems_ledger : {{ data.ledger if data.ledger else  'false' }},
+      current_ledger : {
+        'tipo' : 'inicial',
+        'nro_pedido' : '{{ data.order.nro_pedido }}',
+        'id_parcial' : 0,
+        'costo_producto' : {{ data.order_invoice.order_invoice.valor_tasa_trimestral }},
+        'facturas_sgi' : parseFloat('{{ data.total_invoiced }}'.replace(',','.')),
+        'mayor_sap' : 0,
+        'mayor_sgi' : 0,
+        'precio_entrega' : parseFloat('{{ data.costs.sums.indirectos }}'.replace(',','.')),
+        'provisiones_sap' : 0,
+        'provisiones_sgi' : parseFloat('{{ data.total_provisions }}'.replace(',','.')),
+        'reliquidacion_ice' : parseFloat('{{ data.costs.sums.ice_advalorem_reliquidado }}'.replace(',','.')),
+      },
+      csrftoken : Cookies.get('csrftoken'),
+    },
+    methods : {    }
+    
+})

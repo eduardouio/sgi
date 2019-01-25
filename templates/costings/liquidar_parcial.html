@@ -1,47 +1,140 @@
 {% extends 'base/base.html' %}
-
+{% block title_content %}
+    <div class="row border">
+    <div class="col-5">
+    <i class="fa fa-cog"></i>
+      Liquidacion De Parcial {{ data.ordinal_partial }} del Pedido {{ data.nro_order }} [ID:{{ data.current_partial.partial.id_parcial }}] 
+    {% if data.current_partial.partial.bg_isclose %}
+      <span class="badge badge-success">Abierto</span>
+    {% else %}
+      <span class="badge badge-secondary">Cerrado</span>
+    {% endif %}
+    Total Parciales: {{ data.total_parcials }}
+    
+  </div>
+  <div class="col-7 text-right">
+    <span><a href=" {{ data.current_partial.partial.url_dai_1 }} "> Ref: {{ data.current_partial.info_invoice.info_invoice.nro_refrendo }}  </a></span>
+    <span>| Exaduana</span>
+    <span>| Liq: {{ data.current_partial.partial.nro_liquidacion }} </span>
+    <span>| F. Llegada:  {{ data.current_partial.partial.fecha_llegada_cliente.strftime('%d/%m/%Y') }} </span>
+    <span></span>
+  </div>
+</div>
+{% endblock title_content %}
 {% block content %}
-<div class="d-flex flex-row mt-2">
+  <div class="row" v-if="ajax_request == false">
+    <div class="col-12">
+      <table class="table table-bordered table-condensed">
+        <tbody>
+          <tr>
+            <td style="width:100px;" class="text-right bg-light">Pedido:</td>
+            <td> {{ data.complete_order_info.order.nro_pedido }}</td>
+            <td style="width:100px;" class="text-right bg-light">Proveedor:</td>
+            <td>{{ data.complete_order_info.order.proveedor }} </td>
+            <td style="width:100px;" class="text-right bg-light">Factura:</td>
+            <td>{{ data.current_partial.info_invoice.info_invoice.nro_factura_informativa }}</td>
+            <td style="width:100px;" class="text-right bg-light">Moneda:</td>
+            <td>{{ data.complete_order_info.order_invoice.order_invoice.moneda }}</td>
+            <td style="width:100px;" class="text-right bg-light">T/C:</td>
+            <td>{{ data.complete_order_info.order_invoice.order_invoice.tipo_cambio }}</td>
+          </tr>
+          <tr>
+            <td style="width:100px;" class="text-right bg-light">Incoterm:</td>
+            <td class="text-danger">{{ data.complete_order_info.order.incoterm }}</td>
+            <td style="width:100px;" class="text-right bg-light">Pais Origen:</td>
+            <td>{{ data.complete_order_info.order.pais_origen }}</td>
+            <td style="width:100px;" class="text-right bg-light">Ciudad Origen:</td>
+            <td>{{ data.complete_order_info.order.ciudad_origen }}</td>
+            <td style="width:100px;" class="text-right bg-light">Registrado Por:</td>
+            <td>Pendiete</td>
+            <td style="width:100px;" class="text-right bg-light">Fecha Registro:</td>
+            <td>{{ data.current_partial.partial.date_create.strftime('%d/%m/%Y') }}</td>
+          </tr>
+          <tr>
+            <td style="width:100px;" class="text-right bg-light">Comentarios:</td>
+            <td colspan="9">{{ data.current_partial.partial.observaciones }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<div class="row">
+<div class="col-7 div-bordered">
+<div class="row">
+<div class="col-1" style="padding-right:0px;padding-left: 0px;">
 	<ul class="nav nav-tabs nav-tabs--vertical nav-tabs--left" role="navigation">
 		<li class="nav-item text-right">
-			<a href="#lorem" class="nav-link active" data-toggle="tab" role="tab" aria-controls="lorem">Iniciales</a>
+			<a href="#lorem" class="nav-link active" data-toggle="tab" role="tab" aria-controls="lorem"><span style="font-size:10px;">Iniciales <i class="fa fa-chevron-right"></i></span></a>
 		</li>
 		<li class="nav-item text-right">
-			<a href="#ipsum" class="nav-link" data-toggle="tab" role="tab" aria-controls="ipsum">P1</a>
+			<a href="#ipsum" class="nav-link" data-toggle="tab" role="tab" aria-controls="ipsum"><span style="font-size:10px;">Parcial 1 <i class="fa fa-chevron-right"></i></span></a>
 		</li>
 		<li class="nav-item text-right">
-			<a href="#dolor" class="nav-link" data-toggle="tab" role="tab" aria-controls="dolor">P2</a>
+			<a href="#dolor" class="nav-link" data-toggle="tab" role="tab" aria-controls="dolor"><span style="font-size:10px;">Parcial 2 <i class="fa fa-chevron-right"></i></span></a>
 		</li>
 		<li class="nav-item text-right">
-			<a href="#sit-amet" class="nav-link" data-toggle="tab" role="tab" aria-controls="sit-amet">P3</a>
+			<a href="#sit-amet" class="nav-link" data-toggle="tab" role="tab" aria-controls="sit-amet"><span style="font-size:10px;"><i class="fa fa-hand-point-right"></i>Parcial 3 <i class="fa fa-chevron-right"></i></span></a>
 		</li>
 	</ul>
-	<div class="tab-content">
-		<div class="tab-pane fade show active" id="lorem" role="tabpanel">
-			<h1>Lorem</h1>
-			
-			<p>Aenean sed lacus id mi scelerisque tristique. Nunc sed ex sed turpis fringilla aliquet in in neque. Praesent posuere, neque rhoncus sollicitudin fermentum, erat ligula volutpat dui, nec dapibus ligula lorem ac mauris. Etiam et leo venenatis purus pharetra dictum.</p>
-			
-			<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin tempor mi ut risus laoreet molestie. Duis augue risus, fringilla et nibh ac, convallis cursus purus. Suspendisse potenti. Praesent pretium eros eleifend posuere facilisis. Proin ut magna vitae nulla suscipit eleifend. Ut bibendum pulvinar sapien, vel tristique felis scelerisque et. Sed elementum sapien magna, placerat interdum lacus placerat ut. Integer varius, ligula bibendum laoreet sollicitudin, eros metus fringilla lectus, quis consequat nisl nibh ut nisi. Aenean dignissim, nibh ac fermentum condimentum, ante nisl rutrum sapien, at commodo eros sapien vulputate arcu. Fusce neque leo, blandit nec lectus eu, vestibulum commodo tellus. Aliquam sem libero, tristique at condimentum ac, luctus nec nulla.</p>
+
+</div>
+<div class="col-11 tab-content" style="padding-left: 0px;">
+<div class="text-tittle"> RESUMEN DE ESTADO GASTOS GENERALES</div>
+<div class="tab-pane fade show active" id="lorem" role="tabpanel">
+		<table class="table table-condensed table-striped table-bordered"><tbody><tr style="background-color: rgb(255, 255, 255);"><th class="text-center"><i class="fa fa-list"></i></th> <th class="text-center">CONCEPTO</th> <th class="text-center">VALOR</th> <th class="text-center">FACTURADO</th> <th class="text-center">SALDO</th> <th class="text-center">MAYOR</th></tr> <tr><td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td> <td><small class="text-success"><i class="fa fa-check-circle"></i></small>
+               FACTURA VIÑA CONCHA Y TORO S.A.
+            </td> <td class="text-right">  28635.00</td> <td class="text-right">  28635.00</td> <td class="text-right">  0.00</td> <td class="text-right">  28635.00</td></tr> <tr><td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td> <td><small class="text-success"><i class="fa fa-check-circle"></i></small>
+               GASTOS ORIGEN
+            </td> <td class="text-right">  0.00 </td> <td class="text-right">  0.00 </td> <td class="text-right">  0.00</td> <td class="text-right">  0.00</td></tr> <tr><td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td> <td><small class="text-success"><i class="fa fa-check-circle"></i></small>
+            TRIBUTOS SENAE
+            </td> <td class="text-right"> 18078.97</td> <td class="text-right"> 18078.97</td> <td class="text-right"> 0.00</td> <td class="text-right"> 18078.97</td></tr> <tr><td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td> <td><small class="text-secondary"><i class="fa fa-puzzle-piece"></i></small> <!----> <!---->
+              AGENTE INICIAL FISICO
+            </td> <td class="text-right">257.00</td> <td class="text-right">231.60</td> <td class="text-right">25.40</td> <td class="text-right">0.00</td></tr><tr><td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td> <td><!----> <small class="text-success"><i class="fa fa-check-circle"></i></small> <!---->
+              ALMACENAJE INICIAL
+            </td> <td class="text-right">373.78</td> <td class="text-right">373.78</td> <td class="text-right">0.00</td> <td class="text-right">0.00</td></tr><tr><td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td> <td><!----> <small class="text-success"><i class="fa fa-check-circle"></i></small> <!---->
+              CUSTODIA ARMADA
+            </td> <td class="text-right">490.00</td> <td class="text-right">490.00</td> <td class="text-right">0.00</td> <td class="text-right">0.00</td></tr><tr><td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td> <td><!----> <small class="text-success"><i class="fa fa-check-circle"></i></small> <!---->
+              DESCARGA
+            </td> <td class="text-right">150.00</td> <td class="text-right">150.00</td> <td class="text-right">0.00</td> <td class="text-right">0.00</td></tr><tr><td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td> <td><!----> <small class="text-success"><i class="fa fa-check-circle"></i></small> <!---->
+              DEVOLUCION DE CONTENEDOR
+            </td> <td class="text-right">40.00</td> <td class="text-right">40.00</td> <td class="text-right">0.00</td> <td class="text-right">40.00</td></tr><tr><td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td> <td><!----> <small class="text-success"><i class="fa fa-check-circle"></i></small> <!---->
+              ETIQUETAS FISCALES
+            </td> <td class="text-right">2691.00</td> <td class="text-right">2691.00</td> <td class="text-right">0.00</td> <td class="text-right">0.00</td></tr><tr><td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td> <td><!----> <small class="text-success"><i class="fa fa-check-circle"></i></small> <!---->
+              FLETE
+            </td> <td class="text-right">200.00</td> <td class="text-right">200.00</td> <td class="text-right">0.00</td> <td class="text-right">0.00</td></tr><tr><td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td> <td><!----> <small class="text-success"><i class="fa fa-check-circle"></i></small> <!---->
+              GASTOS LOCALES
+            </td> <td class="text-right">248.00</td> <td class="text-right">248.00</td> <td class="text-right">0.00</td> <td class="text-right">0.00</td></tr><tr><td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td> <td><!----> <small class="text-success"><i class="fa fa-check-circle"></i></small> <!---->
+              ISD
+            </td> <td class="text-right">1431.75</td> <td class="text-right">1431.75</td> <td class="text-right">0.00</td> <td class="text-right">1431.75</td></tr><tr><td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td> <td><!----> <small class="text-success"><i class="fa fa-check-circle"></i></small> <!---->
+              MANO DE OBRA ETIQUETADO
+            </td> <td class="text-right">621.00</td> <td class="text-right">621.00</td> <td class="text-right">0.00</td> <td class="text-right">0.00</td></tr><tr><td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td> <td><!----> <small class="text-success"><i class="fa fa-check-circle"></i></small> <!---->
+              POLIZA SEGURO
+            </td> <td class="text-right">119.00</td> <td class="text-right">119.00</td> <td class="text-right">0.00</td> <td class="text-right">0.00</td></tr><tr><td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td> <td><!----> <small class="text-success"><i class="fa fa-check-circle"></i></small> <!---->
+              THC
+            </td> <td class="text-right">184.23</td> <td class="text-right">184.23</td> <td class="text-right">0.00</td> <td class="text-right">0.00</td></tr><tr><td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td> <td><!----> <small class="text-success"><i class="fa fa-check-circle"></i></small> <!---->
+              TRANSPORTE INTERNO EXTRAPESADOUIO-GYE
+            </td> <td class="text-right">750.00</td> <td class="text-right">750.00</td> <td class="text-right">0.00</td> <td class="text-right">0.00</td></tr> <tr><th colspan="2">Sumas</th> <th class="text-right">54269.73</th> <th class="text-right">54244.33</th> <th class="text-right">25.40</th> <th class="text-right">48185.72</th></tr></tbody></table>
 		</div>
 		<div class="tab-pane fade" id="ipsum" role="tabpanel">
-			<h1>Ipsum</h1>
-			
-			<p>Aenean pharetra risus quis placerat euismod. Praesent mattis lorem eget massa euismod sollicitudin. Donec porta nulla ut blandit vehicula. Mauris sagittis lorem nec mauris placerat, et molestie elit vehicula. Donec libero ex, condimentum et mi dapibus, euismod ornare ligula.</p>
-			
-			<p>In faucibus tempus ante, et tempor magna luctus id. Ut a maximus ipsum. Duis eu velit nec libero pretium pellentesque. Maecenas auctor hendrerit pulvinar. Donec sed tortor interdum, sodales elit vel, tempor turpis. In tristique vestibulum eros vel congue. Vivamus maximus posuere fringilla. Nullam in est commodo, tristique ligula eu, tincidunt enim. Duis iaculis sodales lectus vitae cursus.</p>
+			<table class="table table-condensed table-striped table-bordered"><tbody><tr style="background-color: rgb(255, 255, 255);"><th class="text-center"><i class="fa fa-list"></i></th> <th class="text-center">CONCEPTO</th> <th class="text-center">VALOR</th> <th class="text-center">FACTURADO</th> <th class="text-center">SALDO</th> <th class="text-center">MAYOR</th></tr>
+			</table>
 		</div>
 		<div class="tab-pane fade" id="dolor" role="tabpanel">
-			<h1>Dolor</h1>
-			
-			<p>Ut eget lectus tristique, tempus purus sit amet, porta augue. Mauris lobortis sem nec augue ultricies blandit. Nullam sed sem venenatis, pretium urna eget, scelerisque dolor. Morbi nec volutpat leo, quis faucibus tortor. Aenean vel rutrum mauris. Pellentesque lectus massa, tincidunt quis leo non, sodales sagittis nulla. Proin interdum est at nulla laoreet, pulvinar pretium nisl rutrum. In vel elit a risus rhoncus accumsan vulputate non sapien. Sed et rhoncus velit. Nunc commodo augue fermentum, hendrerit neque at, ullamcorper arcu. Nulla tincidunt orci a lectus efficitur elementum. Donec molestie urna vestibulum augue placerat faucibus. In vitae orci vel mauris cursus viverra ac sit amet nisl. Phasellus odio tortor, ullamcorper eget ullamcorper eget, molestie eget justo. Integer elementum purus eget arcu fermentum tincidunt. Nullam erat tellus, dictum sit amet nisi eu, rutrum fermentum odio.</p>
+			<table class="table table-condensed table-striped table-bordered"><tbody><tr style="background-color: rgb(255, 255, 255);"><th class="text-center"><i class="fa fa-list"></i></th> <th class="text-center">CONCEPTO</th> <th class="text-center">VALOR</th> <th class="text-center">FACTURADO</th> <th class="text-center">SALDO</th> <th class="text-center">MAYOR</th></tr>
+			</table>
 		</div>
 		<div class="tab-pane fade" id="sit-amet" role="tabpanel">
-			<h1>Sit Amet</h1>
-			
-			<p>Aliquam hendrerit nunc vitae nisi efficitur, eu porta sem aliquam. Aenean tincidunt mi sed mi sodales bibendum. Proin dolor ipsum, mollis venenatis velit eu, iaculis laoreet mi. Mauris eget egestas felis, sit amet finibus nunc. Aliquam non dui sit amet erat auctor mollis ac eget ante. Quisque at quam augue. Nulla dignissim, augue nec cursus consequat, mi nulla efficitur augue, vel fringilla turpis quam eu nunc. Quisque rutrum vehicula lacus sodales molestie. Mauris vel felis sit amet erat maximus cursus ut a velit. In hac habitasse platea dictumst. Vestibulum vel neque sit amet nisl finibus fermentum.</p>
+			<table class="table table-condensed table-striped table-bordered"><tbody><tr style="background-color: rgb(255, 255, 255);"><th class="text-center"><i class="fa fa-list"></i></th> <th class="text-center">CONCEPTO</th> <th class="text-center">VALOR</th> <th class="text-center">FACTURADO</th> <th class="text-center">SALDO</th> <th class="text-center">MAYOR</th></tr>
+			</table>
 		</div>
 	</div>
+</div>
+</div>
+
+<div class="col-5 div-bordered">
+d
+</div>
+
 </div>
 
 {% endblock content %}

@@ -1,18 +1,25 @@
-{% load static %}
+{% extends 'base/base.html' %}
+{% block content %}
+<br>
+<br>
+<br>
 <div class="row">
     <div class="col-4"></div>
     <div class="col-4">
-    <div class="card" style="width: 25rem;">
-  <div class="card-header">
-    <span class="fas fa-stop"></span> ¡Contenido Inexistente!  ☹
-  </div>
-    <img class="card-img-top" src="{% static "img/notfound.png" %}" alt="Contenido no encontrado" width="100" >
+    <div class="card" style="width: 40rem;">
+  <div class="card-header"><span class="text-primary"><i class="fa fa-exclamation-triangle"></i> Error 404</span> ¡Contenido Inexistente!</div>
   <div class="card-body">
     <h5 class="card-title">El contenido que está intendado ver no existe</h5>
-    <p class="card-text">El contenido no está presente en el servidor, es posible que haya sido eliminado o bloqeado</p>
-    <a href="{{ BASE_URL }}admin/orders/order/" class="btn btn-primary">Volver a la lista de Pedidos</a>
+    <p class="card-text">
+      El contenido no está presente en el servidor, es posible que haya sido eliminado o bloqeado
+    </p>
+    <p class="text-danger">
+    Respuesta del Sistema: <strong>{{ data.msg }}</strong>
+    </p>
+    <a href="/admin/orders/order/" class="btn btn-primary">Volver a la lista de Pedidos</a>
   </div>
   </div>
     </div>
     <div class="col-4"></div>
 </div>
+{% endblock content %}

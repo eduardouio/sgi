@@ -58,7 +58,7 @@ var app = new Vue({
               });
         },
 
-        updateLedger: function(){        
+        updateLedger: function(){
             console.log('actualizando mayor')
             if (typeof(this.order_data.expenses) != 'object'){                
                 console.log('[Debug] El pedido no tiene gastos')
@@ -127,7 +127,7 @@ var app = new Vue({
     },
     mounted() {
             this.$http.get('{{BASE_URL}}pedidos/get_all_data/{{ data.order.nro_pedido }}/', {params: {}}).then(response => {          
-            this.order_data = response.data.data 
+            this.order_data = response.body 
             this.ajax_request = false
             this.updateLedger()
           }, response => {

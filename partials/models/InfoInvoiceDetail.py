@@ -95,6 +95,8 @@ class InfoInvoiceDetail(models.Model):
         unique_together = (('id_factura_informativa', 'detalle_pedido_factura', 'date_create'),)
         verbose_name_plural = 'Factura Informativa Detalle'
         ordering = ['id_factura_informativa']
+
+
     @property
     def cantidad_x_caja(self):
         return self.detalle_pedido_factura.cantidad_x_caja

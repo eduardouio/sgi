@@ -59,8 +59,8 @@ class CompletePartialInfo(object):
         """
         loggin(
             'i',
-            'Iniciando clase de recuperacion informacion parcial {}'
-            .format(id_partial)
+            'Iniciando clase de recuperacion informacion parcial {} serializado {} '
+            .format(id_partial, serialized) 
             )
         self.id_partial  = id_partial
         self.serialized = serialized

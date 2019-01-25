@@ -97,19 +97,30 @@ class OrderInvoiceDetail(models.Model):
 
     @classmethod
     def get_by_id_order_invoice(self, id_order_invoice):
-        loggin('i', 'Obteniendo la lista completa de los detalles de un pedido')
+        loggin(
+            'i', 
+            'Obteniendo la lista completa de los detalles de un pedido'
+            )
         order_items =  self.objects.filter(id_pedido_factura = id_order_invoice)
 
         if order_items.count() == 0:
-            loggin('w', 'La factura de producto {id_order_invoice} no tiene items registrados'.format(id_order_invoice=id_order_invoice))
+            loggin(
+                'w', 
+                'La factura de producto {id_order_invoice} no tiene items registrados'
+                .format(id_order_invoice=id_order_invoice)
+                )
+
             return []
 
         for item in order_items:
             if not bool(item.product):
                 item.product = item.cod_contable.nombre
+            if item.unidades == 0 :
+                item.unidades = (item.nro_cajas * item.cantidad_x_caja)
 
         return order_items
     
+
     @classmethod
     def get_by_id(self, id_order_invoice_detail):
         try:

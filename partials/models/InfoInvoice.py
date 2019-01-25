@@ -63,6 +63,7 @@ class InfoInvoice(models.Model):
     @classmethod
     def get_by_id_partial(self, id_partial):
         invoices = self.objects.filter(id_parcial = id_partial)
+
         if invoices.count() == 1:
             loggin(
                 'i', 

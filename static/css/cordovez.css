@@ -588,9 +588,6 @@ th {
     border-radius: .25rem;
 }
 
-.card:hover{
-	background-color: #D7BDE2;
-}
 
 .card-img-top {
     width: 100%;
@@ -659,3 +656,12 @@ th {
 	color:#8E44AD;
 	border-color: #17a2b8 !important #007bff !important #17a2b8 !important #17a2b8 !important;
   }
+  .row {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -5px;
+	margin-left: -5px;
+	margin-top: 8px;
+}

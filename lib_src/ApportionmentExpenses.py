@@ -25,7 +25,7 @@ class ApportionmentExpenses(object):
 
         self.complete_order_info = kwargs['complete_order_info']
         self.all_partials = kwargs['all_partials']
-        self.ordinal_current_partial = kwargs['ordinal_current_partial']
+        self.ordinal_current_partial = int(kwargs['ordinal_current_partial'])
         self.apportionment_detail = []
         self.indirect_costs = 0
         self.fob_razon_inicial = 0,
@@ -54,7 +54,7 @@ class ApportionmentExpenses(object):
             'fob_saldo': 0,
             'fob_proximo_parcial': 0,
         }
-        
+
         fobs['fob_inicial'] = float(self.complete_order_info['order_invoice']['totals']['value'])
         fobs['fob_parcial'] = float(self.current_partial_data['info_invoice']['totals']['value'])
         
@@ -83,7 +83,7 @@ class ApportionmentExpenses(object):
         if self.current_partial_data['status']['partial_expenses'] is False:
             return warenhousing
         
-        for w in self.current_partial_data['expenses']:    
+        for w in self.current_partial_data['expenses']:
             if w.concepto.find('DEPOSITO 201') == 0:
                 warenhousing['almacenaje_parcial'] += float(w.valor_provisionado)                
         
@@ -99,7 +99,6 @@ class ApportionmentExpenses(object):
         warenhousing['almacenaje_proximo_parcial'] =  warenhouseng_sale - warenhousing['almacenaje_aplicado']
 
         return warenhousing
-
 
     def get_apportionment_expenses(self):                
         apportionment_expenses = []

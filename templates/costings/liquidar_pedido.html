@@ -15,14 +15,11 @@
     {% endif %}
   </div>
   <div class="col-8 text-right">
-    <span>| <a href="{{ data.order.url_dai_1 }}"> Ref: {{ data.order.nro_refrendo }} </a></span>
+    <span><a href="{{ data.order.url_dai_1 }}"> Ref: {{ data.order.nro_refrendo }} </a></span>
     <span>| Exaduana</span>
     <span>| Liq: {{ data.order.nro_liquidacion }}</span>
     <span>| F. Llegada: {{ data.order.fecha_llegada_cliente.strftime('%d/%m/%Y') if data.order.fecha_llegada_cliente is not none else 'En Tránsito' }}</span>
-    {% if data.order.regiem == '70'%}
-    <span>| Parciales</span>
-    {% endif %}
-    <span>| </span>
+    <span></span>
   </div>
 </div>
 {% endblock title_content %}

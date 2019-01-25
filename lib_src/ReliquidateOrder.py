@@ -111,9 +111,11 @@ class ReliquidateOrder(object):
             + line_item.etiquetas_fiscales
             + line_item.tasa_control
         )
-
         line_item.ex_aduana_unitario = (line_item.ex_aduana / line_item.unidades)
-        line_item.base_advalorem_reliquidado = (self.rates['base_ice_advalorem'] * (line_item.capacidad_ml/1000))
+        line_item.base_advalorem_reliquidado = (
+            self.rates['base_ice_advalorem'] 
+            * (line_item.capacidad_ml/1000)
+            )
 
         if line_item.ex_aduana_unitario > line_item.base_advalorem_reliquidado:
             line_item.ice_advalorem_reliquidado = (
