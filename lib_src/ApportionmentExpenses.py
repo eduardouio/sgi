@@ -1,4 +1,7 @@
 from logs.app_log import loggin
+from partials.models.Apportionment import Apportionment
+from partials.models.ApportionmentDetail import ApportionmentDetail
+from decimal import Decimal
 
 class ApportionmentExpenses(object):
     '''
@@ -19,7 +22,7 @@ class ApportionmentExpenses(object):
         '''
         loggin(
             'i', 
-            'Iniciando libreria de prorrateo de costos par liquidacion del pacial {}'
+            'Iniciando libreria de prorrateos parcial {}'
             .format(kwargs['ordinal_current_partial'])
             )
 
@@ -33,30 +36,61 @@ class ApportionmentExpenses(object):
         self.current_partial_data = self.all_partials[self.ordinal_current_partial -1 ]
     
 
-    def get_data(self):
+    def make_apportionment(self):
         '''
-            Retorna los valores de costos indirectos para un parcial 
+           Registra en la base los prorrateos 
         '''
-        return {
-            'fobs' : self.get_fobs(),
-            'warenhousing' : self.get_warenhouses(),
-            'apportionment_expenses' : self.get_apportionment_expenses(),
-            'droped_expenses' : self.get_droped_expenses(),
-        }
-    
+        if self.current_partial_data['partial'].bg_isclosed == 1:
+            loggin(
+                'i', 
+                'El parcial {} se encuentra cerrado se omite el prorrateo'
+                .format(self.current_partial_data['partial'].id_parcial)
+                )
+            return False
+            
+        Apportionment.delete_from_parcial(self.current_partial_data['partial'].id_parcial)
+        apportionment_headers = self.set_fobs()
+        apportionment_headers.update(self.set_warenhouses())
+        apportionment_headers.update(self.set_droped_expenses())
+        apportionment_headers['prorrateo_flete_aduana'] = (
+            self.complete_order_info['order'].seguro_aduana
+            * apportionment_headers['fob_parcial']
+        ),
+        apportionment_headers['prorrateo_seguro_aduana'] = (
+            self.complete_order_info['order'].flete_aduana
+            * apportionment_headers['fob_parcial']
+        )
+        loggin('w', '-------------------------------')
+        loggin('t', apportionment_headers)
+        loggin('w', '-------------------------------')
 
-    def get_fobs(self):
+        new_apportionment = Apportionment.objects.create_apportionment(apportionment_headers)
+        new_apportionment.save()
+        
+        apportionmet_detail = self.set_apportionment_expenses()
+        #for app_det in apportionmet_detail:
+        #    new_app_det = ApportionmentDetail(app_det)
+        #    new_app_det.id_prorrateo = new_apportionment.id_prorrateo
+        
+        #loggin('i', 'Nuevo prorrateo registrado id {}'.format(new_apportionment.id_prorrateo))
+        return True
+
+
+    def set_fobs(self):
+        loggin('w', self.current_partial_data['partial'])
         fobs = {
+            'id_parcial' : self.current_partial_data['partial'],
             'fob_inicial': 0,
             'fob_parcial': 0,
             'fob_parcial_razon_inicial': 0,
+            'porcentaje_parcial' : 0,
             'fob_parcial_razon_saldo': 0,
             'fob_saldo': 0,
             'fob_proximo_parcial': 0,
         }
 
-        fobs['fob_inicial'] = float(self.complete_order_info['order_invoice']['totals']['value'])
-        fobs['fob_parcial'] = float(self.current_partial_data['info_invoice']['totals']['value'])
+        fobs['fob_inicial'] = self.complete_order_info['order_invoice']['totals']['value']
+        fobs['fob_parcial'] = self.current_partial_data['info_invoice']['totals']['value']
         
         if self.ordinal_current_partial > 1:
             fobs['saldo'] = self.complete_order_info['last_apportionment'].fob_proximo_parcial
@@ -65,6 +99,7 @@ class ApportionmentExpenses(object):
 
         fobs['fob_parcial_razon_saldo'] = fobs['fob_parcial'] / fobs['fob_inicial']
         fobs['fob_parcial_razon_inicial'] = fobs['fob_parcial'] / fobs['fob_inicial']
+        fobs['porcentaje_parcial'] = fobs['fob_parcial_razon_inicial']
         fobs['fob_proximo_parcial'] =  fobs['fob_saldo'] - fobs['fob_parcial']
         self.fob_razon_inicial = round(fobs['fob_parcial_razon_inicial'],10)
         self.fob_razon_saldo = round(fobs['fob_parcial_razon_saldo'],10)
@@ -72,7 +107,7 @@ class ApportionmentExpenses(object):
         return fobs
 
 
-    def get_warenhouses(self):
+    def set_warenhouses(self):
         warenhousing = {
             'almacenaje_parcial' : 0,
             'almacenaje_anterior' : 0,
@@ -90,17 +125,18 @@ class ApportionmentExpenses(object):
         if self.ordinal_current_partial > 1:
             warenhousing['almacenaje_anterior'] = self.complete_order_info['last_apportionment'].almacenaje_proximo_parcial
         
-        warenhouseng_sale = (
+        warenhouseng_sale = Decimal((
             warenhousing['almacenaje_parcial']
             + warenhousing['almacenaje_anterior']
-        )
+        ))
 
         warenhousing['almacenaje_aplicado'] = warenhouseng_sale * self.fob_razon_saldo
         warenhousing['almacenaje_proximo_parcial'] =  warenhouseng_sale - warenhousing['almacenaje_aplicado']
 
         return warenhousing
+        
 
-    def get_apportionment_expenses(self):                
+    def set_apportionment_expenses(self):                
         apportionment_expenses = []
 
         if self.complete_order_info['status']['init_expenses']:    
@@ -109,8 +145,8 @@ class ApportionmentExpenses(object):
                     'id_gastos_nacionalizacion': expense.id_gastos_nacionalizacion,
                     'tipo':'gasto_inicial',
                     'concepto': expense.concepto,
-                    'valor_prorrateado': float(expense.valor_provisionado) * float(self.fob_razon_inicial),
-                    'valor_provisionado': float(expense.valor_provisionado),
+                    'valor_prorrateado': expense.valor_provisionado * self.fob_razon_inicial,
+                    'valor_provisionado': expense.valor_provisionado,
                 })
         
         if self.current_partial_data['status']['partial_expenses']:
@@ -120,19 +156,19 @@ class ApportionmentExpenses(object):
                         'id_gastos_nacionalizacion': expense.id_gastos_nacionalizacion,
                         'tipo':'gasto_inicial',
                         'concepto': expense.concepto,
-                        'valor_prorrateado': float(expense.valor_provisionado),
-                        'valor_provisionado': float(expense.valor_provisionado),
+                        'valor_prorrateado': expense.valor_provisionado,
+                        'valor_provisionado': expense.valor_provisionado,
                     })
                 
         return apportionment_expenses
     
 
-    def get_droped_expenses(self):
+    def set_droped_expenses(self):
         droped_expenses = {
             'gastos_drop_parcial' : 0,
             'gastos_drop_parcial_anterior' : 0,
             'gastos_drop_parcial_aplicado' : 0,
-            'gastos_drop_parcial_proximo_parcial  ' : 0,
+            'gastos_drop_parcial_proximo_parcial' :0,
         }
 
         if self.ordinal_current_partial == 1:

@@ -30,3 +30,7 @@ ADD UNIQUE INDEX `id_producto_UNIQUE` (`id_producto` ASC);
 ALTER TABLE `cordovezAppDjango`.`pedido` 
 ADD COLUMN `id_pedido` INT(11) NOT NULL AUTO_INCREMENT ,
 ADD UNIQUE INDEX `id_pedido_UNIQUE` (`id_pedido` ASC);
+
+
+-- parciales:
+--    comprobar que la clave foranea al detalle del parcial esta en DELETE CASCADE 

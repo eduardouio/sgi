@@ -66,7 +66,7 @@ class CompletePartialInfo(object):
         self.serialized = serialized
         self.type_change_trimestral = type_change_trimestral
         partial = self.get_partial()
-
+        
         if partial is None:
             return None
 
@@ -77,7 +77,7 @@ class CompletePartialInfo(object):
             'ledger' : self.get_ledger(),
             'apportiomen' : self.get_apportioment(),
             'status' : self.status_parcial,
-            'prorrateos' : {},
+            'prorrateos' : self.get_apportioment(),
             'taxes' : self.get_taxes()
             })
 
@@ -96,7 +96,7 @@ class CompletePartialInfo(object):
 
         if partial is None:
             return None
-
+    
         if partial.bg_isliquidated:
             self.status_parcial['taxes'] = True
             self.tributes['arancel_advalorem'] = partial.arancel_advalorem_pagar_pagado
@@ -240,6 +240,7 @@ class CompletePartialInfo(object):
 
     def get_apportioment(self):
         apportionment = Apportionment.get_by_parcial(self.id_partial)
+        
         if apportionment is None:
             loggin('w','Este parcial {} no tiene prorrateos'. format(self.id_partial))
             return None
@@ -263,8 +264,10 @@ class CompletePartialInfo(object):
         return apportionment
 
 
-    def get_ledger(self):
-        pass
-
     def get_taxes(self):
         return Partial.get_paid_taxes(self.id_partial)
+    
+
+    def get_ledger(self):
+        return {}
+    

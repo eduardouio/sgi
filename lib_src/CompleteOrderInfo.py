@@ -1,12 +1,14 @@
 import decimal
 
+import partials
 from costings.models.Ledger import Ledger
-from lib_src.serializers import (ExpenseSerializer, LedgerSerializer,
+from lib_src.serializers import (ApportionmentSerializer, ExpenseSerializer,
+                                 LedgerSerializer,
                                  OrderInvoiceDetailSerializer,
                                  OrderInvoiceSerializer, OrderSerializer,
                                  PaidInvoiceDetailSerializer,
-                                 PaidInvoiceSerializer, RateExpenseSerializer,
-                                 SupplierSerializer, PartialSerializer)
+                                 PaidInvoiceSerializer, PartialSerializer,
+                                 RateExpenseSerializer, SupplierSerializer)
 from logs.app_log import loggin
 from orders.models.Order import Order
 from orders.models.OrderInvoice import OrderInvoice
@@ -15,9 +17,9 @@ from paids.models.Expense import Expense
 from paids.models.PaidInvoice import PaidInvoice
 from paids.models.PaidInvoiceDetail import PaidInvoiceDetail
 from paids.models.RateExpense import RateExpense
+from partials.models.Apportionment import Apportionment
 from partials.models.Partial import Partial
 from suppliers.models.Supplier import Supplier
-from partials.models.Apportionment import Apportionment
 
 
 class CompleteOrderInfo(object):
@@ -308,18 +310,21 @@ class CompleteOrderInfo(object):
     
     def get_partials(self):
         partials = Partial.get_by_order(self.nro_order)
-
-        if partials is None:
+        if partials.count() == 0:
             return None
         
         last_partial = Partial.get_last_close_partial(self.nro_order)
         
         if last_partial:
-            self.last_apportionment = Apportionment.get_by_parcial(last_partial.id_parcial)
+            last_apportionment = Apportionment.get_by_parcial(last_partial.id_parcial)
+            if self.serialized:
+                apportioment_serializer = ApportionmentSerializer(last_apportionment)
+                self.last_apportionment = apportioment_serializer.data
+            else:
+                self.last_apportionment = last_apportionment
 
         if self.serialized:
             partial_serializer = PartialSerializer(partials, many=True)
             return partial_serializer.data
         
         return partials
-            
