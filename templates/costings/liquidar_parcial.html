@@ -1,4 +1,8 @@
 {% extends 'base/base.html' %}
+{% block header %}
+<script src="{{ static("js/vue.js") }}"></script>
+<script src="{{ static("js/vue-resource.js") }}"></script>
+{% endblock header %}
 {% block title_content %}
     <div class="row border">
     <div class="col-5">
@@ -22,6 +26,7 @@
 </div>
 {% endblock title_content %}
 {% block content %}
+<div id="app">
   <div class="row" v-if="ajax_request == false">
     <div class="col-12">
       <table class="table table-bordered table-condensed">
@@ -143,4 +148,8 @@
 </div>
 </div>
 {% include 'costings/prorrateos-modal.html' %}
+</div>
 {% endblock content %}
+{% block script %}
+   {% include "js/app_partial_costings.js" %}
+{% endblock script %}

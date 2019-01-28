@@ -2,37 +2,40 @@ var app = new Vue({
     el: '#app',
     delimiters: ['${', '}'],
     data: {
-      order_data: {},
-      comentarios : '',
-      liquidated_order : false,
-      current_expense : null,
-      current_order_invoice : {},
-      current_taxes: {},
-      current_paid : null,
-      init_ledger : parseFloat('{{ data.init_ledger }}'.replace(',','.')),      
+      complete_order_info: {},
+      all_partial: {},
+      current_partial : {},
+      init_ledger : 0,      
       diferecia_mayores : 0.0,
       ajax_request : true,
-      show_costings : false,
-      show_expense : false,
-      show_order_invoice : false,
-      show_taxes : false,
-      show_form_liquidated : false,
-      systems_ledger : {{ data.ledger if data.ledger else  'false' }},
+      systems_ledger : 0,
       current_ledger : {
         'tipo' : 'inicial',
-        'nro_pedido' : '{{ data.order.nro_pedido }}',
+        'nro_pedido' : '',
         'id_parcial' : 0,
-        'costo_producto' : {{ data.order_invoice.order_invoice.valor_tasa_trimestral }},
-        'facturas_sgi' : parseFloat('{{ data.total_invoiced }}'.replace(',','.')),
+        'costo_producto' : 0,
+        'facturas_sgi' : 0,
         'mayor_sap' : 0,
         'mayor_sgi' : 0,
-        'precio_entrega' : parseFloat('{{ data.costs.sums.indirectos }}'.replace(',','.')),
+        'precio_entrega' : 0,
         'provisiones_sap' : 0,
-        'provisiones_sgi' : parseFloat('{{ data.total_provisions }}'.replace(',','.')),
-        'reliquidacion_ice' : parseFloat('{{ data.costs.sums.ice_advalorem_reliquidado }}'.replace(',','.')),
+        'provisiones_sgi' : 0,
+        'reliquidacion_ice' : 0,
       },
       csrftoken : Cookies.get('csrftoken'),
     },
-    methods : {    }
-    
+    methods : {
+      sayHello: function(){
+        console.log('Hola Eduardo, Estamos dentro!.')
+      }
+    },
+    mounted() {
+      this.$http.get('{{BASE_URL}}api/order/all-data/', {params: {}}).then(response => {          
+      this.order_data = response.body 
+      this.ajax_request = false
+      this.updateLedger()
+    }, response => {
+      console.log('Se produjo un error, por favor recargue la página');
+    });
+},
 })
