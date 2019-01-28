@@ -1,89 +1,51 @@
-from api.views.Apportionment import(
-    ApportionmenCreateView,
-    ApportionmenDeleteView,
-    ApportionmenDetailView,
-    ApportionmenUpdateView
-)
-from api.views.ApportionmentDetail import(
-    ApportionmentDetailCreateView,
-    ApportionmentDetailDeleteView,
-    ApportionmentDetailDetailView,
-    ApportionmentDetailUpdateView,
-)
-from api.views.Expense import(
-    ExpenseCreateView,
-    ExpenseDeleteView,
-    ExpenseDetailView,
-    ExpenseUpdateView
-)
-from api.views.InfoInvoice import(
-    InfoInvoiceCreateView,
-    InfoInvoiceDeleteView,
-    InfoInvoiceDetailView,
-    InfoInvoiceUpdateView,
-)
-from api.views.InfoInvoiceDetail import(
-    InfoInvoiceDetailCreateView,
-    InfoInvoiceDetailDeleteView,
-    InfoInvoiceDetailDetailView,
-    InfoInvoiceDetailUpdateView
-)
-from api.views.Ledger import(
-    LedgerCreateView,
-    LedgerDeleteView,
-    LedgerDetailView,
-    LedgerUpdateView,
-)
-from api.views.Order import(
-    OrderCreateView,
-    OrderDeleteView,
-    OrderDetailView,
-    OrderUpdateView,
-)
-from api.views.OrderInvoice import(
-    OrderInvoiceCreateView,
-    OrderInvoiceDeleteView,
-    OrderInvoiceDetailView,
-    OrderInvoiceUpdateView,
-)
-from api.views.OrderInvoiceDetail import(    
-    OrderInvoiceDetailCreateView,
-    OrderInvoiceDetailDeleteView,
-    OrderInvoiceDetailDetailView,
-    OrderInvoiceDetailUpdateView,
-)
-from api.views.PaidInvoice import(
-    PaidInvoiceCreateView,
-    PaidInvoiceDeleteView,
-    PaidInvoiceDetailView,
-    PaidInvoiceUpdateView,
-    CompletePaidView,
-)
-from api.views.PaidInvoiceDetail import(
-    PaidInvoiceDetailCreateView,
-    PaidInvoiceDetailDeleteView,
-    PaidInvoiceDetailDetailView,
-    PaidInvoiceDetailUpdateView,
-)
-from api.views.Partial import(
-    PartialCreateView,
-    PartialDeleteView,
-    PartialDetailView,
-    PartialUpdateView,
-)
-from api.views.Product import (
-    ProductCreateView,
-    ProductDeleteView,
-    ProductDetailView,
-    ProductUpdateView
-)
-from api.views.Suppliers import (
-    SupplierCreateView,
-    SupplierDeleteView,
-    SupplierDetailView,
-    SupplierUpdateView
-)
-from django.urls import path, include
+from django.urls import include, path
+
+from api.views.Apportionment import (ApportionmenCreateView,
+                                     ApportionmenDeleteView,
+                                     ApportionmenDetailView,
+                                     ApportionmenUpdateView)
+from api.views.ApportionmentDetail import (ApportionmentDetailCreateView,
+                                           ApportionmentDetailDeleteView,
+                                           ApportionmentDetailDetailView,
+                                           ApportionmentDetailUpdateView)
+from api.views.Expense import (ExpenseCreateView, ExpenseDeleteView,
+                               ExpenseDetailView, ExpenseUpdateView)
+from api.views.InfoInvoice import (InfoInvoiceCreateView,
+                                   InfoInvoiceDeleteView,
+                                   InfoInvoiceDetailView,
+                                   InfoInvoiceUpdateView)
+from api.views.InfoInvoiceDetail import (InfoInvoiceDetailCreateView,
+                                         InfoInvoiceDetailDeleteView,
+                                         InfoInvoiceDetailDetailView,
+                                         InfoInvoiceDetailUpdateView)
+from api.views.Ledger import (LedgerCreateView, LedgerDeleteView,
+                              LedgerDetailView, LedgerUpdateView)
+from api.views.Order import (GetCompleteOrderInfoAPIView, OrderCreateView,
+                             OrderDeleteView, OrderDetailView, OrderUpdateView)
+from api.views.OrderInvoice import (OrderInvoiceCreateView,
+                                    OrderInvoiceDeleteView,
+                                    OrderInvoiceDetailView,
+                                    OrderInvoiceUpdateView)
+from api.views.OrderInvoiceDetail import (OrderInvoiceDetailCreateView,
+                                          OrderInvoiceDetailDeleteView,
+                                          OrderInvoiceDetailDetailView,
+                                          OrderInvoiceDetailUpdateView)
+from api.views.PaidInvoice import (CompletePaidView, PaidInvoiceCreateView,
+                                   PaidInvoiceDeleteView,
+                                   PaidInvoiceDetailView,
+                                   PaidInvoiceUpdateView)
+from api.views.PaidInvoiceDetail import (PaidInvoiceDetailCreateView,
+                                         PaidInvoiceDetailDeleteView,
+                                         PaidInvoiceDetailDetailView,
+                                         PaidInvoiceDetailUpdateView)
+from api.views.Partial import (CompletePartialInfoApiView, PartialCreateView,
+                               PartialDeleteView, PartialDetailView,
+                               PartialUpdateView)
+from api.views.Product import (ProductCreateView, ProductDeleteView,
+                               ProductDetailView, ProductUpdateView)
+from api.views.Suppliers import (SupplierCreateView, SupplierDeleteView,
+                                 SupplierDetailView, SupplierUpdateView)
+
 app_name = 'api'
 
 urlpatterns = [
@@ -122,6 +84,8 @@ urlpatterns = [
     path('order/delete/<pk>/', OrderDeleteView.as_view(), name='delete-order'),
     path('order/detail/<pk>/', OrderDetailView.as_view(), name='detail-order'),
     path('order/update/<pk>/', OrderUpdateView.as_view(), name='update-order'),
+    path('order/all-data/<nro_order>/', GetCompleteOrderInfoAPIView.as_view(), name='complete-order-data'),
+
     #OrderInvoice
     path('order-invoice/create/', OrderInvoiceCreateView.as_view(), name='create-order-invoice'),
     path('order-invoice/delete/<pk>/', OrderInvoiceDeleteView.as_view(), name='delete-order-invoice'),
@@ -148,6 +112,7 @@ urlpatterns = [
     path('partial/delete/<pk>/', PartialDeleteView.as_view(), name='delete-partial' ),
     path('partial/detail/<pk>/', PartialDetailView.as_view(), name='detail-partial' ),
     path('partial/update/<pk>/', PartialUpdateView.as_view(), name='update-partial' ),
+    path('partial/all-data/<id_partial>/', CompletePartialInfoApiView.as_view(), name='all-info-partial' ),
     #Product
     path('product/create/', ProductCreateView.as_view(), name='create-product' ),
     path('product/delete/<pk>/', ProductDeleteView.as_view(), name='delete-product' ),

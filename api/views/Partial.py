@@ -1,6 +1,12 @@
 from rest_framework import generics
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from lib_src.CompletePartialInfo import CompletePartialInfo
 from lib_src.serializers import PartialSerializer
+from lib_src.TypeChangeOrder import get_by_parcial
 from partials.models.Partial import Partial
+
 
 class PartialCreateView(generics.CreateAPIView):
     queryset = Partial.objects.all()
@@ -21,3 +27,13 @@ class PartialDetailView(generics.RetrieveAPIView):
 class PartialUpdateView(generics.UpdateAPIView):
     queryset = Partial.objects.all()
     serializer_class = PartialSerializer
+
+
+class CompletePartialInfoApiView(generics.GenericAPIView):
+    def get(self, request, id_partial):
+        partial_all_data = CompletePartialInfo().get_data(
+            id_partial=id_partial,
+            serialized=True,
+            type_change_trimestral=get_by_parcial(id_partial)
+            )
+        return Response(partial_all_data)
