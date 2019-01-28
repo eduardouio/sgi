@@ -98,7 +98,7 @@ class Partial(models.Model):
         if parcials.count() == 0:
             loggin('w', 'No existe informacion para el id del parcial indicado')
             return self.objects.none()
-
+            
         return parcials
 
 
@@ -139,7 +139,8 @@ class Partial(models.Model):
         Returns:
             {QuerySet} | {None}
         '''
-
+        partials = None
+        
         if id_partial:
             partials = self.objects.filter(nro_pedido=nro_order, bg_isclosed=1, id_parcial__lte = id_partial)
         else:

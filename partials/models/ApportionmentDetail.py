@@ -5,7 +5,7 @@ from simple_history.models import HistoricalRecords
 
 class ApportionmentDetail(models.Model):
     id_prorrateo_detalle = models.AutoField(primary_key=True)
-    id_prorrateo = models.ForeignKey(Apportionment, models.PROTECT, db_column='id_prorrateo')
+    id_prorrateo = models.ForeignKey(Apportionment, models.CASCADE, db_column='id_prorrateo')
     id_gastos_nacionalizacion = models.PositiveIntegerField()
     tipo = models.CharField(max_length=13)
     concepto = models.CharField(max_length=90)

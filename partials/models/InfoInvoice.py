@@ -1,11 +1,12 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.db.models import QuerySet
+from simple_history.models import HistoricalRecords
 
 from logs.app_log import loggin
 from orders.models.Order import Order
 from orders.models.OrderInvoiceDetail import OrderInvoiceDetail
 from partials.models.Partial import Partial
-from simple_history.models import HistoricalRecords
 from suppliers.models.Supplier import Supplier
 
 
@@ -45,6 +46,18 @@ class InfoInvoice(models.Model):
     def total_value(self):
         return self.gasto_origen + self.valor
 
+    @classmethod
+    def get_by_id(self, id_info_invoice):
+        try:
+            return self.objects.get(pk=id_info_invoice)
+        except ObjectDoesNotExist:
+            loggin(
+                'w', 
+                'La factura informativa {} solicitado no existe'
+                .format(id_info_invoice)
+                )
+            return None
+        
     @classmethod
     def get_by_order(self, nro_order):
         parcials = Partial.get_by_order(nro_order) 

@@ -2,6 +2,14 @@ from django.db import models
 from partials.models.Partial import Partial
 from logs.app_log import loggin
 from simple_history.models import HistoricalRecords
+from django.core.exceptions import ObjectDoesNotExist
+ 
+class ApportionmetManager(models.Manager):
+    
+    def create_apportionment(self, appottionment):
+        loggin('e','Has llamado a crear')
+
+
 
 class Apportionment(models.Model):
     id_prorrateo = models.AutoField(primary_key=True)
@@ -27,6 +35,7 @@ class Apportionment(models.Model):
     date_create = models.DateTimeField(blank=True, null=True)
     last_update = models.DateTimeField(blank=True, null=True)
     history = HistoricalRecords()
+    objects = ApportionmetManager()
 
     def __str__(self):
         return str(self.id_prorrateo)
@@ -36,6 +45,18 @@ class Apportionment(models.Model):
         db_table = 'prorrateo'
         verbose_name_plural = 'Prorrateos De Parciales'
         ordering = ['id_parcial']
+    
+    @classmethod
+    def get_by_id(self, id_apportionment):
+        try:
+            return self.objects.get(pk=id_apportionment)
+        except ObjectDoesNotExist:
+            loggin(
+                'w', 
+                'El prorrateo {} no existe'
+                .format(id_apportionment)
+                )
+            return None
     
 
     @classmethod
@@ -69,3 +90,17 @@ class Apportionment(models.Model):
             return None
         
         return self.get_by_parcial(last_partial.id_parcial)
+    
+
+    @classmethod
+    def delete_from_parcial(self, id_partial):
+        apportioments = self.objects.filter(id_parcial=id_partial)
+        if apportioments.count() == 0:
+            loggin('i', 'Parcial {} sin prorrateos'. format(id_partial))
+            return True
+        
+        for appt in apportioments:
+            appt.delete()
+        
+        loggin('i', 'Eliminacion de prorrateos parcial {}'.format(id_partial))
+        return True
