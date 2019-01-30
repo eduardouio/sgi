@@ -1,7 +1,9 @@
+from decimal import Decimal
+
 from logs.app_log import loggin
 from partials.models.Apportionment import Apportionment
 from partials.models.ApportionmentDetail import ApportionmentDetail
-from decimal import Decimal
+
 
 class ApportionmentExpenses(object):
     '''
@@ -30,11 +32,28 @@ class ApportionmentExpenses(object):
         self.all_partials = kwargs['all_partials']
         self.ordinal_current_partial = int(kwargs['ordinal_current_partial'])
         self.apportionment_detail = []
-        self.indirect_costs = 0
-        self.fob_razon_inicial = 0,
-        self.fob_razon_saldo = 0,
+        self.indirect_costs = Decimal(0)
+        self.fob_razon_inicial = Decimal(0),
+        self.fob_razon_saldo = Decimal(0),
         self.current_partial_data = self.all_partials[self.ordinal_current_partial -1 ]
     
+
+    def get_apportionments(self):
+        self.make_apportionment()
+        current_approtionment =  ApportionmentDetail.get_all_apportionments_by_parcial(
+                self.current_partial_data['partial'].id_parcial
+            )
+        
+        for apportionment in current_approtionment['apportionment_detail']:
+            current_approtionment['total_aplicado'] += apportionment.valor_prorrateado
+            current_approtionment['total_provisionado'] += apportionment.valor_provisionado
+            if apportionment.tipo == 'gasto_inicial':
+                apportionment.tipo = 'Gasto Inicial'
+            else:
+                apportionment.tipo = 'Gasto Parcial'
+        
+        return current_approtionment
+        
 
     def make_apportionment(self):
         '''
@@ -52,27 +71,24 @@ class ApportionmentExpenses(object):
         apportionment_headers = self.set_fobs()
         apportionment_headers.update(self.set_warenhouses())
         apportionment_headers.update(self.set_droped_expenses())
-        apportionment_headers['prorrateo_flete_aduana'] = (
-            self.complete_order_info['order'].seguro_aduana
-            * apportionment_headers['fob_parcial']
-        ),
-        apportionment_headers['prorrateo_seguro_aduana'] = (
-            self.complete_order_info['order'].flete_aduana
-            * apportionment_headers['fob_parcial']
-        )
-        loggin('w', '-------------------------------')
-        loggin('t', apportionment_headers)
-        loggin('w', '-------------------------------')
 
-        new_apportionment = Apportionment.objects.create_apportionment(apportionment_headers)
+        new_apportionment = Apportionment(**apportionment_headers)
+        new_apportionment.prorrateo_seguro_aduana = (
+            self.complete_order_info['order'].seguro_aduana 
+            * new_apportionment.fob_parcial_razon_inicial
+            )
+        new_apportionment.prorrateo_flete_aduana = (
+            self.complete_order_info['order'].flete_aduana 
+            * new_apportionment.fob_parcial_razon_inicial
+            )
         new_apportionment.save()
-        
         apportionmet_detail = self.set_apportionment_expenses()
-        #for app_det in apportionmet_detail:
-        #    new_app_det = ApportionmentDetail(app_det)
-        #    new_app_det.id_prorrateo = new_apportionment.id_prorrateo
+        for app_det in apportionmet_detail:
+            new_app_det = ApportionmentDetail(**app_det)
+            new_app_det.id_prorrateo = new_apportionment
+            new_app_det.save()
         
-        #loggin('i', 'Nuevo prorrateo registrado id {}'.format(new_apportionment.id_prorrateo))
+        loggin('i', 'Nuevo prorrateo registrado id {}'.format(new_apportionment.id_prorrateo))
         return True
 
 
@@ -87,22 +103,33 @@ class ApportionmentExpenses(object):
             'fob_parcial_razon_saldo': 0,
             'fob_saldo': 0,
             'fob_proximo_parcial': 0,
+            'gastos_origen_incial' : 0,
+            'gastos_origen_anterior_parcial' : 0,
+            'gastos_origen_aplicado' : 0,
+            'gastos_origen_proximo_parcial' : 0,
         }
+        fobs['fob_inicial'] = self.complete_order_info['order_invoice']['totals']['value'] * self.complete_order_info['tipo_cambio_trimestral']
+        fobs['fob_parcial'] = self.current_partial_data['info_invoice']['totals']['value'] * self.complete_order_info['tipo_cambio_trimestral']
+        fobs['gastos_origen_incial'] = self.complete_order_info['order'].gasto_origen * self.complete_order_info['tipo_cambio_trimestral']
 
-        fobs['fob_inicial'] = self.complete_order_info['order_invoice']['totals']['value']
-        fobs['fob_parcial'] = self.current_partial_data['info_invoice']['totals']['value']
-        
         if self.ordinal_current_partial > 1:
             fobs['saldo'] = self.complete_order_info['last_apportionment'].fob_proximo_parcial
+            fobs['gastos_origen_anterior_parcial'] = self.complete_order_info['last_apportionment'].gastos_origen_proximo_parcial
         else:
             fobs['fob_saldo'] = fobs['fob_inicial']
+            fobs['gastos_origen_incial'] = fobs['gastos_origen_incial']
 
         fobs['fob_parcial_razon_saldo'] = fobs['fob_parcial'] / fobs['fob_inicial']
         fobs['fob_parcial_razon_inicial'] = fobs['fob_parcial'] / fobs['fob_inicial']
         fobs['porcentaje_parcial'] = fobs['fob_parcial_razon_inicial']
         fobs['fob_proximo_parcial'] =  fobs['fob_saldo'] - fobs['fob_parcial']
-        self.fob_razon_inicial = round(fobs['fob_parcial_razon_inicial'],10)
-        self.fob_razon_saldo = round(fobs['fob_parcial_razon_saldo'],10)
+
+        if self.complete_order_info['order'].incoterm != 'CFR':
+            fobs['gastos_origen_aplicado'] = fobs['gastos_origen_incial'] * fobs['fob_parcial_razon_inicial']
+            fobs['gastos_origen_proximo_parcial'] = fobs['gastos_origen_anterior_parcial'] -  fobs['gastos_origen_aplicado']
+
+        self.fob_razon_inicial = Decimal(fobs['fob_parcial_razon_inicial']).quantize(Decimal('1.0000000000'))
+        self.fob_razon_saldo = Decimal(fobs['fob_parcial_razon_saldo']).quantize(Decimal('1.0000000000'))
 
         return fobs
 
@@ -130,8 +157,8 @@ class ApportionmentExpenses(object):
             + warenhousing['almacenaje_anterior']
         ))
 
-        warenhousing['almacenaje_aplicado'] = warenhouseng_sale * self.fob_razon_saldo
-        warenhousing['almacenaje_proximo_parcial'] =  warenhouseng_sale - warenhousing['almacenaje_aplicado']
+        warenhousing['almacenaje_aplicado'] = Decimal(warenhouseng_sale * self.fob_razon_saldo).quantize(Decimal('1.000'))
+        warenhousing['almacenaje_proximo_parcial'] =  Decimal(warenhouseng_sale - warenhousing['almacenaje_aplicado']).quantize(Decimal('1.000'))
 
         return warenhousing
         
@@ -151,15 +178,40 @@ class ApportionmentExpenses(object):
         
         if self.current_partial_data['status']['partial_expenses']:
             for expense in self.current_partial_data['expenses']:
-                if (expense.concepto.find('DEPOSITO 201') == -1) and expense.bg_isdrop == 0:
+                if (expense.concepto.find('DEPOSITO 201') == -1) and bool(expense.bg_isdrop) is False:
                     apportionment_expenses.append({
                         'id_gastos_nacionalizacion': expense.id_gastos_nacionalizacion,
-                        'tipo':'gasto_inicial',
+                        'tipo':'parcial',
                         'concepto': expense.concepto,
                         'valor_prorrateado': expense.valor_provisionado,
                         'valor_provisionado': expense.valor_provisionado,
                     })
-                
+                else:
+                    loggin(
+                        'i', 
+                        'El concepto {} no ha sido prorrateado'
+                        .format(expense.concepto)
+                    )
+        #registro de impuestos en prorrateo
+        partial_taxes = [
+            {'name': 'IMPUESTO ARANCEL ADVALOREM'  , 'value' : self.current_partial_data['partial'].arancel_advalorem_pagar_pagado },
+            {'name': 'IMPUESTO ARANCEL ESPECIFICO'  , 'value' : self.current_partial_data['partial'].arancel_especifico_pagar_pagado },
+            {'name': 'IMPUESTO FONDINFA'  , 'value' : self.current_partial_data['partial'].fodinfa_pagado },
+            {'name': 'IMPUESTO ICE ADVALOREM'  , 'value' : self.current_partial_data['partial'].ice_advalorem_pagado },
+            {'name': 'IMPUESTO ICE ESPECIFICO'  , 'value' : self.current_partial_data['partial'].ice_especifico_pagado },
+            {'name': 'IMPUESTO ICE ADVALOREM RELIQUIDADO'  , 'value' : (self.current_partial_data['partial'].ice_advalorem_reliquidado - self.current_partial_data['partial'].ice_advalorem_pagado) },
+        ] 
+        
+        for x , pt in enumerate(partial_taxes):
+            if pt['value'] > 0:
+                apportionment_expenses.append({
+                    'id_gastos_nacionalizacion': x + 1,
+                    'tipo':'parcial',
+                    'concepto': pt['name'],
+                    'valor_prorrateado': pt['value'],
+                    'valor_provisionado': pt['value'],
+                })
+
         return apportionment_expenses
     
 
