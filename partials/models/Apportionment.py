@@ -1,41 +1,39 @@
-from django.db import models
-from partials.models.Partial import Partial
-from logs.app_log import loggin
-from simple_history.models import HistoricalRecords
 from django.core.exceptions import ObjectDoesNotExist
- 
-class ApportionmetManager(models.Manager):
-    
-    def create_apportionment(self, appottionment):
-        loggin('e','Has llamado a crear')
+from django.db import models
+from simple_history.models import HistoricalRecords
+from django.utils import timezone
 
-
+from logs.app_log import loggin
+from partials.models.Partial import Partial
 
 class Apportionment(models.Model):
     id_prorrateo = models.AutoField(primary_key=True)
     id_parcial = models.ForeignKey(Partial, models.PROTECT, db_column='id_parcial')
-    porcentaje_parcial = models.DecimalField(max_digits=15, decimal_places=12)
-    fob_parcial_razon_inicial = models.DecimalField(max_digits=15, decimal_places=10)
-    fob_parcial_razon_saldo = models.DecimalField(max_digits=15, decimal_places=10)
-    fob_proximo_parcial = models.DecimalField(max_digits=15, decimal_places=6)
-    fob_inicial = models.DecimalField(max_digits=15, decimal_places=6)
-    fob_saldo = models.DecimalField(max_digits=15, decimal_places=6)
-    fob_parcial = models.DecimalField(max_digits=15, decimal_places=6)
-    almacenaje_parcial = models.DecimalField(max_digits=15, decimal_places=10)
-    almacenaje_anterior = models.DecimalField(max_digits=15, decimal_places=10)
-    almacenaje_aplicado = models.DecimalField(max_digits=16, decimal_places=3)
-    almacenaje_proximo_parcial = models.DecimalField(max_digits=16, decimal_places=3)
-    prorrateo_flete_aduana = models.DecimalField(max_digits=15, decimal_places=10)
-    prorrateo_seguro_aduana = models.DecimalField(max_digits=15, decimal_places=10)
+    porcentaje_parcial = models.DecimalField(max_digits=15, decimal_places=12,default=0)
+    fob_parcial_razon_inicial = models.DecimalField(max_digits=15, decimal_places=10,default=0)
+    fob_parcial_razon_saldo = models.DecimalField(max_digits=15, decimal_places=10,default=0)
+    fob_proximo_parcial = models.DecimalField(max_digits=15, decimal_places=6,default=0)
+    fob_inicial = models.DecimalField(max_digits=15, decimal_places=6,default=0)
+    fob_saldo = models.DecimalField(max_digits=15, decimal_places=6,default=0)
+    fob_parcial = models.DecimalField(max_digits=15, decimal_places=6,default=0)
+    almacenaje_parcial = models.DecimalField(max_digits=15, decimal_places=10,default=0)
+    almacenaje_anterior = models.DecimalField(max_digits=15, decimal_places=10,default=0)
+    almacenaje_aplicado = models.DecimalField(max_digits=16, decimal_places=3,default=0)
+    almacenaje_proximo_parcial = models.DecimalField(max_digits=16, decimal_places=3,default=0)
+    prorrateo_flete_aduana = models.DecimalField(max_digits=16, decimal_places=10,default=0)
+    prorrateo_seguro_aduana = models.DecimalField(max_digits=16, decimal_places=10,default=0)
     gastos_drop_parcial = models.DecimalField(max_digits=15, decimal_places=6,default=0)
     gastos_drop_parcial_anterior = models.DecimalField(max_digits=15, decimal_places=6,default=0)
     gastos_drop_parcial_aplicado = models.DecimalField(max_digits=15, decimal_places=6,default=0)
     gastos_drop_parcial_proximo_parcial = models.DecimalField(max_digits=15, decimal_places=6,default=0)
+    gastos_origen_incial = models.DecimalField(max_digits=15, decimal_places=6,default=0)
+    gastos_origen_anterior_parcial = models.DecimalField(max_digits=15, decimal_places=6,default=0)
+    gastos_origen_aplicado = models.DecimalField(max_digits=15, decimal_places=6,default=0)
+    gastos_origen_proximo_parcial = models.DecimalField(max_digits=15, decimal_places=6,default=0)
     id_user = models.SmallIntegerField(default=0)
-    date_create = models.DateTimeField(blank=True, null=True)
+    date_create = models.DateTimeField(default=timezone.now())
     last_update = models.DateTimeField(blank=True, null=True)
     history = HistoricalRecords()
-    objects = ApportionmetManager()
 
     def __str__(self):
         return str(self.id_prorrateo)

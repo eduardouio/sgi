@@ -27,11 +27,31 @@ class ApportionmentDetail(models.Model):
         verbose_name_plural = 'Detalle de Prorrateos'
         ordering = ['id_prorrateo', 'concepto']
 
+
     @classmethod
     def get_by_apportionment(self, id_apportionment):
         details = self.objects.filter(id_prorrateo = id_apportionment)
         if details.count() == 0:
-            loggin('w', 'El prorrateo {id_prorrateo} no tiene detalles'.format(id_prorrateo=apportionment.id_prorrateo))
+            loggin('w', 'El prorrateo {id_prorrateo} no tiene detalles'.format(id_prorrateo=id_apportionment))
             return None
         
         return details
+    
+
+    @classmethod
+    def get_all_apportionments_by_parcial(self, id_partial):
+        apportionment = {}
+        apportionment['apportionment'] = Apportionment.get_by_parcial(id_partial)
+        
+        if apportionment['apportionment'] is None:
+            loggin('i', 'El parcial {} no tiene prorrateos'.format(id_partial))
+            return None
+        
+        apportionment['apportionment_detail'] = self.get_by_apportionment(
+            apportionment['apportionment'].id_prorrateo
+            )
+        
+        apportionment['total_provisionado']  = 0
+        apportionment['total_aplicado']  = 0
+        
+        return apportionment
