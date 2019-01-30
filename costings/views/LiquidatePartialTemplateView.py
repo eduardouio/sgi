@@ -41,13 +41,12 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
                                                 False,
                                                 complete_order_info['order_invoice']['order_invoice'].tipo_cambio
                                                 ))
-
         #se envia a realizar el prorrateo
         apportiments_expenses = ApportionmentExpenses(
             complete_order_info=complete_order_info,
             all_partials=all_partials,
             ordinal_current_partial=ordinal_parcial,
-            ).make_apportionment()
+            ).get_apportionments()
         
         context['data'] = {
             'title_page' : 'Liquidacion Parcial %s'%ordinal_parcial,
