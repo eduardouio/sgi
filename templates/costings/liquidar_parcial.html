@@ -13,11 +13,10 @@
     {% else %}
       <span class="badge badge-secondary">Cerrado</span>
     {% endif %}
-    Total Parciales: {{ data.total_parcials }}
-    
+    Total Parciales: {{ data.total_parcials }}    
   </div>
   <div class="col-7 text-right">
-    <span><a href=" {{ data.current_partial.partial.url_dai_1 }} "> Ref: {{ data.current_partial.info_invoice.info_invoice.nro_refrendo }}  </a></span>
+    <span><a href="{{ data.current_partial.partial.url_dai_1 }}"> Ref: {{ data.current_partial.info_invoice.info_invoice.nro_refrendo }}</a></span>
     <span>| Exaduana</span>
     <span>| Liq: {{ data.current_partial.partial.nro_liquidacion }} </span>
     <span>| F. Llegada:  {{ data.current_partial.partial.fecha_llegada_cliente.strftime('%d/%m/%Y') }} </span>
@@ -27,7 +26,7 @@
 {% endblock title_content %}
 {% block content %}
 <div id="app">
-  <div class="row" v-if="ajax_request == false">
+  <div class="row">
     <div class="col-12">
       <table class="table table-bordered table-condensed">
         <tbody>
@@ -65,6 +64,7 @@
   </div>
 <div class="row">
 <div class="col-7 div-bordered">
+<div class="text-tittle"> RESUMEN DE ESTADO GASTOS GENERALES</div>
 <div class="row">
 <div class="col-1" style="padding-right:0px;padding-left: 0px;">
 	<ul class="nav nav-tabs nav-tabs--vertical nav-tabs--left" role="navigation">
@@ -72,74 +72,37 @@
 			<a href="#lorem" class="nav-link active" data-toggle="tab" role="tab" aria-controls="lorem"><span style="font-size:10px;">Iniciales <i class="fa fa-chevron-right"></i></span></a>
 		</li>
 		<li class="nav-item text-right">
-			<a href="#ipsum" class="nav-link" data-toggle="tab" role="tab" aria-controls="ipsum"><span style="font-size:10px;">Parcial 1 <i class="fa fa-chevron-right"></i></span></a>
-		</li>
-		<li class="nav-item text-right">
-			<a href="#dolor" class="nav-link" data-toggle="tab" role="tab" aria-controls="dolor"><span style="font-size:10px;">Parcial 2 <i class="fa fa-chevron-right"></i></span></a>
-		</li>
-		<li class="nav-item text-right">
-			<a href="#sit-amet" class="nav-link" data-toggle="tab" role="tab" aria-controls="sit-amet"><span style="font-size:10px;"><i class="fa fa-hand-point-right"></i>Parcial 3 <i class="fa fa-chevron-right"></i></span></a>
+			<a href="#ipsum" class="nav-link" data-toggle="tab" role="tab" aria-controls="ipsum"><span style="font-size:10px;"><i class="fa fa-hand-point-right"></i> Parcial 1 <i class="fa fa-chevron-right"></i></span></a>
 		</li>
 	</ul>
-
 </div>
 <div class="col-11 tab-content" style="padding-left: 0px;">
-<div class="text-tittle"> RESUMEN DE ESTADO GASTOS GENERALES</div>
 <div class="tab-pane fade show active" id="lorem" role="tabpanel">
-		<table class="table table-condensed table-striped table-bordered"><tbody><tr style="background-color: rgb(255, 255, 255);"><th class="text-center"><i class="fa fa-list"></i></th> <th class="text-center">CONCEPTO</th> <th class="text-center">VALOR</th> <th class="text-center">FACTURADO</th> <th class="text-center">SALDO</th> <th class="text-center">MAYOR</th></tr> <tr><td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td> <td><small class="text-success"><i class="fa fa-check-circle"></i></small>
-               FACTURA VIÑA CONCHA Y TORO S.A.
-            </td> <td class="text-right">  28635.00</td> <td class="text-right">  28635.00</td> <td class="text-right">  0.00</td> <td class="text-right">  28635.00</td></tr> <tr><td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td> <td><small class="text-success"><i class="fa fa-check-circle"></i></small>
-               GASTOS ORIGEN
-            </td> <td class="text-right">  0.00 </td> <td class="text-right">  0.00 </td> <td class="text-right">  0.00</td> <td class="text-right">  0.00</td></tr> <tr><td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td> <td><small class="text-success"><i class="fa fa-check-circle"></i></small>
-            TRIBUTOS SENAE
-            </td> <td class="text-right"> 18078.97</td> <td class="text-right"> 18078.97</td> <td class="text-right"> 0.00</td> <td class="text-right"> 18078.97</td></tr> <tr><td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td> <td><small class="text-secondary"><i class="fa fa-puzzle-piece"></i></small> <!----> <!---->
-              AGENTE INICIAL FISICO
-            </td> <td class="text-right">257.00</td> <td class="text-right">231.60</td> <td class="text-right">25.40</td> <td class="text-right">0.00</td></tr><tr><td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td> <td><!----> <small class="text-success"><i class="fa fa-check-circle"></i></small> <!---->
-              ALMACENAJE INICIAL
-            </td> <td class="text-right">373.78</td> <td class="text-right">373.78</td> <td class="text-right">0.00</td> <td class="text-right">0.00</td></tr><tr><td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td> <td><!----> <small class="text-success"><i class="fa fa-check-circle"></i></small> <!---->
-              CUSTODIA ARMADA
-            </td> <td class="text-right">490.00</td> <td class="text-right">490.00</td> <td class="text-right">0.00</td> <td class="text-right">0.00</td></tr><tr><td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td> <td><!----> <small class="text-success"><i class="fa fa-check-circle"></i></small> <!---->
-              DESCARGA
-            </td> <td class="text-right">150.00</td> <td class="text-right">150.00</td> <td class="text-right">0.00</td> <td class="text-right">0.00</td></tr><tr><td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td> <td><!----> <small class="text-success"><i class="fa fa-check-circle"></i></small> <!---->
-              DEVOLUCION DE CONTENEDOR
-            </td> <td class="text-right">40.00</td> <td class="text-right">40.00</td> <td class="text-right">0.00</td> <td class="text-right">40.00</td></tr><tr><td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td> <td><!----> <small class="text-success"><i class="fa fa-check-circle"></i></small> <!---->
-              ETIQUETAS FISCALES
-            </td> <td class="text-right">2691.00</td> <td class="text-right">2691.00</td> <td class="text-right">0.00</td> <td class="text-right">0.00</td></tr><tr><td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td> <td><!----> <small class="text-success"><i class="fa fa-check-circle"></i></small> <!---->
-              FLETE
-            </td> <td class="text-right">200.00</td> <td class="text-right">200.00</td> <td class="text-right">0.00</td> <td class="text-right">0.00</td></tr><tr><td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td> <td><!----> <small class="text-success"><i class="fa fa-check-circle"></i></small> <!---->
-              GASTOS LOCALES
-            </td> <td class="text-right">248.00</td> <td class="text-right">248.00</td> <td class="text-right">0.00</td> <td class="text-right">0.00</td></tr><tr><td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td> <td><!----> <small class="text-success"><i class="fa fa-check-circle"></i></small> <!---->
-              ISD
-            </td> <td class="text-right">1431.75</td> <td class="text-right">1431.75</td> <td class="text-right">0.00</td> <td class="text-right">1431.75</td></tr><tr><td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td> <td><!----> <small class="text-success"><i class="fa fa-check-circle"></i></small> <!---->
-              MANO DE OBRA ETIQUETADO
-            </td> <td class="text-right">621.00</td> <td class="text-right">621.00</td> <td class="text-right">0.00</td> <td class="text-right">0.00</td></tr><tr><td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td> <td><!----> <small class="text-success"><i class="fa fa-check-circle"></i></small> <!---->
-              POLIZA SEGURO
-            </td> <td class="text-right">119.00</td> <td class="text-right">119.00</td> <td class="text-right">0.00</td> <td class="text-right">0.00</td></tr><tr><td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td> <td><!----> <small class="text-success"><i class="fa fa-check-circle"></i></small> <!---->
-              THC
-            </td> <td class="text-right">184.23</td> <td class="text-right">184.23</td> <td class="text-right">0.00</td> <td class="text-right">0.00</td></tr><tr><td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td> <td><!----> <small class="text-success"><i class="fa fa-check-circle"></i></small> <!---->
-              TRANSPORTE INTERNO EXTRAPESADOUIO-GYE
-            </td> <td class="text-right">750.00</td> <td class="text-right">750.00</td> <td class="text-right">0.00</td> <td class="text-right">0.00</td></tr> <tr><th colspan="2">Sumas</th> <th class="text-right">54269.73</th> <th class="text-right">54244.33</th> <th class="text-right">25.40</th> <th class="text-right">48185.72</th></tr></tbody></table>
+		<table class="table table-condensed table-striped table-bordered">
+    <thead>
+      <tr style="background-color: rgb(255, 255, 255);">
+        <th class="text-center"><i class="fa fa-list"></i></th>
+        <th class="text-center">CONCEPTO</th> 
+        <th class="text-center">VALOR</th> 
+        <th class="text-center">FACTURADO</th> 
+        <th class="text-center">SALDO</th> 
+        <th class="text-center">MAYOR</th>
+      </tr> 
+    </thead>
+    <tbody>
+      <tr>
+
+      </tr>
+    </tbody>
+    </table>
 		</div>
 		<div class="tab-pane fade" id="ipsum" role="tabpanel">
-			<table class="table table-condensed table-striped table-bordered"><tbody><tr style="background-color: rgb(255, 255, 255);"><th class="text-center"><i class="fa fa-list"></i></th> <th class="text-center">CONCEPTO</th> <th class="text-center">VALOR</th> <th class="text-center">FACTURADO</th> <th class="text-center">SALDO</th> <th class="text-center">MAYOR</th></tr>
-			</table>
-		</div>
-		<div class="tab-pane fade" id="dolor" role="tabpanel">
-			<table class="table table-condensed table-striped table-bordered"><tbody><tr style="background-color: rgb(255, 255, 255);"><th class="text-center"><i class="fa fa-list"></i></th> <th class="text-center">CONCEPTO</th> <th class="text-center">VALOR</th> <th class="text-center">FACTURADO</th> <th class="text-center">SALDO</th> <th class="text-center">MAYOR</th></tr>
-			</table>
-		</div>
-		<div class="tab-pane fade" id="sit-amet" role="tabpanel">
-			<table class="table table-condensed table-striped table-bordered"><tbody><tr style="background-color: rgb(255, 255, 255);"><th class="text-center"><i class="fa fa-list"></i></th> <th class="text-center">CONCEPTO</th> <th class="text-center">VALOR</th> <th class="text-center">FACTURADO</th> <th class="text-center">SALDO</th> <th class="text-center">MAYOR</th></tr>
-			</table>
+			Primer PArcial
 		</div>
 	</div>
 </div>
 <a href="" class="btn btn-sm btn-outline-dark"><i class="fa fa-file-pdf"></i>   Reporte de Gastos</a>
 <a href="" class="btn btn-sm btn-outline-dark" data-toggle="modal" data-target="#modal-prorrateos"><i class="fas fa-chart-pie"></i>   Prorrateos de Pedido</a>
-
-<br />
-<br />
-<br />
 </div>
 <div class="col-5 div-bordered">
   <div class="text-tittle">
