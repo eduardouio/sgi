@@ -51,7 +51,7 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
         context['data'] = {
             'title_page' : 'Liquidacion Parcial %s'%ordinal_parcial,
             'nro_order' : nro_order,
-            'ordinal_partial' : ordinal_parcial,
+            'ordinal_partial' : int(ordinal_parcial),
             'total_parcials' : all_partials.__len__(),
             'current_partial' : all_partials[int(ordinal_parcial) - 1 ],
             'complete_order_info' : complete_order_info,
