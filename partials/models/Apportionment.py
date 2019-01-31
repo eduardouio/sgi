@@ -1,10 +1,11 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
-from simple_history.models import HistoricalRecords
 from django.utils import timezone
+from simple_history.models import HistoricalRecords
 
 from logs.app_log import loggin
 from partials.models.Partial import Partial
+
 
 class Apportionment(models.Model):
     id_prorrateo = models.AutoField(primary_key=True)
@@ -31,7 +32,7 @@ class Apportionment(models.Model):
     gastos_origen_aplicado = models.DecimalField(max_digits=15, decimal_places=6,default=0)
     gastos_origen_proximo_parcial = models.DecimalField(max_digits=15, decimal_places=6,default=0)
     id_user = models.SmallIntegerField(default=0)
-    date_create = models.DateTimeField(default=timezone.now())
+    date_create = models.DateTimeField(default=timezone.now)
     last_update = models.DateTimeField(blank=True, null=True)
     history = HistoricalRecords()
 

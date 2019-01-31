@@ -11,7 +11,8 @@ class ApportionmentExpenses(object):
     Obtiene el prorrateo de gastos que se aplican al pedido, pasando por los
         gastos iniciales prorrateo de acuerdo a fob parcial y luego fob item
         gastos parcial prorrateo al cien al parcial y luego al fob del item
-        gastos de arrastre de acuerdo al saldo del fob general (warenhouse y gastos omitidos en los GI)
+        gastos de arrastre de acuerdo al saldo del fob general 
+        (warenhouse y gastos omitidos en los GI)
     Esta es una libreria dependiente sin acceso a la DB
     '''
 

@@ -1,7 +1,10 @@
 from django.db import models
-from partials.models.Apportionment import Apportionment
-from logs.app_log import loggin
+from django.utils import timezone
 from simple_history.models import HistoricalRecords
+
+from logs.app_log import loggin
+from partials.models.Apportionment import Apportionment
+
 
 class ApportionmentDetail(models.Model):
     id_prorrateo_detalle = models.AutoField(primary_key=True)
@@ -12,7 +15,7 @@ class ApportionmentDetail(models.Model):
     valor_prorrateado = models.DecimalField(max_digits=15, decimal_places=10, blank=True, null=True)
     valor_provisionado = models.DecimalField(max_digits=17, decimal_places=3)
     id_user = models.SmallIntegerField(default=0)
-    date_create = models.DateTimeField(blank=True, null=True)
+    date_create = models.DateTimeField(default=timezone.now)
     last_update = models.DateTimeField(blank=True, null=True)
     history = HistoricalRecords()
 
