@@ -1,0 +1,56 @@
+<table class="table table-condensed table-striped table-bordered">
+<thead>
+    <tr style="background-color: rgb(255, 255, 255);">
+        <th class="text-center"><i class="fa fa-list"></i></th>
+        <th class="text-center">CONCEPTO</th>
+        <th class="text-center">VALOR</th>
+        <th class="text-center">FACTURADO</th>
+        <th class="text-center">SALDO</th>
+        <th class="text-center">MAYOR</th>
+    </tr>
+</thead>
+<tbody>
+    <tr @click="showOrderInvoice()">
+        <td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td>
+        <td>
+            <small class="text-success"><i class="fa fa-check-circle"></i></small>
+            FACTURA  ${ complete_order_info.order_invoice.supplier.nombre }
+        </td>
+        <td class="text-right">  ${ complete_order_info.order_invoice.order_invoice.valor_tasa_trimestral | money }</td>
+        <td class="text-right">  ${ complete_order_info.order_invoice.order_invoice.valor_tasa_trimestral | money }</td>
+        <td class="text-right">  ${ 0 | money }</td>
+        <td class="text-right">  ${ complete_order_info.order_invoice.order_invoice.valor_tasa_trimestral | money }</td>
+    </tr>
+    <tr @click="showOriginExpense()">
+        <td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td>
+        <td>
+            <small class="text-success"><i class="fa fa-check-circle"></i></small>
+            GASTOS ORIGEN
+        </td>
+        <td class="text-right">  ${ complete_order_info.order.gasto_origen | money } </td>
+        <td class="text-right">  ${ complete_order_info.order.gasto_origen | money } </td>
+        <td class="text-right">  ${ 0 | money }</td>
+        <td class="text-right">  ${ complete_order_info.order.gasto_origen | money }</td>
+    </tr>
+    <tr v-for="item in complete_order_info.expenses" @click="selectExpense(item)">
+        <td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td>
+        <td>
+            <small class="text-secondary" v-if="item.parcial"><i class="fa fa-puzzle-piece"></i></small>
+            <small class="text-success" v-if="item.complete"><i class="fa fa-check-circle"></i></small>
+            <small class="text-danger" v-if="item.provision"><i class="fa fa-exclamation-triangle"></i></small>
+            ${ item.expense.concepto }
+        </td>
+        <td class="text-right">${ item.expense.valor_provisionado | money }</td>
+        <td class="text-right">${ item.invoiced_value | money }</td>
+        <td class="text-right">${ item.sale | money }</td>
+        <td class="text-right">${ item.legder | money }</td>
+    </tr>
+    <tr>
+        <th colspan="2">Sumas</th>
+        <th class="text-right">${ complete_order_info.total_expenses | money }</th>
+        <th class="text-right">${ complete_order_info.total_invoiced | money }</th>
+        <th class="text-right">${ (complete_order_info.total_expenses - complete_order_info.total_invoiced) | money }</th>
+        <th class="text-right">${ 0 | money }</th>
+    </tr>
+</tbody>
+</table>
