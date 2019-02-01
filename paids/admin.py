@@ -17,7 +17,6 @@ class ExpensesAdmin(admin.ModelAdmin):
     'fecha',
     'fecha_fin',
     'bg_closed',
-    'id_user',
     )
 
     search_fields = (
@@ -27,29 +26,107 @@ class ExpensesAdmin(admin.ModelAdmin):
     'valor_provisionado',
     'fecha',
     )
+    
+    list_filter = (
+        'nro_pedido',
+        'id_parcial',
+        'concepto',
+        'tipo',
+    )
+    
 
 
 class RateExpenseAdmin(admin.ModelAdmin):
-    pass
+    list_display = (
+        'id_tarifa_gastos',
+        'regimen',
+        'tipo_gasto',
+        'concepto',
+        'valor',
+        'estado',
+        'pais_origen',
+        'porcentaje',
+        'comentarios',
+        'date_create',
+    )
+
+    search_fields = (
+        'id_tarifa_gastos',
+        'regimen',
+        'tipo_gasto',
+        'concepto',
+        'valor',
+        'estado',
+        'pais_origen',
+        'porcentaje',
+        'comentarios',
+        'date_create',
+    )
+
+    list_filter = (
+        'regimen',
+        'tipo_gasto',
+        'estado',
+    ) 
 
 
-class RateIncotermAdmin(admin.ModelAdmin):
-    pass
+
+
+class RateIncotermAdmin(admin.ModelAdmin):    
+    list_display = (
+        'id_incoterm',
+        'tipo',
+        'pais',
+        'incoterms',
+        'ciudad',
+        'tarifa',
+        'comentarios',
+        'date_create',
+    )
+    search_fields = (
+        'tipo',
+        'pais',
+        'incoterms',
+    )
+    list_filter = (
+        'tipo',
+        'pais',
+        'incoterms',
+    )
+
+
+class PaidInvoiceDetailInline(admin.TabularInline):
+    model = PaidInvoiceDetail
 
 
 class PaidInvoiceAdmin(admin.ModelAdmin):
-    pass
+    list_display = (
+        'identificacion_proveedor',
+        'nro_factura',
+        'fecha_emision',
+        'valor',
+        'tipo',
+        'date_create',
+        'bg_closed',
+        'comentarios',
+    )
 
+    search_fields = (
+        'nro_factura',
+        'fecha_emision',
+        'valor',
+        'tipo',
+    )
 
-class PaidInvoiceDetailAdmin(admin.ModelAdmin):
-    pass
+    list_filter = (
+        'identificacion_proveedor',
+        'tipo',
+    )   
+
+    inlines = [ PaidInvoiceDetailInline, ]
 
 
 admin.site.register(Expense, ExpensesAdmin)
 admin.site.register(RateExpense, RateExpenseAdmin)
 admin.site.register(RateIncoterm, RateIncotermAdmin)
 admin.site.register(PaidInvoice, PaidInvoiceAdmin)
-admin.site.register(PaidInvoiceDetail, PaidInvoiceDetailAdmin)
-
-
-
