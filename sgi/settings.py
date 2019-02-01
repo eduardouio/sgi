@@ -94,8 +94,8 @@ TEMPLATES = [
                 "django.template.context_processors.i18n",
                 "django.template.context_processors.media",
                 "django.template.context_processors.static",
-                'django.contrib.messages.context_processors.messages',
-                'sgi.contextprocesor.base_url',
+                "django.contrib.messages.context_processors.messages",
+                "sgi.contextprocesor.base_url",
             ],
         },
     },
@@ -188,5 +188,4 @@ MEDIA_URL = '/media/'
 
 BASE_URL = 'http://localhost:8000/'
 
-#GRAPELLI CAMABIOS
-GRAPPELLI_ADMIN_TITLE = 'A&R CORDOVEZ S.A.'
+GRAPPELLI_ADMIN_TITLE = "CORDOVEZ S.A."
