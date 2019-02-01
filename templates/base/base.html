@@ -13,6 +13,9 @@
     <link rel="icon" href="{{ static('favicon.ico') }}" type="image/x-icon"/>
 	  <link rel="shortcut icon" href="{{ static('favicon.ico') }} type="image/x-icon"/>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+    <script>
+      var host = 'http://localhost:8000/'
+    </script>
     {% block header %} {% endblock %}
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <title>{{ data.title_page }}</title>
@@ -29,25 +32,25 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="{{ BASE_URL }}admin/orders/order/"><i class="fas fa-cubes"></i> Pedidos <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="/admin/orders/order/"><i class="fas fa-cubes"></i> Pedidos <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-              <a href="{{BASE_URL}}facturapagos" class="nav-link"><i class="fa fa-file"></i> Justificaciones</a>
+              <a href="/admin/paids/paidinvoice/" class="nav-link"><i class="fa fa-file"></i> Justificaciones</a>
           </li>                        
           <li class="nav-item">
-              <a href="{{BASE_URL}}proveedor/listar" class="nav-link"><i class="fa fa-users"></i> Proveedores</a>
+              <a href="/admin/suppliers/supplier/" class="nav-link"><i class="fa fa-users"></i> Proveedores</a>
           </li>
           <li class="nav-item">
-              <a href="{{BASE_URL}}producto" class="nav-link"><i class="fa fa-cube"></i> Productos</a>
+              <a href="/admin/products/product/" class="nav-link"><i class="fa fa-cube"></i> Productos</a>
           </li>
           <li class="nav-item">
-              <a href="{{BASE_URL}}reportes" class="nav-link"><i class="fa fa-table"></i> Reportes</a>
+              <a href="#" class="nav-link"><i class="fa fa-table"></i> Reportes</a>
           </li>
           <li class="nav-item">
-            <a href="{{ BASE_URL}}facturapagos/nuevo" class="nav-link"><i class="fa fa-file"></i> N. Factura</a>
+            <a href="/admin/paids/paidinvoice/add/" class="nav-link"><i class="fa fa-file"></i> N. Factura</a>
           </li>
           <li class="nav-item">
-            <a href="{{ BASE_URL  }}pedido/nuevo" class="nav-link"><i class="fa fa-cubes"></i> N Pedido</a>
+            <a href="/admin/orders/order/add/" class="nav-link"><i class="fa fa-cubes"></i> N Pedido</a>
           </li>
           <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
