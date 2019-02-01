@@ -149,6 +149,7 @@ class CompletePartialInfo(object):
 
         if partial_items['info_invoice_details']:
             self.status_parcial['info_invoice_details'] = True
+            self.status_parcial['info_invoice'] = True
 
         for line_item in partial_items['info_invoice_details']:
             partial_items['totals']['boxes'] += line_item.nro_cajas
@@ -172,7 +173,8 @@ class CompletePartialInfo(object):
                 'info_invoice_detail_sums' : partial_items['totals'],
                 'parcial' : False,
                 'provision' : (partial_items['info_invoice'].valor != partial_items['totals']['value']),
-                'complete' : (partial_items['info_invoice'].valor != partial_items['totals']['value']),
+                #'complete' : (partial_items['info_invoice'].valor != partial_items['totals']['value']),
+                'complete' : True
             }
 
         return partial_items
@@ -233,6 +235,9 @@ class CompletePartialInfo(object):
                     'invoiced_value' : item.invoiced_value,
                     'sale' : item.sale,
                     'legder' : item.ledger,
+                    'parcial' : (bool(item.sale) and (item.sale != item.valor_provisionado)),
+                    'provision' : (item.sale == item.valor_provisionado),
+                    'complete' : bool(item.bg_closed),
                 })
 
         if self.serialized:

@@ -166,7 +166,6 @@ class ApportionmentExpenses(object):
 
     def set_apportionment_expenses(self):                
         apportionment_expenses = []
-
         if self.complete_order_info['status']['init_expenses']:    
             for expense in self.complete_order_info['expenses']:
                 apportionment_expenses.append({
@@ -212,6 +211,9 @@ class ApportionmentExpenses(object):
                     'valor_prorrateado': pt['value'],
                     'valor_provisionado': pt['value'],
                 })
+            else:
+                loggin('i', '{} no tiene valor'.format(pt['name']))
+            
 
         return apportionment_expenses
     
