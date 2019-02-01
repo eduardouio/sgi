@@ -52,7 +52,7 @@ var app = new Vue({
                 paid.paid.bg_mayor = 1
                 this.current_expense.legder += parseFloat(paid.paid.valor)
             }            
-            this.$http.put('{{BASE_URL}}api/paid-invoice-detail/update/' + paid.paid.id_detalle_documento_pago + '/', paid.paid, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {                     
+            this.$http.put(host + host+'api/paid-invoice-detail/update/' + paid.paid.id_detalle_documento_pago + '/', paid.paid, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {                     
                 this.updateLedger()
               }, response => {
                 alert('Se produjo un error, por favor recargue la página');
@@ -94,7 +94,7 @@ var app = new Vue({
         },
 
         get_paid_invoice : function(id_paid){
-            this.$http.get('{{BASE_URL}}api/paid-invoice/all/' + id_paid  + '/', {params: {}}).then(response => {          
+            this.$http.get(host+'api/paid-invoice/all/' + id_paid  + '/', {params: {}}).then(response => {          
                 this.current_paid = response.data;
               }, response => {
                 alert('Se produjo un error, por favor recargue la página');
@@ -107,7 +107,7 @@ var app = new Vue({
             this.liquidated_order = true
             this.show_form_liquidated = false
             console.log('Registrando Mayor...')
-            this.$http.post('{{BASE_URL}}api/ledger/create/', this.current_ledger, {headers: {"X-CSRFToken":this.csrftoken}} ).then(response => {                     
+            this.$http.post(host+'api/ledger/create/', this.current_ledger, {headers: {"X-CSRFToken":this.csrftoken}} ).then(response => {                     
                 console.log('Mayor registrado correctamente en base de datos')
                 ledger_is_registered = true
             }, response => {
@@ -117,7 +117,7 @@ var app = new Vue({
             this.order_data.order.observaciones +=  this.comentarios
             this.order_data.order.bg_isclosed = 1
             console.log('Actualizando Pedido...')
-            this.$http.put('{{BASE_URL}}api/order/update/{{ data.order.nro_pedido}}/', this.order_data.order, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {                     
+            this.$http.put(host + 'api/order/update/{{ data.order.nro_pedido}}/', this.order_data.order, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {                     
                 console.log('Pedido Actualizado correntamente, iniciando redireccionamiento')
                 alert('Que belleza!')
                 order_is_registered = true         
@@ -127,7 +127,7 @@ var app = new Vue({
         },
     },
     mounted() {
-            this.$http.get('{{BASE_URL}}api/order/all-data/{{ data.order.nro_pedido }}/', {params: {}}).then(response => {          
+            this.$http.get(host + 'api/order/all-data/{{ data.order.nro_pedido }}/', {params: {}}).then(response => {          
             this.order_data = response.body 
             this.ajax_request = false
             this.updateLedger()

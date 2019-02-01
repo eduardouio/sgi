@@ -9,6 +9,7 @@ var app = new Vue({
       current_ordinal_parcial : parseInt('{{ data.ordinal_partial }}'),
       nro_order : '{{ data.complete_order_info.order }}',
       current_order_invoice : {},
+      current_info_invoice : {},
       csrftoken : Cookies.get('csrftoken'),
       current_expense : null,
       show_expense : false,
@@ -17,6 +18,7 @@ var app = new Vue({
       show_order_invoice : false,
       show_origin_expense : false,
       show_taxes : false,
+      show_info_invoice : false,
       current_ledger : {
         'tipo' : 'inicial',
         'nro_pedido' : '{{ data.complete_order_info.order.nro_pedido }}',
@@ -42,7 +44,7 @@ var app = new Vue({
             paid.paid.bg_mayor = 1
             this.current_expense.legder += parseFloat(paid.paid.valor)
         }            
-        this.$http.put('{{BASE_URL}}api/paid-invoice-detail/update/' + paid.paid.id_detalle_documento_pago + '/', paid.paid, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {                     
+        this.$http.put(host + 'api/paid-invoice-detail/update/' + paid.paid.id_detalle_documento_pago + '/', paid.paid, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {                     
             this.updateLedger()
           }, response => {
             alert('Se produjo un error, por favor recargue la página');
@@ -69,9 +71,17 @@ var app = new Vue({
         if ((this.current_partial === null) && (this.all_partials.length === parseInt('{{ data.ordinal_partial }}'))){
           console.log('Marcando el parcial Activo {{data.ordinal_partial}}')
           this.current_partial = this.all_partials[0]
-          this.current_order_invoice = this.complete_order_info.order_invoice
           this.ajax_request = false
         }
+      },
+      changePartial : function(id){
+        this.current_selected_partial = this.all_partials[id]
+        this.show_expense = false
+        this.show_taxes = false
+        this.show_origin_expense = false
+        this.show_order_invoice = false
+        this.show_info_invoice = false
+
       },
       showOrderInvoice : function(){
         console.log('mostrando factura del pedido')
@@ -79,22 +89,46 @@ var app = new Vue({
         this.show_taxes = false
         this.show_origin_expense = false
         this.show_order_invoice = true
+        this.show_info_invoice = false
+        this.current_order_invoice = this.complete_order_info.order_invoice
         return true
       },
+
       showOriginExpense : function(){
         console.log('Mostrando Gastos en Origen')
         this.show_expense = false
         this.show_taxes = false
         this.show_origin_expense = true
         this.show_order_invoice = false
+        this.show_info_invoice = false
       },
+
+      showInfoInvoice : function(id_partial){
+        console.log('Estamos mostrando una factura informativa')
+        this.show_expense = false
+        this.show_taxes = false
+        this.show_origin_expense = false
+        this.show_order_invoice = false
+        this.show_info_invoice = true
+        this.current_info_invoice = this.all_partials[id_partial].info_invoice
+      },
+
       selectExpense : function(item){
         console.log('Seleccionando Gasto', item)
         this.show_expense = true
         this.show_taxes = false
         this.show_origin_expense = false
         this.show_order_invoice = false
+        this.show_info_invoice = false
         this.current_expense = item
+      },
+      showTaxes : function(){
+        console.log('Mostrando los impuestos del parcial')
+        this.show_expense = false
+        this.show_origin_expense = false
+        this.show_order_invoice = false
+        this.show_info_invoice = false
+        this.show_taxes = true
       },
       contabilized : function(paid){
         console.log('Envio actualizacion de pago')
@@ -105,14 +139,14 @@ var app = new Vue({
             paid.paid.bg_mayor = 1
             this.current_expense.legder += parseFloat(paid.paid.valor)
         }            
-        this.$http.put('{{BASE_URL}}api/paid-invoice-detail/update/' + paid.paid.id_detalle_documento_pago + '/', paid.paid, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {                     
+        this.$http.put(host + 'api/paid-invoice-detail/update/' + paid.paid.id_detalle_documento_pago + '/', paid.paid, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {                     
             this.updateLedger()
           }, response => {
             alert('Se produjo un error, por favor recargue la página');
           });
     },
     get_paid_invoice : function(id_paid){
-      this.$http.get('{{BASE_URL}}api/paid-invoice/all/' + id_paid  + '/', {params: {}}).then(response => {          
+      this.$http.get(host + 'api/paid-invoice/all/' + id_paid  + '/', {params: {}}).then(response => {          
           this.current_paid = response.data;
         }, response => {
           alert('Se produjo un error, por favor recargue la página');
@@ -120,13 +154,13 @@ var app = new Vue({
   },
     },
     mounted() {
-      this.$http.get('{{BASE_URL}}api/order/all-data/{{ data.complete_order_info.order.nro_pedido }}', { params: {}}).then(response => {
+      this.$http.get(host + 'api/order/all-data/{{ data.complete_order_info.order.nro_pedido }}', { params: {}}).then(response => {
       this.complete_order_info = response.body 
       var x = 0
-      response.body.partials.forEach(el => {
+      response.body.partials.forEach(el => {        
         if (x < parseInt('{{ data.ordinal_partial }}')) {
-          this.$http.get('{{BASE_URL}}api/partial/all-data/' + el.id_parcial + '/',{ params: {}}).then(resp => {
-          this.all_partials.push(resp.body)
+          this.$http.get(host + 'api/partial/all-data/' + el.id_parcial + '/',{ params: {}}).then(resp => {
+          this.all_partials.unshift(resp.body)
           this.updateLedger()
           this.selectPartial()
           })

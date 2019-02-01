@@ -1,4 +1,4 @@
-<table class="table table-condensed table-striped table-bordered">
+<table class="table table-condensed table-striped table-bordered" v-if="current_selected_partial">
 <thead>
     <tr style="background-color: rgb(255, 255, 255);">
         <th class="text-center"><i class="fa fa-list"></i></th>
@@ -10,29 +10,29 @@
     </tr>
 </thead>
 <tbody>
-    <tr @click="showOrderInvoice()">
+    <tr @click="showInfoInvoice({{p}})">
         <td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td>
         <td>
             <small class="text-success"><i class="fa fa-check-circle"></i></small>
-            FACTURA  ${ complete_order_info.order_invoice.supplier.nombre }
+            F. INFORMATIVA  ${ current_selected_partial.info_invoice.info_invoice.nro_factura_informativa } ${ current_selected_partial.info_invoice.supplier.nombre }
         </td>
-        <td class="text-right">  ${ complete_order_info.order_invoice.order_invoice.valor_tasa_trimestral | money }</td>
-        <td class="text-right">  ${ complete_order_info.order_invoice.order_invoice.valor_tasa_trimestral | money }</td>
+        <td class="text-right">  ${ current_selected_partial.info_invoice.info_invoice_detail_sums.value_tct | money }</td>
+        <td class="text-right">  ${ current_selected_partial.info_invoice.info_invoice_detail_sums.value_tct | money }</td>
         <td class="text-right">  ${ 0 | money }</td>
-        <td class="text-right">  ${ complete_order_info.order_invoice.order_invoice.valor_tasa_trimestral | money }</td>
+        <td class="text-right">  ${ current_selected_partial.info_invoice.info_invoice_detail_sums.value_tct | money }</td>
     </tr>
-    <tr @click="showOriginExpense()">
+    <tr @click="showTaxes()">
         <td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td>
         <td>
             <small class="text-success"><i class="fa fa-check-circle"></i></small>
-            GASTOS ORIGEN
+            TRIBUTOS SENAE
         </td>
-        <td class="text-right">  ${ complete_order_info.order.gasto_origen | money } </td>
-        <td class="text-right">  ${ complete_order_info.order.gasto_origen | money } </td>
-        <td class="text-right">  ${ 0 | money }</td>
-        <td class="text-right">  ${ complete_order_info.order.gasto_origen | money }</td>
+        <td class="text-right"> ${ current_selected_partial.taxes.total_provisionado | money  }</td>
+        <td class="text-right"> ${ current_selected_partial.taxes.total_pagado | money  }</td>
+        <td class="text-right"> ${ (current_selected_partial.taxes.total_provisionado - current_selected_partial.taxes.total_pagado ) | money  }</td>
+        <td class="text-right"> ${ current_selected_partial.taxes.total_pagado | money  }</td>
     </tr>
-    <tr v-for="item in complete_order_info.expenses" @click="selectExpense(item)">
+    <tr v-for="item in current_selected_partial.expenses" @click="selectExpense(item)">
         <td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td>
         <td>
             <small class="text-secondary" v-if="item.parcial"><i class="fa fa-puzzle-piece"></i></small>
