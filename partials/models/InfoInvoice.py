@@ -45,6 +45,7 @@ class InfoInvoice(models.Model):
     @property
     def total_value(self):
         return self.gasto_origen + self.valor
+        
 
     @classmethod
     def get_by_id(self, id_info_invoice):
