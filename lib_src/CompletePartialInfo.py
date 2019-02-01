@@ -143,6 +143,7 @@ class CompletePartialInfo(object):
             'items' : int(partial_items['info_invoice_details'].count()),
             'boxes' : 0,
             'value' : 0,
+            'value_tct' : 0,
             'bottles' : 0,
         }
 
@@ -154,8 +155,10 @@ class CompletePartialInfo(object):
             order_ivoice_detail = OrderInvoiceDetail.get_by_id(line_item.detalle_pedido_factura_id)
             partial_items['totals']['bottles'] += (line_item.nro_cajas * order_ivoice_detail.cod_contable.cantidad_x_caja)
             partial_items['totals']['value'] += (line_item.nro_cajas * order_ivoice_detail.costo_caja)
+            partial_items['totals']['value_tct'] += (line_item.nro_cajas * order_ivoice_detail.costo_caja * self.type_change_trimestral)
 
         self.partial_ledger += (partial_items['totals']['value'] * self.type_change_trimestral)
+        
 
         if self.serialized:
             info_invoice_serializer = InfoInvoiceSerializer(partial_items['info_invoice'])

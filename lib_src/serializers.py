@@ -77,6 +77,8 @@ class RateIncotermSerializer(ModelSerializer):
 
 class InfoInvoiceSerializer(ModelSerializer):
     total_value =serializers.FloatField()
+    valor_tasa_trimestral = serializers.FloatField()
+
     class Meta:
         model = InfoInvoice
         fields = ('__all__')
