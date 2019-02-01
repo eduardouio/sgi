@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'migrationSAP',
     'products',
     'warenhouse',
+    'importations',
 ]
 
 MIDDLEWARE = [
@@ -77,7 +78,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'sgi.contextprocesor.base_url',
             ],
         },
     },
@@ -95,7 +95,6 @@ TEMPLATES = [
                 "django.template.context_processors.media",
                 "django.template.context_processors.static",
                 "django.contrib.messages.context_processors.messages",
-                "sgi.contextprocesor.base_url",
             ],
         },
     },
@@ -185,7 +184,5 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.sep.join(os.path.abspath(__file__).split(os.sep)[:-2]+['media'])
 MEDIA_URL = '/media/'
-
-BASE_URL = 'http://localhost:8000/'
 
 GRAPPELLI_ADMIN_TITLE = "CORDOVEZ S.A."
