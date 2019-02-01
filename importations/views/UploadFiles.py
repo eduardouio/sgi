@@ -11,7 +11,7 @@ class FormUpload(forms.Form):
 
 class FileUploadFormView(FormView):
     form_class = FormUpload
-    template_name = 'provisions/subir-dai-liquidacion.html'
+    template_name = 'importations/subir-dai-liquidacion.html'
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data()
