@@ -4,6 +4,7 @@ from django.views.generic import TemplateView
 from lib_src.ApportionmentExpenses import ApportionmentExpenses
 from lib_src.CompleteOrderInfo import CompleteOrderInfo
 from lib_src.CompletePartialInfo import CompletePartialInfo
+from lib_src.ProductsCosts import CostingsProduct
 from logs.app_log import loggin
 from orders.models.Order import Order
 from partials.models.Partial import Partial
@@ -41,13 +42,20 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
                                                 False,
                                                 complete_order_info['order_invoice']['order_invoice'].tipo_cambio
                                                 ))
-        #se envia a realizar el prorrateo
+        #se envia a realizar el prorrateo(costeo de producto)
         apportiments_expenses = ApportionmentExpenses(
             complete_order_info=complete_order_info,
             all_partials=all_partials,
             ordinal_current_partial=ordinal_parcial,
             ).get_apportionments()
         
+        producto_costs = ProductsCosts(
+                complete_order_info, 
+                all_partials[(int(ordinal_parcial) - 1)], 
+                apportiments_expenses
+                ).get_costings()
+
+
         context['data'] = {
             'title_page' : 'Liquidacion Parcial %s'%ordinal_parcial,
             'nro_order' : nro_order,
@@ -56,7 +64,8 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
             'current_partial' : all_partials[int(ordinal_parcial) - 1 ],
             'complete_order_info' : complete_order_info,
             'all_partials' : all_partials,
-            'apportioments' : apportiments_expenses
+            'apportioments' : apportiments_expenses,
+            'costings' : producto_costs,
         }
         
         return self.render_to_response(context)

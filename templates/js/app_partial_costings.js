@@ -13,6 +13,7 @@ var app = new Vue({
       csrftoken : Cookies.get('csrftoken'),
       current_expense : null,
       show_expense : false,
+      show_costings : false,
       current_paid : null,
       current_selected_partial : null,
       show_order_invoice : false,

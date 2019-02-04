@@ -1,204 +1,332 @@
 from logs.app_log import loggin
 from decimal import Decimal
 
-class ProductsCosts(object):
-    def __init__(self, complete_order_info, complete_partial_info = None, apportionmet_partial = None):
-        """
-        realiza el calculo de costeo del producto de un parcial o pedido R10,
-        si la liquidacion es de un regimen 10 solo pasa el primer parametro
+
+class CostingsPartial(object):
+    '''
+        Realiza la reliquidacion de un parcial
+    '''
+    
+    def __init__(self, *args, **kwargs):
+        '''Retorna los valores de reliquidacion para un pedido
         
         Arguments:
-            order_data {dict} -- Informacion completa de un pedido
-        
-        Keyword Arguments:
-            partial_data {dict} -- Informacion completa del parcial al liquidar (default: {None})
-            apportionmet {dict} -- detalle completo de prorrateos (default: {None})
-        """ 
-        self.order_info = complete_order_info
-        self.partial_info = complete_partial_info
-        self.apportionment = apportionmet_partial
-        self.partial_calc = (complete_order_info is None)
-
-
-    def get_costings(self):
+        complete_order_info {dict} : informacion completa de un pedido
         '''
-        obtener los costos del producto
-        {Dict} -- 
+        loggin('i', 'Iniciando clase de reliquidacion de parcial')
+        self.complete_order_info = kwargs['complete_order_info']
+        self.all_partials = kwargs['all_partials']
+        self.apportionment_expenses = kwargs['apportionment_expenses']
+        self.ordinal_current_partial = kwargs['ordinal_current_partial']
+        self.current_partial = self.all_partials[kwargs['ordinal_current_partial'] - 1] 
+
+        self.incoterm = None
+        self.origin_expenses = 0
+        self.total_items = 0
+        self.rates = self.set_rates()
+    
+    
+    def get_costs(self):
+        '''Realiza el costeo del producto en base a los costos indirectos
+            y costos adicionales en la liquidacion, de forma adicional 
+            realiza el calculo de pago de ice advalorem reliquidado
         
-        costs = {
-            'taxes' : [],
-            'order' : [],
-            'partial' : [],
-            'sums' : {},
-            'reliquidacion_ice' : 0.0,
+        Returns:
+            {dict}      'taxes' : [],
+                        'sums' : [],
+                        'data_general' : {}, 
+        '''
+        reliquidate_items = self.get_taxes()    
+        #sums = {}
+        #for x, line_item in enumerate(reliquidate_items):
+        #    if x == 0:
+        #        for k in line_item.__dict__:
+        #            sums[k] = 0.0
+        #    break
+#
+        #for k in sums:
+        #    for line_item in reliquidate_items:
+        #        try:    
+        #            if float(line_item.__dict__[k]) > 0.0:
+        #                sums[k] += float(line_item.__dict__[k])
+        #        except:
+        #            continue
+#
+        #return {
+        #    'taxes' : reliquidate_items,
+        #    'sums' : sums,
+        #}
+    
+
+    def set_rates(self):
+        self.incoterm = self.complete_order_info['order'].incoterm
+        self.origin_expenses = self.complete_order_info['order'].gasto_origen
+        return {
+            'base_etiquetas' : self.complete_order_info['order'].base_etiquetas,
+            'base_ice_advalorem' : self.complete_order_info['order'].base_ice_advalorem,
+            'porcentaje_ice_advalorem' : self.complete_order_info['order'].porcentaje_ice_advalorem,
+            'base_fodinfa' : self.complete_order_info['order'].base_fodinfa,
+            'tipo_cambio_trimestral' : self.complete_order_info['order_invoice']['order_invoice'].tipo_cambio,
         }
-        '''
-
-        self.set_configurations()
-        if self.partial_calc:
-            pass
-        else:
-            pass
 
 
+    def get_taxes(self):
+        taxes_line_items  = []
         
-        sums = []
-
-        for line_item in self.order_data['order_invoice']['order_invoice_details']:
-            costs['taxes'].append(self.get_line_item_cost(line_item))
-
-        for k,line_item in enumerate(costs['taxes']):            
-            if k == 0:
-                for key in line_item.__dict__.keys():
-                    sums.append({key : 0.0})
-            current_line_item = line_item.__dict__
-            for i,total in enumerate(sums):
-                for idx in total:
-                    if isinstance(current_line_item[idx], Decimal):
-                        sums[i][idx] += float(current_line_item[idx])
-
-        for i in sums:
-            costs['sums'].update(i)
+        for item in self.current_partial['info_invoice']['info_invoice_details']:
+            taxes_line_items.append(self.get_costs_item(item)) 
         
-        costs['reliquidacion_ice'] = (
-            costs['sums']['total_ice'] 
-            - float(self.order_data['order'].ice_advalorem_pagado)
-            - float(self.order_data['order'].ice_especifico_pagado)
+        return taxes_line_items
+
+
+    def get_costs_item(self, line_item):
+        line_item = self.get_apportionment_item(line_item)
+        #line_item.indirectos = (
+        #      line_item.ice_advalorem_reliquidado
+        #    + line_item.ice_especifico
+        #    + line_item.fodinfa
+        #    + line_item.tasa_control
+        #    + line_item.arancel_advalorem_pagar
+        #    + line_item.arancel_especifico_pagar
+        #)
+        #
+        #line_item.costo_total = line_item.indirectos + line_item.prorrateos_total
+        #line_item.costo_caja_final = line_item.costo_total / line_item.nro_cajas
+        #line_item.costo_unidad = line_item.costo_total / line_item.unidades
+#
+        #return line_item
+
+
+    def get_apportionment_item(self, line_item):
+        line_item.fob_percent = (
+            (line_item.nro_cajas * line_item.costo_caja) 
+            / self.current_partial['info_invoice']['totals']['value']
             )
+        line_item.etiquetas_fiscales = (
+                        line_item.nro_cajas 
+                        * line_item.cantidad_x_caja
+                        * self.rates['base_etiquetas']
+                ) 
 
-        return costs
+        line_item.ex_aduana = (
+            line_item.ex_aduana_antes
+            + line_item.etiquetas_fiscales
+            + line_item.tasa_control
+        )
 
+        loggin('t', '---------------------------')
+        loggin('e', line_item)
+        loggin('e', float(line_item.ex_aduana_antes))
+        loggin('t', '---------------------------')
 
-    def calc_partial_constings():
-        pass
-    
+        line_item.ex_aduana_unitario = (line_item.ex_aduana / line_item.unidades)
 
-    def calc_order_costings():
-        pass
+        line_item.base_advalorem_reliquidado = (self.rates['base_ice_advalorem'] * (line_item.capacidad_ml/1000))
 
+        if line_item.ex_aduana_unitario > line_item.base_advalorem_reliquidado:
+            line_item.ice_advalorem_reliquidado = (
+                (line_item.ex_aduana_unitario - self.rates['base_ice_advalorem'])
+                * self.rates['porcentaje_ice_advalorem']
+            ) * line_item.unidades
 
-    def set_configurations(self):       
-        '''
-        Set init params from costings product invoice
-        '''
-        self.type_change_order = self.order_data['order_invoice']['order_invoice'].tipo_cambio
-        self.incoterm = self.order_data['order'].incoterm
-
+        line_item.fob_tasa_trimestral = ( 
+                totals * 
+                self.rates['tipo_cambio_trimestral'] * 
+                line_item.fob_percent
+                )
+        
+        line_item.gastos_origen_tasa_trimestral = 0
+        
         if self.incoterm == 'FOB':
-            self.gasto_origen_tasa_trimestral = (
-                self.order_data['order'].gasto_origen
-                * self.type_change_order
+            line_item.gastos_origen_tasa_trimestral = (
+                self.origin_expenses * line_item.fob_percent
                 )
 
-        self.taxes_params['base_etiquetas'] = self.order_data['order'].base_etiquetas
-        self.taxes_params['base_advalorem'] = self.order_data['order'].base_ice_advalorem
-        self.taxes_params['base_fodinfa'] = self.order_data['order'].base_fodinfa
-        self.taxes_params['porcentaje_ice_advalorem'] = 0.75
-        #self.taxes_params['porcentaje_ice_advalorem'] = self.order_data['order'].porcentaje_ice_advalorem
+        line_item.prorrateos_total = (
+            line_item.prorrateo_pedido 
+            + line_item.prorrateo_parcial 
+            + line_item.fob_tasa_trimestral
+            )
 
+        return line_item
+
+
+
+class CostingsOrder(object):
+    '''
+        Realiza la reliquidacion de un pedido
+    '''
     
-    def get_line_item_cost(self, order_invoice_detail):
-        '''
-        join reliquidatios ice with prorrateos
-        '''
-        line_item_cost = self.get_reliquidation_line_item(order_invoice_detail)
-        return self.get_prorrateo_line_item(line_item_cost)
-
-
-    def get_reliquidation_line_item(self, order_invoice_detail):
-        '''
-        Return reliquidation ICE Value
-        param (OrderInvoiceDetail) order_invoice_detail
-        return -> OrderInvoiceDetail        
-        '''
-        order_invoice_detail.etiquetas_fiscales = (
-                self.taxes_params['base_etiquetas'] * order_invoice_detail.unidades
-        )
-
-        exaduana_reliquidacion = (
-            order_invoice_detail.etiquetas_fiscales
-            + order_invoice_detail.cif
-            + order_invoice_detail.tasa_control
-            + order_invoice_detail.otros
-            + order_invoice_detail.arancel_especifico_pagar
-            + order_invoice_detail.arancel_advalorem_pagar
-        )
-
-        exaduana_reliquidacion_unitario = (
-            exaduana_reliquidacion
-            / order_invoice_detail.unidades
-            )
-
-        order_invoice_detail.ex_aduana = exaduana_reliquidacion
-        order_invoice_detail.ex_aduana_unitario = exaduana_reliquidacion_unitario
-        ice_advalorem_reliquidado = 0.0 
-
-        if exaduana_reliquidacion_unitario > self.taxes_params['base_advalorem']:
-            loggin('i', 'Producto con reliquidacion de ICE Advalorem')
-            ice_advalorem_reliquidado = (
-                (exaduana_reliquidacion_unitario - self.taxes_params['base_advalorem'])
-                * self.taxes_params['porcentaje_ice_advalorem'] * order_invoice_detail.unidades
-            )
-
-        order_invoice_detail.ice_advalorem_reliquidado = ice_advalorem_reliquidado
-
-        return order_invoice_detail
+    def __init__(self, *args, **kwargs):
+        '''Retorna los valores de reliquidacion para un pedido
         
-
-    def get_prorrateo_line_item(self, order_invoice_detail):
+        Arguments:
+        complete_order_info {dict} : informacion completa de un pedido
         '''
-        Returns indirect costs for the line item
-        params (int) id_order_invoice_detail
-        return -> dict 
-        fob_tasa_trimestral
-        gasto_origen_tasa_trimestral    
+        loggin('i', 'Iniciando clase de reliquidacion de pedido')
+        self.complete_order_info = kwargs['complete_order_info']
+        self.incoterm = None
+        self.origin_expenses = 0
+        self.total_items = 0
+        self.rates = self.set_rates()
+    
+    
+    def get_costs(self):
+        '''Realiza el costeo del producto en base a los costos indirectos
+            y costos adicionales en la liquidacion, de forma adicional 
+            realiza el calculo de pago de ice advalorem reliquidado
+        
+        Returns:
+            {dict}      'taxes' : [],
+                        'sums' : [],
+                        'data_general' : {}, 
         '''
-        order_invoice_detail.fob_tasa_trimestral = (
-            order_invoice_detail.costo_caja 
-            * order_invoice_detail.nro_cajas
-            * self.type_change_order
+        reliquidate_items = self.get_taxes()    
+        sums = {}
+        for x, line_item in enumerate(reliquidate_items):
+            if x == 0:
+                for k in line_item.__dict__:
+                    sums[k] = 0.0
+            break
+
+        for k in sums:
+            for line_item in reliquidate_items:
+                try:    
+                    if float(line_item.__dict__[k]) > 0.0:
+                        sums[k] += float(line_item.__dict__[k])
+                except:
+                    continue
+
+        return {
+            'taxes' : reliquidate_items,
+            'sums' : sums,
+        }
+    
+
+    def set_rates(self):
+        self.incoterm = self.complete_order_info['order'].incoterm
+        self.origin_expenses = self.complete_order_info['order'].gasto_origen
+        return {
+            'base_etiquetas' : self.complete_order_info['order'].base_etiquetas,
+            'base_ice_advalorem' : self.complete_order_info['order'].base_ice_advalorem,
+            'porcentaje_ice_advalorem' : self.complete_order_info['order'].porcentaje_ice_advalorem,
+            'base_fodinfa' : self.complete_order_info['order'].base_fodinfa,
+            'tipo_cambio_trimestral' : self.complete_order_info['order_invoice']['order_invoice'].tipo_cambio,
+        }
+
+
+    def get_taxes(self):
+        taxes_line_items  = []
+        
+        for item in self.complete_order_info['order_invoice']['order_invoice_details']:
+            taxes_line_items.append(self.get_costs_item(item)) 
+        
+        return taxes_line_items
+
+
+    def get_costs_item(self, line_item):
+        line_item = self.get_apportionment_item(line_item)
+        #verificar si es necesario 
+        line_item.indirectos = (
+              line_item.ice_advalorem_reliquidado
+            + line_item.ice_especifico
+            + line_item.fodinfa
+            + line_item.tasa_control
+            + line_item.arancel_advalorem_pagar
+            + line_item.arancel_especifico_pagar
         )
+        
+        line_item.costo_total = line_item.indirectos + line_item.prorrateos_total
+        line_item.costo_caja_final = line_item.costo_total / line_item.nro_cajas
+        line_item.costo_unidad = line_item.costo_total / line_item.unidades
 
-        order_invoice_detail.gasto_origen_tasa_trimestral = (
-            self.gasto_origen_tasa_trimestral
-            * order_invoice_detail.fob_percent
+        return line_item
+
+
+    def get_apportionment_item(self, line_item):        
+        totals = self.complete_order_info['order_invoice']['totals']['value']
+        total_init_expenses = self.complete_order_info['init_expenses']
+        for expense in self.complete_order_info['expenses']:
+            if expense.concepto == 'ETIQUETAS FISCALES' or expense.concepto == 'TASA DE CONTROL ADUANERO':
+                total_init_expenses -= expense.valor_provisionado
+        
+        line_item.fob_percent = ((line_item.nro_cajas * line_item.costo_caja) / totals)
+        line_item.etiquetas_fiscales = (
+                        line_item.nro_cajas 
+                        * line_item.cantidad_x_caja
+                        * self.rates['base_etiquetas']
+                ) 
+        
+        line_item.prorrateo_pedido = (total_init_expenses * line_item.fob_percent)
+
+        line_item.ex_aduana = (
+            line_item.ex_aduana_antes
+            + line_item.etiquetas_fiscales
+            + line_item.tasa_control
         )
+        line_item.ex_aduana_unitario = (line_item.ex_aduana / line_item.unidades)
+        line_item.base_advalorem_reliquidado = (
+            self.rates['base_ice_advalorem'] 
+            * (line_item.capacidad_ml/1000)
+            )
 
-        gastos_inciales = self.order_data['init_expenses']
+        if line_item.ex_aduana_unitario > line_item.base_advalorem_reliquidado:
+            line_item.ice_advalorem_reliquidado = (
+                (line_item.ex_aduana_unitario - self.rates['base_ice_advalorem'])
+                * self.rates['porcentaje_ice_advalorem']
+            ) * line_item.unidades
 
-        prorrateos_gastos_inciales = ( 
-            (gastos_inciales * order_invoice_detail.fob_percent)
-            + order_invoice_detail.gasto_origen_tasa_trimestral
-        )
-
-        order_invoice_detail.prorrateo_pedido = order_invoice_detail.prorrateos_total = prorrateos_gastos_inciales
-
-        order_invoice_detail.indirectos  = (
-            + order_invoice_detail.fodinfa
-            + order_invoice_detail.arancel_advalorem_pagar
-            + order_invoice_detail.arancel_especifico_pagar
-            + order_invoice_detail.total_ice
-            + order_invoice_detail.prorrateo_pedido
-        )
-
-
-        order_invoice_detail.costo_total = (
-            order_invoice_detail.indirectos
-            + order_invoice_detail.fob_tasa_trimestral
-        )
-
-        order_invoice_detail.costo_caja_final = (
-            order_invoice_detail.costo_total / order_invoice_detail.nro_cajas
-        )
-        order_invoice_detail.costo_botella = (
-            order_invoice_detail.costo_caja_final / order_invoice_detail.cantidad_x_caja
-        )
-
-        if order_invoice_detail.save():
-            loggin(
-                's', 
-                'La informacion de costeo se ha guarado correntamente line item {}'
-                .format(order_invoice_detail.detalle_pedido_factura)
+        line_item.fob_tasa_trimestral = ( 
+                totals * 
+                self.rates['tipo_cambio_trimestral'] * 
+                line_item.fob_percent
                 )
         
-        return order_invoice_detail
+        line_item.gastos_origen_tasa_trimestral = 0
+        
+        if self.incoterm == 'FOB':
+            line_item.gastos_origen_tasa_trimestral = (
+                self.origin_expenses * line_item.fob_percent
+                )
+
+        line_item.prorrateos_total = (
+            line_item.prorrateo_pedido 
+            + line_item.prorrateo_parcial 
+            + line_item.fob_tasa_trimestral
+            )
+
+        return line_item
+
+
+class CostingsProduct(object):
+    
+    def __init__(self, **kwargs) -> dict:
+        ''' 
+        Interfaz comun para liquidacion de producto ya sea de pedido o parcial
+        
+        Returns:
+            [type] -- [description]
+        '''
+
+        self.order_info = kwargs['order_info']
+        if kwargs['is_order'] == False:
+            self.is_order = kwargs['is_order']
+            self.all_partials = kwargs['all_partials']
+            self.appotiomnets = kwargs['apportionments']
+            self.ordinal_current_partial = kwargs['ordinal_current_partial']
+    
+        if kwargs['is_order']:
+            self.costings = CostingsOrder(
+                complete_order_info = kwargs['order_info']
+                ).get_costs()
+        else:
+            self.costings = CostingsPartial(
+                complete_order_info = kwargs['order_info'],
+                all_partials = kwargs['all_partials'],
+                apportionment_expenses = kwargs['apportionments'],
+                ordinal_current_partial = kwargs['ordinal_current_partial'],
+            ).get_costs()
+
+
+    def get(self):
+        return self.costings

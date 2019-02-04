@@ -48,11 +48,12 @@ class ApportionmentExpenses(object):
         for apportionment in current_approtionment['apportionment_detail']:
             current_approtionment['total_aplicado'] += apportionment.valor_prorrateado
             current_approtionment['total_provisionado'] += apportionment.valor_provisionado
+            
             if apportionment.tipo == 'gasto_inicial':
                 apportionment.tipo = 'Gasto Inicial'
             else:
                 apportionment.tipo = 'Gasto Parcial'
-        
+
         return current_approtionment
         
 

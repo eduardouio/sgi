@@ -62,8 +62,11 @@
                </tbody>
             </table>
          </div>
+      </div>       
+      <div v-if="show_costings" class="animated fadeInUp">  
+          {% include 'costings/productos_pedido.html'  %}
       </div>
-      <div class="row">
+      <div class="row animated fadeInDown" v-if="show_costings === false">
          <div class="col-7 div-bordered">
             <div class="text-tittle"> RESUMEN DE ESTADO GASTOS GENERALES <strong v-if="current_selected_partial">${ current_selected_partial.partial.ordinal_parcial }</strong> </div>
             <div class="row">
@@ -567,6 +570,32 @@
       </div>
    </div>
             </div>
+              <hr>
+         <div class="row">
+            <div class="col-4">
+               <div class="fomr-group"><label for="">Saldo Mayor Sap</label>
+                  <input type="number" class="form-control form-control-sm text-right" v-model="current_ledger.mayor_sap" step="0.001">
+               </div>
+            </div>
+            <div class="col-4">
+               <div class="fomr-group"><label for="">Saldo Mayor SGI</label>
+                  <input type="text" class="form-control form-control-sm text-right" readonly v-model="current_ledger.mayor_sgi" step="0.001">
+               </div>
+            </div>
+            <div class="col-4">
+               <div class="fomr-group"><label for="">Diferencias</label>
+                  <input type="text" class="form-control form-control-sm text-right" readonly v-model="diff_ledgers">
+               </div>
+            </div>
+         </div>
+         <hr>
+         <div class="row">
+            <div class="col-12 text-right">          
+               <button class="btn btn-sm btn-outline-primary" @click="show_costings = true"><i class="fa fa-cart-arrow-down"></i> Costeo Producto</button>          
+            </div>
+            <br>
+         </div>
+
          </div>
       </div>
    </div>
