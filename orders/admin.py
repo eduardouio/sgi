@@ -33,7 +33,7 @@ class OrderAdmin(admin.ModelAdmin):
         'ciudad_origen',
         'fecha_arribo',
         'incoterm',
-        'matricula',
+        'nro_matricula',
         ]
     
     list_filter = (
