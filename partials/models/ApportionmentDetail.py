@@ -43,7 +43,12 @@ class ApportionmentDetail(models.Model):
 
     @classmethod
     def get_all_apportionments_by_parcial(self, id_partial):
-        apportionment = {}
+        apportionment = {
+            'apportionment' : None,
+            'apportionment_detail' : None,
+            'total_provisionado' : 0,
+            'total_aplicado' : 0
+        }
         apportionment['apportionment'] = Apportionment.get_by_parcial(id_partial)
         
         if apportionment['apportionment'] is None:
@@ -53,8 +58,5 @@ class ApportionmentDetail(models.Model):
         apportionment['apportionment_detail'] = self.get_by_apportionment(
             apportionment['apportionment'].id_prorrateo
             )
-        
-        apportionment['total_provisionado']  = 0
-        apportionment['total_aplicado']  = 0
         
         return apportionment
