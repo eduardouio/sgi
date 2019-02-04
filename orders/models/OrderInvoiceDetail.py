@@ -87,7 +87,6 @@ class OrderInvoiceDetail(models.Model):
         return str(self.detalle_pedido_factura)
 
     class Meta:
-        #managed = False
         managed = True
         db_table = 'detalle_pedido_factura'
         unique_together = (('id_pedido_factura', 'cod_contable', 'grado_alcoholico', 'date_create'),)

@@ -1,41 +1,47 @@
 from logs.app_log import loggin
 from decimal import Decimal
 
-class CalculateOrderCosts(object):
-    ''' Get costo of product and ice reliquidado '''    
-
-    def __init__(self, order_data):
-        '''
-        init class CalculateCosts
-        params (dict) order_data
-        '''
-        loggin('i', 'Inicio clase calculo de costos pedido R10 {}'
-            .format(order_data['order'].nro_pedido)
-        )
-        self.order_data = order_data        
-        self.tipo_cambio_trimestral = None
-        self.incoterm = None
-        self.gasto_origen_tasa_trimestral = 0.0
-        self.taxes_params = {
-            'base_fodinfa' : None,
-            'base_etiquetas' : None,
-            'base_advalorem' : None,
-            'porcentaje_ice_advalorem' : None,
-        }
+class ProductsCosts(object):
+    def __init__(self, complete_order_info, complete_partial_info = None, apportionmet_partial = None):
+        """
+        realiza el calculo de costeo del producto de un parcial o pedido R10,
+        si la liquidacion es de un regimen 10 solo pasa el primer parametro
+        
+        Arguments:
+            order_data {dict} -- Informacion completa de un pedido
+        
+        Keyword Arguments:
+            partial_data {dict} -- Informacion completa del parcial al liquidar (default: {None})
+            apportionmet {dict} -- detalle completo de prorrateos (default: {None})
+        """ 
+        self.order_info = complete_order_info
+        self.partial_info = complete_partial_info
+        self.apportionment = apportionmet_partial
+        self.partial_calc = (complete_order_info is None)
 
 
     def get_costings(self):
         '''
-        costs of order
-        return (dict) Costings
-        '''
-        self.set_configurations()
+        obtener los costos del producto
+        {Dict} -- 
+        
         costs = {
             'taxes' : [],
-            'order' : self.order_data['order'],
+            'order' : [],
+            'partial' : [],
             'sums' : {},
             'reliquidacion_ice' : 0.0,
         }
+        '''
+
+        self.set_configurations()
+        if self.partial_calc:
+            pass
+        else:
+            pass
+
+
+        
         sums = []
 
         for line_item in self.order_data['order_invoice']['order_invoice_details']:
@@ -61,6 +67,14 @@ class CalculateOrderCosts(object):
             )
 
         return costs
+
+
+    def calc_partial_constings():
+        pass
+    
+
+    def calc_order_costings():
+        pass
 
 
     def set_configurations(self):       

@@ -1,8 +1,8 @@
 from logs.app_log import loggin 
 
-class ReliquidatePartial(object):
+class ReliquidateICE(object):
     '''
-        Realiza la reliquidacion de un parcial
+        Realiza la reliquidacion de un pedido
     '''
     
     def __init__(self, *args, **kwargs):
@@ -13,11 +13,6 @@ class ReliquidatePartial(object):
         '''
         loggin('i', 'Iniciando clase de reliquidacion de pedido')
         self.complete_order_info = kwargs['complete_order_info']
-        self.all_partials = kwargs['all_partials']
-        self.apportionment_expenses = kwargs['apportionment_expenses']
-        self.ordinal_current_partial = kwargs['ordinal_current_partial']
-        self.current_partial = self.all_partials[kwargs['ordinal_current_partial'] - 1] 
-
         self.incoterm = None
         self.origin_expenses = 0
         self.total_items = 0
@@ -78,6 +73,7 @@ class ReliquidatePartial(object):
 
     def get_costs_item(self, line_item):
         line_item = self.get_apportionment_item(line_item)
+        #verificar si es necesario 
         line_item.indirectos = (
               line_item.ice_advalorem_reliquidado
             + line_item.ice_especifico
@@ -115,10 +111,11 @@ class ReliquidatePartial(object):
             + line_item.etiquetas_fiscales
             + line_item.tasa_control
         )
-
         line_item.ex_aduana_unitario = (line_item.ex_aduana / line_item.unidades)
-
-        line_item.base_advalorem_reliquidado = (self.rates['base_ice_advalorem'] * (line_item.capacidad_ml/1000))
+        line_item.base_advalorem_reliquidado = (
+            self.rates['base_ice_advalorem'] 
+            * (line_item.capacidad_ml/1000)
+            )
 
         if line_item.ex_aduana_unitario > line_item.base_advalorem_reliquidado:
             line_item.ice_advalorem_reliquidado = (

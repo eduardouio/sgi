@@ -21,7 +21,6 @@ class PaidInvoiceDetail(models.Model):
         return str(self.id_detalle_documento_pago)
 
     class Meta:
-        #managed = False
         managed = True
         db_table = 'detalle_documento_pago'
         unique_together = (('id_documento_pago', 'id_gastos_nacionalizacion'),)
