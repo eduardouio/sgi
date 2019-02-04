@@ -1,12 +1,14 @@
 from django.contrib import admin
+from simple_history.admin import SimpleHistoryAdmin
+
 from paids.models.Expense import Expense
-from paids.models.RateExpense import RateExpense
-from paids.models.RateIncoterm import RateIncoterm
 from paids.models.PaidInvoice import PaidInvoice
 from paids.models.PaidInvoiceDetail import PaidInvoiceDetail
+from paids.models.RateExpense import RateExpense
+from paids.models.RateIncoterm import RateIncoterm
 
 
-class ExpensesAdmin(admin.ModelAdmin):
+class ExpensesAdmin(SimpleHistoryAdmin):
     list_display = (
     'id_gastos_nacionalizacion',
     'nro_pedido',
@@ -36,7 +38,7 @@ class ExpensesAdmin(admin.ModelAdmin):
     
 
 
-class RateExpenseAdmin(admin.ModelAdmin):
+class RateExpenseAdmin(SimpleHistoryAdmin):
     list_display = (
         'id_tarifa_gastos',
         'regimen',
@@ -72,7 +74,7 @@ class RateExpenseAdmin(admin.ModelAdmin):
 
 
 
-class RateIncotermAdmin(admin.ModelAdmin):    
+class RateIncotermAdmin(SimpleHistoryAdmin):    
     list_display = (
         'id_incoterm',
         'tipo',
@@ -99,7 +101,7 @@ class PaidInvoiceDetailInline(admin.TabularInline):
     model = PaidInvoiceDetail
 
 
-class PaidInvoiceAdmin(admin.ModelAdmin):
+class PaidInvoiceAdmin(SimpleHistoryAdmin):
     list_display = (
         'identificacion_proveedor',
         'nro_factura',

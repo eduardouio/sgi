@@ -1,11 +1,14 @@
 from django.contrib import admin
-from partials.models.Partial import Partial
+from simple_history.admin import SimpleHistoryAdmin
+
 from partials.models.Apportionment import Apportionment
 from partials.models.ApportionmentDetail import ApportionmentDetail
 from partials.models.InfoInvoice import InfoInvoice
 from partials.models.InfoInvoiceDetail import InfoInvoiceDetail
+from partials.models.Partial import Partial
 
-class PartialAdmin(admin.ModelAdmin):
+
+class PartialAdmin(SimpleHistoryAdmin):
     list_display = (
         'nro_pedido',
         'nro_refrendo',
@@ -41,7 +44,7 @@ class ApportionmentDetailInline(admin.TabularInline):
         'valor_provisionado',
     )
 
-class ApportionmentAdmin(admin.ModelAdmin):
+class ApportionmentAdmin(SimpleHistoryAdmin):
     list_display = (
         'id_parcial',
         'porcentaje_parcial',
@@ -68,7 +71,7 @@ class InfoInvoiceDetailInline(admin.TabularInline):
         'gasto_origen',
     )
 
-class InfoInvoiceAdmin(admin.ModelAdmin):
+class InfoInvoiceAdmin(SimpleHistoryAdmin):
     list_display = (
         'id_parcial',
         'nro_factura_informativa',

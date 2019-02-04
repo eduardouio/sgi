@@ -1,12 +1,13 @@
 from django.contrib import admin
+from django.utils.html import format_html
+from simple_history.admin import SimpleHistoryAdmin
+
 from orders.models.Order import Order
 from orders.models.OrderInvoice import OrderInvoice
 from orders.models.OrderInvoiceDetail import OrderInvoiceDetail
-from simple_history.admin import SimpleHistoryAdmin
-from django.utils.html import format_html
 
 
-class OrderAdmin(admin.ModelAdmin):
+class OrderAdmin(SimpleHistoryAdmin):
     empty_value_display = '-Sin Valor-'
     list_display = (
         'proveedor',
@@ -106,7 +107,7 @@ class OrderInvoiceDetailInline(admin.TabularInline):
     )
     model = OrderInvoiceDetail
 
-class OrderInvoiceAdmin(admin.ModelAdmin):
+class OrderInvoiceAdmin(SimpleHistoryAdmin):
     list_display = (
         'identificacion_proveedor',
         'nro_pedido',

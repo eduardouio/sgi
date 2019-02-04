@@ -1,7 +1,10 @@
 from django.contrib import admin
+from simple_history.admin import SimpleHistoryAdmin
+
 from suppliers.models.Supplier import Supplier
 
-class SupplierAdmin(admin.ModelAdmin):
+
+class SupplierAdmin(SimpleHistoryAdmin):
     list_display = (
         'nombre',
         'tipo_provedor',

@@ -1,7 +1,8 @@
 from django.contrib import admin
+from simple_history.admin import SimpleHistoryAdmin
 from products.models.Product import Product
 
-class ProductAdmin(admin.ModelAdmin):
+class ProductAdmin(SimpleHistoryAdmin):
     list_display = (
         'identificacion_proveedor',
         'cod_contable',
