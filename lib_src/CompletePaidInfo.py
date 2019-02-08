@@ -1,11 +1,12 @@
-from paids.models.Expense import Expense
-from paids.models.PaidInvoice import PaidInvoice
-from paids.models.PaidInvoiceDetail import PaidInvoiceDetail
-from orders.models.Order import Order
-from partials.models.Partial import Partial
-from suppliers.models.Supplier import Supplier
-from logs.app_log import loggin
-from lib_src.serializers import SupplierSerializer, PaidInvoiceSerializer, PaidInvoiceDetailSerializer, ExpenseSerializer
+from lib_src.serializers import (ExpenseSerializer,
+                                 PaidInvoiceDetailSerializer,
+                                 PaidInvoiceSerializer, SupplierSerializer)
+from logs import loggin
+from orders.models import Order
+from paids.models import Expense, PaidInvoice, PaidInvoiceDetail
+from partials.models import Partial
+from suppliers.models import Supplier
+
 
 class CompletePaidinfo(object):
     '''  Return all information from paid 

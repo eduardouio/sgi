@@ -1,7 +1,6 @@
 import decimal
 
-import partials
-from costings.models.Ledger import Ledger
+from costings.models import Ledger
 from lib_src.serializers import (ApportionmentSerializer, ExpenseSerializer,
                                  LedgerSerializer,
                                  OrderInvoiceDetailSerializer,
@@ -9,16 +8,11 @@ from lib_src.serializers import (ApportionmentSerializer, ExpenseSerializer,
                                  PaidInvoiceDetailSerializer,
                                  PaidInvoiceSerializer, PartialSerializer,
                                  RateExpenseSerializer, SupplierSerializer)
-from logs.app_log import loggin
-from orders.models.Order import Order
-from orders.models.OrderInvoice import OrderInvoice
-from orders.models.OrderInvoiceDetail import OrderInvoiceDetail
-from paids.models.Expense import Expense
-from paids.models.PaidInvoice import PaidInvoice
-from paids.models.PaidInvoiceDetail import PaidInvoiceDetail
-from paids.models.RateExpense import RateExpense
-from partials.models.Apportionment import Apportionment
-from partials.models.Partial import Partial
+from logs import loggin
+from orders.models import Order, OrderInvoice, OrderInvoiceDetail
+from paids.models import (Expense, PaidInvoice, PaidInvoiceDetail,
+                                  RateExpense)
+from partials.models import Apportionment, Partial
 from suppliers.models.Supplier import Supplier
 
 

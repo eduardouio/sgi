@@ -1,11 +1,12 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
-from django.core.exceptions import ObjectDoesNotExist
-from orders.models.Order import Order
-from partials.models.Partial import Partial
-from suppliers.models.Supplier import Supplier
-from logs.app_log import loggin
-from django.core.exceptions import ObjectDoesNotExist
 from simple_history.models import HistoricalRecords
+
+from logs.app_log import loggin
+from orders.models import Order
+from partials.models import Partial
+from suppliers.models import Supplier
+
 
 class Expense(models.Model):
     id_gastos_nacionalizacion = models.AutoField(primary_key=True)

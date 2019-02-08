@@ -114,11 +114,11 @@ WSGI_APPLICATION = 'sgi.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'cordovezAppDjango',
+        'NAME': 'cordovezAppTEST',
         'USER' : 'appCordovez',
         'PASSWORD' : '\DBGfW<7;vBa5(LB',
-        'HOST': '179.49.60.158',
-        #'HOST': '192.168.0.198',
+        'HOST': '192.168.0.198',
+        #'HOST': '127.0.0.1',
         'PORT' : '3306',
     }
 }
@@ -174,6 +174,7 @@ AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend', 'guardia
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_ROOT = os.sep.join(os.path.abspath(__file__).split(os.sep)[:-2]+['static_django'])
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     os.sep.join(os.path.abspath(__file__).split(os.sep)[:-2]+['static']),

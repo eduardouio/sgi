@@ -1,21 +1,15 @@
-from costings.models.Ledger import Ledger
-from orders.models.Order import Order
-from orders.models.OrderInvoice import OrderInvoice
-from orders.models.OrderInvoiceDetail import OrderInvoiceDetail
-from paids.models.Expense import Expense
-from paids.models.PaidInvoice import PaidInvoice
-from paids.models.PaidInvoiceDetail import PaidInvoiceDetail
-from paids.models.RateExpense import RateExpense
-from paids.models.RateIncoterm import RateIncoterm
-from partials.models.InfoInvoice import InfoInvoice
-from partials.models.InfoInvoiceDetail import InfoInvoiceDetail
-from partials.models.Apportionment import Apportionment
-from partials.models.ApportionmentDetail import ApportionmentDetail
-from partials.models.Partial import Partial
-from products.models.Product import Product
-from suppliers.models.Supplier import Supplier
-from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
+from rest_framework.serializers import ModelSerializer
+
+from costings.models import Ledger
+from orders.models import Order, OrderInvoice, OrderInvoiceDetail
+from paids.models import (Expense, PaidInvoice, PaidInvoiceDetail, RateExpense,
+                          RateIncoterm)
+from partials.models import (Apportionment, ApportionmentDetail, InfoInvoice,
+                             InfoInvoiceDetail, Partial)
+from products.models import Product
+from suppliers.models import Supplier
+
 
 class LedgerSerializer(ModelSerializer):
     class Meta:

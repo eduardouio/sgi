@@ -1,6 +1,8 @@
-from django.urls import path, include
-from costings.views.LiquidateOrderTemplateView import LiquidateOrderTemplateView
-from costings.views.LiquidatePartialTemplateView import LiquidatePartialTemplateView
+from django.urls import include, path
+
+from costings.views import (LiquidateOrderTemplateView,
+                            LiquidatePartialTemplateView)
+
 app_name = 'authentication'
 
 

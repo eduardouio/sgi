@@ -15,22 +15,23 @@ delete FROM `gastos_nacionalizacion` where `id_parcial` = 17 or `id_parcial` = 1
 
 
 -- Tabla de proveedores
-ALTER TABLE `cordovezAppDjango`.`proveedor` 
+ALTER TABLE `proveedor` 
 ADD COLUMN  `id_proveedor` INT(11) NOT NULL AUTO_INCREMENT ,
 ADD UNIQUE INDEX `id_proveedor_UNIQUE` (`id_proveedor` ASC);
 
 
 -- tabla de productos
-ALTER TABLE `cordovezAppDjango`.`producto` 
+ALTER TABLE `producto` 
 ADD COLUMN `id_producto` INT(11) NOT NULL AUTO_INCREMENT ,
 ADD UNIQUE INDEX `id_producto_UNIQUE` (`id_producto` ASC);
 
 
 -- pedidos
-ALTER TABLE `cordovezAppDjango`.`pedido` 
+ALTER TABLE `pedido` 
 ADD COLUMN `id_pedido` INT(11) NOT NULL AUTO_INCREMENT ,
 ADD UNIQUE INDEX `id_pedido_UNIQUE` (`id_pedido` ASC);
 
+ALTER TABLE `factura_informativa_detalle` ADD `cantidad_x_caja` DECIMAL(12,3) NOT NULL DEFAULT '0' AFTER `seguro`;
 
 -- parciales:
 --    comprobar que la clave foranea al detalle del parcial esta en DELETE CASCADE 

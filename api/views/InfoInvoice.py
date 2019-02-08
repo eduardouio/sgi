@@ -1,6 +1,6 @@
 from lib_src.serializers import InfoInvoiceSerializer
 from rest_framework import generics
-from partials.models.InfoInvoice import InfoInvoice
+from partials.models import InfoInvoice
 
 
 class InfoInvoiceCreateView(generics.CreateAPIView):

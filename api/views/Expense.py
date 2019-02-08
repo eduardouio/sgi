@@ -1,5 +1,5 @@
 from lib_src.serializers import ExpenseSerializer
-from paids.models.Expense import Expense
+from paids.models import Expense
 from rest_framework import generics
 
 class ExpenseCreateView(generics.CreateAPIView):

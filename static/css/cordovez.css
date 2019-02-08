@@ -654,9 +654,10 @@ th {
   .nav-tabs--left .nav-link.active:hover {
 	background-color: #fff999 !important;
 	color:#8E44AD;
-	border-color: #17a2b8 !important #007bff !important #17a2b8 !important #17a2b8 !important;
-  }
-  .row {
+	border-color: #17a2b8 !important #007bff !important #17a2b8 !important #17a2b8 !important; 
+}
+
+.row {
     display: -ms-flexbox;
     display: flex;
     -ms-flex-wrap: wrap;
@@ -665,3 +666,63 @@ th {
 	margin-left: -5px;
 	margin-top: 8px;
 }
+.button {
+	border: none;
+	border-radius: 4px;
+	font-family: 'Roboto', arial, sans-serif;
+	font-size: 12px;
+	font-weight: 500;
+	height: 32px;
+	padding: 0 16px;
+	position: relative;
+	transition-duration: 200ms;
+	transition-property: background-color, color, box-shadow, border;
+	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .button:disabled {
+	transition: none;
+  }
+  
+  .button.primary {
+	background-color: rgb(26, 115, 232);
+	color: white;
+  }
+  
+  .button.primary:disabled {
+	background-color: rgb(241, 243, 244);
+	color: rgb(128, 134, 139);
+  }
+  
+  .button.primary:hover:not(:disabled) {
+	background-color: rgb(41, 123, 231);
+	box-shadow: 0 1px 2px 0 rgba(66, 133, 244, 0.3),
+		0 1px 3px 1px rgba(66, 133, 244, 0.15);
+  }
+  
+  .button.primary:active:not(:disabled) {
+	box-shadow: 0 1px 2px 0 rgba(66, 133, 244, 0.3),
+		0 3px 6px 2px rgba(66, 133, 244, 0.15);
+  }
+  
+  .button.secondary {
+	background-color: white;
+	border: 1px solid rgb(218, 220, 224);
+	color: rgb(26, 115, 232);
+  }
+  
+  .button.secondary:disabled {
+	border-color: rgb(241, 243, 244);
+	color: rgb(128, 134, 139);
+  }
+  
+  .button.secondary:hover:not(:disabled) {
+	background-color: rgba(66, 133, 244, 0.04);
+	border-color: rgb(210, 227, 252);
+  }
+  
+  .button.secondary:active:not(:disabled) {
+	background-color: white;
+	border-color: white;
+	box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3),
+		0 3px 6px 2px rgba(60, 64, 67, 0.15);
+  }

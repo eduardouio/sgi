@@ -1,7 +1,9 @@
 import requests
-from logs.app_log import loggin
-from orders.models.Order import Order
-from partials.models.Partial import Partial
+
+from logs import loggin
+from orders.models import Order
+from partials.models import Partial
+
 
 class UpdateFiles(object):
     def update_file(self, url_document, type_documet, upload_to, id_target):
@@ -80,4 +82,3 @@ class UpdateFiles(object):
         }
 
         return data
-    

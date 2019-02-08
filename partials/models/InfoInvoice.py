@@ -26,6 +26,7 @@ class InfoInvoice(models.Model):
     bg_isclosed = models.IntegerField(default=0)
     gasto_origen = models.DecimalField(max_digits=10, decimal_places=3)
     bg_gst_origen_por_factura = models.IntegerField()
+    factura_informativa = models.FileField(blank=True,null=True, upload_to='factura_informativa/'),
     id_user = models.SmallIntegerField(default=0)
     date_create = models.DateTimeField(blank=True, null=True)
     last_update = models.DateTimeField(blank=True, null=True)

@@ -2,10 +2,10 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from lib_src.CompletePartialInfo import CompletePartialInfo
+from lib_src import CompletePartialInfo
 from lib_src.serializers import PartialSerializer
 from lib_src.TypeChangeOrder import get_by_parcial
-from partials.models.Partial import Partial
+from partials.models import Partial
 
 
 class PartialCreateView(generics.CreateAPIView):

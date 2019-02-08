@@ -24,6 +24,7 @@ class OrderInvoice(models.Model):
     bg_isclosed = models.IntegerField(blank=True, null=True,default=0)
     gasto_origen = models.DecimalField(max_digits=10, decimal_places=3,default=0)
     gasto_origen_tasa_trimestral = models.DecimalField(max_digits=12, decimal_places=3, blank=True, null=True)
+    factura_proveedor = models.FileField(blank=True,null=True, upload_to='factura_proveedor/'),
     history = HistoricalRecords()
 
     def __str__(self):

@@ -1,11 +1,8 @@
 from django.contrib import admin
 from simple_history.admin import SimpleHistoryAdmin
 
-from paids.models.Expense import Expense
-from paids.models.PaidInvoice import PaidInvoice
-from paids.models.PaidInvoiceDetail import PaidInvoiceDetail
-from paids.models.RateExpense import RateExpense
-from paids.models.RateIncoterm import RateIncoterm
+from paids.models import (Expense, PaidInvoice, PaidInvoiceDetail, RateExpense,
+                          RateIncoterm)
 
 
 class ExpensesAdmin(SimpleHistoryAdmin):

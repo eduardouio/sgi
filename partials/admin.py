@@ -1,11 +1,8 @@
 from django.contrib import admin
 from simple_history.admin import SimpleHistoryAdmin
 
-from partials.models.Apportionment import Apportionment
-from partials.models.ApportionmentDetail import ApportionmentDetail
-from partials.models.InfoInvoice import InfoInvoice
-from partials.models.InfoInvoiceDetail import InfoInvoiceDetail
-from partials.models.Partial import Partial
+from partials.models import (Apportionment, ApportionmentDetail, InfoInvoice,
+                             InfoInvoiceDetail, Partial)
 
 
 class PartialAdmin(SimpleHistoryAdmin):
@@ -63,13 +60,7 @@ class ApportionmentAdmin(SimpleHistoryAdmin):
 class InfoInvoiceDetailInline(admin.TabularInline):
     model = InfoInvoiceDetail
 
-    fields = (
-        'id_factura_informativa',
-        'detalle_pedido_factura',
-        'grado_alcoholico',
-        'nro_cajas',
-        'gasto_origen',
-    )
+  #
 
 class InfoInvoiceAdmin(SimpleHistoryAdmin):
     list_display = (

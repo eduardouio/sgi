@@ -3,10 +3,10 @@ from rest_framework.generics import (CreateAPIView, DestroyAPIView,
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from lib_src.CompleteOrderInfo import CompleteOrderInfo
+from lib_src import CompleteOrderInfo
 from lib_src.serializers import OrderSerializer
 from logs.app_log import loggin
-from orders.models.Order import Order
+from orders.models import Order
 
 
 class OrderCreateView(CreateAPIView):

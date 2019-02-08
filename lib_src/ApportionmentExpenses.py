@@ -1,8 +1,7 @@
 from decimal import Decimal
 
 from logs.app_log import loggin
-from partials.models.Apportionment import Apportionment
-from partials.models.ApportionmentDetail import ApportionmentDetail
+from partials.models import Apportionment, ApportionmentDetail
 
 
 class ApportionmentExpenses(object):

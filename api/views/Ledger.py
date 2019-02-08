@@ -1,4 +1,4 @@
-from costings.models.Ledger import Ledger
+from costings.models import Ledger
 from lib_src.serializers import LedgerSerializer
 from rest_framework.generics import (
                         CreateAPIView, 

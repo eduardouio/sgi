@@ -1,8 +1,9 @@
 from django.db import models
-from paids.models.PaidInvoice import PaidInvoice
-from paids.models.Expense import Expense
-from logs.app_log import loggin
 from simple_history.models import HistoricalRecords
+
+from logs.app_log import loggin
+from paids.models import Expense, PaidInvoice
+
 
 class PaidInvoiceDetail(models.Model):
     id_detalle_documento_pago = models.AutoField(primary_key=True)

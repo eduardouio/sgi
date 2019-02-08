@@ -1,5 +1,5 @@
 from django.urls import include, path
-from importations.views.UploadFiles import FileUploadFormView
+from importations.views import FileUploadFormView
 
 app_name='importations'
 

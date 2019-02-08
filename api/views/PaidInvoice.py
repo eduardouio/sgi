@@ -1,4 +1,4 @@
-from paids.models.PaidInvoice import PaidInvoice
+from paids.models import PaidInvoice
 from lib_src.serializers import PaidInvoiceSerializer
 from rest_framework.generics import (
     CreateAPIView,
@@ -8,7 +8,7 @@ from rest_framework.generics import (
 )
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from lib_src.CompletePaidInfo import CompletePaidinfo
+
 
 class PaidInvoiceCreateView(CreateAPIView):
     queryset = PaidInvoice.objects.all()

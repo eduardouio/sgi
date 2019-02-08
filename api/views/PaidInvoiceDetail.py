@@ -1,4 +1,4 @@
-from paids.models.PaidInvoiceDetail import PaidInvoiceDetail
+from paids.models import PaidInvoiceDetail
 from lib_src.serializers import PaidInvoiceDetailSerializer
 from rest_framework.generics import (
                                     RetrieveAPIView, 

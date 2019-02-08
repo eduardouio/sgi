@@ -1,7 +1,7 @@
 from django.contrib import admin
 from simple_history.admin import SimpleHistoryAdmin
 
-from suppliers.models.Supplier import Supplier
+from suppliers.models import Supplier
 
 
 class SupplierAdmin(SimpleHistoryAdmin):

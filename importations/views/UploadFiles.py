@@ -1,6 +1,6 @@
 from django import forms
 from django.views.generic import FormView
-from orders.models.Order import Order
+from orders.models import Order
 
 
 class FormUpload(forms.Form):

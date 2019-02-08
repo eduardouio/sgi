@@ -1,5 +1,5 @@
 from lib_src.serializers import ApportionmentDetailSerializer
-from partials.models.ApportionmentDetail import ApportionmentDetail
+from partials.models import ApportionmentDetail
 from rest_framework import generics
 
 

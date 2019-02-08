@@ -1,5 +1,5 @@
 from django.urls import path, include
-from orders.views.OrderSaleTemplateView import OrderSaleTemplateView
+from orders.views import OrderSaleTemplateView
 app_name = 'authentication'
 
 urlpatterns = [

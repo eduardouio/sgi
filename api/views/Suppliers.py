@@ -1,5 +1,5 @@
 from lib_src.serializers import SupplierSerializer
-from suppliers.models.Supplier import Supplier
+from suppliers.models import Supplier
 from rest_framework import generics
 
 class SupplierCreateView(generics.CreateAPIView):

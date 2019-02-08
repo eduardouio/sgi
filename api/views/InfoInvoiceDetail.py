@@ -1,5 +1,5 @@
 from rest_framework import generics
-from partials.models.InfoInvoiceDetail import InfoInvoiceDetail
+from partials.models import InfoInvoiceDetail
 from lib_src.serializers import InfoInvoiceDetailSerializer
 
 class InfoInvoiceDetailCreateView(generics.CreateAPIView):

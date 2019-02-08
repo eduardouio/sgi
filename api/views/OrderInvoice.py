@@ -1,5 +1,5 @@
 from lib_src.serializers import OrderInvoiceSerializer
-from orders.models.OrderInvoice import OrderInvoice
+from orders.models import OrderInvoice
 from rest_framework.generics import (
                                 CreateAPIView,
                                 UpdateAPIView,

@@ -49,11 +49,12 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
             ordinal_current_partial=ordinal_parcial,
             ).get_apportionments()
         
-        producto_costs = ProductsCosts(
-                complete_order_info, 
-                all_partials[(int(ordinal_parcial) - 1)], 
-                apportiments_expenses
-                ).get_costings()
+        producto_costs = CostingsPartial(
+                complete_order_info = complete_order_info, 
+                all_partials = all_partials,
+                apportionment_expenses = apportiments_expenses,
+                ordinal_current_partial = all_partials[(int(ordinal_parcial) - 1)]
+                ).get_costs()
 
 
         context['data'] = {

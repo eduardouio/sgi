@@ -1,20 +1,18 @@
-from costings.models.Ledger import Ledger
-from lib_src.CompleteOrderInfo import CompleteOrderInfo
-from lib_src.serializers import ApportionmentDetailSerializer, \
-    ApportionmentSerializer, ExpenseSerializer, InfoInvoiceDetailSerializer, \
-    InfoInvoiceSerializer, LedgerSerializer, PaidInvoiceDetailSerializer, \
-    PaidInvoiceSerializer, PartialSerializer, SupplierSerializer
+from costings.models import Ledger
+from lib_src import CompleteOrderInfo
+from lib_src.serializers import (ApportionmentDetailSerializer,
+                                 ApportionmentSerializer, ExpenseSerializer,
+                                 InfoInvoiceDetailSerializer,
+                                 InfoInvoiceSerializer, LedgerSerializer,
+                                 PaidInvoiceDetailSerializer,
+                                 PaidInvoiceSerializer, PartialSerializer,
+                                 SupplierSerializer)
 from logs.app_log import loggin
-from orders.models.OrderInvoiceDetail import OrderInvoiceDetail
-from paids.models.Expense import Expense
-from paids.models.PaidInvoice import PaidInvoice
-from paids.models.PaidInvoiceDetail import PaidInvoiceDetail
-from partials.models.Apportionment import Apportionment
-from partials.models.ApportionmentDetail import ApportionmentDetail
-from partials.models.InfoInvoice import InfoInvoice
-from partials.models.InfoInvoiceDetail import InfoInvoiceDetail
-from partials.models.Partial import Partial
-from suppliers.models.Supplier import Supplier
+from orders.models import OrderInvoiceDetail
+from paids.models import Expense, PaidInvoice, PaidInvoiceDetail
+from partials.models import (Apportionment, ApportionmentDetail, InfoInvoice,
+                             InfoInvoiceDetail, Partial)
+from suppliers.models import Supplier
 
 
 class CompletePartialInfo(object):
@@ -278,4 +276,3 @@ class CompletePartialInfo(object):
 
     def get_ledger(self):
         return {}
-    

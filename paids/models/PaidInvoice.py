@@ -1,11 +1,13 @@
-from django.db import models
-from suppliers.models.Supplier import Supplier
-from logs.app_log import loggin
-from simple_history.models import HistoricalRecords
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import models
+from simple_history.models import HistoricalRecords
+
+from logs import loggin
+from suppliers.models import Supplier
+
 
 class PaidInvoice(models.Model):
-    id_documento_pago = models.SmallIntegerField( primary_key=True)
+    id_documento_pago = models.AutoField(primary_key=True)
     identificacion_proveedor = models.ForeignKey(Supplier, models.PROTECT, db_column='identificacion_proveedor')
     nro_factura = models.CharField(max_length=20)
     fecha_emision = models.DateField()
@@ -23,7 +25,6 @@ class PaidInvoice(models.Model):
         return str(self.id_documento_pago)
 
     class Meta:
-        #managed = False
         managed = True
         db_table = 'documento_pago'
         unique_together = (('identificacion_proveedor', 'nro_factura'),)

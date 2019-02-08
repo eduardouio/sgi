@@ -1,8 +1,10 @@
 from django.db import models
-from suppliers.models.Supplier import Supplier
-from orders.models.Order import Order
 from simple_history.models import HistoricalRecords
+
 from logs.app_log import loggin
+from orders.models import Order
+from suppliers.models import Supplier
+
 
 class RateExpense(models.Model):
     id_tarifa_gastos = models.AutoField(primary_key=True)
@@ -41,11 +43,3 @@ class RateExpense(models.Model):
         
         loggin('e', 'El sistema no tiene parametros para el calculo de tributos')
         return None
-
-
-
-
-
-
-
-

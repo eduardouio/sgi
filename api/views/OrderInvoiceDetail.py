@@ -1,4 +1,4 @@
-from orders.models.OrderInvoiceDetail import OrderInvoiceDetail
+from orders.models import OrderInvoiceDetail
 from lib_src.serializers import OrderInvoiceDetailSerializer
 from rest_framework.generics import (
     CreateAPIView,

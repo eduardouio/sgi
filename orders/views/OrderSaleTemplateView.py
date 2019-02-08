@@ -1,11 +1,10 @@
-from django.shortcuts import render_to_response
 from multiprocessing import context
 
+from django.shortcuts import render_to_response
 from django.views.generic import TemplateView
-from xdg.Locale import update
 
-from lib_src.OrderSale import OrderSale
-from orders.models.Order import Order
+from lib_src import OrderSale
+from orders.models import Order
 
 
 class OrderSaleTemplateView(TemplateView):

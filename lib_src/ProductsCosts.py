@@ -43,7 +43,7 @@ class CostingsPartial(object):
         #        for k in line_item.__dict__:
         #            sums[k] = 0.0
         #    break
-#
+        #
         #for k in sums:
         #    for line_item in reliquidate_items:
         #        try:    
@@ -51,7 +51,7 @@ class CostingsPartial(object):
         #                sums[k] += float(line_item.__dict__[k])
         #        except:
         #            continue
-#
+        #
         #return {
         #    'taxes' : reliquidate_items,
         #    'sums' : sums,
@@ -149,7 +149,6 @@ class CostingsPartial(object):
             )
 
         return line_item
-
 
 
 class CostingsOrder(object):
