@@ -1,0 +1,63 @@
+<div role="tabpanel" class="tab-pane active" id="facturas-informativas">
+   <div class="row">
+      <div class="col-sm-3">
+         <a href="/admin/partials/partial/add/" class="btn btn-outline-primary btn-sm">
+            <fa class="fas fa-plus"></fa>
+            Nuevo Parcial
+         </a>
+         <br>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-sm-12">
+         <table class="table table-bordered text-right">
+            <thead>
+               <tr style="background-color: #c1c1c1;">
+                  <th>Parcial</th>
+                  <th>Estado</th>
+                  <th>Pedido</th>
+                  <th>FOB</th>
+                  <th>Liquidacion</th>
+                  <th>Referendo</th>
+                  <th>Salida Autorizada</th>
+                  <th>Fecha Ll. Bodega</th>
+                  <th>Cajas</th>
+                  <th>Costos</th>
+               </tr>
+            </thead>
+            <tbody>
+            {% for partial in data.order_info.partials %}
+                <tr>
+                    <td> {{ loop.index }} 
+                  <a href="/admin/partials/partial/{{partial}}/change/">
+                     <small class="badge badge-info">#{{ partial }}</small>
+                  </a>
+                    </td>
+                    <td>
+                    {% if partial.bg_isclosed %}
+                        <span class="text-dark"><i class="fas fa-lock"></i> Cerrado</span>
+                    {% else %}
+                        <span class="text-success"><i class="fas fa-lock-open"></i> Abierto</span>
+                    {% endif %}
+                    </td>
+                    <td>{{ partial.nro_pedido }}</td>
+                    <td>{{ partial.nro_pedido }}</td>
+                    <td>
+                    {% if partial.bg_isliquidated %}
+                        <span class="text-success">{{ partial.nro_liquidacion }}</span>
+                    {% else %}
+                        <span class="text-danger">Sin Liquidación</span>
+                    {% endif %}
+                    </td>
+                    <td>{{ partial.nro_refrendo }}</td>
+                    <td>{{ partial.fecha_salida_autorizada_almagro }}</td>
+                    <td>{{ partial.fecha_llegada_cliente }}</td>
+                    <td>{{ partial.nro_pedido }}</td>
+                    <td class="text-center"> <a href="/costos/parcial/{{ data.order_info.order.nro_pedido }}/{{ loop.index }}/" class="btn btn-outline-dark btn-sm"><i class="fas fa-cart-arrow-down"></i></a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+         </table>
+      </div>
+   </div>
+</div>

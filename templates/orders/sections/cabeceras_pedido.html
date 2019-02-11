@@ -1,0 +1,92 @@
+<div class="row">
+   <div class="col-md-2">
+      <label>
+        <small>Pedido</small>
+      </label>
+      <input value="{{ data.nro_order }}" readonly="readonly" class="full-width">
+   </div>
+   <div class="col-md-1">
+      <label><small>Régimen</small></label>
+      <input value="{{ data.order_info.order.regimen }}" readonly="readonly" class="full-width">
+   </div>
+   <div class="col-md-2">
+      <label><small>País</small></label>
+      <input value="{{ data.order_info.order.pais_origen }}" readonly="readonly" class="full-width">
+   </div>
+   <div class="col-md-2">
+      <label><small>Fecha Llegada</small></label>
+      <input value="{{ data.order_info.order.fecha_llegada_cliente }}" readonly="readonly" class="full-width">
+   </div>
+   <div class="col-md-1">
+      <label><small>Incoterm</small></label>
+      <input value="{{ data.order_info.order.incoterm }}" readonly="readonly" class="full-width">
+   </div>
+   <div class="col-md-4">
+      <label><small>Proveedor</small></label>
+      <input value="{{ data.order_info.order_invoice.supplier.nombre }}" readonly="readonly" class="full-width">
+   </div>
+</div>
+<div class="row">
+   <div class="col-md-3">
+      <label><small>Referendo</small></label>
+      <input value="{{ data.order_info.order.nro_refrendo }}" readonly="readonly" class="full-width">
+   </div>
+   <div class="col-md-1">
+      <label><small>BL</small></label>
+      <input value="{{ data.order_info.order.nro_bl }}" readonly="readonly" class="full-width">
+   </div>
+   <div class="col-md-2">
+      <label><small>Nro Fac</small></label>
+      <input value="{{ data.order_info.order_invoice.order_invoice.id_factura_proveedor }}" readonly="readonly" class="full-width">
+   </div>
+   <div class="col-md-1">
+      <label><small>GO</small></label>
+      <input value="{{ data.order_info.order.gasto_origen }}" readonly="readonly" class="full-width text-right">
+   </div>
+   <div class="col-md-1">
+      <label><small>Seguro A</small></label>
+      <input value="{{ data.order_info.order.seguro_aduana }}" readonly="readonly" class="full-width text-right">
+   </div>
+   <div class="col-md-1">
+      <label><small>Flete A</small></label>
+      <input value="{{ data.order_info.order.flete_aduana }}" readonly="readonly" class="full-width text-right">
+   </div>
+   <div class="col-md-1">
+      <label><small>FOB</small></label>
+      <input value="{{ data.order_info.order_invoice.totals.value }}" readonly="readonly" class="full-width text-right">
+   </div>
+   <div class="col-md-2">
+      <label><small>CIF</small></label>
+      <input value="{{ data.order_info.order_invoice.totals.value +data.order_info.order.flete_aduana + data.order_info.order.seguro_aduana }}" readonly="readonly" class="full-width text-right">
+   </div>
+</div>
+<div class="row">
+   <div class="col-md-2">
+      <label><small>Fecha Registro</small></label>
+      <input value="{{ data.order_info.order.date_create}}" readonly="readonly" class="full-width">
+   </div>
+   <div class="col-md-2">
+      <label><small>Fecha Arribo</small></label>
+      <input value="{{ data.order_info.order.fecha_arribo }}" readonly="readonly" class="full-width">
+   </div>
+   <div class="col-md-2">
+      <label><small>Fecha Ing Almagro</small></label>
+      <input value="{{ data.order_info.order.fecha_ingreso_almacenera }}" readonly="readonly" class="full-width">
+   </div>
+   <div class="col-md-2">
+      <label><small>Fecha Llegada Final</small></label>
+      <input value{{ data.order_info.order.fecha_llegada_cliente }}="" readonly="readonly" class="full-width">
+   </div>
+   <div class="col-md-2">
+      <label><small>Registrado Por:</small></label>
+      <input value="Pendiente" readonly="readonly" class="full-width">
+   </div>
+   <div class="col-md-2 text-right">
+      <br>
+      <a href="/admin/orders/order/{{ data.nro_order }}/change/" class="btn btn-outline-primary btn-sm">
+      <span class="fa fa-edit"></span>
+      Editar Pedido
+      </a>
+   </div>
+</div>
+<br>

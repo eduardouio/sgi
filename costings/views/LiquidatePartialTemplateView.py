@@ -1,17 +1,15 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
-from lib_src.ApportionmentExpenses import ApportionmentExpenses
-from lib_src.CompleteOrderInfo import CompleteOrderInfo
-from lib_src.CompletePartialInfo import CompletePartialInfo
-from lib_src.ProductsCosts import CostingsProduct
+from lib_src import (ApportionmentExpenses, CompleteOrderInfo,
+                     CompletePartialInfo, CostingsPartial)
 from logs.app_log import loggin
 from orders.models.Order import Order
 from partials.models.Partial import Partial
 
 
 class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
-    template_name = "costings/liquidar_parcial.html"
+    template_name = 'costings/liquidar_parcial.html'
     login_url = '/admin/'
 
     def get(self, request, nro_order , ordinal_parcial , *args, **kwargs):
@@ -21,28 +19,30 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
             nro_order (string): pedido a recuperar 000-00
         Return: TemplateView
         """
-        context = super(LiquidatePartialTemplateView, self).get_context_data(*args, **kwargs)
+        context = super(LiquidatePartialTemplateView, self
+            ).get_context_data(*args, **kwargs)
 
-        if self.check_order_and_partial_exist(nro_order, ordinal_parcial) == False:
+        if not self.check_order_and_partial_exist(nro_order, ordinal_parcial):
             self.template_name = 'errors/404.html'
-
             context['data'] = {
                 'title_page' : 'Parcial No Econtrado',
                 'msg' : 'El parcial que busca no existe',
             }
-
             return self.render_to_response(context)
 
         complete_order_info = CompleteOrderInfo().get_data(nro_order)
         all_partials = []
 
         for partial in complete_order_info['partials']:
-            all_partials.append(CompletePartialInfo().get_data(
-                                                partial.id_parcial,
-                                                False,
-                                                complete_order_info['order_invoice']['order_invoice'].tipo_cambio
-                                                ))
-        #se envia a realizar el prorrateo(costeo de producto)
+            all_partials.append(
+                CompletePartialInfo().get_data(
+                            partial.id_parcial,
+                            False,
+                            complete_order_info['order_invoice']['order_invoice']
+                            .tipo_cambio
+                            )
+                )
+        
         apportiments_expenses = ApportionmentExpenses(
             complete_order_info=complete_order_info,
             all_partials=all_partials,
@@ -56,13 +56,12 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
                 ordinal_current_partial = all_partials[(int(ordinal_parcial) - 1)]
                 ).get_costs()
 
-
         context['data'] = {
             'title_page' : 'Liquidacion Parcial %s'%ordinal_parcial,
             'nro_order' : nro_order,
             'ordinal_partial' : int(ordinal_parcial),
             'total_parcials' : all_partials.__len__(),
-            'current_partial' : all_partials[int(ordinal_parcial) - 1 ],
+            'current_partial' : all_partials[(int(ordinal_parcial) - 1)],
             'complete_order_info' : complete_order_info,
             'all_partials' : all_partials,
             'apportioments' : apportiments_expenses,

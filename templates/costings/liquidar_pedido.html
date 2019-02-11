@@ -18,7 +18,7 @@
       <span><a href="{{ data.order.url_dai_1 }}"> Ref: {{ data.order.nro_refrendo }} </a></span>
       <span>| Exaduana</span>
       <span>| Liq: {{ data.order.nro_liquidacion }}</span>
-      <span>| F. Llegada: {{ data.order.fecha_llegada_cliente.strftime('%d/%m/%Y') if data.order.fecha_llegada_cliente is not none else 'En Tránsito' }}</span>
+      <span>| F. Llegada: {{ data.order.fecha_llegada_cdata.order_info.url_dai_1liente.strftime('%d/%m/%Y') if data.order.fecha_llegada_cliente is not none else 'En Tránsito' }}</span>
       <span></span>
    </div>
 </div>

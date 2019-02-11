@@ -1,5 +1,6 @@
-from logs.app_log import loggin
 from decimal import Decimal
+
+from logs.app_log import loggin
 
 
 class CostingsPartial(object):
@@ -18,7 +19,7 @@ class CostingsPartial(object):
         self.all_partials = kwargs['all_partials']
         self.apportionment_expenses = kwargs['apportionment_expenses']
         self.ordinal_current_partial = kwargs['ordinal_current_partial']
-        self.current_partial = self.all_partials[kwargs['ordinal_current_partial'] - 1] 
+        self.current_partial = self.all_partials[0]
 
         self.incoterm = None
         self.origin_expenses = 0
@@ -114,13 +115,7 @@ class CostingsPartial(object):
             + line_item.tasa_control
         )
 
-        loggin('t', '---------------------------')
-        loggin('e', line_item)
-        loggin('e', float(line_item.ex_aduana_antes))
-        loggin('t', '---------------------------')
-
         line_item.ex_aduana_unitario = (line_item.ex_aduana / line_item.unidades)
-
         line_item.base_advalorem_reliquidado = (self.rates['base_ice_advalorem'] * (line_item.capacidad_ml/1000))
 
         if line_item.ex_aduana_unitario > line_item.base_advalorem_reliquidado:
@@ -130,9 +125,9 @@ class CostingsPartial(object):
             ) * line_item.unidades
 
         line_item.fob_tasa_trimestral = ( 
-                totals * 
-                self.rates['tipo_cambio_trimestral'] * 
-                line_item.fob_percent
+                self.complete_order_info['order_invoice']['totals']['value'] 
+                * self.rates['tipo_cambio_trimestral']
+                * line_item.fob_percent
                 )
         
         line_item.gastos_origen_tasa_trimestral = 0

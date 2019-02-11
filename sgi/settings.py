@@ -119,6 +119,7 @@ DATABASES = {
         'PASSWORD' : '\DBGfW<7;vBa5(LB',
         'HOST': '192.168.0.198',
         #'HOST': '127.0.0.1',
+        #'NAME': 'cordovezApp',
         'PORT' : '3306',
     }
 }

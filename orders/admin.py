@@ -6,7 +6,7 @@ from orders.models import Order, OrderInvoice, OrderInvoiceDetail
 
 
 class OrderAdmin(SimpleHistoryAdmin):
-    empty_value_display = '-Sin Valor-'
+    empty_value_display = ''
     list_display = (
         'proveedor',
         'nro_pedido',
@@ -23,7 +23,7 @@ class OrderAdmin(SimpleHistoryAdmin):
 
     fieldsets = (
         ('Información Base', {
-            'classes': ('grp-collapse grp-closed',),
+            'classes': ('grp-collapse grp-open',),
             'fields' : ( 
                     ('nro_pedido', 'regimen', 'flete_aduana'), 
                     ('seguro_aduana', 'gasto_origen',),
@@ -72,12 +72,22 @@ class OrderAdmin(SimpleHistoryAdmin):
              )
         }),
     )    
+    
+    readonly_fields = [
+        'nro_liquidacion', 'exoneracion_arancel',
+        'fodinfa', 'fodinfa_pagado',
+        'ice_especifico', 'ice_especifico_pagado',
+        'ice_advalorem', 'ice_advalorem_pagado',
+        'iva', 'iva_pagado', 
+        ]
 
     def liquidar(self, obj):
+
         return format_html(
-            '<a href="/costos/pedido/{name_link}">{name_link}</a>'
-            .format(name_link=obj.nro_pedido)
-            )
+                '<a href="/pedidos/ficha/{name_link}/" class="grp-button grp-default">📁 <small>Ficha</small></a>'
+                .format(name_link=obj.nro_pedido)
+                )
+        
 
     search_fields = [
         'nro_pedido',

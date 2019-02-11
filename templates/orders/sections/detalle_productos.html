@@ -1,0 +1,80 @@
+<div class="row">
+<div class="col-sm-4">
+     <span>Proveedor</span>
+     <input type="text" readonly="readonly" value="{{ data.order_info.order_invoice.supplier.nombre }}" class="full-width">
+  </div>  
+  <div class="col-sm-1">
+     <span>Factura</span> 
+     <input type="text" readonly="readonly" value="{{ data.order_info.order_invoice.order_invoice.id_factura_proveedor }}" class="full-width">
+  </div>
+  <div class="col-sm-2">
+     <span>F. Emision</span>
+            <input type="text" value="{{data.order_info.order_invoice.order_invoice.fecha_emision}}" readonly="readonly" class="full-width">            
+        </div>      
+  <div class="col-sm-1">
+  <span>Moneda</span>
+  <input type="text" class="full-width text-right" readonly="readonly" value="{{ data.order_info.order_invoice.order_invoice.moneda }}">
+  </div>
+  <div class="col-sm-1">
+  <span>Valor</span>
+  <input type="text" class="full-width text-right" readonly="readonly" value="{{ data.order_info.order_invoice.order_invoice.valor }}">
+  </div>
+  <div class="col-sm-1">
+  <span>Tipo C</span>
+  <input type="text" class="full-width text-right" readonly="readonly" value="{{ data.order_info.order_invoice.order_invoice.tipo_cambio }}">
+  </div>
+  <div class="col-sm-2">
+  <span>Total USD</span>
+  <input type="text" class="full-width text-right" readonly="readonly" value="$ {{ data.order_info.order_invoice.order_invoice.valor * data.order_info.order_invoice.order_invoice.tipo_cambio }}">
+      </div>
+   </div>
+   <br>
+<div class="row">
+    <div class="col-12">
+        <table class="table table-bordered table-condensed table-striped">            
+            <thead>
+            <tr>
+            <th>Cod Contable</th>
+            <th>Producto</th>
+            <th>Capacidad</th>
+            <th>Cantidad Caja</th>
+            <th>Grado Alcoholico</th>
+            <th>Nro Cajas</th>
+            <th>Unidades</th>
+            <th>Costo Caja</th>
+            <th>Costo Unidad</th>
+            <th>Total</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in data.order_info.order_invoice.order_invoice_details  %}
+                <tr>
+                    <td>{{ item.cod_contable_id }}</td>
+                    <td>{{ item.cod_contable }}</td>
+                    <td>{{ item.capacidad_ml }}</td>
+                    <td>{{ item.cantidad_x_caja }}</td>
+                    <td>{{ item.grado_alcoholico }}</td>
+                    <td>{{ item.nro_cajas }}</td>
+                    <td>{{ item.unidades }}</td>
+                    <td>{{ item.costo_caja }}</td>
+                    <td>{{ item.costo_caja / item.nro_cajas  }}</td>
+                    <td>{{ item.nro_cajas * item.costo_caja  }}</td>
+                </tr>
+            {% endfor %}
+            <tr>
+            <th colspan="5">Totales</th>
+            <th>{{ data.order_info.order_invoice.totals.boxes }}</th>
+            <th>{{ data.order_info.order_invoice.totals.bottles }}</th>
+            <th>--</th>
+            <th>--</th>
+            <th>{{ data.order_info.order_invoice.totals.value }}</th>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row">
+<div class="col-12 text-right">
+    <a href="/admin/orders/orderinvoice/{{ data.order_info.order_invoice.order_invoice.id_pedido_factura }}/change/" class="btn btn-sm btn-outline-primary"><i class="fa fa-edit"></i> Modificar Factura</a>
+</div>
+</div>
