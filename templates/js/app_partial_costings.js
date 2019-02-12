@@ -18,19 +18,22 @@ var app = new Vue({
       current_selected_partial : null,
       show_order_invoice : false,
       show_origin_expense : false,
+      diff_ledgers : 0,
       show_taxes : false,
       show_info_invoice : false,
       current_ledger : {
-        'tipo' : 'inicial',
+        'tipo' : 'parcial',
         'nro_pedido' : '{{ data.complete_order_info.order.nro_pedido }}',
-        'id_parcial' : 0,
-        'costo_producto' : 0,
+        'id_parcial' : parseInt('{{ data.current_partial.partial.id_parcial }}'),
+        'costo_inicial_producto' : parseFloat('{{ data.complete_order_info.order_invoice.totals.value_tct }}'),
+        'costo_producto' : parseFloat('{{ data.current_partial.info_invoice.totals.value_tct }}'),
+        'saldo_producto' : 0,
         'facturas_sgi' : 0,
+        'provisiones_sgi' : 0,
         'mayor_sap' : 0,
         'mayor_sgi' : 0,
         'precio_entrega' : 0,
         'provisiones_sap' : 0,
-        'provisiones_sgi' : 0,
         'reliquidacion_ice' : 0,
       },
       csrftoken : Cookies.get('csrftoken'),
@@ -58,20 +61,38 @@ var app = new Vue({
           console.log('[Debug] El pedido no tiene gastos')
           return false
       }
-        var ledger = 0
-        for (var x = 0 ; x < (this.complete_order_info.expenses.length);x++){
-            var item = this.complete_order_info.expenses[x]
-            ledger += parseFloat(item.legder)
-        }    
-        this.current_ledger.mayor_sgi = 0
-        this.current_ledger.mayor_sgi = Math.round((parseFloat(this.init_ledger) + parseFloat(ledger))*100)/100
+      //Cargamos los costos iniciales
+      var descargas = 0
+      var legder_value = (this.complete_order_info.init_ledger + this.complete_order_info.origin_expenses_tct)
+      /** sumamos los gastos iniciales */
+      this.complete_order_info.expenses.forEach((k,v)=>{
+          legder_value += k.legder
+      })
       
+      // Sumamos los gastos de cada parcial
+      this.all_partials.forEach((k,v)=>{
+        legder_value += k.taxes.total_pagado
+        k.expenses.forEach((key,val)=>{
+          legder_value += key.legder
+        })
+      })      
+
+      // restamos las descargas de productos
+      if (parseInt('{{ data.current_partial_pos }}') > 0){
+          console.log('inciando descarga de gastos')
+          this.all_partials.forEach((k,v)=>{
+            if(k.partial.bg_isclosed === 1){
+                alert('Implementar esta seccion en el segundo parcial')
+            }
+          })
+      }
+      this.diff_ledgers = Math.abs((this.current_ledger.mayor_sap - legder_value).toFixed(3))
+      return this.current_ledger.mayor_sgi = legder_value.toFixed(3)
     },
       selectPartial : function(){
-        console.dir(this.current_partial)
+        console.log('Marcando Parcial {{data.current_partial_pos + 1 }} como activo')
         if ((this.current_partial === null) && (this.all_partials.length === parseInt('{{ data.ordinal_partial }}'))){
-          console.log('Marcando el parcial Activo {{data.ordinal_partial}}')
-          this.current_partial = this.all_partials[0]
+          this.current_partial = this.all_partials[parseInt('{{ data.current_partial_pos }}')]
           this.ajax_request = false
         }
       },

@@ -33,7 +33,6 @@ class CompletePartialInfo(object):
         self.id_partial = None
         self.nro_order = None
         self.request = None
-        self.init_ledger = 0
         self.partial_ledger = 0
         self.serialized = False
         self.tributes = None
@@ -41,6 +40,7 @@ class CompletePartialInfo(object):
         self.total_invoiced = 0
         self.total_provisions = 0
         self.type_change_trimestral = 0
+        self.partial_isclosed = False
 
 
     def get_data(self, id_partial, serialized = False, type_change_trimestral=1):
@@ -69,14 +69,18 @@ class CompletePartialInfo(object):
             return None
 
         return ({
-            'partial': self.get_partial(),
+            'partial': partial,
             'info_invoice': self.get_info_invoice(),
             'expenses':self.get_expenses(),
             'ledger' : self.get_ledger(),
             'apportiomen' : self.get_apportioment(),
             'status' : self.status_parcial,
             'prorrateos' : self.get_apportioment(),
-            'taxes' : self.get_taxes()
+            'taxes' : self.get_taxes(),
+            'total_expenses' : self.total_expenses,
+            'total_invoiced' : (self.partial_ledger + self.total_invoiced),
+            'total_taxes_product' : self.partial_ledger,
+            'total_provisions' : self.total_provisions,
             })
 
 
@@ -112,6 +116,7 @@ class CompletePartialInfo(object):
             )
 
         self.partial_ledger += self.tributes['total']
+        self.partial_isclosed = partial.bg_isclosed
 
         if self.serialized:
             partia_serializer = PartialSerializer(partial)
@@ -138,7 +143,7 @@ class CompletePartialInfo(object):
         partial_items['info_invoice_details'] = InfoInvoiceDetail.get_by_info_invoice(info_invoice.id_factura_informativa)
         partial_items['supplier'] = Supplier.get_by_ruc(info_invoice.identificacion_proveedor_id)
         partial_items['totals'] = {
-            'items' : int(partial_items['info_invoice_details'].count()),
+            'items' : partial_items['info_invoice_details'].count(),
             'boxes' : 0,
             'value' : 0,
             'value_tct' : 0,
@@ -157,7 +162,6 @@ class CompletePartialInfo(object):
             partial_items['totals']['value_tct'] += (line_item.nro_cajas * order_ivoice_detail.costo_caja * self.type_change_trimestral)
 
         self.partial_ledger += (partial_items['totals']['value'] * self.type_change_trimestral)
-        
 
         if self.serialized:
             info_invoice_serializer = InfoInvoiceSerializer(partial_items['info_invoice'])
@@ -197,7 +201,6 @@ class CompletePartialInfo(object):
                 item.invoiced_value += paid.valor
                 paid.invoice = PaidInvoice.get_by_id(paid.id_documento_pago_id)
                 paid.supplier = Supplier.get_by_ruc(paid.invoice.identificacion_proveedor_id)
-
                 paids.append(
                     {
                         'paid' : paid,
@@ -208,8 +211,10 @@ class CompletePartialInfo(object):
 
                 if paid.bg_mayor == 1:
                     item.ledger += paid.valor
-
+            self.total_expenses += item.valor_provisionado
+            self.total_invoiced +=  item.invoiced_value
             item.sale = (item.valor_provisionado - item.invoiced_value)
+            self.total_provisions += item.sale 
 
             if self.serialized:
                 expense_serializer = ExpenseSerializer(item)
@@ -272,7 +277,12 @@ class CompletePartialInfo(object):
 
     def get_taxes(self):
         return Partial.get_paid_taxes(self.id_partial)
-    
 
+    
     def get_ledger(self):
-        return {}
+        loggin('w', 'recuperando mayor del parcial')
+        if self.partial_isclosed == False:
+            loggin('w', 'Parcial abierto no tiene mayor')
+            return None
+
+        return Ledger.get_by_parcial(self.id_parcial)

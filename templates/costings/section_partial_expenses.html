@@ -47,9 +47,9 @@
     </tr>
     <tr>
         <th colspan="2">Sumas</th>
-        <th class="text-right">${ complete_order_info.total_expenses | money }</th>
-        <th class="text-right">${ complete_order_info.total_invoiced | money }</th>
-        <th class="text-right">${ (complete_order_info.total_expenses - complete_order_info.total_invoiced) | money }</th>
+        <th class="text-right">${ (current_selected_partial.total_expenses + current_selected_partial.total_taxes_product) | money }</th>
+        <th class="text-right">${ current_selected_partial.total_invoiced | money }</th>
+        <th class="text-right">${ ((current_selected_partial.total_expenses + current_selected_partial.total_taxes_product) - current_selected_partial.total_invoiced) | money }</th>
         <th class="text-right">${ 0 | money }</th>
     </tr>
 </tbody>

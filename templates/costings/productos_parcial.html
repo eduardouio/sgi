@@ -1,0 +1,169 @@
+<div class="row">
+    <div class="col-12">
+    <div class="text-tittle"> PARAMETROS DE LIQUIDACION </div>
+    <table class="table table-bordered table-condensed">
+        <tr>
+        <td style="width:10%" class="bg-light text-right">T/C Trim:</td> <td class="text-right">{{ "%.3f" | format(data.complete_order_info.order_invoice.order_invoice.tipo_cambio) }}</td>
+        <td style="width:10%" class="bg-light text-right">Moneda Pedido:</td> <td class="text-right"> {{ data.complete_order_info.order_invoice.order_invoice.moneda }}</td>
+        <td style="width:10%" class="bg-light text-right">Fecha Llegada:</td><td class="text-right"> {{ data.current_partial.partial.fecha_llegada_cliente.strftime('%d/%m/%Y') }}</td>
+        <td style="width:10%" class="bg-light text-right">Items:</td> <td class="text-right">{{ data.current_partial.info_invoice.info_invoice_details.__len__() }}</td>
+        <td style="width:10%" class="bg-light text-right">Cajas:</td> <td class="text-right">{{ data.current_partial.info_invoice.totals.boxes }}</td>
+        <td style="width:10%" class="bg-light text-right">Botellas:</td> <td class="text-right">{{ data.current_partial.info_invoice.totals.bottles }}</td>
+        </tr>
+        <tr>
+        <td style="width:10%" class="bg-light text-right">F Pago Liquidacion:</td> <td class="text-right">{{ data.current_partial.partial.fecha_liquidacion }}</td>
+        <td style="width:10%" class="bg-light text-right">Base Advalorem: </td> <td class="text-right">{{data.current_partial.partial.nro_liquidacion }}</td>
+        <td style="width:10%" class="bg-light text-right">Base ICE:</td> <td class="text-right">{{ data.current_partial.partial.base_ice_advalorem }}</td>
+        <td style="width:10%" class="bg-light text-right">Base IVA:</td> <td class="text-right">{{data.current_partial.partial.base_iva}}</td>
+        <td style="width:10%" class="bg-light text-right">Liberacion A.:</td> <td class="text-right">{{ data.current_partial.partial.exoneracion_arancel}} %</td>
+        <td style="width:10%" class="bg-light text-right">Diferencia Senae:</td> <td class="text-right text-danger">{{ 0 }}</td>
+        </tr>
+        <tr>
+        <td style="width:10%" class="bg-light text-right">Mayor SAP:</td> <td class="text-right">${ current_ledger.mayor_sap | money }</td>
+        <td style="width:10%" class="bg-light text-right">Mayor SGI: </td> <td class="text-right">${ current_ledger.mayor_sgi | money }</td>
+        <td style="width:10%" class="bg-light text-right">Precion Entrega:</td> <td class="text-right">${ 0 | money }</td>
+        <td style="width:10%" class="bg-light text-right">Costo Producto:</td> <td class="text-right">${ 0 | money }</td>
+        <td style="width:10%" class="bg-light text-right">Provisiones SGI:</td> <td class="text-right">${ 0 | money }</td>
+        <td style="width:10%" class="bg-light text-right">Provisiones SAP.:</td> <td class="text-right">${ 0 | money }</td>
+        </tr>
+    </table>    
+    </div>
+</div>
+<br>
+<div class="row">    
+    <div class="col-6 text-secondary">
+    </div>
+    <div class="col-6 text-danger text-right">
+        ICE RELIQUIDADO: <strong>$ {{ data.costings.sums.ice_reliquidado }} </strong>
+    </div>
+</div>
+<div class="row">
+<div class="col-12">
+<div class="table-responsive" style="height:235px">
+<table class="table table-bordered table-condensed table-striped">
+    <thead>
+    <tr class="bg-light">
+               <th>#</th>
+               <th>Cod Contable</th>
+               <th>Producto</th>
+               <th>Cajas</th>
+               <th>UxC</th>
+               <th>Unds</th>
+               <th>FOB TCT</th>
+               <th>Seguro A</th>
+               <th>Flete A</th>
+               <th>CIF</th>
+               <th>Fodinfa</th>
+               <th>Ar Advalorem</th>
+               <th>Ar Expecifico</th>
+               <th>Etiquetas Fiscales</th>
+                <th>Exaduana U</th>
+               <th>Cap.</th>
+               <th>% Alch</th>              
+               <th>ICE Esp U</th>
+               <th>ICE Adv U</th>
+               <th>ICE Especifico</th>
+               <th>ICE Avalorem</th>
+               <th>Total ICE</th>
+               <th>Prorrateo Pedido</th>
+               <th>Costos Indirectos Precio E</th>
+               <th>T Costos</th>
+               <th>Costo Caja</th>
+               <th>Costo Botella</th>
+            </tr>
+    </thead>
+    <tbody>
+        {% for item in data.costings.taxes %}
+            <tr>
+                <td class="text-center" nowrap>{{ loop.index }}</td>
+                <td class="text-center" nowrap>{{ item.cod_contable }}</td>
+                <td nowrap>{{ item.product }}</td>
+                <td class="text-right" nowrap>{{ item.nro_cajas | round(3)}}</td>
+                <td class="text-right" nowrap>{{ item.cantidad_x_caja | round(0)}}</td>
+                <td class="text-right" nowrap>{{ item.unidades | round(0)}}</td>
+                <td class="text-right" nowrap>{{ item.fob_tasa_trimestral | round(3)}}</td>
+                <td class="text-right" nowrap>{{ item.seguro_aduana | round(3)}}</td>
+                <td class="text-right" nowrap>{{ item.flete_aduana | round(3)}}</td>
+                <td class="text-right" nowrap>{{ item.cif | round(3)}}</td>
+                <td class="text-right" nowrap>{{ item.fodinfa | round(3)}}</td>
+                <td class="text-right" nowrap>{{ item.arancel_advalorem_pagar | round(3)}}</td>
+                <td class="text-right" nowrap>{{ item.arancel_especifico_pagar | round(3)}}</td>
+                <td class="text-right" nowrap>{{ item.etiquetas_fiscales | round(3)}}</td>
+                <td class="text-right" nowrap>{{ item.ex_aduana_unitario | round(3)}}</td>
+                <td class="text-right" nowrap>{{ item.capacidad_ml | round(3)}}</td>
+                <td class="text-right" nowrap>{{ item.grado_alcoholico | round(3)}}</td>
+                <td class="text-right" nowrap>{{ item.grado_alcoholico | round(3)}}</td>
+                <td class="text-right" nowrap>{{ item.ice_especifico_unitario | round(3)}}</td>
+                <td class="text-right" nowrap>{{ item.ice_advalorem_unitario | round(3)}}</td>
+                <td class="text-right" nowrap>{{ item.ice_especifico | round(3)}}</td>
+                <td class="text-right" nowrap>{{ item.total_ice | round(3)}}</td>
+                
+
+            </tr>
+        {% endfor %}
+        <tr>
+        <th nowrap colspan="3" class="text-right"><strong>Sumas:</strong></th>
+        <th nowrap class="text-right"></th>
+        <th nowrap class="text-right">-</th>
+        <th nowrap class="text-right"></th>
+        <th nowrap class="text-right"></th>
+        <th nowrap class="text-right"></th>
+        <th nowrap class="text-right"></th>
+        <th nowrap class="text-right"></th>
+        <th nowrap class="text-right"></th>
+        <th nowrap class="text-right"></th>
+        <th nowrap class="text-right"></th>
+        <th nowrap class="text-right"></th>
+        <th nowrap class="text-center">-</th>
+        <th nowrap class="text-center">-</th>
+        <th nowrap class="text-center">-</th>
+        <th nowrap class="text-center">-</th>
+        <th nowrap class="text-center">-</th>
+        <th nowrap class="text-right"></th>
+        <th nowrap class="text-right"></th>
+        <th nowrap class="text-right"></th>
+        <th nowrap class="text-right"></th>
+        <th nowrap class="text-right"></th>
+        <th nowrap class="text-right"></th>
+        <th nowrap class="text-center">-</th>
+        <th nowrap class="text-center">-</th>
+        </tr>
+    </tbody>
+</table>    
+</div>
+</div>
+</div>
+<br>
+<div class="row animate flash delay-1s" v-if="liquidated_order == true">
+    <div class="col-1"></div>
+    <div class="col-10 text-center">
+    <h1><i class="fa fa-check text-success"></i></h1>
+    <h3>Pedido Liquidado Y Cerrado 🐼 </h3>
+    <p>
+    Yo no es posible registrar provisiones en este pedido <span class="text-primary">${order_data.order.nro_pedido}</span>. 
+    <br>Desde éste punto todas las justificaciones ingresadas afectarán al mayor SAP   
+    <br>Será redireccionado en 3 Segundos...
+    </p>
+    <button class="btn btn-sm btn-outline-success"> <i class="fa fa-check"></i> ¡Entendido!</button>
+    </div>
+    <div class="col-1"></div>
+</div>
+<div class="row animate" v-if="show_form_liquidated" v-bind:class="{'fadeInDown' : show_form_liquidated}">
+    <div class="col-12 bg-light border border-primary">
+    <div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="basic-addon1">Comentarios:</span>
+  </div>
+  <input type="text" class="form-control" v-model="comentarios" placeholder="Ingrese comentarios de cierre">
+</div>
+    </div>
+</div>
+<br>
+<div class="row">
+<div class="col-12 text-right">
+    <button class="btn btn-sm btn-outline-dark" @click="show_costings=false"><i class="fa fa-arrow-left"></i> Volver a Gastos</button>
+    <button v-if="show_form_liquidated == false && liquidated_order == false"   class="btn btn-sm btn-outline-primary" @click="show_form_liquidated = true"><i class="fa fa-check"></i> Liquidar Pedido</button>
+    <button v-if="show_form_liquidated == true" class="btn btn-sm btn-outline-danger" @click="show_form_liquidated = false"><i class="fa fa-ban"></i> Cancelar</button>
+    <button v-if="show_form_liquidated == true" class="btn btn-sm btn-outline-primary" @click="liquidate_order()"><i class="fa fa-check"></i> Confirmar y Continuar </button>
+</div>
+</div>

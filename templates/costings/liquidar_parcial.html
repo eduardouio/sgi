@@ -7,11 +7,11 @@
 <div class="row border">
    <div class="col-5">
       <i class="fa fa-cog"></i>
-      Liquidacion De Parcial {{ data.ordinal_partial }} del Pedido {{ data.nro_order }} [ID:{{ data.current_partial.partial.id_parcial }}] 
-      {% if data.current_partial.partial.bg_isclose %}
-      <span class="badge badge-success">Abierto</span>
+      Liquidación Del Parcial {{ data.ordinal_partial }} Pedido {{ data.nro_order }} [ID:{{ data.current_partial.partial.id_parcial }}] 
+      {% if data.current_partial.partial.bg_isclosed == 0 %}
+      <span class="badge badge-success"><i class="fa fa-lock-open"></i> Abierto</span>
       {% else %}
-      <span class="badge badge-secondary">Cerrado</span>
+      <span class="badge badge-dark"><i class="fa fa-lock"></i> Cerrado</span>
       {% endif %}
       Total Parciales: {{ data.total_parcials }}    
    </div>
@@ -57,14 +57,20 @@
                   </tr>
                   <tr>
                      <td style="width:100px;" class="text-right bg-light">Comentarios:</td>
-                     <td colspan="9">{{ data.current_partial.partial.observaciones }}</td>
+                     <td colspan="4">{{ data.current_partial.partial.observaciones }}</td>
+                     <td colspan="4" class="text-right">
+                        <span class="text-dark">Provisiones: <span> $ 0.00 </span></span>
+                        <span class="text-primary"> | </span><span class="text-dark">Facturas:  <span>$ 0.00 </span> </span>
+                        <span class="text-primary"> | </span><span class="text-dark">Diferencia: <span class="text-danger">$ 0.00</span> </span>
+                     </td>
+                     <td class="text-right"><a href="/pedidos/ficha/{{ data.complete_order_info.order.nro_pedido }}/" class="btn btn-sm btn-outline-dark"> <i class="fa fa-folder"></i> Ficha Pedido</a>  </td>
                   </tr>
                </tbody>
             </table>
          </div>
       </div>       
       <div v-if="show_costings" class="animated fadeInUp">  
-          {% include 'costings/productos_pedido.html'  %}
+          {% include 'costings/productos_parcial.html'  %}
       </div>
       <div class="row animated fadeInDown" v-if="show_costings === false">
          <div class="col-7 div-bordered">
@@ -574,7 +580,7 @@
          <div class="row">
             <div class="col-4">
                <div class="fomr-group"><label for="">Saldo Mayor Sap</label>
-                  <input type="number" class="form-control form-control-sm text-right" v-model="current_ledger.mayor_sap" step="0.001">
+                  <input type="number" class="form-control form-control-sm text-right" v-model="current_ledger.mayor_sap" step="0.001" @keyup="updateLedger()">
                </div>
             </div>
             <div class="col-4">

@@ -20,7 +20,6 @@ class CostingsPartial(object):
         self.apportionment_expenses = kwargs['apportionment_expenses']
         self.ordinal_current_partial = kwargs['ordinal_current_partial']
         self.current_partial = self.all_partials[0]
-
         self.incoterm = None
         self.origin_expenses = 0
         self.total_items = 0
@@ -34,30 +33,16 @@ class CostingsPartial(object):
         
         Returns:
             {dict}      'taxes' : [],
-                        'sums' : [],
+                        'sums' : {'ice_reliquidado; = 564},
                         'data_general' : {}, 
         '''
-        reliquidate_items = self.get_taxes()    
-        #sums = {}
-        #for x, line_item in enumerate(reliquidate_items):
-        #    if x == 0:
-        #        for k in line_item.__dict__:
-        #            sums[k] = 0.0
-        #    break
-        #
-        #for k in sums:
-        #    for line_item in reliquidate_items:
-        #        try:    
-        #            if float(line_item.__dict__[k]) > 0.0:
-        #                sums[k] += float(line_item.__dict__[k])
-        #        except:
-        #            continue
-        #
-        #return {
-        #    'taxes' : reliquidate_items,
-        #    'sums' : sums,
-        #}
-    
+        reliquidate_items = self.get_taxes()
+        return {
+            'taxes' : reliquidate_items,
+            'sums' : { 'ice_reliquidado' :  'Pendiente'},
+            'data_general' : {},
+        } 
+               
 
     def set_rates(self):
         self.incoterm = self.complete_order_info['order'].incoterm
@@ -70,7 +55,6 @@ class CostingsPartial(object):
             'tipo_cambio_trimestral' : self.complete_order_info['order_invoice']['order_invoice'].tipo_cambio,
         }
 
-
     def get_taxes(self):
         taxes_line_items  = []
         
@@ -79,23 +63,21 @@ class CostingsPartial(object):
         
         return taxes_line_items
 
-
     def get_costs_item(self, line_item):
         line_item = self.get_apportionment_item(line_item)
-        #line_item.indirectos = (
-        #      line_item.ice_advalorem_reliquidado
-        #    + line_item.ice_especifico
-        #    + line_item.fodinfa
-        #    + line_item.tasa_control
-        #    + line_item.arancel_advalorem_pagar
-        #    + line_item.arancel_especifico_pagar
-        #)
-        #
-        #line_item.costo_total = line_item.indirectos + line_item.prorrateos_total
-        #line_item.costo_caja_final = line_item.costo_total / line_item.nro_cajas
-        #line_item.costo_unidad = line_item.costo_total / line_item.unidades
-#
-        #return line_item
+        line_item.indirectos = (
+              line_item.ice_advalorem_reliquidado
+            + line_item.ice_especifico
+            + line_item.fodinfa
+            + line_item.tasa_control
+            + line_item.arancel_advalorem_pagar
+            + line_item.arancel_especifico_pagar
+            )        
+        line_item.costo_total = line_item.indirectos + line_item.prorrateos_total
+        line_item.costo_caja_final = line_item.costo_total / line_item.nro_cajas
+        line_item.costo_unidad = line_item.costo_total / line_item.unidades
+
+        return line_item
 
 
     def get_apportionment_item(self, line_item):
@@ -220,7 +202,6 @@ class CostingsOrder(object):
 
     def get_costs_item(self, line_item):
         line_item = self.get_apportionment_item(line_item)
-        #verificar si es necesario 
         line_item.indirectos = (
               line_item.ice_advalorem_reliquidado
             + line_item.ice_especifico

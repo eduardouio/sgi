@@ -55,13 +55,14 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
                 apportionment_expenses = apportiments_expenses,
                 ordinal_current_partial = all_partials[(int(ordinal_parcial) - 1)]
                 ).get_costs()
-
+        
         context['data'] = {
             'title_page' : 'Liquidacion Parcial %s'%ordinal_parcial,
             'nro_order' : nro_order,
             'ordinal_partial' : int(ordinal_parcial),
             'total_parcials' : all_partials.__len__(),
             'current_partial' : all_partials[(int(ordinal_parcial) - 1)],
+            'current_partial_pos' : int(ordinal_parcial) - 1,
             'complete_order_info' : complete_order_info,
             'all_partials' : all_partials,
             'apportioments' : apportiments_expenses,

@@ -38,6 +38,7 @@ class CompleteOrderInfo(object):
         self.serialized = False
         self.nro_order = None
         self.tributes = None
+        self.origin_expeses_tct = 0
         self.total_expenses = 0
         self.total_invoiced = 0
         self.total_provisions = 0
@@ -88,6 +89,10 @@ class CompleteOrderInfo(object):
             'init_ledger' : self.init_ledger,
             'total_expenses' : (self.total_expenses + self.init_ledger),
             'init_expenses' : self.total_expenses,
+            'origin_expenses_tct' : (
+                                        self.origin_expeses_tct 
+                                        * self.tipo_cambio_trimestral
+                                    ),
             'total_invoiced' : self.total_invoiced + self.init_ledger,
             'total_provisions' : self.total_provisions,
             'last_apportionment' : self.last_apportionment,
@@ -131,6 +136,8 @@ class CompleteOrderInfo(object):
             self.status_order['taxes'] = True
 
         self.init_ledger += self.tributes['total']
+        if order.incoterm == 'FOB':
+            self.origin_expeses_tct = order.gasto_origen
 
         if self.serialized:
             order_serializer = OrderSerializer(order)
@@ -158,9 +165,10 @@ class CompleteOrderInfo(object):
         order_items['order_invoice_details'] = OrderInvoiceDetail.get_by_id_order_invoice(order_invoice.id_pedido_factura)
         order_items['supplier'] = Supplier.get_by_ruc(order_invoice.identificacion_proveedor_id)
         order_items['totals'] = {
-            'items' : int(order_items['order_invoice_details'].count()),
+            'items' : order_items['order_invoice_details'].count(),
             'boxes' : 0,
             'value' : 0,
+            'value_tct' : 0,
             'bottles' : 0,
         }
 
@@ -171,6 +179,7 @@ class CompleteOrderInfo(object):
             order_items['totals']['bottles'] += (line_item.nro_cajas * line_item.cod_contable.cantidad_x_caja)
             order_items['totals']['boxes'] += line_item.nro_cajas
             order_items['totals']['value']  += (line_item.nro_cajas * line_item.costo_caja)
+            order_items['totals']['value_tct'] += (line_item.nro_cajas * line_item.costo_caja) * order_invoice.tipo_cambio
             self.init_ledger  += (line_item.nro_cajas * line_item.costo_caja) * order_invoice.tipo_cambio
 
         if self.serialized:
@@ -277,7 +286,9 @@ class CompleteOrderInfo(object):
 
 
     def get_ledger(self):
-        '''Return last ledger from order'''
+        '''
+            Retorna el mayor de un pedido desde la base de datos del sistema
+        '''
         return None
         order = Order.get_by_order(self.nro_order)
         if order is None or order.bg_isclosed == 0:

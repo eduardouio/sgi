@@ -16,11 +16,11 @@ def loggin(type_log , message, request=None):
         request (django-request): session data for get current user info
     '''
     types_message = {
-        'e':' ERROR ',
-        's':'SUCCESS',
-        'w':'WARNING',
-        'i':' INFO  ',
-        't':'TESTING'
+        'e':' error ',
+        's':'success',
+        'w':'warning',
+        'i':' info  ',
+        't':'testing'
         }   
     user_id = 0
     user_name = ''
@@ -33,7 +33,7 @@ def loggin(type_log , message, request=None):
 
     log_file = open(path,'a')
     log_file.write(
-        '[{type_log}]   [{date_time}]   [uid:{user_id} {user_name} {user_email}]    {message} \n'
+        '[{type_log}][{date_time}][uid:{user_id}{user_name}{user_email}]    {message} \n'
             .format(
                 type_log=types_message[type_log],
                 date_time=datetime.now(),

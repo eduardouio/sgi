@@ -8,13 +8,19 @@ from simple_history.models import HistoricalRecords
 
 
 class Ledger(models.Model):    
-    TYPE_LEDGER = (('inicial', 'Mayor Inicial'),('verificacion', 'Mayor Verificacion'),('parcial', 'Mayor Parcial'))
+    TYPE_LEDGER = (
+        ('inicial', 'Mayor Inicial'),
+        ('parcial', 'Mayor Parcial')
+        )
     id_mayor = models.AutoField(primary_key=True)
     tipo = models.CharField(max_length=50, choices=TYPE_LEDGER)
     nro_pedido = models.ForeignKey(Order, models.PROTECT, db_column='nro_pedido')
     id_parcial = models.PositiveSmallIntegerField(default=0)
-    precio_entrega = models.DecimalField(max_digits=15, decimal_places=3, default=0)
+    costo_inicial_producto = models.DecimalField(max_digits=15, decimal_places=3, default=0)
     costo_producto = models.DecimalField(max_digits=15, decimal_places=3, default=0)
+    descargas = models.DecimalField(max_digits=15, decimal_places=3, default=0)
+    saldo_producto = models.DecimalField(max_digits=15, decimal_places=3, default=0)
+    precio_entrega = models.DecimalField(max_digits=15, decimal_places=3, default=0)
     mayor_sap = models.DecimalField(max_digits=15, decimal_places=3, default=0)
     provisiones_sap = models.DecimalField(max_digits=15, decimal_places=3, default=0)
     mayor_sgi = models.DecimalField(max_digits=15, decimal_places=3, default=0)
@@ -66,14 +72,14 @@ class Ledger(models.Model):
 
 
     @classmethod
-    def get_by_parcial(self, partial):
+    def get_by_parcial(self, id_partial):
         '''Return ledger from partial include init expenses'''
-        items = self.objects.filter(id_parcial=partial.id_parcial)
+        items = self.objects.filter(id_parcial=id_partial)
         if items.count() == 0:
             loggin(
                 'w', 
                 'El parcial {} no registra un mayor'
-                .format(partial.id_parcial)
+                .format(id_partial)
                 )
             return None
         

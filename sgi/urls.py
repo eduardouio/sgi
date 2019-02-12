@@ -14,4 +14,5 @@ urlpatterns = [
     path('pedidos/', include('orders.urls', namespace='orders')),
     path('api/', include('api.urls', namespace='api_urls')),
     path('importaciones/', include('importations.urls', namespace='importaciones_urls')),
+    path('productos/', include('products.urls', namespace='productos_urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

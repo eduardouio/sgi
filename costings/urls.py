@@ -3,7 +3,7 @@ from django.urls import include, path
 from costings.views import (LiquidateOrderTemplateView,
                             LiquidatePartialTemplateView)
 
-app_name = 'authentication'
+app_name = 'costings'
 
 
 urlpatterns = [
