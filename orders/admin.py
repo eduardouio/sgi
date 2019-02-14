@@ -14,6 +14,8 @@ class OrderAdmin(SimpleHistoryAdmin):
         'regimen',
         'flete_aduana',
         'seguro_aduana',
+        'nro_aplicacion',
+        'nro_poliza',
         'incoterm',
         'pais_origen',
         'ciudad_origen',
@@ -42,6 +44,7 @@ class OrderAdmin(SimpleHistoryAdmin):
         ('Información Complementaria', {
             'classes': ('grp-collapse grp-closed',),
             'fields' : (
+                ('nro_aplicacion','nro_poliza',),
                 ('nro_refrendo', 'proveedor', 'nro_bl'),
                 ('nro_matricula', 'numero_de_carga_mrn', 'naviera'),
                 ('agente_aduana', 'ruc_agente_aduana', 'punto_lledada'),

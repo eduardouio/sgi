@@ -128,7 +128,8 @@ class CostingsPartial(object):
                 * self.rates['tipo_cambio_trimestral']
                 * line_item.fob_percent
                 )
-        
+   
+
         line_item.gastos_origen_tasa_trimestral = 0
         
         if self.incoterm == 'FOB':
@@ -143,5 +144,6 @@ class CostingsPartial(object):
             )
 
         return line_item
+    
 
 

@@ -35,6 +35,8 @@ class Order(models.Model):
     comentarios = models.CharField(max_length=250, blank=True, null=True)
     observaciones = models.CharField(max_length=500, blank=True, null=True)
     nro_refrendo = models.CharField(max_length=22, blank=True, null=True)
+    nro_aplicacion = models.CharField(max_length=8, blank=True, null=True)
+    nro_poliza = models.CharField(max_length=8, blank=True, null=True)
     tipo_cambio_impuestosr10 = models.DecimalField(db_column='tipo_cambio_impuestosR10', max_digits=14, decimal_places=12, blank=True, null=True, default=1)
     tipo_cambio_almacenerar70 = models.DecimalField(db_column='tipo_cambio_almaceneraR70', max_digits=14, decimal_places=12, blank=True, null=True, default =1)
     exoneracion_arancel = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True, default=0)

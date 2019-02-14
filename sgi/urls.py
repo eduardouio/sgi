@@ -5,6 +5,8 @@ from django.urls import include, path
 
 admin.site.site_title = 'SGI'
 admin.site.site_header = 'Agencia Y Representaciones Cordovez S.A.'
+#admin.site.site_header = 'IMNAC Importadora Nacional Cia. Ltda.'
+#admin.site.site_header = 'VID Internacional S.A.'
 
 urlpatterns = [
     path('grappelli/', include('grappelli.urls')),
