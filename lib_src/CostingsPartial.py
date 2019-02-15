@@ -57,10 +57,10 @@ class CostingsPartial(object):
             'taxes' : reliquidate_items,
             'sums' : sums,
         } 
-
                
 
     def set_rates(self):
+        ''' inicializa las variables de calculo  '''
         self.incoterm = self.complete_order_info['order'].incoterm
         self.origin_expenses = self.complete_order_info['order'].gasto_origen
         return {
@@ -71,33 +71,31 @@ class CostingsPartial(object):
             'tipo_cambio_trimestral' : self.complete_order_info['order_invoice']['order_invoice'].tipo_cambio,
         }
 
+
     def get_taxes(self):
+        ''' Obtiene la reliquidacion de ice de los items de la factura '''
         taxes_line_items  = []
         
-        for item in self.current_partial['info_invoice']['info_invoice_details']:
-            taxes_line_items.append(self.get_costs_item(item)) 
+        for line_item in self.current_partial['info_invoice']['info_invoice_details']:
+            taxes_line_items.append(self.get_costs_item(line_item)) 
         
         return taxes_line_items
 
 
     def get_costs_item(self, line_item):
+        ''' Obtiene el costo del item  '''
         line_item = self.get_apportionment_item(line_item)
-        line_item.indirectos = (
-              line_item.ice_advalorem_reliquidado
-            + line_item.ice_especifico
-            + line_item.fodinfa
-            + line_item.tasa_control
-            + line_item.arancel_advalorem_pagar
-            + line_item.arancel_especifico_pagar
-            )        
-        line_item.costo_total = line_item.indirectos + line_item.prorrateos_total
+        
+        line_item.costo_total = line_item.prorrateos_total + line_item.fob_tasa_trimestral
         line_item.costo_caja_final = line_item.costo_total / line_item.nro_cajas
         line_item.costo_unidad = line_item.costo_total / line_item.unidades
 
+        line_item.save()
         return line_item
 
 
     def get_apportionment_item(self, line_item):
+        ''' Obtiene el prorrateo del item NO SE USA INDIRECTOS  '''
         line_item.fob_percent = (
             (line_item.nro_cajas * line_item.costo_caja) 
             / self.current_partial['info_invoice']['totals']['value']
@@ -106,17 +104,15 @@ class CostingsPartial(object):
                         line_item.nro_cajas 
                         * line_item.cantidad_x_caja
                         * self.rates['base_etiquetas']
-                ) 
-
+            ) 
         line_item.ex_aduana = (
             line_item.ex_aduana_antes
             + line_item.etiquetas_fiscales
             + line_item.tasa_control
-        )
-
+            )
         line_item.ex_aduana_unitario = (line_item.ex_aduana / line_item.unidades)
         line_item.base_advalorem_reliquidado = (self.rates['base_ice_advalorem'] * (line_item.capacidad_ml/1000))
-
+        
         if line_item.ex_aduana_unitario > line_item.base_advalorem_reliquidado:
             line_item.ice_advalorem_reliquidado = (
                 (line_item.ex_aduana_unitario - self.rates['base_ice_advalorem'])
@@ -128,22 +124,21 @@ class CostingsPartial(object):
                 * self.rates['tipo_cambio_trimestral']
                 * line_item.fob_percent
                 )
-   
-
         line_item.gastos_origen_tasa_trimestral = 0
         
         if self.incoterm == 'FOB':
             line_item.gastos_origen_tasa_trimestral = (
                 self.origin_expenses * line_item.fob_percent
                 )
-
-        line_item.prorrateos_total = (
-            line_item.prorrateo_pedido 
-            + line_item.prorrateo_parcial 
-            + line_item.fob_tasa_trimestral
+        line_item.prorrateo_parcial = (
+            self.apportionment_expenses['apportionment'].almacenaje_aplicado 
+            * line_item.fob_percent
             )
-
+        line_item.prorrateo_pedido = (
+            self.apportionment_expenses['total_aplicado'] 
+            * line_item.fob_percent)
+        line_item.prorrateos_total = (
+            line_item.prorrateo_parcial 
+            + line_item.prorrateo_pedido
+            )
         return line_item
-    
-
-
