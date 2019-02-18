@@ -75,7 +75,6 @@ class CompletePartialInfo(object):
             'ledger' : self.get_ledger(),
             'apportiomen' : self.get_apportioment(),
             'status' : self.status_parcial,
-            'prorrateos' : self.get_apportioment(),
             'taxes' : self.get_taxes(),
             'total_expenses' : self.total_expenses,
             'total_invoiced' : (self.partial_ledger + self.total_invoiced),

@@ -18,8 +18,7 @@ class CostingsPartial(object):
         self.complete_order_info = kwargs['complete_order_info']
         self.all_partials = kwargs['all_partials']
         self.apportionment_expenses = kwargs['apportionment_expenses']
-        self.ordinal_current_partial = kwargs['ordinal_current_partial']
-        self.current_partial = self.all_partials[0]
+        self.current_partial = kwargs['ordinal_current_partial']
         self.incoterm = None
         self.origin_expenses = 0
         self.total_items = 0
@@ -27,6 +26,7 @@ class CostingsPartial(object):
     
     
     def get_costs(self):
+        
         '''Realiza el costeo del producto en base a los costos indirectos
             y costos adicionales en la liquidacion, de forma adicional 
             realiza el calculo de pago de ice advalorem reliquidado
@@ -52,10 +52,21 @@ class CostingsPartial(object):
                         sums[k] += float(line_item.__dict__[k])
                 except:
                     continue
-    
+
+        ice_reliquidado = (
+            sums['ice_advalorem_reliquidado']
+            + sums['ice_especifico']
+            - float(self.current_partial['partial'].ice_especifico_pagado)
+            - float(self.current_partial['partial'].ice_advalorem_pagado)
+        )
+
+        if ice_reliquidado < 0.01:
+            ice_reliquidado = 0
+
         return {
             'taxes' : reliquidate_items,
             'sums' : sums,
+            'ice_reliquidado' : ice_reliquidado,
         } 
                
 

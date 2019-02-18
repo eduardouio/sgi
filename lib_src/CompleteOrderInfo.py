@@ -89,10 +89,8 @@ class CompleteOrderInfo(object):
             'init_ledger' : self.init_ledger,
             'total_expenses' : (self.total_expenses + self.init_ledger),
             'init_expenses' : self.total_expenses,
-            'origin_expenses_tct' : (
-                                        self.origin_expeses_tct 
-                                        * self.tipo_cambio_trimestral
-                                    ),
+            'origin_expenses_tct' : ( self.origin_expeses_tct 
+                                      * self.tipo_cambio_trimestral),
             'total_invoiced' : self.total_invoiced + self.init_ledger,
             'total_provisions' : self.total_provisions,
             'last_apportionment' : self.last_apportionment,
@@ -331,5 +329,5 @@ class CompleteOrderInfo(object):
         if self.serialized:
             partial_serializer = PartialSerializer(partials, many=True)
             return partial_serializer.data
-        
+   
         return partials
