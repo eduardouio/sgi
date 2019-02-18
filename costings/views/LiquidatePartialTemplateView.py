@@ -19,8 +19,8 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
             nro_order (string): pedido a recuperar 000-00
         Return: TemplateView
         """
-        context = super(LiquidatePartialTemplateView, self
-            ).get_context_data(*args, **kwargs)
+        context = self.get_context_data(**kwargs)
+        self.ordinal_partial = ordinal_parcial
 
         if not self.check_order_and_partial_exist(nro_order, ordinal_parcial):
             self.template_name = 'errors/404.html'
@@ -53,7 +53,7 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
                 complete_order_info = complete_order_info, 
                 all_partials = all_partials,
                 apportionment_expenses = apportiments_expenses,
-                ordinal_current_partial = all_partials[(int(ordinal_parcial) - 1)]
+                ordinal_current_partial = all_partials[(int(ordinal_parcial)-1)]
                 ).get_costs()
         
         context['data'] = {
@@ -68,6 +68,12 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
             'apportioments' : apportiments_expenses,
             'costings' : producto_costs,
         }
+
+        context['data'].update(self.checkStatusValues(
+                    complete_order_info, 
+                    all_partials,
+                    producto_costs
+        ))
         
         return self.render_to_response(context)
     
@@ -95,3 +101,25 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
             )
 
         return False
+    
+
+    def checkStatusValues(self, order_info, all_partials, product_costs):
+        ''' realiza el calculo de facturas provisiones y producto '''
+        status_values = {
+            'facturas_sgi' : order_info['total_invoiced'],
+            'provisiones_sgi': order_info['total_provisions'],
+            'reliquidacion_ice' : product_costs['ice_reliquidado'],
+            'total_expenses' : order_info['total_expenses'],
+            'saldo_producto' : order_info['order_invoice']['totals']['value'],
+        }
+        #solo se toman los datos hasta el actual parcial
+        for k,p in enumerate(all_partials):
+            if (k < int(self.ordinal_partial)):
+                status_values['facturas_sgi'] += p['total_invoiced']
+                status_values['provisiones_sgi'] += p['total_provisions']
+                status_values['total_expenses'] += p['total_expenses']
+                status_values['saldo_producto'] -= p['info_invoice']['totals']['value']            
+
+
+
+        return status_values

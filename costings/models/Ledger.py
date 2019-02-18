@@ -19,7 +19,7 @@ class Ledger(models.Model):
     costo_inicial_producto = models.DecimalField(max_digits=15, decimal_places=3, default=0)
     costo_producto = models.DecimalField(max_digits=15, decimal_places=3, default=0)
     descargas = models.DecimalField(max_digits=15, decimal_places=3, default=0)
-    saldo_producto = models.DecimalField(max_digits=15, decimal_places=3, default=0)
+    saldo_producto = models.DecimalField(max_digits=15, decimal_places=3, default=0) #prox parcial
     precio_entrega = models.DecimalField(max_digits=15, decimal_places=3, default=0)
     mayor_sap = models.DecimalField(max_digits=15, decimal_places=3, default=0)
     provisiones_sap = models.DecimalField(max_digits=15, decimal_places=3, default=0)
