@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
+from logs.app_log import loggin
 
 
 class FileManager(models.Model):
@@ -20,3 +21,23 @@ class FileManager(models.Model):
     class Meta:
         db_table = 'gestor_archivos'
         verbose_name_plural = 'Gestion de Archivos'
+    
+
+    @classmethod
+    def get_by_model_id(self, model_name, id):
+        '''
+            Obtiene los archivos relacionados con un modelo y un id
+        '''
+        results = self.objects.filter(model_name = self.modelo, id_registro = id)
+        if results.count():
+            loggin('i', 'Recuperando archivos de modelo {} con id {}'.format(
+                model_name, id
+            ))
+            return results
+        
+        loggin(
+            'w', 
+            'El modelo {} con el id {} no tiene archivos'.
+            format(model_name, id)
+        )
+        return []
