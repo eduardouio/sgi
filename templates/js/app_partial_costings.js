@@ -179,7 +179,7 @@ var app = new Vue({
   },
     liquidatePartial : function(){
       console.log('Llamamos a liquidar el parcial')
-      console.dir(this.current_ledger)
+      alert('Parcial Liquidado')
       },
     },
     mounted() {

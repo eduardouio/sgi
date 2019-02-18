@@ -21,8 +21,8 @@
         <tr>
         <td style="width:10%" class="bg-light text-right">Mayor SAP:</td> <td class="text-right">${ current_ledger.mayor_sap | money }</td>
         <td style="width:10%" class="bg-light text-right">Mayor SGI: </td> <td class="text-right">${ current_ledger.mayor_sgi | money }</td>
-        <td style="width:10%" class="bg-light text-right">Precion Entrega:</td> <td class="text-right">$ {{ data.costings.sums.indirectos | round(2)}}</td>
-        <td style="width:10%" class="bg-light text-right">Costo Producto:</td> <td class="text-right">$ {{ data.costings.sums.fob_tasa_trimestral | round(2)}}</td>
+        <td style="width:10%" class="bg-warning text-right">Precion Entrega:</td> <td class="text-right" style="backgroud-color:#ff9;">$ <strong>{{ data.costings.sums.prorrateos_total | round(2)}}</strong></td>
+        <td style="width:10%" class="bg-warning text-right">Costo Producto:</td> <td class="text-right" style="backgroud-color:#ff9;">$ <strong>{{ data.costings.sums.fob_tasa_trimestral | round(2)}}</strong></td>
         <td style="width:10%" class="bg-light text-right">Factura Inf:</td> <td class="text-right">{{ data.current_partial.info_invoice.info_invoice.nro_factura_informativa }}</td>
         <td style="width:10%" class="bg-light text-right">Diferencia Senae:</td> <td class="text-right text-danger">{{ data.current_partial.partial.ice_advalorem - data.current_partial.partial.ice_advalorem_pagado  | round(2)}}</td>
         </tr>
@@ -30,7 +30,7 @@
     </div>
 </div>
 <br>
-<div class="row text-primary">    
+<div class="row text-dark">    
     <div class="col-6">
     T/C Impuestos: <strong>{{ data.current_partial.partial.tipo_cambio | round(8) }}</strong> 
     | ID: {{ data.current_partial.info_invoice.info_invoice.id_factura_informativa }}
