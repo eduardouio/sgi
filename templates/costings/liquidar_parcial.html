@@ -59,9 +59,9 @@
                      <td style="width:100px;" class="text-right bg-light">Comentarios:</td>
                      <td colspan="4">{{ data.current_partial.partial.observaciones }}</td>
                      <td colspan="4" class="text-right">
-                        <span class="text-dark">Provisiones: <span> $ 0.00 </span></span>
-                        <span class="text-primary"> | </span><span class="text-dark">Facturas:  <span>$ 0.00 </span> </span>
-                        <span class="text-primary"> | </span><span class="text-dark">Diferencia: <span class="text-danger">$ 0.00</span> </span>
+                        <span class="text-dark">Provisiones: <span> $ {{ data.total_expenses | round(2) }} </span></span>
+                        <span class="text-primary"> | </span><span class="text-dark">Facturas:  <span>$ {{ data.facturas_sgi | round(2) }} </span> </span>
+                        <span class="text-primary"> | </span><span class="text-dark">Diferencia: <span class="text-danger">$ {{ (data.provisiones_sgi) | round(2) }} </span> </span>
                      </td>
                      <td class="text-right"><a href="/pedidos/ficha/{{ data.complete_order_info.order.nro_pedido }}/" class="btn btn-sm btn-outline-dark"> <i class="fa fa-folder"></i> Ficha Pedido</a>  </td>
                   </tr>
@@ -163,8 +163,8 @@
                   {# fin contenido tabs adicionales #}
                </div>
             </div>
-            <a href="" class="btn btn-sm btn-outline-dark"><i class="fa fa-file-pdf"></i>   Reporte de Gastos</a>
-            <a href="" class="btn btn-sm btn-outline-dark" data-toggle="modal" data-target="#modal-prorrateos"><i class="fas fa-chart-pie"></i>   Prorrateos de Pedido</a>
+            <a href="#" class="btn btn-sm btn-outline-dark"><i class="fa fa-file-pdf"></i>Reporte de Gastos</a>
+            <a href="#" class="btn btn-sm btn-outline-dark" data-toggle="modal" data-target="#modal-prorrateos"><i class="fas fa-chart-pie"></i>Prorrateos de Pedido</a>
          </div>
          <div class="col-5 div-bordered">
             <div class="order_invoice" v-if="show_order_invoice">

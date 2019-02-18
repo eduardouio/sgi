@@ -13,11 +13,15 @@ var app = new Vue({
       csrftoken : Cookies.get('csrftoken'),
       current_expense : null,
       show_expense : false,
+      liquidated_partial : false,
       show_costings : false,
       current_paid : null,
+      comentarios : null,
       current_selected_partial : null,
       show_order_invoice : false,
       show_origin_expense : false,
+      show_liquidate_btn : true,
+      show_liquidate_confirm_btn : false,
       diff_ledgers : 0,
       show_taxes : false,
       show_info_invoice : false,
@@ -27,14 +31,13 @@ var app = new Vue({
         'id_parcial' : parseInt('{{ data.current_partial.partial.id_parcial }}'),
         'costo_inicial_producto' : parseFloat('{{ data.complete_order_info.order_invoice.totals.value_tct }}'),
         'costo_producto' : parseFloat('{{ data.current_partial.info_invoice.totals.value_tct }}'),
-        'saldo_producto' : 0,
-        'facturas_sgi' : 0,
-        'provisiones_sgi' : 0,
+        'facturas_sgi' : parseFloat('{{ data.facturas_sgi }}'),
+        'provisiones_sgi' : parseFloat('{{ data.provisiones_sgi }}'),
+        'reliquidacion_ice' : parseFloat('{{ data.reliquidacion_ice | round(2)}}'),
+        'saldo_producto' : parseFloat('{{ data.saldo_producto }}'),
         'mayor_sap' : 0,
         'mayor_sgi' : 0,
-        'precio_entrega' : 0,
-        'provisiones_sap' : 0,
-        'reliquidacion_ice' : 0,
+        'precio_entrega' : parseFloat('{{ data.costings.sums.prorrateos_total }}'),
       },
       csrftoken : Cookies.get('csrftoken'),
     },
@@ -174,6 +177,10 @@ var app = new Vue({
           alert('Se produjo un error, por favor recargue la página');
         });
   },
+    liquidatePartial : function(){
+      console.log('Llamamos a liquidar el parcial')
+      console.dir(this.current_ledger)
+      },
     },
     mounted() {
       this.$http.get(host + 'api/order/all-data/{{ data.complete_order_info.order.nro_pedido }}', { params: {}}).then(response => {
