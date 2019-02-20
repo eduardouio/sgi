@@ -120,6 +120,4 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
                 status_values['total_expenses'] += p['total_expenses']
                 status_values['saldo_producto'] -= p['info_invoice']['totals']['value']            
 
-
-
         return status_values

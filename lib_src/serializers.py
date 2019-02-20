@@ -9,6 +9,7 @@ from partials.models import (Apportionment, ApportionmentDetail, InfoInvoice,
                              InfoInvoiceDetail, Partial)
 from products.models import Product
 from suppliers.models import Supplier
+from filemanager.models import FileManager
 
 
 class LedgerSerializer(ModelSerializer):
@@ -96,8 +97,8 @@ class ApportionmentDetailSerializer(ModelSerializer):
 
 
 class PartialSerializer(ModelSerializer):
-    ordinal_parcial = serializers.IntegerField()
-    partial_url = serializers.CharField()
+    ordinal_parcial = serializers.IntegerField(required=False)
+    partial_url = serializers.CharField(required=False)
     
     class Meta:
         model = Partial
@@ -113,4 +114,10 @@ class ProductSerializer(ModelSerializer):
 class SupplierSerializer(ModelSerializer):
     class Meta:
         model = Supplier
+        fields = ('__all__')
+
+
+class FileManagerSerializer(ModelSerializer):
+    class Meta:
+        model = FileManager
         fields = ('__all__')

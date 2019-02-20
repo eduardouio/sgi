@@ -86,6 +86,7 @@ class CompleteOrderInfo(object):
             'partials' : self.get_partials(),
             'status' : self.status_order,
             'tributes' : self.tributes,
+            'files' : self.get_files(),
             'init_ledger' : self.init_ledger,
             'total_expenses' : (self.total_expenses + self.init_ledger),
             'init_expenses' : self.total_expenses,
@@ -331,3 +332,8 @@ class CompleteOrderInfo(object):
             return partial_serializer.data
    
         return partials
+    
+
+    def get_files(self):
+        ''' Obtiene todos los archivos relacionados con el Pedido '''
+        return None

@@ -8,12 +8,9 @@ from simple_history.models import HistoricalRecords
 
 
 class Ledger(models.Model):    
-    TYPE_LEDGER = (
-        ('inicial', 'Mayor Inicial'),
-        ('parcial', 'Mayor Parcial')
-        )
+
     id_mayor = models.AutoField(primary_key=True)
-    tipo = models.CharField(max_length=50, choices=TYPE_LEDGER)
+    tipo = models.CharField(max_length=50)
     nro_pedido = models.ForeignKey(Order, models.PROTECT, db_column='nro_pedido')
     id_parcial = models.PositiveSmallIntegerField(default=0)
     costo_inicial_producto = models.DecimalField(max_digits=15, decimal_places=3, default=0)
@@ -33,7 +30,7 @@ class Ledger(models.Model):
     history = HistoricalRecords()
 
     def __str__(self):
-        return ''.join([self.tipo, ' ', self.nro_pedido, ' -> ', str(self.id_parcial)])
+        return ' '.join([self.nro_pedido.nro_pedido , '->' , str(self.id_parcial)])
 
     class Meta:
         managed = True
@@ -83,4 +80,4 @@ class Ledger(models.Model):
                 )
             return None
         
-        return items
+        return items.first()

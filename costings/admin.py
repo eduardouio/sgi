@@ -2,6 +2,18 @@ from django.contrib import admin
 from costings.models.Ledger import Ledger
 
 class LedgerAdmin(admin.ModelAdmin):
-    pass
+    list_display = (
+        'tipo',
+        'nro_pedido',
+        'id_parcial',
+        'costo_inicial_producto',
+        'costo_producto',
+        'descargas',
+        'saldo_producto',
+        'precio_entrega',
+        'mayor_sap',
+        'provisiones_sap',
+        'mayor_sgi',
+    )
 
 admin.site.register(Ledger, LedgerAdmin)

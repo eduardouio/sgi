@@ -37,7 +37,7 @@ var app = new Vue({
         'saldo_producto' : parseFloat('{{ data.saldo_producto }}'),
         'mayor_sap' : 0,
         'mayor_sgi' : 0,
-        'precio_entrega' : parseFloat('{{ data.costings.sums.prorrateos_total }}'),
+        'precio_entrega' : parseFloat('{{ data.costings.sums.prorrateos_total | round(3) }}'),
       },
       csrftoken : Cookies.get('csrftoken'),
     },
@@ -106,7 +106,6 @@ var app = new Vue({
         this.show_origin_expense = false
         this.show_order_invoice = false
         this.show_info_invoice = false
-
       },
       showOrderInvoice : function(){
         console.log('mostrando factura del pedido')
@@ -179,7 +178,24 @@ var app = new Vue({
   },
     liquidatePartial : function(){
       console.log('Llamamos a liquidar el parcial')
-      alert('Parcial Liquidado')
+      var partial = {
+        id_parcial : this.current_partial.partial.id_parcial,
+        observaciones : this.current_partial.partial.observaciones += this.comentarios,
+        bg_isclosed : 1,
+        nro_pedido : this.complete_order_info.order.nro_pedido,
+      }
+      
+      this.$http.post(host + 'api/ledger/create/', this.current_ledger, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {
+        console.log('Mayor Registrado correctamente')
+        this.$http.put(host + 'api/partial/update/' + partial.id_parcial + '/', partial, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {                     
+          console.log('Pedido Cerrado Correctamente')
+        }, response => {
+          alert(response);
+        });
+      }, response => {
+        alert('Se produjo un error, por favor recargue la página');
+      });
+      
       },
     },
     mounted() {

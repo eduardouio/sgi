@@ -16,11 +16,11 @@
       Total Parciales: {{ data.total_parcials }}    
    </div>
    <div class="col-7 text-right">
-      <span><a href="{{ data.current_partial.partial.url_dai_1 }}"> Ref: {{ data.current_partial.info_invoice.info_invoice.nro_refrendo }}</a></span>
+      <span>Ref: {{ data.current_partial.info_invoice.info_invoice.nro_refrendo }}</span>
       <span>| Exaduana</span>
       <span>| Liq: {{ data.current_partial.partial.nro_liquidacion }} </span>
       <span>| F. Llegada:  {{ data.current_partial.partial.fecha_llegada_cliente.strftime('%d/%m/%Y') }} </span>
-      <span></span>
+      <span>| <i class="fas fa-archive text-danger"></i></span>
    </div>
 </div>
 {% endblock title_content %}

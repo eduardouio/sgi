@@ -1,7 +1,9 @@
 from costings.models import Ledger
+from filemanager.models import FileManager
 from lib_src import CompleteOrderInfo
 from lib_src.serializers import (ApportionmentDetailSerializer,
                                  ApportionmentSerializer, ExpenseSerializer,
+                                 FileManagerSerializer,
                                  InfoInvoiceDetailSerializer,
                                  InfoInvoiceSerializer, LedgerSerializer,
                                  PaidInvoiceDetailSerializer,
@@ -29,6 +31,7 @@ class CompletePartialInfo(object):
             'partial_expenses' : False,
             'ledger' : False,
             'taxes' : False,
+            'have_files' : False,
         }
         self.id_partial = None
         self.nro_order = None
@@ -76,6 +79,7 @@ class CompletePartialInfo(object):
             'apportiomen' : self.get_apportioment(),
             'status' : self.status_parcial,
             'taxes' : self.get_taxes(),
+            'files' : self.get_files(),
             'total_expenses' : self.total_expenses,
             'total_invoiced' : (self.partial_ledger + self.total_invoiced),
             'total_taxes_product' : self.partial_ledger,
@@ -279,9 +283,40 @@ class CompletePartialInfo(object):
 
     
     def get_ledger(self):
-        loggin('w', 'recuperando mayor del parcial')
+        ''' Recupera el mayor del Parcial solo si esta cerrado'''
         if self.partial_isclosed == False:
             loggin('w', 'Parcial abierto no tiene mayor')
             return None
+        ledger =  Ledger.get_by_parcial(self.id_partial)
+        
+        if self.serialized:
+            ledger_serializer = LedgerSerializer(ledger)
+            return ledger_serializer.data
+        
+        return ledger
+    
 
-        return Ledger.get_by_parcial(self.id_parcial)
+    def get_files(self):
+        '''Obtiene los archivos relacionados con el Parcial'''
+        files = FileManager.get_by_model_id(
+            app_label='partials', 
+            model_name= 'Partial',
+            id_row = self.id_partial
+            )
+            
+        if isinstance(files, list):
+            loggin(
+                'w', 
+                'El parcial {} no tiene archivos relacionados'
+                .format(self.id_partial)
+            )
+        
+            return None
+
+        self.status_parcial['have_files'] = True
+
+        if self.serialized:
+            file_serializer = FileManagerSerializer(files, many=True)
+            return file_serializer.data
+        
+        return files
