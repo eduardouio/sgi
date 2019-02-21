@@ -60,7 +60,8 @@ class ApportionmentAdmin(SimpleHistoryAdmin):
 class InfoInvoiceDetailInline(admin.TabularInline):
     model = InfoInvoiceDetail
 
-  #
+class InfoInvoiceDetailAdmin(admin.ModelAdmin):
+    pass
 
 class InfoInvoiceAdmin(SimpleHistoryAdmin):
     list_display = (
@@ -91,3 +92,4 @@ class InfoInvoiceAdmin(SimpleHistoryAdmin):
 admin.site.register(Partial, PartialAdmin)
 admin.site.register(Apportionment, ApportionmentAdmin)
 admin.site.register(InfoInvoice, InfoInvoiceAdmin)
+admin.site.register(InfoInvoiceDetail, InfoInvoiceDetailAdmin)

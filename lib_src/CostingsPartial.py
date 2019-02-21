@@ -87,6 +87,10 @@ class CostingsPartial(object):
         ''' Obtiene la reliquidacion de ice de los items de la factura '''
         taxes_line_items  = []
         
+        if self.current_partial['partial'].bg_isclosed == 1:
+            loggin('i', 'No se realiza el costeo se retorna el existente')
+            return self.current_partial['info_invoice']['info_invoice_details']
+
         for line_item in self.current_partial['info_invoice']['info_invoice_details']:
             taxes_line_items.append(self.get_costs_item(line_item)) 
         
@@ -95,13 +99,13 @@ class CostingsPartial(object):
 
     def get_costs_item(self, line_item):
         ''' Obtiene el costo del item  '''
+
         line_item = self.get_apportionment_item(line_item)
-        
         line_item.costo_total = line_item.prorrateos_total + line_item.fob_tasa_trimestral
         line_item.costo_caja_final = line_item.costo_total / line_item.nro_cajas
         line_item.costo_unidad = line_item.costo_total / line_item.unidades
-
         line_item.save()
+        loggin('i', 'Se registra el costeo del parcial')
         return line_item
 
 

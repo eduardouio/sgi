@@ -20,7 +20,7 @@
       <span>| Exaduana</span>
       <span>| Liq: {{ data.current_partial.partial.nro_liquidacion }} </span>
       <span>| F. Llegada:  {{ data.current_partial.partial.fecha_llegada_cliente.strftime('%d/%m/%Y') }} </span>
-      <span>| <i class="fas fa-archive text-danger"></i></span>
+      <span>| <a href="" data-toggle="modal" data-target="#modal-archivos"><i class="fas fa-archive text-danger"></i></a></span>
    </div>
 </div>
 {% endblock title_content %}
@@ -165,6 +165,7 @@
             </div>
             <a href="#" class="btn btn-sm btn-outline-dark"><i class="fa fa-file-pdf"></i>Reporte de Gastos</a>
             <a href="#" class="btn btn-sm btn-outline-dark" data-toggle="modal" data-target="#modal-prorrateos"><i class="fas fa-chart-pie"></i>Prorrateos de Pedido</a>
+            <button class="btn btn-sm btn-outline-danger" v-if="liquidated_partial" disabled> <i class="fas fa-stop"></i> Parcial Cerrado!</button>
          </div>
          <div class="col-5 div-bordered">
             <div class="order_invoice" v-if="show_order_invoice">
@@ -620,6 +621,7 @@
       </div>
    </div>
       {% include 'costings/prorrateos-modal.html' %}
+      {% include 'filemanager/modal_lista_archivos.html' %}
       {% include 'js/modal_complete_paid.html' %}
 </div>
 {% endblock content %}

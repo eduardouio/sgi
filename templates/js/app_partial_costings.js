@@ -13,10 +13,10 @@ var app = new Vue({
       csrftoken : Cookies.get('csrftoken'),
       current_expense : null,
       show_expense : false,
-      liquidated_partial : false,
+      liquidated_partial : Boolean(parseInt('{{ data.current_partial.partial.bg_isclosed }}')),
       show_costings : false,
       current_paid : null,
-      comentarios : null,
+      comentarios : '',
       current_selected_partial : null,
       show_order_invoice : false,
       show_origin_expense : false,
@@ -182,14 +182,20 @@ var app = new Vue({
         id_parcial : this.current_partial.partial.id_parcial,
         observaciones : this.current_partial.partial.observaciones += this.comentarios,
         bg_isclosed : 1,
+        id_user_cierre : parseInt('{{ data.request.user.id }}'),
         nro_pedido : this.complete_order_info.order.nro_pedido,
       }
+      this.show_liquidate_confirm_btn = false
+      this.show_liquidate_btn = false
+      this.liquidated_partial = true
       
       this.$http.post(host + 'api/ledger/create/', this.current_ledger, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {
         console.log('Mayor Registrado correctamente')
         this.$http.put(host + 'api/partial/update/' + partial.id_parcial + '/', partial, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {                     
-          console.log('Pedido Cerrado Correctamente')
-        }, response => {
+          alert('El parcial {{ data.ordinal_partial }} del pedido {{ data.nro_order }} se liquido Correctamente 😄 [Status:Cerrado]')
+          this.partial_close = true
+          window.print()
+                  }, response => {
           alert(response);
         });
       }, response => {

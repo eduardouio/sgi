@@ -142,20 +142,6 @@
 </div>
 </div>
 <br>
-<div class="row animate flash delay-1s" v-if="liquidated_partial == true">
-    <div class="col-1"></div>
-    <div class="col-10 text-center">
-    <h1><i class="fa fa-check text-success"></i></h1>
-    <h3>Pedido Liquidado Y Cerrado 🐼 </h3>
-    <p>
-    Yo no es posible registrar provisiones en este pedido <span class="text-primary">${order_data.order.nro_pedido}</span>. 
-    <br>Desde éste punto todas las justificaciones ingresadas afectarán al mayor SAP   
-    <br>Será redireccionado en 3 Segundos...
-    </p>
-    <button class="btn btn-sm btn-outline-success"> <i class="fa fa-check"></i> ¡Entendido!</button>
-    </div>
-    <div class="col-1"></div>
-</div>
 <div class="row animate" v-if="show_liquidate_confirm_btn" v-bind:class="{'fadeInDown' : liquidated_partial }">
     <div class="col-12 bg-light border border-warning">
     <div class="input-group mb-3">
@@ -170,8 +156,11 @@
 <div class="row">
 <div class="col-12 text-right">
     <button class="btn btn-sm btn-outline-dark" @click="show_costings=false"><i class="fa fa-arrow-left"></i> Volver a Gastos</button>
-    <a href="#" class="btn btn-sm btn-outline-dark" data-toggle="modal" data-target="#modal-prorrateos"><i class="fas fa-chart-pie"></i>Prorrateos de Pedido</a>
-    <button v-if="show_liquidate_btn" class="btn btn-sm btn-outline-primary" @click="show_liquidate_confirm_btn = true;show_liquidate_btn=false"><i class="fa fa-check"></i> Liquidar Parcial</button>
-    <button v-if="show_liquidate_confirm_btn" class="btn btn-sm btn-warning" @click="liquidatePartial()"><i class="fas fa-exclamation-triangle"></i> Confirmar y Continuar </button>
+    <button class="btn btn-sm btn-outline-dark" data-toggle="modal" data-target="#modal-prorrateos"><i class="fas fa-chart-pie"></i> Prorrateos de Pedido</button>
+    <span v-if="liquidated_partial == false">
+        <button v-if="show_liquidate_btn" class="btn btn-sm btn-outline-primary" @click="show_liquidate_confirm_btn = true;show_liquidate_btn=false"><i class="fa fa-check"></i> Liquidar Parcial</button>
+        <button v-if="show_liquidate_confirm_btn" class="btn btn-sm btn-warning" @click="liquidatePartial()"><i class="fas fa-exclamation-triangle"></i> Confirmar y Continuar </button>
+    </span>
+        <button class="btn btn-sm btn-outline-danger" disabled v-else><i class="fas fa-stop"></i>  Parcial Cerrado</button>
 </div>
 </div>

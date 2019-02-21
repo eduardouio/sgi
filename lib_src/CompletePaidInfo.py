@@ -8,7 +8,7 @@ from partials.models import Partial
 from suppliers.models import Supplier
 
 
-class CompletePaidinfo(object):
+class CompletePaidInfo(object):
     '''  Return all information from paid 
         -> {
             supplier : [],

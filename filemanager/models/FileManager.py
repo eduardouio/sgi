@@ -16,7 +16,7 @@ class FileManager(models.Model):
     archivo = models.FileField(upload_to='archivos/')
     nombre_fichero = models.CharField(max_length=125)
     obserbaciones = models.TextField(blank=True,null=True, default=None)
-    date_create = models.DateTimeField(blank=True, null=True)
+    date_create = models.DateTimeField(blank=True, null=True, auto_now=True)
     last_update = models.DateTimeField(blank=True, null=True)
     bg_isvalid = models.BooleanField(default=True)
     bg_isvisible = models.BooleanField(default=True)

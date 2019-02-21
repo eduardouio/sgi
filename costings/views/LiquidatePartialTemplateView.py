@@ -67,6 +67,7 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
             'all_partials' : all_partials,
             'apportioments' : apportiments_expenses,
             'costings' : producto_costs,
+            'request' : request
         }
 
         context['data'].update(self.checkStatusValues(

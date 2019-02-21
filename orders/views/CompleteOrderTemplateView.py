@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView
 
-from lib_src import CompleteOrderInfo, CompletePaidinfo
+from lib_src import CompleteOrderInfo, CompletePaidInfo
 from orders.models import Order
 
 
