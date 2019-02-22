@@ -5,7 +5,14 @@
         <tr>
         <td style="width:10%" class="bg-light text-right">T/C Trim:</td> <td class="text-right">{{ "%.3f" | format(data.complete_order_info.order_invoice.order_invoice.tipo_cambio) }}</td>
         <td style="width:10%" class="bg-light text-right">Moneda Pedido:</td> <td class="text-right"> {{ data.complete_order_info.order_invoice.order_invoice.moneda }}</td>
-        <td style="width:10%" class="bg-light text-right">Fecha Llegada:</td><td class="text-right"> {{ data.current_partial.partial.fecha_llegada_cliente.strftime('%d/%m/%Y') }}</td>
+        <td style="width:10%" class="bg-light text-right">Fecha Llegada:</td>
+        <td class="text-right">
+        {% if data.current_partial.partial.fecha_llegada_cliente %}
+        {{ data.current_partial.partial.fecha_llegada_cliente.strftime('%d/%m/%Y') }}
+        {% else %}
+            No en bodega local
+        {% endif %}
+        </td>
         <td style="width:10%" class="bg-light text-right">Items:</td> <td class="text-right">{{ data.current_partial.info_invoice.info_invoice_details.__len__() }}</td>
         <td style="width:10%" class="bg-light text-right">Cajas:</td> <td class="text-right">{{ data.current_partial.info_invoice.totals.boxes }}</td>
         <td style="width:10%" class="bg-light text-right">Botellas:</td> <td class="text-right">{{ data.current_partial.info_invoice.totals.bottles }}</td>
@@ -36,7 +43,7 @@
     | ID: {{ data.current_partial.info_invoice.info_invoice.id_factura_informativa }}
     </div>
     <div class="col-6 text-right">
-        ICE Reliquidado: <strong>$ {{ data.current_partial.partial.ice_advalorem + data.current_partial.partial.ice_advalorem - data.current_partial.partial.ice_advalorem_pagado - data.current_partial.partial.ice_advalorem | round(2) }} </strong>
+        ICE Reliquidado: <strong>$ {{ (data.costings.ice_reliquidado  - data.current_partial.partial.ice_advalorem_pagado - data.current_partial.partial.ice_especifico_pagado )  | round(2) }} </strong>
     </div>
 </div>
 <div class="row">
@@ -100,12 +107,13 @@
                 <td class="text-right" nowrap>{{ item.ice_especifico_unitario | round(2)}}</td>
                 <td class="text-right" nowrap>{{ item.ice_advalorem_unitario | round(2)}}</td>
                 <td class="text-right" nowrap>{{ item.ice_especifico | round(2)}}</td>
-                <td class="text-right" nowrap>{{ item.ice_advalorem  | round(2)}}</td>
+                <td class="text-right" nowrap>{{ item.ice_advalorem_reliquidado  | round(2)}}</td>
                 <td class="text-right" nowrap>{{ item.total_ice  | round(2)}}</td>
                 <td class="text-right" nowrap>{{ item.prorrateos_total  | round(2)}}</td>
                 <td class="text-right" nowrap>{{ item.costo_total  | round(2)}}</td>
                 <td class="text-right" nowrap>{{ item.costo_caja_final  | round(2)}}</td>
-                <td class="text-right" nowrap>{{ item.costo_botella  | round(2)}}</td>
+                <!-- <td class="text-right" nowrap>{{ item.costo_botella  | round(2)}}</td>-->
+                <td class="text-right" nowrap>{{ item.fob_percent  | round(2)}}</td>
             </tr>
         {% endfor %}
         <tr>

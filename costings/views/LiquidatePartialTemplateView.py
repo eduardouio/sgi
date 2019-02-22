@@ -111,7 +111,7 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
             'provisiones_sgi': order_info['total_provisions'],
             'reliquidacion_ice' : product_costs['ice_reliquidado'],
             'total_expenses' : order_info['total_expenses'],
-            'saldo_producto' : order_info['order_invoice']['totals']['value'],
+            'saldo_producto' : order_info['order_invoice']['totals']['value_tct'],
         }
         #solo se toman los datos hasta el actual parcial
         for k,p in enumerate(all_partials):
@@ -119,6 +119,6 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
                 status_values['facturas_sgi'] += p['total_invoiced']
                 status_values['provisiones_sgi'] += p['total_provisions']
                 status_values['total_expenses'] += p['total_expenses']
-                status_values['saldo_producto'] -= p['info_invoice']['totals']['value']            
+                status_values['saldo_producto'] -= p['info_invoice']['totals']['value_tct']
 
         return status_values

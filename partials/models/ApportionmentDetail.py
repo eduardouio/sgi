@@ -47,7 +47,8 @@ class ApportionmentDetail(models.Model):
             'apportionment' : None,
             'apportionment_detail' : None,
             'total_provisionado' : 0,
-            'total_aplicado' : 0
+            'total_aplicado' : 0,
+            'total_aplicado_sin_tributos' : 0,
         }
         apportionment['apportionment'] = Apportionment.get_by_parcial(id_partial)
         

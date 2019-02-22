@@ -85,10 +85,12 @@ var app = new Vue({
           console.log('inciando descarga de gastos')
           this.all_partials.forEach((k,v)=>{
             if(k.partial.bg_isclosed === 1){
-                alert('Implementar esta seccion en el segundo parcial')
+              legder_value -= parseFloat(k.ledger.costo_producto)
+              legder_value -= parseFloat(k.ledger.precio_entrega)
             }
           })
       }
+
       this.diff_ledgers = Math.abs((this.current_ledger.mayor_sap - legder_value).toFixed(3))
       return this.current_ledger.mayor_sgi = legder_value.toFixed(3)
     },

@@ -47,6 +47,10 @@ class ApportionmentExpenses(object):
         for apportionment in current_approtionment['apportionment_detail']:
             current_approtionment['total_aplicado'] += apportionment.valor_prorrateado
             current_approtionment['total_provisionado'] += apportionment.valor_provisionado
+
+            if 'IMPUESTO' not in  apportionment.concepto and 'ETIQUETAS FISCALES' not in apportionment.concepto:
+                current_approtionment['total_aplicado_sin_tributos'] += apportionment.valor_prorrateado
+              
             
             if apportionment.tipo == 'gasto_inicial':
                 apportionment.tipo = 'Gasto Inicial'
@@ -94,6 +98,7 @@ class ApportionmentExpenses(object):
 
 
     def set_fobs(self):
+        '''Genera los valores del fobs para el parcial'''
         loggin('w', self.current_partial_data['partial'])
         fobs = {
             'id_parcial' : self.current_partial_data['partial'],
@@ -114,17 +119,16 @@ class ApportionmentExpenses(object):
         fobs['gastos_origen_incial'] = self.complete_order_info['order'].gasto_origen * self.complete_order_info['tipo_cambio_trimestral']
 
         if self.ordinal_current_partial > 1:
-            fobs['saldo'] = self.complete_order_info['last_apportionment'].fob_proximo_parcial
+            fobs['fob_saldo'] = self.complete_order_info['last_apportionment'].fob_proximo_parcial
             fobs['gastos_origen_anterior_parcial'] = self.complete_order_info['last_apportionment'].gastos_origen_proximo_parcial
         else:
             fobs['fob_saldo'] = fobs['fob_inicial']
             fobs['gastos_origen_incial'] = fobs['gastos_origen_incial']
 
-        fobs['fob_parcial_razon_saldo'] = fobs['fob_parcial'] / fobs['fob_inicial']
+        fobs['fob_parcial_razon_saldo'] = fobs['fob_parcial'] / fobs['fob_saldo']
         fobs['fob_parcial_razon_inicial'] = fobs['fob_parcial'] / fobs['fob_inicial']
         fobs['porcentaje_parcial'] = fobs['fob_parcial_razon_inicial']
         fobs['fob_proximo_parcial'] =  fobs['fob_saldo'] - fobs['fob_parcial']
-
         if self.complete_order_info['order'].incoterm != 'CFR':
             fobs['gastos_origen_aplicado'] = fobs['gastos_origen_incial'] * fobs['fob_parcial_razon_inicial']
             fobs['gastos_origen_proximo_parcial'] = fobs['gastos_origen_anterior_parcial'] -  fobs['gastos_origen_aplicado']
@@ -154,8 +158,8 @@ class ApportionmentExpenses(object):
             warenhousing['almacenaje_anterior'] = self.complete_order_info['last_apportionment'].almacenaje_proximo_parcial
         
         warenhouseng_sale = Decimal((
-            warenhousing['almacenaje_parcial']
-            + warenhousing['almacenaje_anterior']
+            float(warenhousing['almacenaje_parcial'])
+            + float(warenhousing['almacenaje_anterior'])
         ))
 
         warenhousing['almacenaje_aplicado'] = Decimal(warenhouseng_sale * self.fob_razon_saldo).quantize(Decimal('1.000'))

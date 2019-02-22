@@ -24,6 +24,7 @@
         </tr>
         </thead>
         <tbody>
+        {% if data.current_partial.files %}
         {% for file in data.current_partial.files %}
         <tr>
         <td class="text-center">{{ loop.index }}</td>
@@ -40,9 +41,9 @@
         {% endif %}
         </td>
         <td> <a href="/media/{{file.archivo}}" target="_blank"><i class="fas fa-download"></i></a></td>
-
         </tr>
         {% endfor %}
+        {% endif %}
         </tbody>
         </table>
       </div>

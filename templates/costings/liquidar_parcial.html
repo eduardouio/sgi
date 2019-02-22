@@ -19,7 +19,7 @@
       <span>Ref: {{ data.current_partial.info_invoice.info_invoice.nro_refrendo }}</span>
       <span>| Exaduana</span>
       <span>| Liq: {{ data.current_partial.partial.nro_liquidacion }} </span>
-      <span>| F. Llegada:  {{ data.current_partial.partial.fecha_llegada_cliente.strftime('%d/%m/%Y') }} </span>
+      <span>| F. Llegada:  {{ data.current_partial.partial.fecha_llegada_cliente.strftime('%d/%m/%Y') if data.current_partial.partial.fecha_llegada_cliente is not none else ''  }} </span>
       <span>| <a href="" data-toggle="modal" data-target="#modal-archivos"><i class="fas fa-archive text-danger"></i></a></span>
    </div>
 </div>
@@ -53,7 +53,7 @@
                      <td style="width:100px;" class="text-right bg-light">Registrado Por:</td>
                      <td>Pendiente</td>
                      <td style="width:100px;" class="text-right bg-light">Fecha Registro:</td>
-                     <td>{{ data.current_partial.partial.date_create.strftime('%d/%m/%Y') }}</td>
+                     <td>{{ data.current_partial.partial.date_create.strftime('%d/%m/%Y') if data.current_partial.partial.date_create is not none else '' }}</td>
                   </tr>
                   <tr>
                      <td style="width:100px;" class="text-right bg-light">Comentarios:</td>
