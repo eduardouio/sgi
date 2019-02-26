@@ -14,15 +14,16 @@
 	  <link rel="shortcut icon" href="{{ static('favicon.ico') }} type="image/x-icon"/>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
     <script>
-      var host = 'http://192.168.0.104:8000/'
+      var host = 'http://localhost:8000/'
     </script>
+      <!-- var host = 'http://192.168.0.198:5003/' -->
     {% block header %} {% endblock %}
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <title>{{ data.title_page }}</title>
 </head>
 <body>    
     <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-      <a class="navbar-brand" href="/">Agencia y Representaciones Cordovez S.A.</a>
+       <a class="navbar-brand" href="/">Agencia y Representaciones Cordovez S.A.</a>
       <!-- <a class="navbar-brand" href="/">IMNAC Importadora Nacional Cia. Ltda.</a> -->
       <!-- <a class="navbar-brand" href="/">VID Internacional S.A.</a> -->
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">

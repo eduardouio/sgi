@@ -87,9 +87,25 @@ var app = new Vue({
             if(k.partial.bg_isclosed === 1){
               legder_value -= parseFloat(k.ledger.costo_producto)
               legder_value -= parseFloat(k.ledger.precio_entrega)
+              
+              //Verificamos si existe reliquidacion de ICE
+            var ice_pagado = (
+              parseFloat(k.partial.ice_advalorem_pagado )
+              + parseFloat(k.partial.ice_especifico_pagado)
+              )
+
+              var ice_reliquidado = 0
+
+              k.info_invoice.info_invoice_detail.forEach((idx,val) => {
+                ice_reliquidado += parseFloat(idx.ice_advalorem)
+                ice_reliquidado += parseFloat(idx.ice_especifico)
+              })
+              console.log('Calculanfo diferencia de ice ')
+              console.log(ice_reliquidado - ice_pagado)
+              legder_value += (ice_reliquidado - ice_pagado)
             }
           })
-      }
+        }
 
       this.diff_ledgers = Math.abs((this.current_ledger.mayor_sap - legder_value).toFixed(3))
       return this.current_ledger.mayor_sgi = legder_value.toFixed(3)
@@ -102,7 +118,13 @@ var app = new Vue({
         }
       },
       changePartial : function(id){
-        this.current_selected_partial = this.all_partials[id]
+        var current_partial = null
+        this.all_partials.forEach((key,val)=>{
+          if(key.partial.ordinal_parcial === (id +1 )){
+            current_partial = key
+          }
+        })
+        this.current_selected_partial = current_partial
         this.show_expense = false
         this.show_taxes = false
         this.show_origin_expense = false

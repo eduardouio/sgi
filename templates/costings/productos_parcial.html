@@ -60,6 +60,7 @@
                <th>Unds</th>
                <th>C/C</th>
                <th>FOB TCT</th>
+               <th>% FOB</th>
                <th>Seguro A</th>
                <th>Flete A</th>
                <th>CIF</th>
@@ -93,6 +94,7 @@
                 <td class="text-right" nowrap>{{ item.unidades | round(0)}}</td>
                 <td class="text-right" nowrap>{{ item.costo_caja | round(0)}}</td>
                 <td class="text-right" nowrap>{{ item.fob_tasa_trimestral | round(2)}}</td>
+                <td class="text-right" nowrap>{{ item.fob_percent  | round(2)}}</td>
                 <td class="text-right" nowrap>{{ item.seguro_aduana | round(2)}}</td>
                 <td class="text-right" nowrap>{{ item.flete_aduana | round(2)}}</td>
                 <td class="text-right" nowrap>{{ item.cif | round(2)}}</td>
@@ -107,13 +109,12 @@
                 <td class="text-right" nowrap>{{ item.ice_especifico_unitario | round(2)}}</td>
                 <td class="text-right" nowrap>{{ item.ice_advalorem_unitario | round(2)}}</td>
                 <td class="text-right" nowrap>{{ item.ice_especifico | round(2)}}</td>
-                <td class="text-right" nowrap>{{ item.ice_advalorem_reliquidado  | round(2)}}</td>
+                <td class="text-right" nowrap>{{ item.ice_advalorem  | round(2)}}</td>
                 <td class="text-right" nowrap>{{ item.total_ice  | round(2)}}</td>
                 <td class="text-right" nowrap>{{ item.prorrateos_total  | round(2)}}</td>
                 <td class="text-right" nowrap>{{ item.costo_total  | round(2)}}</td>
                 <td class="text-right" nowrap>{{ item.costo_caja_final  | round(2)}}</td>
-                <!-- <td class="text-right" nowrap>{{ item.costo_botella  | round(2)}}</td>-->
-                <td class="text-right" nowrap>{{ item.fob_percent  | round(2)}}</td>
+                <td class="text-right" nowrap>{{ item.costo_botella  | round(2)}}</td>
             </tr>
         {% endfor %}
         <tr>
@@ -123,6 +124,7 @@
         <th nowrap class="text-right">{{ data.costings.sums.unidades | round(2) }}</th>
         <th nowrap class="text-center text-secondary">-</th>
         <th nowrap class="text-right">$ {{ data.costings.sums.fob_tasa_trimestral | round(2) }}</th>
+        <th nowrap class="text-right">{{ data.costings.sums.fob_percent | round(2) }}</th>
         <th nowrap class="text-right">$ {{ data.costings.sums.seguro_aduana | round(2) }}</th>
         <th nowrap class="text-right">$ {{ data.costings.sums.flete_aduana | round(2) }}</th>
         <th nowrap class="text-right">$ {{ data.costings.sums.cif | round(2) }}</th>
@@ -137,7 +139,7 @@
         <th nowrap class="text-center text-secondary">-</th>
         <th nowrap class="text-center text-secondary">-</th>
         <th nowrap class="text-right">$ {{ data.costings.sums.ice_especifico | round(2)}}</th>
-        <th nowrap class="text-right">$ {{ data.costings.sums.ice_advalorem_reliquidado | round(2)}}</th>
+        <th nowrap class="text-right">$ {{ data.costings.sums.ice_advalorem | round(2)}}</th>
         <th nowrap class="text-right">$ {{ data.costings.sums.total_ice | round(2)}}</th>
         <th nowrap class="text-right">$ {{ data.costings.sums.prorrateos_total | round(2)}}</th>
         <th nowrap class="text-right">$ {{ data.costings.sums.costo_total | round(2)}}</th>

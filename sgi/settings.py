@@ -115,10 +115,10 @@ WSGI_APPLICATION = 'sgi.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        #'NAME': 'cordovezApp',
+        'NAME': 'cordovezApp',
         #'NAME': 'imnacApp',
         #'NAME': 'vidApp',
-        'NAME': 'cordovezAppTEST',
+        #'NAME': 'cordovezAppTEST',
         'USER' : 'appCordovez',
         'PASSWORD' : '\DBGfW<7;vBa5(LB',
         'HOST': '192.168.0.198',
@@ -190,6 +190,6 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.sep.join(os.path.abspath(__file__).split(os.sep)[:-2]+['media'])
 MEDIA_URL = '/media/'
 
-GRAPPELLI_ADMIN_TITLE = "CORDOVEZ S.A."
+GRAPPELLI_ADMIN_TITLE = "A&R CORDOVEZ S.A."
 #GRAPPELLI_ADMIN_TITLE = "IMNAC CIA LTDA"
 #GRAPPELLI_ADMIN_TITLE = "VID INTERNACIONAL"

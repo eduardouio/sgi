@@ -86,7 +86,7 @@ class InfoInvoiceDetail(models.Model):
     history = HistoricalRecords()
 
     def __str__(self):
-        return self.nro_factura_informativa
+        return str(self.id_factura_informativa)
 
     class Meta:
         #managed = False

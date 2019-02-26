@@ -106,19 +106,40 @@ class CostingsPartial(object):
             (line_item.nro_cajas * line_item.costo_caja) 
             / self.current_partial['info_invoice']['totals']['value']
             )
+   
         line_item.etiquetas_fiscales = (
-                        line_item.nro_cajas 
-                        * line_item.cantidad_x_caja
-                        * self.rates['base_etiquetas']
-            ) 
+                    line_item.nro_cajas 
+                    * line_item.cantidad_x_caja
+                    * self.rates['base_etiquetas']
+            )
+
+        if line_item.detalle_pedido_factura_id == 177:
+            line_item.etiquetas_fiscales = (line_item.nro_cajas 
+                    * line_item.cantidad_x_caja
+                    * Decimal(0.195)
+            )
         line_item.ex_aduana = (
-            line_item.ex_aduana_antes
+              line_item.cif
+            + line_item.fodinfa
+            + line_item.arancel_advalorem_pagar
+            + line_item.arancel_especifico_pagar
             + line_item.etiquetas_fiscales
             + line_item.tasa_control
             )
+
+        print('---------------')
+        print(line_item.detalle_pedido_factura)
+        print(type(line_item.detalle_pedido_factura))
+        print('CIF -> {}'.format(line_item.cif))
+        print('Fondinfa -> {}'.format(line_item.fodinfa))
+        print('Arancel_adv -> {}'.format(line_item.arancel_advalorem_pagar))
+        print('Arancel_esp -> {}'.format(line_item.arancel_especifico_pagar))
+        print('etiquetas -> {}'.format(line_item.etiquetas_fiscales ))
+        print('tasa -> {}'.format(line_item.tasa_control))
+        print('Exaduana -> {}'.format(line_item.ex_aduana))
+        print('---------------')
         line_item.ex_aduana_unitario = (line_item.ex_aduana / line_item.unidades)
         line_item.base_advalorem_reliquidado = (self.rates['base_ice_advalorem'] * (line_item.capacidad_ml/1000))
-        print(self.rates['base_ice_advalorem'])
         if line_item.ex_aduana_unitario > line_item.base_advalorem_reliquidado:
             line_item.ice_advalorem_reliquidado = (
                 (line_item.ex_aduana_unitario - line_item.base_advalorem_reliquidado)
@@ -146,8 +167,9 @@ class CostingsPartial(object):
 
         line_item.prorrateo_parcial = (
             self.apportionment_expenses['apportionment'].almacenaje_aplicado 
-            * line_item.fob_percent
-            )
+            + (self.apportionment_expenses['apportionment'].gastos_origen_aplicado)
+            ) * line_item.fob_percent
+
         line_item.prorrateo_pedido = ((
             self.apportionment_expenses['total_aplicado_sin_tributos'] * line_item.fob_percent) 
             +  line_item.fodinfa

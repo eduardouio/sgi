@@ -88,12 +88,13 @@ class Partial(models.Model):
         managed = True
         db_table = 'parcial'
         verbose_name_plural = 'Parciales'
-        ordering = ['nro_pedido', 'id_parcial']
+        ordering = ['id_parcial']
 
 
     @property
     def ordinal_parcial(self):
         return self.get_ordinal_number(self.id_parcial)
+
 
     @property
     def partial_url(self):

@@ -116,14 +116,15 @@ class ApportionmentExpenses(object):
         }
         fobs['fob_inicial'] = self.complete_order_info['order_invoice']['totals']['value'] * self.complete_order_info['tipo_cambio_trimestral']
         fobs['fob_parcial'] = self.current_partial_data['info_invoice']['totals']['value'] * self.complete_order_info['tipo_cambio_trimestral']
-        fobs['gastos_origen_incial'] = self.complete_order_info['order'].gasto_origen * self.complete_order_info['tipo_cambio_trimestral']
+        if self.complete_order_info['order'].regimen == 'FOB':
+            fobs['gastos_origen_incial'] = self.complete_order_info['order'].gasto_origen * self.complete_order_info['tipo_cambio_trimestral']
 
         if self.ordinal_current_partial > 1:
             fobs['fob_saldo'] = self.complete_order_info['last_apportionment'].fob_proximo_parcial
             fobs['gastos_origen_anterior_parcial'] = self.complete_order_info['last_apportionment'].gastos_origen_proximo_parcial
         else:
             fobs['fob_saldo'] = fobs['fob_inicial']
-            fobs['gastos_origen_incial'] = fobs['gastos_origen_incial']
+            fobs['gastos_origen_anterior_parcial'] = fobs['gastos_origen_incial']
 
         fobs['fob_parcial_razon_saldo'] = fobs['fob_parcial'] / fobs['fob_saldo']
         fobs['fob_parcial_razon_inicial'] = fobs['fob_parcial'] / fobs['fob_inicial']
