@@ -1,12 +1,13 @@
 <div role="tabpanel" class="tab-pane active" id="facturas-informativas">
    <div class="row">
-      <div class="col-sm-3">
+<!--      <div class="col-sm-3">
          <a href="/admin/partials/partial/add/" class="btn btn-outline-primary btn-sm">
             <fa class="fas fa-plus"></fa>
             Nuevo Parcial
          </a>
          <br>
       </div>
+      -->
    </div>
    <div class="row">
       <div class="col-sm-12">
@@ -27,6 +28,7 @@
             </thead>
             <tbody>
             {% for partial in data.order_info.partials %}
+            {% if partial.bg_isliquidated %}
                 <tr>
                     <td> {{ loop.index }} 
                   <a href="/admin/partials/partial/{{partial}}/change/">
@@ -55,6 +57,7 @@
                     <td>{{ partial.nro_pedido }}</td>
                     <td class="text-center"> <a href="/costos/parcial/{{ data.order_info.order.nro_pedido }}/{{ loop.index }}/" class="btn btn-outline-dark btn-sm"><i class="fas fa-cart-arrow-down"></i></a></td>
                 </tr>
+                {% endif %}
             {% endfor %}
             </tbody>
          </table>

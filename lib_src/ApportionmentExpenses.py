@@ -130,6 +130,7 @@ class ApportionmentExpenses(object):
         fobs['fob_parcial_razon_inicial'] = fobs['fob_parcial'] / fobs['fob_inicial']
         fobs['porcentaje_parcial'] = fobs['fob_parcial_razon_inicial']
         fobs['fob_proximo_parcial'] =  fobs['fob_saldo'] - fobs['fob_parcial']
+        
         if self.complete_order_info['order'].incoterm != 'CFR':
             fobs['gastos_origen_aplicado'] = fobs['gastos_origen_incial'] * fobs['fob_parcial_razon_inicial']
             fobs['gastos_origen_proximo_parcial'] = fobs['gastos_origen_anterior_parcial'] -  fobs['gastos_origen_aplicado']
@@ -219,7 +220,6 @@ class ApportionmentExpenses(object):
             else:
                 loggin('i', '{} no tiene valor'.format(pt['name']))
             
-
         return apportionment_expenses
     
 

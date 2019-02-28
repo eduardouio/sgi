@@ -66,10 +66,10 @@ class CostingsPartial(object):
         self.incoterm = self.complete_order_info['order'].incoterm
         self.origin_expenses = self.complete_order_info['order'].gasto_origen
         return {
-            'base_etiquetas' : self.complete_order_info['order'].base_etiquetas,
+            'base_etiquetas' : self.current_partial['partial'].base_etiquetas,
             'base_ice_advalorem' : self.current_partial['partial'].base_ice_advalorem,
-            'porcentaje_ice_advalorem' : self.complete_order_info['order'].porcentaje_ice_advalorem,
-            'base_fodinfa' : self.complete_order_info['order'].base_fodinfa,
+            'porcentaje_ice_advalorem' : self.current_partial['partial'].porcentaje_ice_advalorem,
+            'base_fodinfa' : self.current_partial['partial'].base_fodinfa,
             'tipo_cambio_trimestral' : self.complete_order_info['order_invoice']['order_invoice'].tipo_cambio,
         }
 
@@ -127,20 +127,9 @@ class CostingsPartial(object):
             + line_item.etiquetas_fiscales
             + line_item.tasa_control
             )
-
-        print('---------------')
-        print(line_item.detalle_pedido_factura)
-        print(type(line_item.detalle_pedido_factura))
-        print('CIF -> {}'.format(line_item.cif))
-        print('Fondinfa -> {}'.format(line_item.fodinfa))
-        print('Arancel_adv -> {}'.format(line_item.arancel_advalorem_pagar))
-        print('Arancel_esp -> {}'.format(line_item.arancel_especifico_pagar))
-        print('etiquetas -> {}'.format(line_item.etiquetas_fiscales ))
-        print('tasa -> {}'.format(line_item.tasa_control))
-        print('Exaduana -> {}'.format(line_item.ex_aduana))
-        print('---------------')
         line_item.ex_aduana_unitario = (line_item.ex_aduana / line_item.unidades)
         line_item.base_advalorem_reliquidado = (self.rates['base_ice_advalorem'] * (line_item.capacidad_ml/1000))
+
         if line_item.ex_aduana_unitario > line_item.base_advalorem_reliquidado:
             line_item.ice_advalorem_reliquidado = (
                 (line_item.ex_aduana_unitario - line_item.base_advalorem_reliquidado)

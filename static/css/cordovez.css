@@ -502,6 +502,22 @@ th {
 	}
 
 	.nav-pills .nav-link.active{
-		color : #000;
-		background-color: #dedede
+		color: darkred;
+    background-color: #fff;
+    border-top: 1px solid;
+    border-top-color: dimgrey;
+    border-left: 1px solid;
+    border-left-color: dimgrey;
+    border-right: 1px solid;
+    border-right-color: dimgrey;
+    border-radius: 1.5px;
+}
+
+	.my-tabs {
+		border-top: 1px solid;
+    border-left: 1px solid;
+    border-right: 1px solid;
+    border-top-color: #d0d0d0;
+    border-right-color: #d0d0d0;
+    border-left-color: #d0d0d0;
 	}
