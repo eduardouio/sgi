@@ -120,17 +120,19 @@
                               <td class="text-right">  ${ 0 | money }</td>
                               <td class="text-right">  ${ complete_order_info.order_invoice.order_invoice.valor_tasa_trimestral | money }</td>
                            </tr>
+                           {% if data.complete_order_info.order.incoterm == 'FOB' %}
                            <tr @click="showOriginExpense()">
                               <td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td>
                               <td>
                                  <small class="text-success"><i class="fa fa-check-circle"></i></small>
                                  GASTOS ORIGEN
                               </td>
-                              <td class="text-right">  ${ complete_order_info.order.gasto_origen | money } </td>
-                              <td class="text-right">  ${ complete_order_info.order.gasto_origen | money } </td>
+                              <td class="text-right">  ${ complete_order_info.origin_expenses_tct | money } </td>
+                              <td class="text-right">  ${ complete_order_info.origin_expenses_tct | money } </td>
                               <td class="text-right">  ${ 0 | money }</td>
-                              <td class="text-right">  ${ complete_order_info.order.gasto_origen | money }</td>
+                              <td class="text-right">  ${ (complete_order_info.origin_expenses_tct ) | money }</td>
                            </tr>
+                           {% endif %}
                            <tr v-for="item in complete_order_info.expenses" @click="selectExpense(item)">
                               <td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td>
                               <td>
@@ -318,7 +320,7 @@
               <div class="text-tittle">GASTOS EN ORIGEN DEL PEDIDO</div>
                <div class="row">
                   <div class="col-7">
-                     <h6 class="text-dark">${ complete_order_info.order.gasto_origen }</h6>
+                     <h6 class="text-dark">${ complete_order_info.origin_expenses_tct }</h6>
                   </div>
                   <div class="col-5 text-right">
                      <small class="text-success" v-if="current_order_invoice.complete == true">
@@ -350,7 +352,7 @@
                               <td class="text-right">${ complete_order_info.order.proveedor }</td>
                               <td class="text-right">${ complete_order_info.order_invoice.order_invoice.id_factura_proveedor }</td>
                               <td class="text-right">${ complete_order_info.order_invoice.order_invoice.fecha_emision }</td>
-                              <td class="text-right">${ complete_order_info.order.gasto_origen }</td>
+                              <td class="text-right">${ complete_order_info.origin_expenses_tct | money}</td>
                               <td class="text-right"><div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input" checked>
                         <label class="custom-control-label">                    
@@ -360,7 +362,7 @@
                            </tr>
                            <tr>
                               <th colspan="4">Sumas</th>
-                              <th>${ complete_order_info.order.gasto_origen }</th>
+                              <th>$ ${ complete_order_info.origin_expenses_tct | money }</th>
                               <th></th>
                            </tr>
                         </tbody>
@@ -368,11 +370,11 @@
                      <br>
                      <div class="row">
                         <div class="col-4 text-center">
-                           <h6>$ ${ complete_order_info.order.gasto_origen | money }</h6>
+                           <h6>$ ${ complete_order_info.origin_expenses_tct | money }</h6>
                            <span class="text-secondary">Monto Gasto</span>
                         </div>
                         <div class="col-4 text-center">
-                           <h6>$  ${ complete_order_info.order.gasto_origen | money }</h6>
+                           <h6>$  ${ complete_order_info.origin_expenses_tct | money }</h6>
                            <span class="text-success">Justificado</span>
                         </div>
                         <div class="col-4 text-center">
