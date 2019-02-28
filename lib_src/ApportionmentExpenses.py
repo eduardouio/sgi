@@ -116,7 +116,8 @@ class ApportionmentExpenses(object):
         }
         fobs['fob_inicial'] = self.complete_order_info['order_invoice']['totals']['value'] * self.complete_order_info['tipo_cambio_trimestral']
         fobs['fob_parcial'] = self.current_partial_data['info_invoice']['totals']['value'] * self.complete_order_info['tipo_cambio_trimestral']
-        if self.complete_order_info['order'].regimen == 'FOB':
+
+        if self.complete_order_info['order'].incoterm == 'FOB':
             fobs['gastos_origen_incial'] = self.complete_order_info['order'].gasto_origen * self.complete_order_info['tipo_cambio_trimestral']
 
         if self.ordinal_current_partial > 1:

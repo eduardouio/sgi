@@ -10,7 +10,7 @@ class CostingsPartial(object):
     
     def __init__(self, *args, **kwargs):
         '''Retorna los valores de reliquidacion para un pedido
-        
+
         Arguments:
         complete_order_info {dict} : informacion completa de un pedido
         '''
@@ -24,10 +24,9 @@ class CostingsPartial(object):
         self.total_items = 0
         self.rates = self.set_rates()
         self.ice_reliquidado = 0
+
     
-    
-    def get_costs(self):
-        
+    def get_costs(self):     
         '''Realiza el costeo del producto en base a los costos indirectos
             y costos adicionales en la liquidacion, de forma adicional 
             realiza el calculo de pago de ice advalorem reliquidado
@@ -64,7 +63,9 @@ class CostingsPartial(object):
     def set_rates(self):
         ''' inicializa las variables de calculo  '''
         self.incoterm = self.complete_order_info['order'].incoterm
-        self.origin_expenses = self.complete_order_info['order'].gasto_origen
+        if self.incoterm == 'FOB':
+            self.origin_expenses = self.apportionment_expenses['apportionment'].gastos_origen_aplicado
+
         return {
             'base_etiquetas' : self.current_partial['partial'].base_etiquetas,
             'base_ice_advalorem' : self.current_partial['partial'].base_ice_advalorem,
@@ -149,12 +150,8 @@ class CostingsPartial(object):
         self.ice_reliquidado += line_item.total_ice
         line_item.ice_advalorem_diferencia = 0
         line_item.gastos_origen_tasa_trimestral = 0
+        line_item.gastos_origen_tasa_trimestral = (self.origin_expenses * line_item.fob_percent)
         
-        if self.incoterm == 'FOB':
-            line_item.gastos_origen_tasa_trimestral = (
-                self.origin_expenses * line_item.fob_percent
-                )
-
         line_item.prorrateo_parcial = (
             self.apportionment_expenses['apportionment'].almacenaje_aplicado 
             + (self.apportionment_expenses['apportionment'].gastos_origen_aplicado)
