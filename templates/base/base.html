@@ -14,9 +14,8 @@
 	  <link rel="shortcut icon" href="{{ static('favicon.ico') }} type="image/x-icon"/>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
     <script>
-      var host = 'http://localhost:8000/'
+      var host = 'http://{{ data.host }}'
     </script>
-      <!-- var host = 'http://192.168.0.198:5003/' -->
     {% block header %} {% endblock %}
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <title>{{ data.title_page }}</title>
@@ -82,6 +81,7 @@
   <div class="col-12 text-right" style="line-height: 1">
   <div style="border-right:0.04rem solid teal;padding:0.3rem">
   <small>
+        http://{{ data.host }}  
         🏢 &copy;Todos los Derechos reservados AGENCIAS Y REPRESENTACIONES CORDOVEZ S.A.<br>
         💻: Eduardo Villota M.
         <br />

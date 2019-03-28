@@ -1,1 +1,18 @@
-{{ form }}
+{% extends 'base/base.html' %}
+{% block title_content %}
+<div class="row border">
+   <div class="col-7">
+      <i class="fa fa-folder"></i> 
+	  <span>
+	  	Asistente para subir archivos a Pedidos o Parciales
+	  </span>		      
+   </div>
+   <div class="col-5 text-right">
+	Gestor de Archivos
+   </div>
+</div>
+
+{% endblock title_content %}
+{% block content %}
+	{{ data.form }}
+{% endblock content %}

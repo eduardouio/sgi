@@ -1,1 +1,1 @@
-from filemanager.views.UploadFileFormView import UploadFileFormView
+from filemanager.views.UploadFileView import UploadFileView
