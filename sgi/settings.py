@@ -114,6 +114,7 @@ WSGI_APPLICATION = 'sgi.wsgi.application'
 
 DATABASES = {
     'default': {
+        #'ENGINE': 'django.db.backends.mysql',
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': 'db.sqlite3',
         #'NAME': 'imnacApp',
@@ -123,7 +124,7 @@ DATABASES = {
         #'PASSWORD' : '\DBGfW<7;vBa5(LB',
         #'HOST': '179.49.60.158',
         #'HOST': '127.0.0.1',
-        #'PORT' : '3306',
+        'PORT' : '3306',
     }
 }
 

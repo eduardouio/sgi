@@ -43,3 +43,4 @@ from api.views.Product import (ProductCreateView, ProductDeleteView,
                                ProductDetailView, ProductUpdateView)
 from api.views.Suppliers import (SupplierCreateView, SupplierDeleteView,
                                  SupplierDetailView, SupplierUpdateView)
+from api.views.AllOrders import AllOrders

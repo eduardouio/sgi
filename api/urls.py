@@ -31,7 +31,7 @@ from api.views import (ApportionmenCreateView, ApportionmenDeleteView,
                        ProductCreateView, ProductDeleteView, ProductDetailView,
                        ProductUpdateView, SupplierCreateView,
                        SupplierDeleteView, SupplierDetailView,
-                       SupplierUpdateView)
+                       SupplierUpdateView, AllOrders,)
 
 app_name = 'api'
 
@@ -72,7 +72,6 @@ urlpatterns = [
     path('order/detail/<pk>/', OrderDetailView.as_view(), name='detail-order'),
     path('order/update/<pk>/', OrderUpdateView.as_view(), name='update-order'),
     path('order/all-data/<nro_order>/', GetCompleteOrderInfoAPIView.as_view(), name='complete-order-data'),
-
     #OrderInvoice
     path('order-invoice/create/', OrderInvoiceCreateView.as_view(), name='create-order-invoice'),
     path('order-invoice/delete/<pk>/', OrderInvoiceDeleteView.as_view(), name='delete-order-invoice'),
@@ -110,4 +109,6 @@ urlpatterns = [
     path('suppliers/delete/<pk>/', SupplierDeleteView.as_view(), name='delete-suppliers' ),
     path('suppliers/detail/<pk>/', SupplierDetailView.as_view(), name='detail-suppliers' ),
     path('suppliers/update/<pk>/', SupplierUpdateView.as_view(), name='update-suppliers' ),
+    #utils
+    path('orders/all/', AllOrders.as_view(), name="all-orders-list"),
 ]

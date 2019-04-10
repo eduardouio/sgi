@@ -11,6 +11,7 @@ class CompleteOrderTemplateView(LoginRequiredMixin, TemplateView):
     ''' 
         Vista encargada de mostrar toda la informacion del pedido
     '''
+    login_url = '/admin/'
     template_name = 'orders/ver_pedido.html'
 
     def get(self,request, nro_order, *args, **kwargs):
