@@ -85,7 +85,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.jinja2.Jinja2',
         'DIRS': ['templates/'],
-        'APP_DIRS': False,
+        'APP_DIRS': True,
         'OPTIONS': {
             'environment': 'jinja2_bridge.environment',
             'context_processors': [
@@ -114,15 +114,15 @@ WSGI_APPLICATION = 'sgi.wsgi.application'
 
 DATABASES = {
     'default': {
-        #'ENGINE': 'django.db.backends.mysql',
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        #'ENGINE': 'django.db.backends.sqlite3',
+        #'NAME': 'db.sqlite3',
         #'NAME': 'imnacApp',
         #'NAME': 'vidApp',
-        #'NAME': 'cordovezAppTEST',
-        #'USER' : 'appCordovez',
-        #'PASSWORD' : '\DBGfW<7;vBa5(LB',
-        #'HOST': '179.49.60.158',
+        'NAME': 'cordovezAppTEST',
+        'USER' : 'appCordovez',
+        'PASSWORD' : '\DBGfW<7;vBa5(LB',
+        'HOST': '179.49.60.158',
         #'HOST': '127.0.0.1',
         'PORT' : '3306',
     }
