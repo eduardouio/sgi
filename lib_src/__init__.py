@@ -4,7 +4,6 @@ from lib_src.CompletePaidInfo import CompletePaidInfo
 from lib_src.CompletePartialInfo import CompletePartialInfo
 from lib_src.CostingsOrder import CostingsOrder
 from lib_src.CostingsPartial import CostingsPartial
-from lib_src.DownloadInternetFile import UpdateFiles
 from lib_src.OrderSale import OrderSale
 from lib_src.ReliquidateICE import ReliquidateICE
 from lib_src.serializers import (ApportionmentDetailSerializer,

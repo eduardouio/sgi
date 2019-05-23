@@ -1,0 +1,164 @@
+{% extends 'base/base.html' %}
+{% block title_content %}
+<div class="row border">
+   <div class="col-4">
+      <i class="fa fa-folder"></i>
+      <small><i class="fas fa-user"></i> ASISTENTE DE IMPORTACIONES</small> 
+   </div>
+   <div class="col-8 text-right">
+      <span>Eduardo Villota Montenegro</span>
+   </div>
+</div>
+{% endblock title_content %}
+{% block content %}
+<div class="row">
+   <div class="col-4">
+      <div class="text-tittle">
+         Pedidos Almagro y Consumo Fase incial
+      </div>
+      <table class="table table-condensed">
+         <thead>
+            <tr>
+               <th>#</th>
+               <th>Detalle</th>
+               <th>Acción</th>
+            </tr>
+         </thead>
+         <tbody>
+            <tr>
+               <td>1</td>
+               <td><i class="fas fa-boxes"></i> Información incial de pedido</td>
+               <td class="text-center">
+                  <a href="" class="btn btn-primary"> <i class="fas fa-check"></i> Continuar </a>
+               </td>
+            </tr>
+            <tr>
+               <td>2</td>
+               <td><i class="fas fa-ship"></i> Registrar fecha de llegada a puerto</td>
+               <td class="text-center">
+                  <a href="" class="btn btn-primary"> <i class="fas fa-check"></i> Continuar </a>
+               </td>
+            </tr>
+              <tr>
+               <td>4</td>
+               <td><i class="fas fa-upload"></i> Cargar liquidación y/o DAI</td>
+               <td class="text-center">
+                  <a href="" class="btn btn-primary"> <i class="fas fa-check"></i> Continuar </a>
+               </td>
+            <tr>
+               <td>3</td>
+               <td><i class="fas fa-warehouse"></i> Notificar llegada Almagro <strong class="text-danger">[Sin Timbres]</strong></td>
+               <td class="text-center">
+                  <a href="" class="btn btn-primary"> <i class="fas fa-check"></i> Continuar </a>
+               </td>
+            </tr>   
+            <tr>
+               <td>5</td>
+               <td><i class="fas fa-sticky-note"></i> Agregar notas en parcial</td>
+               <td class="text-center">
+                  <a href="" class="btn btn-info"> <i class="fas fa-check"></i> Continuar </a>
+               </td>
+            </tr>                    
+            <tr>
+               <td>6</td>
+               <td><i class="fas fa-home"></i> Aviso llegada a bodega Vinesa <strong class="text-danger">[Sin Timbres]</strong></td>
+               <td class="text-center">
+                  <a href="" class="btn btn-primary"> <i class="fas fa-check"></i> Continuar </a>
+               </td>
+            </tr>                          
+            </tr>
+         </tbody>
+      </table>
+   </div>
+  <div class="col-4">
+      <div class="text-tittle">
+         nacionalizaciones parciales almagro
+      </div>
+      <table class="table table-condensed">
+         <thead>
+            <tr>
+               <th>#</th>
+               <th>Detalle</th>
+               <th>Acción</th>
+            </tr>
+         </thead>
+         <tbody>
+            <tr>
+               <td>1</td>
+               <td><i class="fas fa-file-invoice"></i> Solicitar Factura Informativa</td>
+               <td class="text-center">
+                  <a href="" class="btn btn-info"> <i class="fas fa-check"></i> Continuar </a>
+               </td>
+            </tr>
+                 <tr>
+               <td>2</td>
+               <td><i class="fas fa-puzzle-piece"></i> Información incial del parcial</td>
+               <td class="text-center">
+                  <a href="" class="btn btn-info"> <i class="fas fa-check"></i> Continuar </a>
+               </td>
+            <tr>
+                 <tr>
+               <td>3</td>
+               <td><i class="fas fa-upload"></i> Cargar liquidación y/o DAI</td>
+               <td class="text-center">
+                  <a href="/importaciones/subir/" class="btn btn-info"> <i class="fas fa-check"></i> Continuar </a>
+               </td>
+            <tr>
+            <tr>
+               <td>4</td>
+               <td><i class="fas fa-tags"></i> Confirmar Pegado Etiquetas y Solicitar Aforo</td>
+               <td class="text-center">
+                  <a href="" class="btn btn-info"> <i class="fas fa-check"></i> Continuar </a>
+               </td>
+            </tr>           
+            <tr>
+               <td>5</td>
+               <td><i class="fas fa-sticky-note"></i> Agregar notas en parcial</td>
+               <td class="text-center">
+                  <a href="" class="btn btn-info"> <i class="fas fa-check"></i> Continuar </a>
+               </td>
+            </tr>           
+            <tr>
+               <td>6</td>
+               <td><i class="fas fa-home"></i> Enviar Aviso Salida Autorizada Almagro <strong class="text-success">[Con Timbres]</strong></td>
+               <td class="text-center">
+                  <a href="" class="btn btn-info"> <i class="fas fa-check"></i> Continuar </a>
+               </td>
+            </tr>           
+         </tbody>
+      </table>
+   </div>
+     <div class="col-4">
+      <div class="text-tittle">
+         justificaciones y provisiones iniciales y parciales
+      </div>
+      <table class="table table-condensed">
+         <thead>
+            <tr>
+               <th>#</th>
+               <th>Detalle</th>
+               <th>Acción</th>
+            </tr>
+         </thead>
+         <tbody>
+            <tr>
+               <td>1</td>
+               <td><i class="fas fa-file-invoice-dollar"></i> Registro de factura</td>
+               <td class="text-center">
+                  <a href="" class="btn btn-secondary"> <i class="fas fa-check"></i> Continuar </a>
+               </td>
+            </tr>
+            <tr>
+               <td>2</td>
+               <td><i class="fas fa-undo-alt"></i>
+                  Rechazar factura y notificar a proveedor
+                </td>
+               <td class="text-center">
+                  <a href="" class="btn btn-secondary"> <i class="fas fa-check"></i> Continuar </a>
+               </td>
+            </tr>          
+         </tbody>
+      </table>
+   </div>
+</div>
+{% endblock content %}

@@ -1,1 +1,2 @@
-from importations.views.UploadFiles import FileUploadFormView
+from importations.views.FileUploadFormView import FileUploadFormView
+from importations.views.AssitantTemplateView import AssistantTemplateView

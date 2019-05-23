@@ -377,9 +377,9 @@ body {
 .text-tittle {
 	width: 100%;
 	/**background-color: #337ab7;**/
-	background-color: #005092;	
+	background-color: #666eee;	
 	color: #fff;
-	border-radius: 5px;
+	border-radius: 1px;
 	text-transform: uppercase;
 	text-align: center;
 }
@@ -388,7 +388,7 @@ body {
 	width: 100%;
 	background-color:#639657 ;	
 	color: #fff;
-	border-radius: 5px;
+	border-radius: 1px;
 	text-transform: uppercase;
 	text-align: center;
 }
@@ -397,7 +397,7 @@ body {
 	width: 100%;
 	background-color: #444;
 	color: #fff;
-	border-radius: 5px;
+	border-radius: 1px;
 	text-transform: uppercase;
 	text-align: center;
 }

@@ -8,6 +8,9 @@ class FileUploadFormView(TemplateView):
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data()
-        print('Se ejectut')
-        context['data'] = {}
+        order = Order()
+        context['data'] = {
+        	'title_page' : 'Subir Archivos A Parcial',
+        	'open_orders' : order.get_open_orders(),
+        }
         return self.render_to_response(context)
