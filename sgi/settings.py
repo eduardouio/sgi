@@ -102,7 +102,7 @@ TEMPLATES = [
 ]
 
 REST_FRAMEWORK = {
-'DEFAULT_PERMISSION_CLASSES': (
+    'DEFAULT_PERMISSION_CLASSES': (
     'rest_framework.permissions.IsAuthenticated',
 )
 }
@@ -114,7 +114,7 @@ WSGI_APPLICATION = 'sgi.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        #'ENGINE': 'django.db.backends.mysql',
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': 'db.sqlite3',
         #'NAME': 'cordovezAppTEST',
