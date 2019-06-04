@@ -11,7 +11,7 @@ from simple_history.models import HistoricalRecords
 class FileManager(models.Model):
     id_archivo = models.AutoField(primary_key=True)
     modelo = models.ForeignKey(ContentType, db_column='model', on_delete=models.CASCADE)
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)  
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     id_registro = models.CharField(max_length=10)
     archivo = models.FileField(upload_to='archivos/')
     nombre_fichero = models.CharField(max_length=125)

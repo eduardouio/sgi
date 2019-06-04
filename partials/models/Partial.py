@@ -27,7 +27,7 @@ class Partial(models.Model):
     proximo_almacenaje_desde = models.DateField(blank=True, null=True)
     otros = models.DecimalField(max_digits=8, decimal_places=3, blank=True, default=0)
     observaciones = models.CharField(max_length=250, blank=True, null=True)
-    tipo_cambio = models.DecimalField(max_digits=15, decimal_places=10, default=0)
+    tipo_cambio = models.DecimalField(max_digits=15, decimal_places=10, default=1)
     nro_refrendo = models.CharField(max_length=22, blank=True, null=True)
     exoneracion_arancel = models.DecimalField(max_digits=8, decimal_places=2, blank=True, default=0)
     fodinfa = models.DecimalField(max_digits=10, decimal_places=3, blank=True, default=0)
