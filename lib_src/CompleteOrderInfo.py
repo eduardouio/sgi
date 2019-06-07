@@ -95,6 +95,9 @@ class CompleteOrderInfo(object):
             'total_invoiced' : self.total_invoiced + self.init_ledger,
             'total_provisions' : self.total_provisions,
             'last_apportionment' : self.last_apportionment,
+            'costs' : {
+                'sums' : 0,
+            }
             }
 
 

@@ -127,7 +127,7 @@ var app = new Vue({
         },
     },
     mounted() {
-            this.$http.get(host + 'api/order/all-data/{{ data.order.nro_pedido }}/', {params: {}}).then(response => {          
+            this.$http.get( 'http://localhost:8000/api/order/all-data/{{ data.order.nro_pedido }}/', {params: {}}).then(response => {          
             this.order_data = response.body 
             this.ajax_request = false
             this.updateLedger()

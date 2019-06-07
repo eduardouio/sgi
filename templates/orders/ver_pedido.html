@@ -61,7 +61,7 @@
                   <td style="width:100px;" class="text-right bg-light">Registrado Por:</td>
                   <td>Pendiete</td>
                   <td style="width:100px;" class="text-right bg-light">Fecha Registro:</td>
-                  <td>{{ data.order_info.order.date_create.strftime('%d/%m/%Y') }}</td>
+                  <td>{{ data.order_info.order.date_create.strftime('%d/%m/%Y')  if data.order_info.order.date_create is not none else ''}}</td>
                </tr>
                <tr>
                   <td style="width:100px;" class="text-right bg-light">Comentarios:</td>
