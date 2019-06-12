@@ -2,6 +2,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.db.models import QuerySet
 from simple_history.models import HistoricalRecords
+from django.utils import timezone
 
 from logs.app_log import loggin
 from orders.models.Order import Order
@@ -28,7 +29,7 @@ class InfoInvoice(models.Model):
     bg_gst_origen_por_factura = models.IntegerField()
     factura_informativa = models.FileField(blank=True,null=True, upload_to='factura_informativa/'),
     id_user = models.SmallIntegerField(default=0)
-    date_create = models.DateTimeField(blank=True, null=True)
+    date_create = models.DateTimeField(blank=True, null=True, default=timezone.now)
     last_update = models.DateTimeField(blank=True, null=True)
     history = HistoricalRecords()
 

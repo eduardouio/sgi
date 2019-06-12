@@ -1,6 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.db.models.fields import FloatField
+from django.utils import timezone
 from simple_history.models import HistoricalRecords
 
 from logs.app_log import loggin
@@ -81,7 +82,7 @@ class InfoInvoiceDetail(models.Model):
     unidades = models.DecimalField(max_digits=20, decimal_places=13, default=0)
     unidades_importadas = models.DecimalField(max_digits=20, decimal_places=13, default=0)
     id_user = models.SmallIntegerField(default=0)
-    date_create = models.DateTimeField(blank=True, null=True)
+    date_create = models.DateTimeField(blank=True, null=True, default=timezone.now)
     last_update = models.DateTimeField(blank=True, null=True)
     history = HistoricalRecords()
 

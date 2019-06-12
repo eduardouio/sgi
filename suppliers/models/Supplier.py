@@ -2,6 +2,7 @@ from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 from simple_history.models import HistoricalRecords
 from logs.app_log import loggin
+from django.utils import timezone
 
 class Supplier(models.Model):
     identificacion_proveedor = models.CharField(primary_key=True, max_length=16)
@@ -11,7 +12,7 @@ class Supplier(models.Model):
     categoria = models.CharField(max_length=250)
     comentarios = models.CharField(max_length=250, blank=True, null=True)
     id_user = models.SmallIntegerField(blank=True, null=True, default=0)
-    date_create = models.DateTimeField(blank=True, null=True)
+    date_create = models.DateTimeField(blank=True, null=True, default=timezone.now)
     last_update = models.DateTimeField(blank=True, null=True)
     history = HistoricalRecords()
 

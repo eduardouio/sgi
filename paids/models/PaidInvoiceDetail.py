@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from simple_history.models import HistoricalRecords
 
 from logs.app_log import loggin
@@ -14,7 +15,7 @@ class PaidInvoiceDetail(models.Model):
     bg_isnotprovisioned = models.IntegerField(default=0)
     bg_mayor = models.SmallIntegerField(default=0)
     id_user = models.SmallIntegerField(default=0)
-    date_create = models.DateTimeField(blank=True, null=True)
+    date_create = models.DateTimeField(blank=True, null=True, default=timezone.now)
     last_update = models.DateTimeField(blank=True, null=True)
     history = HistoricalRecords()
 

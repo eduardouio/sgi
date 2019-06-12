@@ -1,11 +1,12 @@
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-
-from logs.app_log import loggin
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
+from django.utils import timezone
 from simple_history.models import HistoricalRecords
+
+from logs.app_log import loggin
 
 
 class FileManager(models.Model):
@@ -16,7 +17,7 @@ class FileManager(models.Model):
     archivo = models.FileField(upload_to='archivos/')
     nombre_fichero = models.CharField(max_length=125)
     obserbaciones = models.TextField(blank=True,null=True, default=None)
-    date_create = models.DateTimeField(blank=True, null=True, auto_now=True)
+    date_create = models.DateTimeField(blank=True, null=True, default=timezone.now)
     last_update = models.DateTimeField(blank=True, null=True)
     bg_isvalid = models.BooleanField(default=True)
     bg_isvisible = models.BooleanField(default=True)

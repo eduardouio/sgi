@@ -1,5 +1,6 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
+from django.utils import timezone
 from simple_history.models import HistoricalRecords
 
 from logs.app_log import loggin
@@ -77,7 +78,7 @@ class Partial(models.Model):
     bg_have_tasa_control = models.IntegerField(blank=True, null=True)
     id_user_cierre = models.PositiveSmallIntegerField(blank=True, null=True)
     id_user = models.SmallIntegerField(default=0)
-    date_create = models.DateTimeField(blank=True, null=True)
+    date_create = models.DateTimeField(blank=True, null=True, default=timezone.now)
     last_update = models.DateTimeField(blank=True, null=True)
     history = HistoricalRecords()
 

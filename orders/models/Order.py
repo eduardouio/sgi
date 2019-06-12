@@ -1,7 +1,10 @@
-from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
-from logs.app_log import loggin
+from django.db import models
+from django.utils import timezone
 from simple_history.models import HistoricalRecords
+
+from logs.app_log import loggin
+
 
 class Order(models.Model):
     nro_pedido = models.CharField(primary_key=True, max_length=6)
@@ -96,7 +99,7 @@ class Order(models.Model):
     bg_haveexpenses = models.IntegerField(db_column='bg_haveExpenses', blank=True, null=True, default=0)
     have_etiquetas_fiscales = models.IntegerField(blank=True, null=True, default=0)
     id_user = models.SmallIntegerField(default=0)
-    date_create = models.DateTimeField(blank=True, null=True)
+    date_create = models.DateTimeField(blank=True, null=True, default=timezone.now)
     last_update = models.DateTimeField(blank=True, null=True)
     history = HistoricalRecords()
 

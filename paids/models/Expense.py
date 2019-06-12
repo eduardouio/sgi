@@ -1,5 +1,6 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
+from django.utils import timezone
 from simple_history.models import HistoricalRecords
 
 from logs.app_log import loggin
@@ -25,7 +26,7 @@ class Expense(models.Model):
     bg_iscontabilizado_por = models.IntegerField(blank=True, null=True, default=0)
     bg_isdrop = models.BooleanField(blank=True,null=True,default=False) #indica si el gasto es arrastrado similar a los gastos de bodega
     id_user = models.SmallIntegerField(default=0)
-    date_create = models.DateTimeField(blank=True, null=True)
+    date_create = models.DateTimeField(blank=True, null=True, default=timezone.now)
     last_update = models.DateTimeField(blank=True, null=True)
     history = HistoricalRecords()
 

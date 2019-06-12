@@ -1,5 +1,7 @@
 from django.db import models
-from simple_history.models import HistoricalRecords    
+from django.utils import timezone
+from simple_history.models import HistoricalRecords
+
 
 class Migrations(models.Model):
     nro_pedido = models.CharField(primary_key=True, max_length=6)
@@ -40,6 +42,7 @@ class Migrations(models.Model):
     last_update = models.DateTimeField(blank=True, null=True)
     gasto_origen = models.DecimalField(max_digits=11, decimal_places=3, blank=True, null=True)
     docentry = models.IntegerField(blank=True, null=True)
+    date_create = models.DateTimeField(blank=True, null=True, default=timezone.now)
     history = HistoricalRecords()
 
     def __str__(self):

@@ -1,5 +1,6 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
+from django.utils import timezone
 from simple_history.models import HistoricalRecords
 
 from logs.app_log import loggin
@@ -81,6 +82,7 @@ class OrderInvoiceDetail(models.Model):
     total_ice = models.DecimalField(max_digits=20, decimal_places=13,default=0)
     unidades = models.DecimalField(max_digits=20, decimal_places=13,default=0)
     unidades_importadas = models.DecimalField(max_digits=20, decimal_places=13,default=0)
+    date_create = models.DateTimeField(blank=True, null=True, default=timezone.now)
     history = HistoricalRecords()
 
     def __str__(self):
@@ -131,6 +133,3 @@ class OrderInvoiceDetail(models.Model):
                 .format(id_order_invoice_detail)
                 )
             return None
-
-            
-

@@ -1,5 +1,7 @@
 from django.db import models
+from django.utils import timezone
 from simple_history.models import HistoricalRecords
+
 
 class RateIncoterm(models.Model):
     id_incoterm = models.AutoField(primary_key=True)
@@ -10,7 +12,7 @@ class RateIncoterm(models.Model):
     tarifa = models.DecimalField(max_digits=8, decimal_places=2)
     comentarios = models.CharField(max_length=250, blank=True, null=True)
     id_user = models.SmallIntegerField(default=0)
-    date_create = models.DateTimeField(blank=True, null=True)
+    date_create = models.DateTimeField(blank=True, null=True, default=timezone.now)
     last_update = models.DateTimeField(blank=True, null=True)
     history = HistoricalRecords()
 

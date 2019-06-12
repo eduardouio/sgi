@@ -1,5 +1,6 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
+from django.utils import timezone
 from simple_history.models import HistoricalRecords
 
 from logs import loggin
@@ -12,12 +13,12 @@ class PaidInvoice(models.Model):
     nro_factura = models.CharField(max_length=20)
     fecha_emision = models.DateField()
     valor = models.DecimalField(max_digits=8, decimal_places=2)
-    saldo = models.DecimalField(max_digits=16, decimal_places=3)
+    saldo = models.DecimalField(max_digits=20, decimal_places=13)
     comentarios = models.CharField(max_length=250)
     bg_closed = models.IntegerField(default=0)
     tipo = models.CharField(max_length=8)
     id_user = models.SmallIntegerField(default=0)
-    date_create = models.DateTimeField(blank=True, null=True)
+    date_create = models.DateTimeField(blank=True, null=True, default=timezone.now)
     last_update = models.DateTimeField(blank=True, null=True)
     history = HistoricalRecords()
 

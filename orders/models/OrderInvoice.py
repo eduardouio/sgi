@@ -1,9 +1,12 @@
-from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import models
+from django.utils import timezone
+from simple_history.models import HistoricalRecords
+
+from logs.app_log import loggin
 from orders.models.Order import Order
 from suppliers.models.Supplier import Supplier
-from logs.app_log import loggin
-from simple_history.models import HistoricalRecords
+
 
 class OrderInvoice(models.Model):
     id_pedido_factura = models.AutoField(primary_key=True)
@@ -14,17 +17,18 @@ class OrderInvoice(models.Model):
     fecha_emision = models.DateField(blank=True, null=True)
     valor = models.DecimalField(max_digits=20, decimal_places=13, blank=True, null=True)
     fob_tasa_trimestral = models.DecimalField(max_digits=20, decimal_places=13, blank=True, null=True)
-    moneda = models.CharField(max_length=45)
+    moneda = models.CharField(max_length=45, default="DOLARES")
     tipo_cambio = models.DecimalField(max_digits=20, decimal_places=13, default=1)
-    vencimiento_pago = models.DateField(blank=True, null=True)
-    fecha_pago = models.DateField(blank=True, null=True)
-    id_user = models.SmallIntegerField(default=0)
+    vencimiento_pago = models.DateField(blank=True, null=True, default=None)
+    fecha_pago = models.DateField(blank=True, null=True, default=None)
+    id_user = models.SmallIntegerField(blank=True, null=True, default=0)
     date_create = models.DateTimeField(blank=True, null=True)
     last_update = models.DateTimeField(blank=True, null=True)
     bg_isclosed = models.IntegerField(blank=True, null=True,default=0)
     gasto_origen = models.DecimalField(max_digits=20, decimal_places=13,default=0)
     gasto_origen_tasa_trimestral = models.DecimalField(max_digits=20, decimal_places=13, blank=True, null=True)
     factura_proveedor = models.FileField(blank=True,null=True, upload_to='factura_proveedor/'),
+    date_create = models.DateTimeField(blank=True, null=True, default=timezone.now)
     history = HistoricalRecords()
 
     def __str__(self):

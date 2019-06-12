@@ -2,6 +2,7 @@ from django.db import models
 from simple_history.models import HistoricalRecords
 
 from logs.app_log import loggin
+from django.utils import timezone
 from orders.models import Order
 from suppliers.models import Supplier
 
@@ -18,7 +19,7 @@ class RateExpense(models.Model):
     porcentaje = models.DecimalField(max_digits=7, decimal_places=4)
     comentarios = models.CharField(max_length=550, blank=True, null=True)
     id_user = models.SmallIntegerField(default=0)
-    date_create = models.DateTimeField(blank=True, null=True)
+    date_create = models.DateTimeField(blank=True, null=True, default=timezone.now)
     last_update = models.DateTimeField(blank=True, null=True)
     history = HistoricalRecords()
 

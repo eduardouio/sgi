@@ -15,7 +15,7 @@ class Product(models.Model):
     nombre_extrangero = models.CharField(max_length=120, blank=True, null=True, default=None)
     partida_arancelaria = models.CharField(max_length=15, blank=True, null=True , default=None)
     subpartida_arancelaria = models.CharField(max_length=15, blank=True, null=True, default=None)
-    tan_codigo = models.CharField(max_length=15, blank=True, null=True , default=None)
+    tnan_codigo = models.CharField(max_length=15, blank=True, null=True , default=None)
     cod_ice = models.CharField(max_length=39, default='SIN CODIDO ICE')
     capacidad_ml = models.SmallIntegerField(default=1)
     cantidad_x_caja = models.SmallIntegerField(default=1)

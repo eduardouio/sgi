@@ -12,10 +12,10 @@ class ApportionmentDetail(models.Model):
     id_gastos_nacionalizacion = models.PositiveIntegerField()
     tipo = models.CharField(max_length=13)
     concepto = models.CharField(max_length=90)
-    valor_prorrateado = models.DecimalField(max_digits=15, decimal_places=10, blank=True, null=True)
-    valor_provisionado = models.DecimalField(max_digits=17, decimal_places=3)
+    valor_prorrateado = models.DecimalField(max_digits=20, decimal_places=13, blank=True, null=True)
+    valor_provisionado = models.DecimalField(max_digits=20, decimal_places=13)
     id_user = models.SmallIntegerField(default=0)
-    date_create = models.DateTimeField(default=timezone.now)
+    date_create = models.DateTimeField(blank=True, null=True, default=timezone.now)
     last_update = models.DateTimeField(blank=True, null=True)
     history = HistoricalRecords()
 
