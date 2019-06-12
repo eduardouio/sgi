@@ -3,12 +3,12 @@ from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView
 from logs.app_log import loggin
 from orders.models.Order import Order
-from lib_src import CompleteOrderInfo 
+from lib_src import CompleteOrderInfo, CostingsOrder
 
 # /costos/pedio/{nro_pedido}
 class LiquidateOrderTemplateView(LoginRequiredMixin, TemplateView):
     login_url = '/admin/'
-    template_name = 'costings/liquidar_pedido.html'
+    template_name = 'costings/test.html'
     
     def get(self, request, nro_order , *args, **kwargs):
         """
@@ -18,28 +18,13 @@ class LiquidateOrderTemplateView(LoginRequiredMixin, TemplateView):
         Return: TemplateView
         """
         context = self.get_context_data(*args, **kwargs)        
-        complete_order = CompleteOrderInfo().get_data(nro_order=nro_order, serialized=False, request=request)
-        complete_order['title_page'] = 'Revision de Gastos Iniciales {}'.format(nro_order)       
-        context.update(
-                        {
-                            'data': complete_order,
-                            'host' : 'http://localhost:8000'}
-            )
+        cmp_order_inf = CompleteOrderInfo().get_data(nro_order=nro_order, serialized=False, request=request)
+        costs_order = CostingsOrder(
+            complete_order_info = cmp_order_inf
+        )
+            
+        context['data']  = {
+            'title_page' : 'Liquidación Pedido a Consumo',
+        }
 
-        if complete_order['status']['ledger'] == False:
-            loggin('e','El pedido {} no tiene una mayor registrado'.format(nro_order))
-            complete_order['status']['ledger']= True
-        
-        for status_det in complete_order['status']:            
-            print(complete_order['status'][status_det])
-            if complete_order['status'][status_det] == False:
-                loggin('e', 'El pedido {} no existe o esta incompleto, cambniando de plantilla'.format(nro_order))
-                self.template_name = 'errors/error_en_pedido.html'
-        
-        print (type(complete_order['order'].regimen))
-
-        if complete_order['order'].regimen == '70':
-            self.template_name = 'costings/seleccionar_parcial.html'
-
-        print('Enbreamos')
         return self.render_to_response(context)

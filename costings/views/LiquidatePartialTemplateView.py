@@ -82,13 +82,15 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
     def check_order_and_partial_exist(self, nro_order, ordinal_parcial):
         order = Order.get_by_order(nro_order)
         if order is None:
-            loggin('e', 'El pedido {} no existe, error en plantilla'.format(nro_order))
+            loggin('e', 'El pedido {} no existe, error en plantilla'
+                .format(nro_order))
             return False
         
         all_partials = Partial.get_by_order(nro_order)
 
         if all_partials.count() == 0:
-            loggin('e', 'El parcial {}, del pedido {} no existe'.format(ordinal_parcial, nro_order))
+            loggin('e', 'El parcial {}, del pedido {} no existe'
+                .format(ordinal_parcial, nro_order))
             return False
         
         for x, p in enumerate(all_partials):

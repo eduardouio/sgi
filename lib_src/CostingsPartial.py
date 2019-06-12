@@ -114,12 +114,6 @@ class CostingsPartial(object):
                     * self.rates['base_etiquetas']
             )
 
-        #linea aumentada para liquidar pedido 032/18
-        if line_item.detalle_pedido_factura_id == 177:
-            line_item.etiquetas_fiscales = (line_item.nro_cajas 
-                    * line_item.cantidad_x_caja
-                    * Decimal(0.195)
-            )
         line_item.ex_aduana = (
               line_item.cif
             + line_item.fodinfa
