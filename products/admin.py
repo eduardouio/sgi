@@ -31,28 +31,28 @@ class ProductAdmin(SimpleHistoryAdmin):
         'estado',
     )
 
-    fieldsets = (
-        (None, {
-            'classes': ('grp-collapse grp-open',),
-            "fields": (
-                ('identificacion_proveedor', 'cod_contable',),
-                ('nombre', 'cod_ice',),
-                ('capacidad_ml','cantidad_x_caja',),
-                ('costo_caja','estado',),
-                ('custodia_doble','peso',),
-                ('pais_origen','comentarios',),
-            ),
-        }),
-        ('Registro Sanitario', {
-            'classes': ('grp-collapse grp-closed',),
-            'fields' : (
-                ('registro_sanitario', 'estado_registro',),
-                ('fecha_emision_registro', 'fecha_vencimiento_registro',),
-                ('grado_alcoholico'),
-            )
-        })
-    )
-    
+#    fieldsets = (
+#        (None, {
+#            'classes': ('grp-collapse grp-open',),
+#            "fields": (
+#                ('identificacion_proveedor', 'cod_contable',),
+#                ('nombre', 'cod_ice',),
+#                ('capacidad_ml','cantidad_x_caja',),
+#                ('costo_caja','estado',),
+#                ('custodia_doble','peso',),
+#                ('pais_origen','comentarios',),
+#            ),
+#        }),
+#        ('Registro Sanitario', {
+#            'classes': ('grp-collapse grp-closed',),
+#            'fields' : (
+#                ('registro_sanitario', 'estado_registro',),
+#                ('fecha_emision_registro', 'fecha_vencimiento_registro',),
+#                ('grado_alcoholico'),
+#            )
+#        })
+#    )
+#    
 
 
 
