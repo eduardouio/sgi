@@ -7,24 +7,24 @@
 <div class="row border">
    <div class="col-4">
       <i class="fa fa-cog"></i>
-      Liquidar Pedido A consumo {{ data.order.nro_pedido }}
-      {% if data.bg_isclosed  == 0 %}
+      Liquidar Pedido A consumo {{ data.complete_order_info.order }}
+       {% if data.complete_order_info.order.bg_isclosed  == 0 %}
       <span class="badge badge-success">Abierto</span>
-      {% else %}
+       {% else %}
       <span class="badge badge-dark">Liquidado y Cerrado</span>
-      {% endif %}
+       {% endif %}
    </div>
    <div class="col-8 text-right">
-      <span><a href="{{ data.order.url_dai_1 }}"> Ref: {{ data.order.nro_refrendo }} </a></span>
+      <span> Ref: {{ data.complete_order_info['order'].nro_refrendo }}</span>
       <span>| Exaduana</span>
-      <span>| Liq: {{ data.order.nro_liquidacion }}</span>
-      <span>| F. Llegada: {{ data.order.fecha_llegada_cliente.strftime('%d/%m/%Y') if data.order.fecha_llegada_cliente is not none else 'En Tránsito' }}</span>
+      <span>| Liq: {{ data.complete_order_info['order'].nro_liquidacion }}</span>
+      <span>| F. Llegada: {{data.complete_order_info['order'].fecha_llegada_cliente.strftime('%d/%m/%Y') if data.complete_order_info['order'].fecha_llegada_cliente is not none else 'En Tránsito' }}</span>
       <span></span>
    </div>
 </div>
 {% endblock title_content %}
 {% block content %}
-{% if data.status.order == True %}
+ {% if data.complete_order_info.status.order == True %}
 <div id="app">
    <div class="row" v-if="ajax_request == true">
       <div class="col-4"></div>
@@ -39,43 +39,44 @@
             <tbody>
                <tr>
                   <td style="width:100px;" class="text-right bg-light">Pedido:</td>
-                  <td>{{ data.order.nro_pedido }}</td>
+                  <td>{{ data.complete_order_info.order.nro_pedido }}</td>
                   <td style="width:100px;" class="text-right bg-light">Proveedor:</td>
-                  <td>{{ data.order_invoice.supplier }} ID:{{ data.order_invoice.supplier.identificacion_proveedor }} </td>
+                  <td>{{ data.complete_order_info.order_invoice.supplier }} ID: {{ data.complete_order_info.order_invoice.supplier.identificacion_proveedor }} </td>
                   <td style="width:100px;" class="text-right bg-light">Factura:</td>
-                  <td>
-                     {{ data.order_invoice.order_invoice.id_factura_proveedor | upper }}
+                  <td>{{data.complete_order_info.order_invoice.order_invoice.id_factura_proveedor | upper }}
                   </td>
                   <td style="width:100px;" class="text-right bg-light">Moneda:</td>
-                  <td>{{ data.order_invoice.order_invoice.moneda }}</td>
+                  <td>{{ data.complete_order_info.order_invoice.order_invoice.moneda }}</td>
                   <td style="width:100px;" class="text-right bg-light">T/C:</td>
-                  <td>{{ data.order_invoice.order_invoice.tipo_cambio }}</td>
+                  <td>{{ data.complete_order_info.order_invoice.order_invoice.tipo_cambio }}</td>
                </tr>
                <tr>
                   <td style="width:100px;" class="text-right bg-light">Incoterm:</td>
-                  <td class="text-danger">{{ data.order.incoterm }}</td>
+                  <td class="text-danger">{{ data.complete_order_info['order'].incoterm }}</td>
                   <td style="width:100px;" class="text-right bg-light">Pais Origen:</td>
-                  <td>{{ data.order.pais_origen }}</td>
+                  <td>{{ data.complete_order_info['order'].pais_origen }}</td>
                   <td style="width:100px;" class="text-right bg-light">Ciudad Origen:</td>
-                  <td>{{ data.order.ciudad_origen }}</td>
+                  <td>{{ data.complete_order_info['order'].ciudad_origen }}</td>
                   <td style="width:100px;" class="text-right bg-light">Registrado Por:</td>
                   <td>Pendiete</td>
                   <td style="width:100px;" class="text-right bg-light">Fecha Registro:</td>
-                  <td>{{ data.order.date_create.strftime('%d/%m/%Y') if data.order.date_create is not none else '' }}</td>
+                  <td>{{ data.complete_order_info['order'].date_create.strftime('%d/%m/%Y') if data.complete_order_info['order'].date_create is not none else '' }}</td>
                </tr>
                <tr>
                   <td style="width:100px;" class="text-right bg-light">Comentarios:</td>
-                  <td colspan="9">${ order_data.order.observaciones } ${ order_data.order.comentarios } ${ comentarios }</td>
+                  <td colspan="9">
+                  {#  complete_order_info.complete_order_info['order'].observaciones }  complete_order_info.complete_order_info['order'].comentarios }  comentarios } #}
+                  </td>
                </tr>
             </tbody>
          </table>
       </div>
    </div>
    <div v-if="show_costings == true" class="animated fadeInUp">  
-      {% include 'costings/productos_pedido.html'  %}
+      {# {% include 'costings/productos_pedido.html'  %} #}
    </div>
    <div class="row animated fadeIn" v-if="ajax_request == false && show_costings == false" >
-      <div class="col-7 div-bordered">
+      <div class="col-7 dibordered">
          <div class="text-tittle"> RESUMEN DE ESTADO GASTOS USD</div>
          <table class="table table-condensed table-striped table-bordered">
             <tbody>
@@ -91,12 +92,12 @@
                   <td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td>
                   <td>
                      <small class="text-success"><i class="fa fa-check-circle"></i></small>
-                     FACTURA ${ order_data.order_invoice.supplier.nombre }
+                     FACTURA ${ complete_order_info.order_invoice.supplier.nombre }
                   </td>
-                  <td class="text-right">  ${ order_data.order_invoice.order_invoice.valor | money }</td>
-                  <td class="text-right">  ${ order_data.order_invoice.order_invoice.valor | money }</td>
+                  <td class="text-right">  ${ complete_order_info.order_invoice.order_invoice.valor | money }</td>
+                  <td class="text-right">  ${ complete_order_info.order_invoice.order_invoice.valor | money }</td>
                   <td class="text-right">  ${ 0 | money }</td>
-                  <td class="text-right">  ${ order_data.order_invoice.order_invoice.valor | money }</td>
+                  <td class="text-right">  ${ complete_order_info.order_invoice.order_invoice.valor | money }</td>
                </tr>
                <tr @click="show_origin_expense()">
                   <td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td>
@@ -104,29 +105,29 @@
                      <small class="text-success"><i class="fa fa-check-circle"></i></small>
                      GASTOS ORIGEN
                   </td>
-                  <td class="text-right">  ${ order_data.order.gasto_origen | money } </td>
-                  <td class="text-right">  ${ order_data.order.gasto_origen | money } </td>
-                  <td class="text-right">  ${ 0 | money }</td>
-                  <td class="text-right">  ${ order_data.order.gasto_origen | money }</td>
+                  <td class="text-right">   ${ complete_order_info.order.gasto_origen | money } </td>
+                  <td class="text-right">   ${ complete_order_info.order.gasto_origen | money } </td>
+                  <td class="text-right">   ${ 0 | money }</td>
+                  <td class="text-right">   ${ complete_order_info.order.gasto_origen | money }</td>
                </tr>
-               <tr @click="show_taxes_detail()" v-if="order_data.order.regimen === '10'">
+               <tr @click="show_taxes_detail()" v-if="complete_order_info['order'].regimen === '10'">
                   <td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td>
                   <td>
                      <small class="text-success"><i class="fa fa-check-circle"></i></small>
                      TRIBUTOS SENAE
                   </td>
-                  <td class="text-right"> ${ order_data.taxes.total_provisionado | money  }</td>
-                  <td class="text-right"> ${ order_data.taxes.total_pagado | money  }</td>
-                  <td class="text-right"> ${ (order_data.taxes.total_provisionado - order_data.taxes.total_pagado ) | money  }</td>
-                  <td class="text-right"> ${ order_data.taxes.total_pagado | money  }</td>
+                  <td class="text-right"> ${ complete_order_info.taxes.total_provisionado | money  }</td>
+                  <td class="text-right"> ${ complete_order_info.taxes.total_pagado | money  }</td>
+                  <td class="text-right"> ${ (complete_order_info.taxes.total_provisionado - complete_order_info.taxes.total_pagado ) | money  }</td>
+                  <td class="text-right"> ${ complete_order_info.taxes.total_pagado | money  }</td>
                </tr>
-               <tr v-for="item in order_data.expenses" @click="select_expense(item)">
+               <tr v-for="item in complete_order_info.expenses" @click="select_expense(item)">
                   <td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td>
                   <td>
                      <small class="text-secondary" v-if="item.parcial"><i class="fa fa-puzzle-piece"></i></small>
                      <small class="text-success" v-if="item.complete"><i class="fa fa-check-circle"></i></small>
                      <small class="text-danger" v-if="item.provision"><i class="fa fa-exclamation-triangle"></i></small>
-                     ${ item.expense.concepto }
+                      ${ item.expense.concepto }
                   </td>
                   <td class="text-right">${ item.expense.valor_provisionado | money }</td>
                   <td class="text-right">${ item.invoiced_value | money }</td>
@@ -135,39 +136,39 @@
                </tr>
                <tr>
                   <th colspan="2">Sumas</th>
-                  <th class="text-right">${ order_data.total_expenses | money }</th>
-                  <th class="text-right">${ order_data.total_invoiced |money }</th>
-                  <th class="text-right">${ (order_data.total_expenses - order_data.total_invoiced) | money }</th>
-                  <th class="text-right">${ current_ledger.mayor_sgi | money }</th>
+                  <th class="text-right"> ${ complete_order_info.total_expenses | money }</th>
+                  <th class="text-right"> ${ complete_order_info.total_invoiced |money }</th>
+                  <th class="text-right"> ${ (complete_order_info.total_expenses - complete_order_info.total_invoiced) | money }</th>
+                  <th class="text-right"> ${ current_ledger.mayor_sgi | money }</th>
                </tr>
             </tbody>
          </table>
          <span class="text-right">Fecha de LLegada Del Producto:
-         <strong class="text-success">{{ data.order.fecha_llegada_cliente if data.order.fecha_llegada_cliente is not none else 'Producto en tránsito' }}</strong>
+         <strong class="text-success">data.complete_order_info['order'].fecha_llegada_cliente if data.complete_order_info['order'].fecha_llegada_cliente is not none else 'Producto en tránsito' }}</strong>
          </span>
          <br />
          <br>
-         <a href="{{ BASE_URL }}" class="btn btn-outline-dark btn-sm">
+         <a href="{{ data.host }}" class="btn btn-outline-dark btn-sm">
          <span class="far fa-file-pdf"></span> Reporte Gastos
          </a>                  
          <br />
          <br />
       </div>
-      <div class="col-5 div-bordered">
-         <div id="order_invoice" v-if="show_expense">
+      <div class="col-5 dibordered">
+         <div id="order_invoice" if="show_expense">
             <div class="text-tittle"> DESCRIPCIÓN DE GASTO </div>
             <br>
             <div class="row">
                <div class="col-7">
-                  <h6 class="text-dark"> ${current_expense.expense.concepto } </h6>
+                  <h6 class="text-dark"> current_expense.expense.concepto } </h6>
                </div>
                <div class="col-5 text-right">
-                  <small class="text-secondary" v-if="current_expense.parcial"><i class="fa fa-puzzle-piece"></i> Justificación Parcial</small>
-                  <small class="text-success" v-if="current_expense.complete"><i class="fa fa-check-circle"></i> Justificado</small>
-                  <small class="text-danger" v-if="current_expense.provision"><i class="fa fa-exclamation-triangle"></i> Provisión</small>
+                  <small class="text-secondary" if="current_expense.parcial"><i class="fa fa-puzzle-piece"></i> Justificación Parcial</small>
+                  <small class="text-success" if="current_expense.complete"><i class="fa fa-check-circle"></i> Justificado</small>
+                  <small class="text-danger" if="current_expense.provision"><i class="fa fa-exclamation-triangle"></i> Provisión</small>
                </div>
             </div>
-            <div class="custom-control custom-checkbox text-right" v-if="current_expense.expense.concepto === 'ISD'">
+            <div class="custom-control custom-checkbox text-right" if="current_expense.expense.concepto === 'ISD'">
                <input type="checkbox" class="custom-control-input" checked>
                <label class="custom-control-label">                    
                SI
@@ -175,7 +176,7 @@
             </div>
             <div class="row">
                <div class="col-12">
-                  <table class="table table-condensed table-bordered" v-if="current_expense.expense.concepto != 'ISD'">
+                  <table class="table table-condensed table-bordered" if="current_expense.expense.concepto != 'ISD'">
                      <thead>
                         <tr>
                            <th>Ver</th>
@@ -187,20 +188,20 @@
                         </tr>
                      </thead>
                      <tbody>
-                        <tr v-for="paid in current_expense.paids">
+                        <tr for="paid in current_expense.paids">
                            <td class="text-center text-primary" data-toggle="modal" data-target="#exampleModalCenter" @click="get_paid_invoice(paid.invoice.id_documento_pago)"><i class="fa fa-eye"></i></td>
-                           <td> ${ paid.supplier.nombre }</td>
-                           <td class="text-right"> ${ paid.invoice.nro_factura }</td>
-                           <td class="text-right"> ${ paid.invoice.fecha_emision }</td>
-                           <td class="text-right"> ${ paid.paid.valor | money }</td>
+                           <td>  paid.supplier.nombre }</td>
+                           <td class="text-right">  paid.invoice.nro_factura }</td>
+                           <td class="text-right">  paid.invoice.fecha_emision }</td>
+                           <td class="text-right">  paid.paid.valor | money }</td>
                            <td class="text-right" @click="contabilized(paid)">
                               <div class="custom-control custom-checkbox">
-                                 <input type="checkbox" class="custom-control-input" v-model="paid.paid.bg_mayor">
+                                 <input type="checkbox" class="custom-control-input" model="paid.paid.bg_mayor">
                                  <label class="custom-control-label">
-                                 <span v-if="paid.paid.bg_mayor" class="text-success">
+                                 <span if="paid.paid.bg_mayor" class="text-success">
                                  SI
                                  </span>
-                                 <span v-else="" class="text-danger">
+                                 <span else="" class="text-danger">
                                  NO
                                  </span>
                                  </label>
@@ -209,7 +210,7 @@
                         </tr>
                         <tr>
                            <th colspan="4">Sumas</th>
-                           <th colspan="2" class="text-center">$ ${ current_expense.invoiced_value | money}</th>
+                           <th colspan="2" class="text-center">$  current_expense.invoiced_value | money}</th>
                         </tr>
                      </tbody>
                   </table>
@@ -218,32 +219,32 @@
             <br>
             <div class="row">
                <div class="col-4 text-center">
-                  <h6>$  ${ current_expense.expense.valor_provisionado | money }</h6>
+                  <h6>$   current_expense.expense.valor_provisionado | money }</h6>
                   <span class="text-secondary">Monto Gasto</span>
                </div>
                <div class="col-4 text-center">
-                  <h6>$  ${ current_expense.invoiced_value | money }</h6>
+                  <h6>$   current_expense.invoiced_value | money }</h6>
                   <span class="text-success">Justificado</span>
                </div>
                <div class="col-4 text-center">
-                  <h6>$  ${ (current_expense.expense.valor_provisionado - current_expense.invoiced_value) | money }</h6>
+                  <h6>$   (current_expense.expense.valor_provisionado - current_expense.invoiced_value) | money }</h6>
                   <span class="text-danger">Provisión</span>
                </div>
             </div>
          </div>
-         <div v-if="show_order_invoice">
+         <div if="show_order_invoice">
             <div class="text-tittle"> DESCRIPCIÓN FACTURA PROVEEDOR</div>
             <br>
             <div class="row">
                <div class="col-7">
-                  <h6 class="text-dark"> ${ current_order_invoice.supplier.nombre } </h6>
+                  <h6 class="text-dark">  current_order_invoice.supplier.nombre } </h6>
                </div>
                <div class="col-5 text-right">
-                  <small class="text-success" v-if="current_order_invoice.complete == true">
+                  <small class="text-success" if="current_order_invoice.complete == true">
                   <i class="fa fa-check-circle"></i> 
                   Completa 
                   </small>
-                  <small class="text-danger" v-else="">
+                  <small class="text-danger" else="">
                   <i class="fa fa-exclamation-triangle"></i>
                   Incompleta
                   </small>
@@ -270,35 +271,35 @@
                         </tr>
                      </thead>
                      <tbody>
-                        <tr v-for="product in current_order_invoice.order_invoice_detail">
-                           <td>${ product.product }</td>
-                           <td class="text-right">${ product.capacidad_ml | int_val}</td>
-                           <td class="text-right">${ product.cantidad_x_caja | int_val }</td>
-                           <td class="text-right">${ product.nro_cajas }</td>
-                           <td class="text-right">${ product.unidades | int_val }</td>
-                           <td class="text-right">${ product.costo_caja | money }</td>
-                           <td class="text-right">${ (product.costo_caja * product.nro_cajas) | money }</td>
+                        <tr for="product in current_order_invoice.order_invoice_detail">
+                           <td> product.product }</td>
+                           <td class="text-right"> product.capacidad_ml | int_val}</td>
+                           <td class="text-right"> product.cantidad_x_caja | int_val }</td>
+                           <td class="text-right"> product.nro_cajas }</td>
+                           <td class="text-right"> product.unidades | int_val }</td>
+                           <td class="text-right"> product.costo_caja | money }</td>
+                           <td class="text-right"> (product.costo_caja * product.nro_cajas) | money }</td>
                         </tr>
                         <tr>
                            <th colspan="3">Sumas</th>
-                           <th>${ current_order_invoice.order_invoice_detail_sums.boxes | money }</th>
-                           <th>${ current_order_invoice.order_invoice_detail_sums.bottles | int_val }</th>
-                           <th colspan="2">$ ${ current_order_invoice.order_invoice_detail_sums.value | money }</th>
+                           <th> current_order_invoice.order_invoice_detail_sums.boxes | money }</th>
+                           <th> current_order_invoice.order_invoice_detail_sums.bottles | int_val }</th>
+                           <th colspan="2">$  current_order_invoice.order_invoice_detail_sums.value | money }</th>
                         </tr>
                      </tbody>
                   </table>
                   <br>
                   <div class="row">
                      <div class="col-4 text-center">
-                        <h6>$  ${ current_order_invoice.order_invoice.valor | money }</h6>
+                        <h6>$   current_order_invoice.order_invoice.valor | money }</h6>
                         <span class="text-secondary">Monto Gasto</span>
                      </div>
                      <div class="col-4 text-center">
-                        <h6>$  ${ current_order_invoice.order_invoice.valor | money }</h6>
+                        <h6>$   current_order_invoice.order_invoice.valor | money }</h6>
                         <span class="text-success">Justificado</span>
                      </div>
                      <div class="col-4 text-center">
-                        <h6>$  ${0  | money }</h6>
+                        <h6>$  0  | money }</h6>
                         <span class="text-danger">Provisión</span>
                      </div>
                   </div>
@@ -306,12 +307,12 @@
             </div>
             <br>
          </div>
-         <div  v-if="show_taxes">
+         <div  if="show_taxes">
             <div class="text-tittle"> DESCRIPCIÓN IMPUESTOS</div>
             <br>
             <div class="row">
                <div class="col-7">
-                  <h6 class="text-dark"> TRIBUTOS SENAE LIQ ${ order_data.order.nro_liquidacion } </h6>
+                  <h6 class="text-dark"> TRIBUTOS SENAE LIQ  complete_order_info.complete_order_info['order'].nro_liquidacion } </h6>
                </div>
                <div class="col-5 text-right">
                   <small class="text-success">
@@ -334,8 +335,8 @@
                      <tbody>
                         <tr>
                            <td>ARANCEL ADVALOREM </td>
-                           <td>${ order_data.order.nro_liquidacion }</td>
-                           <td class="text-right">$ ${ order_data.order.arancel_advalorem_pagado }</td>
+                           <td> complete_order_info.complete_order_info['order'].nro_liquidacion }</td>
+                           <td class="text-right">$  complete_order_info.complete_order_info['order'].arancel_advalorem_pagado }</td>
                            <td class="text-right">
                               <div class="custom-control custom-checkbox">
                                  <input type="checkbox" class="custom-control-input" checked>
@@ -347,8 +348,8 @@
                         </tr>
                         <tr>
                            <td>ARANCEL ESPECIFICO</td>
-                           <td>${ order_data.order.nro_liquidacion }</td>
-                           <td class="text-right">$ ${ order_data.order.arance_especifico_pagado }</td>
+                           <td> complete_order_info.complete_order_info['order'].nro_liquidacion }</td>
+                           <td class="text-right">$  complete_order_info.complete_order_info['order'].arance_especifico_pagado }</td>
                            <td class="text-right">
                               <div class="custom-control custom-checkbox">
                                  <input type="checkbox" class="custom-control-input" checked>
@@ -360,8 +361,8 @@
                         </tr>
                         <tr>
                            <td>FONDINFA</td>
-                           <td>${ order_data.order.nro_liquidacion }</td>
-                           <td class="text-right">$ ${ order_data.order.fodinfa_pagado }</td>
+                           <td> complete_order_info.complete_order_info['order'].nro_liquidacion }</td>
+                           <td class="text-right">$  complete_order_info.complete_order_info['order'].fodinfa_pagado }</td>
                            <td class="text-right">
                               <div class="custom-control custom-checkbox">
                                  <input type="checkbox" class="custom-control-input" checked>
@@ -373,8 +374,8 @@
                         </tr>
                         <tr>
                            <td>ICE ADVALOREM</td>
-                           <td>${ order_data.order.nro_liquidacion }</td>
-                           <td class="text-right">$ ${ order_data.order.ice_advalorem_pagado }</td>
+                           <td> complete_order_info.complete_order_info['order'].nro_liquidacion }</td>
+                           <td class="text-right">$  complete_order_info.complete_order_info['order'].ice_advalorem_pagado }</td>
                            <td class="text-right">
                               <div class="custom-control custom-checkbox">
                                  <input type="checkbox" class="custom-control-input" checked>
@@ -386,8 +387,8 @@
                         </tr>
                         <tr>
                            <td>ICE EXPECIFICO</td>
-                           <td>${ order_data.order.nro_liquidacion }</td>
-                           <td class="text-right">$ ${ order_data.order.ice_especifico_pagado | money }</td>
+                           <td> complete_order_info.complete_order_info['order'].nro_liquidacion }</td>
+                           <td class="text-right">$  complete_order_info.complete_order_info['order'].ice_especifico_pagado | money }</td>
                            <td class="text-right">
                               <div class="custom-control custom-checkbox">
                                  <input type="checkbox" class="custom-control-input" checked>
@@ -399,7 +400,7 @@
                         </tr>
                         <tr>
                            <th colspan="2">Sumas</th>
-                           <th class="text-right">$ ${ order_data.taxes.total_pagado_sin_iva | money}</th>
+                           <th class="text-right">$  complete_order_info.taxes.total_pagado_sin_iva | money}</th>
                            <th>--</th>
                         </tr>
                      </tbody>
@@ -409,15 +410,15 @@
             <br>
             <div class="row">
                <div class="col-4 text-center">
-                  <h6>$ ${ order_data.tributes.total | money }</h6>
+                  <h6>$  complete_order_info.tributes.total | money }</h6>
                   <span class="text-secondary">Monto Gasto</span>
                </div>
                <div class="col-4 text-center">
-                  <h6>$ ${ order_data.tributes.total | money }</h6>
+                  <h6>$  complete_order_info.tributes.total | money }</h6>
                   <span class="text-success">Justificado</span>
                </div>
                <div class="col-4 text-center">
-                  <h6>$  ${0  | money }</h6>
+                  <h6>$  0  | money }</h6>
                   <span class="text-danger">Provisión</span>
                </div>
             </div>
@@ -426,17 +427,17 @@
          <div class="row">
             <div class="col-4">
                <div class="fomr-group"><label for="">Saldo Mayor Sap</label>
-                  <input type="number" class="form-control form-control-sm text-right" v-model="current_ledger.mayor_sap" step="0.001">
+                  <input type="number" class="form-control form-control-sm text-right" model="current_ledger.mayor_sap" step="0.001">
                </div>
             </div>
             <div class="col-4">
                <div class="fomr-group"><label for="">Saldo Mayor SGI</label>
-                  <input type="text" class="form-control form-control-sm text-right" readonly v-model="current_ledger.mayor_sgi" step="0.001">
+                  <input type="text" class="form-control form-control-sm text-right" readonly model="current_ledger.mayor_sgi" step="0.001">
                </div>
             </div>
             <div class="col-4">
                <div class="fomr-group"><label for="">Diferencias</label>
-                  <input type="text" class="form-control form-control-sm text-right" readonly v-model="diff_ledgers">
+                  <input type="text" class="form-control form-control-sm text-right" readonly model="diff_ledgers">
                </div>
             </div>
          </div>
@@ -448,7 +449,7 @@
          </div>
       </div>
    </div>
-   {% include 'js/modal_complete_paid.html' %}
+   {# {% include 'js/modal_complete_paid.html' %} #}
 </div>
 </div>
 {% endif %}

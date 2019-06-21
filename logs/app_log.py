@@ -33,7 +33,8 @@ def loggin(type_log , message, request=None):
 
     log_file = open(path,'a')
     log_file.write(
-        '[{type_log}][{date_time}][uid:{user_id}{user_name}{user_email}]    {message} \n'
+        #'[{type_log}][{date_time}][uid:{user_id}{user_name}{user_email}]    {message} \n'
+        '[{type_log}] {message} \n' #para depurar
             .format(
                 type_log=types_message[type_log],
                 date_time=datetime.now(),

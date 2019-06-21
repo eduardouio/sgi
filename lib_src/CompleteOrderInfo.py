@@ -44,6 +44,7 @@ class CompleteOrderInfo(object):
         self.total_provisions = 0
         self.tipo_cambio_trimestral = 1
         self.incoterm = None
+        self.etiquetas_fiscales = 0
         self.last_apportionment = None 
 
 
@@ -89,15 +90,13 @@ class CompleteOrderInfo(object):
             'files' : self.get_files(),
             'init_ledger' : self.init_ledger,
             'total_expenses' : (self.total_expenses + self.init_ledger),
+            'etiquetas_fiscales' : self.etiquetas_fiscales,
             'init_expenses' : self.total_expenses,
             'origin_expenses_tct' : ( self.origin_expeses_tct 
                                       * self.tipo_cambio_trimestral),
             'total_invoiced' : self.total_invoiced + self.init_ledger,
             'total_provisions' : self.total_provisions,
             'last_apportionment' : self.last_apportionment,
-            'costs' : {
-                'sums' : 0,
-            }
             }
 
 
@@ -224,7 +223,6 @@ class CompleteOrderInfo(object):
                 self.total_invoiced += item.valor_provisionado
                 item.bg_closed = 1
                 item.paids = []
-
             
             if item.concepto == 'FLETE' and self.incoterm == 'CFR':
                 #El flete de los CFRS se registran como pagados
@@ -233,6 +231,9 @@ class CompleteOrderInfo(object):
                 self.total_invoiced += item.valor_provisionado
                 item.bg_closed = 1
                 item.paids = []
+            
+            if item.concepto == 'ETIQUETAS FISCALES':
+                self.etiquetas_fiscales = item.valor_provisionado
 
             for paid in item.paids:
                 self.total_invoiced += paid.valor

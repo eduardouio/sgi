@@ -54,6 +54,4 @@ class ProductAdmin(SimpleHistoryAdmin):
 #    )
 #    
 
-
-
 admin.site.register(Product, ProductAdmin)
