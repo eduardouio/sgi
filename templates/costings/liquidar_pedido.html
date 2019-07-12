@@ -121,7 +121,7 @@
                   <td class="text-right"> ${ (complete_order_info.taxes.total_provisionado - complete_order_info.taxes.total_pagado ) | money  }</td>
                   <td class="text-right"> ${ complete_order_info.taxes.total_pagado | money  }</td>
                </tr>
-               <tr v-for="item in complete_order_info.expenses" @click="select_expense(item)">
+               <tr v-for="item in complete_order_info.expenses" @click="selectExpense(item)">
                   <td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td>
                   <td>
                      <small class="text-secondary" v-if="item.parcial"><i class="fa fa-puzzle-piece"></i></small>
@@ -144,7 +144,7 @@
             </tbody>
          </table>
          <span class="text-right">Fecha de LLegada Del Producto:
-         <strong class="text-success">data.complete_order_info['order'].fecha_llegada_cliente if data.complete_order_info['order'].fecha_llegada_cliente is not none else 'Producto en tránsito' }}</strong>
+         <strong class="text-success">{{ data.complete_order_info['order'].fecha_llegada_cliente if data.complete_order_info['order'].fecha_llegada_cliente is not none else 'Producto en tránsito' }}</strong>
          </span>
          <br />
          <br>
