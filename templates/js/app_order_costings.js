@@ -69,11 +69,10 @@ var app = new Vue({
   },
     showOrderInvoice : function(){
       console.log('mostrando factura del pedido')
+      this.show_order_invoice = true
       this.show_expense = false
       this.show_taxes = false
       this.show_origin_expense = false
-      this.show_order_invoice = true
-      this.show_info_invoice = false
       this.current_order_invoice = this.complete_order_info.order_invoice
       return true
     },
@@ -84,7 +83,6 @@ var app = new Vue({
       this.show_taxes = false
       this.show_origin_expense = true
       this.show_order_invoice = false
-      this.show_info_invoice = false
     },
     selectExpense : function(item){
       console.log('Seleccionando Gasto', item)
@@ -92,7 +90,6 @@ var app = new Vue({
       this.show_taxes = false
       this.show_origin_expense = false
       this.show_order_invoice = false
-      this.show_info_invoice = false
       this.current_expense = item
     },
     showTaxes : function(){
@@ -100,7 +97,6 @@ var app = new Vue({
       this.show_expense = false
       this.show_origin_expense = false
       this.show_order_invoice = false
-      this.show_info_invoice = false
       this.show_taxes = true
     },
     contabilized : function(paid){

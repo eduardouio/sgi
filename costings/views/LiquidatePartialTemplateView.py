@@ -6,6 +6,7 @@ from lib_src import (ApportionmentExpenses, CompleteOrderInfo,
 from logs.app_log import loggin
 from orders.models.Order import Order
 from partials.models.Partial import Partial
+from lib_src.sgi_utlils import get_host
 
 
 class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
@@ -67,8 +68,9 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
             'all_partials' : all_partials,
             'apportioments' : apportiments_expenses,
             'costings' : producto_costs,
-            'request' : request
-        }
+            'request' : request,
+            'host': get_host(request),
+        } 
 
         context['data'].update(self.checkStatusValues(
                     complete_order_info, 

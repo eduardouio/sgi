@@ -117,11 +117,11 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         #'ENGINE': 'django.db.backends.sqlite3',
         #'NAME': 'db.sqlite3',
-        'NAME': 'cordovezApp',
+        'NAME': 'cordovezAppTEST',
         'USER' : 'appCordovez',
         'PASSWORD' : '\DBGfW<7;vBa5(LB',
-        'HOST': '192.168.0.198',
-        #'HOST': '179.49.60.158',
+        #'HOST': '192.168.0.198',
+        'HOST': '179.49.60.158',
         #'HOST': '127.0.0.1',
         'PORT' : '3306',
     }
@@ -162,7 +162,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
-LANGUAGE_CODE = 'es-ec'
+LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'America/Guayaquil'
 

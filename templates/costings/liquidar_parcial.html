@@ -121,7 +121,7 @@
                               <td class="text-right">  ${ complete_order_info.order_invoice.order_invoice.valor_tasa_trimestral | money }</td>
                            </tr>
                            {% if data.complete_order_info.order.incoterm == 'FOB' %}
-                           <tr @click="showOriginExpense()">
+                           <tr @click="showOriginExpense()" v-if="complete_order_info.order.incoterm == 'FOB'">
                               <td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td>
                               <td>
                                  <small class="text-success"><i class="fa fa-check-circle"></i></small>
