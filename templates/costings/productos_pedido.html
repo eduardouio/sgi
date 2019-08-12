@@ -102,7 +102,7 @@
             <td class="text-right"> {{ "%.3f" | format(item.indirectos) }}</td>
             <td class="text-right"> {{ "%.3f" | format(item.costo_total) }}</td>
             <td class="text-right"> {{ "%.3f" | format(item.costo_caja_final) }}</td>
-            <td class="text-right"> {{ "%.3f" | format(item.costo_botella) }}</td>
+            <td class="text-right"> {{ "%.3f" | format(item.costo_caja_final / item.cantidad_x_caja) }}</td>
             </tr>
              {% endfor %}
         <tr class="table-success">

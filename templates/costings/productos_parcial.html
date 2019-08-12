@@ -114,7 +114,7 @@
                 <td class="text-right" nowrap>{{ item.prorrateos_total  | round(2)}}</td>
                 <td class="text-right" nowrap>{{ item.costo_total  | round(2)}}</td>
                 <td class="text-right" nowrap>{{ item.costo_caja_final  | round(2)}}</td>
-                <td class="text-right" nowrap>{{ item.costo_botella  | round(2)}}</td>
+                <td class="text-right" nowrap>{{ (item.costo_caja_final/item.cantidad_x_caja)  | round(2)}}</td>
             </tr>
         {% endfor %}
         <tr>

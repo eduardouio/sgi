@@ -65,7 +65,7 @@
                <tr>
                   <td style="width:100px;" class="text-right bg-light">Comentarios:</td>
                   <td colspan="9">
-                  {#  complete_order_info.complete_order_info['order'].observaciones }  complete_order_info.complete_order_info['order'].comentarios }  comentarios } #}
+                  {{ data.complete_order_info.order.observaciones }} {{data.complete_order_info.order.comentarios }}
                   </td>
                </tr>
             </tbody>
@@ -496,17 +496,17 @@
          <div class="row">
             <div class="col-4">
                <div class="fomr-group"><label for="">Saldo Mayor Sap</label>
-                  <input type="number" class="form-control form-control-sm text-right" model="current_ledger.mayor_sap" step="0.001">
+                  <input type="number" class="form-control form-control-sm text-right" v-model="current_ledger.mayor_sap" step="0.001">
                </div>
             </div>
             <div class="col-4">
                <div class="fomr-group"><label for="">Saldo Mayor SGI</label>
-                  <input type="text" class="form-control form-control-sm text-right" readonly model="current_ledger.mayor_sgi" step="0.001">
+                  <input type="text" class="form-control form-control-sm text-right" readonly v-model="current_ledger.mayor_sgi">
                </div>
             </div>
             <div class="col-4">
                <div class="fomr-group"><label for="">Diferencias</label>
-                  <input type="text" class="form-control form-control-sm text-right" readonly model="diff_ledgers">
+                  <input type="text" class="form-control form-control-sm text-right" readonly v-model="diff_ledgers">
                </div>
             </div>
          </div>
@@ -518,7 +518,7 @@
          </div>
       </div>
    </div>
-   {# {% include 'js/modal_complete_paid.html' %} #}
+   {% include 'js/modal_complete_paid.html' %}
 </div>
 </div>
 {% endif %}
