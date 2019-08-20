@@ -152,7 +152,8 @@ var app = new Vue({
   mounted() {
     this.$http.get('{{ data.host }}/api/order/all-data/{{ data.complete_order_info.order.nro_pedido }}', { params: {}}).then(response => {
     this.complete_order_info = response.body
-    this.ajax_request = false      
+    this.ajax_request = false    
+    this.updateLedger()  
   }, response => {
     alert('Ocurrio un error al cargar la aplicacion, por recargue la pagina')
   });

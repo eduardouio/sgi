@@ -102,10 +102,9 @@
                            <tr style="background-color: rgb(255, 255, 255);">
                               <th class="text-center"><i class="fa fa-list"></i></th>
                               <th class="text-center">CONCEPTO</th>
-                              <th class="text-center">VALOR</th>
-                              <th class="text-center">FACTURADO</th>
-                              <th class="text-center">SALDO</th>
+                              <th class="text-center">PROVISION</th>
                               <th class="text-center">MAYOR</th>
+                              <th class="text-center">SALDO</th>
                            </tr>
                         </thead>
                         <tbody>
@@ -118,7 +117,6 @@
                               <td class="text-right">  ${ complete_order_info.order_invoice.order_invoice.valor_tasa_trimestral | money }</td>
                               <td class="text-right">  ${ complete_order_info.order_invoice.order_invoice.valor_tasa_trimestral | money }</td>
                               <td class="text-right">  ${ 0 | money }</td>
-                              <td class="text-right">  ${ complete_order_info.order_invoice.order_invoice.valor_tasa_trimestral | money }</td>
                            </tr>
                            {% if data.complete_order_info.order.incoterm == 'FOB' %}
                            <tr @click="showOriginExpense()" v-if="complete_order_info.order.incoterm == 'FOB'">
@@ -128,9 +126,8 @@
                                  GASTOS ORIGEN
                               </td>
                               <td class="text-right">  ${ complete_order_info.origin_expenses_tct | money } </td>
-                              <td class="text-right">  ${ complete_order_info.origin_expenses_tct | money } </td>
-                              <td class="text-right">  ${ 0 | money }</td>
                               <td class="text-right">  ${ (complete_order_info.origin_expenses_tct ) | money }</td>
+                              <td class="text-right">  ${ 0 | money }</td>
                            </tr>
                            {% endif %}
                            <tr v-for="item in complete_order_info.expenses" @click="selectExpense(item)">
@@ -142,15 +139,13 @@
                                  ${ item.expense.concepto }
                               </td>
                               <td class="text-right">${ item.expense.valor_provisionado | money }</td>
-                              <td class="text-right">${ item.invoiced_value | money }</td>
-                              <td class="text-right">${ item.sale | money }</td>
                               <td class="text-right">${ item.legder | money }</td>
+                              <td class="text-right">${ ( item.expense.valor_provisionado - item.legder) | money }</td>
                            </tr>
                            <tr>
                               <th colspan="2">Sumas</th>
                               <th class="text-right">${ complete_order_info.total_expenses | money }</th>
-                              <th class="text-right">${ complete_order_info.total_invoiced | money }</th>
-                              <th class="text-right">${ (complete_order_info.total_expenses - complete_order_info.total_invoiced) | money }</th>
+                              <th class="text-right">${ 0 | money }</th>
                               <th class="text-right">${ 0 | money }</th>
                            </tr>
                         </tbody>

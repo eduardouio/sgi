@@ -62,7 +62,7 @@ class CostingsOrder(object):
                         sums[k] += float(line_item.__dict__[k])
                 except:
                     continue
-
+        loggin('t', sums)
         return {
             'taxes' : reliquidate_items,
             'sums' : sums,
@@ -138,13 +138,14 @@ class CostingsOrder(object):
             ) * line_item.unidades
             line_item.total_ice = (line_item.ice_advalorem_reliquidado 
                                     + line_item.ice_especifico)
-            ice_reliquidado = (line_item.ice_advalorem_reliquidado -
+            line_item.ice_advalorem_reliquidado = (line_item.ice_advalorem_reliquidado -
                                  line_item.ice_advalorem)
         else:
             line_item.total_ice = (line_item.ice_advalorem 
                                     + line_item.ice_especifico)
+            line_item.ice_advalorem_reliquidado = 0
 
-        self.ice_reliquidado += line_item.total_ice
+        self.ice_reliquidado += line_item.ice_advalorem_reliquidado
         line_item.ice_advalorem_diferencia = 0
         line_item.gastos_origen_tasa_trimestral = 0
         line_item.gastos_origen_tasa_trimestral = (
@@ -159,11 +160,17 @@ class CostingsOrder(object):
             + line_item.arancel_advalorem_pagar
             + line_item.gastos_origen_tasa_trimestral
             )
-
+  
         line_item.prorrateo_pedido += (
             self.cmp_order_info['init_expenses'] - 
             self.cmp_order_info['etiquetas_fiscales']
             ) * line_item.fob_percent
 
+        line_item.fob_tasa_trimestral = (
+            line_item.costo_caja 
+            * line_item.nro_cajas
+            * self.cmp_order_info['order_invoice']['order_invoice'].tipo_cambio
+            )
         line_item.prorrateos_total = line_item.prorrateo_pedido
+        line_item.indirectos = line_item.prorrateo_pedido
         return line_item

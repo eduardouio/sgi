@@ -83,10 +83,9 @@
                <tr style="background-color: #fff;">
                   <th class="text-center"><i class="fa fa-list"></i></th>
                   <th class="text-center">CONCEPTO</th>
-                  <th class="text-center">VALOR</th>
-                  <th class="text-center">FACTURADO</th>
+                  <th class="text-center">PROVISION</th>
+                  <th class="text-center">EN MAYOR</th>
                   <th class="text-center">SALDO</th>
-                  <th class="text-center">MAYOR</th>
                </tr>
                <tr @click="showOrderInvoice()">
                   <td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td>
@@ -97,7 +96,6 @@
                   <td class="text-right">  ${ complete_order_info.order_invoice.order_invoice.valor | money }</td>
                   <td class="text-right">  ${ complete_order_info.order_invoice.order_invoice.valor | money }</td>
                   <td class="text-right">  ${ 0 | money }</td>
-                  <td class="text-right">  ${ complete_order_info.order_invoice.order_invoice.valor | money }</td>
                </tr>
                <tr @click="showOriginExpense()" v-if="complete_order_info.order.incoterm == 'FOB'">
                   <td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td>
@@ -108,7 +106,6 @@
                   <td class="text-right">   ${ complete_order_info.order.gasto_origen | money } </td>
                   <td class="text-right">   ${ complete_order_info.order.gasto_origen | money } </td>
                   <td class="text-right">   ${ 0 | money }</td>
-                  <td class="text-right">   ${ complete_order_info.order.gasto_origen | money }</td>
                </tr>
                <tr @click="showTaxes()" v-if="complete_order_info['order'].regimen === '10'">
                   <td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td>
@@ -119,7 +116,6 @@
                   <td class="text-right"> ${ complete_order_info.taxes.total_provisionado | money  }</td>
                   <td class="text-right"> ${ complete_order_info.taxes.total_pagado | money  }</td>
                   <td class="text-right"> ${ (complete_order_info.taxes.total_provisionado - complete_order_info.taxes.total_pagado ) | money  }</td>
-                  <td class="text-right"> ${ complete_order_info.taxes.total_pagado | money  }</td>
                </tr>
                <tr v-for="item in complete_order_info.expenses" @click="selectExpense(item)">
                   <td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td>
@@ -130,15 +126,13 @@
                       ${ item.expense.concepto }
                   </td>
                   <td class="text-right">${ item.expense.valor_provisionado | money }</td>
-                  <td class="text-right">${ item.invoiced_value | money }</td>
-                  <td class="text-right">${ item.sale | money }</td>
                   <td class="text-right">${ item.legder | money }</td>
+                  <td class="text-right">${ (item.expense.valor_provisionado - item.legder ) | money }</td>
                </tr>
                <tr>
                   <th colspan="2">Sumas</th>
                   <th class="text-right"> ${ complete_order_info.total_expenses | money }</th>
                   <th class="text-right"> ${ complete_order_info.total_invoiced |money }</th>
-                  <th class="text-right"> ${ (complete_order_info.total_expenses - complete_order_info.total_invoiced) | money }</th>
                   <th class="text-right"> ${ current_ledger.mayor_sgi | money }</th>
                </tr>
             </tbody>
@@ -496,7 +490,7 @@
          <div class="row">
             <div class="col-4">
                <div class="fomr-group"><label for="">Saldo Mayor Sap</label>
-                  <input type="number" class="form-control form-control-sm text-right" v-model="current_ledger.mayor_sap" step="0.001">
+                  <input type="number" class="form-control form-control-sm text-right" v-model="current_ledger.mayor_sap" step="0.001"  @keyup="updateLedger()">
                </div>
             </div>
             <div class="col-4">
