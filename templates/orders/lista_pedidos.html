@@ -1,0 +1,32 @@
+{% extends 'base/base.html' %}
+{% block title_content %}
+    <div class="row border">
+   <div class="col-10">
+      <i class="fa fa-list"></i>
+      Lista de pedidos
+   </div>
+   <div class="col-2 text-right">SGI <small>[Sistema Gestón de Importaciones]</small></div>
+</div>
+{% endblock title_content %}
+{% block content %}
+    <table class="table table-condensed table-bordered table-striped">
+    <tr>
+        <th>#</th>
+        <th>Pedido</th>
+        <th>Proveedor</th>
+        <th>Origen</th>
+        <th>Incoterm</th>
+        <th>Incoterm</th>
+    </tr>
+    {% for order in orders_list  %}
+    <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{order}}</td>
+        <td>{{ order.proveedor }}</td>
+        <td>{{ order.pais_origen }}</td>
+        <td>{{ order }}</td>
+        <td>{{ order.incoterm }}</td>
+    </tr>
+    {% endfor %}
+    </table>
+{% endblock content %}

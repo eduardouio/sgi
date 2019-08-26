@@ -196,10 +196,9 @@ class Order(models.Model):
         if order is None or order.regimen == '70' or order.bg_isliquidated == 0:
             loggin('w', 'No se obtener los tributos del pedido {nro_order} pedido inexistente o regimen = 70'.format(nro_order=nro_order))
             return taxes
-
         return {
             'total_pagado' : (
-                    order.arancel_advalorem_pagar_pagado
+                      order.arancel_advalorem_pagar_pagado
                     + order.arancel_especifico_pagar_pagado
                     + order.fodinfa_pagado
                     + order.ice_advalorem_pagado
