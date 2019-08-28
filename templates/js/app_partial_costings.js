@@ -5,7 +5,7 @@ var app = new Vue({
       ajax_request : true,
       complete_order_info: {},
       all_partials: [],
-      current_partial : null,      
+      current_partial : null,
       current_ordinal_parcial : parseInt('{{ data.ordinal_partial }}'),
       nro_order : '{{ data.complete_order_info.order }}',
       current_order_invoice : {},

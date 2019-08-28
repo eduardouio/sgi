@@ -10,10 +10,10 @@
         Regimen 70 Almagro
      {% endif %}
       <small>| Pedido</small> 
-      {% if data.bg_isclosed  == 0 %}
-        <span class="badge badge-success">Abierto</span>
-      {% else %}
+      {% if data.order_info.order.bg_isclosed %}
         <span class="badge badge-dark">Cerrado</span>
+      {% else %}
+        <span class="badge badge-success">Abierto</span>
       {% endif %}
    </div>
    <div class="col-8 text-right">

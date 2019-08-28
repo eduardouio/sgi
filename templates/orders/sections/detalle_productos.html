@@ -73,8 +73,19 @@
         </table>
     </div>
 </div>
+{% if data.order_info.order.regimen == '10' %}
 <div class="row">
 <div class="col-12 text-right">
-    <a href="/costos/pedido/{{ data.order_info.order_invoice.order_invoice.nro_pedido }}/" class="btn btn-sm btn-outline-primary"><i class="fa fa-"></i> Costeo Productos</a>
+    {% if  data.order_info.order.bg_isliquidated %}
+        <a href="/costos/pedido/{{ data.order_info.order_invoice.order_invoice.nro_pedido }}/" class="btn btn-sm btn-outline-dark"><i class="fa fa-cart-arrow-down"></i> Costeo Productos</a>
+        {% else %}
+        <h5 class='text-danger'><i class="fas fa-exclamation-triangle"></i>
+        SIN LIQUIDACIÓN SENAE
+        </h5>
+        <span class="text-primary">
+        Solicite al departamento de importaciones el ingreso de la liquidación de Aduana
+        </span>
+    {% endif %}
 </div>
 </div>
+{% endif %}

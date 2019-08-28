@@ -193,7 +193,8 @@ class Order(models.Model):
             }
 
         order =  self.get_by_order(nro_order)
-        if order is None or order.regimen == '70' or order.bg_isliquidated == 0:
+        
+        if order is None or order.regimen == '70' or order.bg_isliquidated == 0 or order.bg_isliquidated is None:
             loggin('w', 'No se obtener los tributos del pedido {nro_order} pedido inexistente o regimen = 70'.format(nro_order=nro_order))
             return taxes
         return {

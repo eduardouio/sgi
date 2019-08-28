@@ -7,6 +7,8 @@ var app = new Vue({
     nro_order : '{{ data.complete_order_info.order }}',
     current_order_invoice : {},
     csrftoken : Cookies.get('csrftoken'),
+    liquidated_order : Boolean(parseInt('{{ data.complete_order_info.order.bg_isclosed }}')),
+    show_form_liquidated : false,
     current_expense : null,
     show_expense : false,
     show_costings : false,
@@ -121,15 +123,8 @@ var app = new Vue({
         alert('Se produjo un error, por favor recargue la página');
       });
 },
-  liquidatePartial : function(){
-    console.log('Llamamos a liquidar el parcial')
-    var partial = {
-      id_parcial : this.current_partial.partial.id_parcial,
-      observaciones : this.current_partial.partial.observaciones += this.comentarios,
-      bg_isclosed : 1,
-      id_user_cierre : parseInt('{{ data.request.user.id }}'),
-      nro_pedido : this.complete_order_info.order.nro_pedido,
-    }
+  liquidateOrder : function(){
+    console.log('Iniciamos la liquidacion del pedido')
     this.show_liquidate_confirm_btn = false
     this.show_liquidate_btn = false
     this.liquidated_partial = true
@@ -167,3 +162,5 @@ filters : {
   }
 }
 })
+
+app.$root.whoami = 'Eduardo Villota'
