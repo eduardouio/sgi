@@ -141,11 +141,6 @@
     <h1><i class="fa fa-check text-success"></i></h1>
     <h3>Pedido Liquidado Y Cerrado 🐼 </h3>
     <p>
-    Yo no es posible registrar provisiones en este pedido <span class="text-primary">${order_data.order.nro_pedido}</span>. 
-    <br>Desde éste punto todas las justificaciones ingresadas afectarán al mayor SAP   
-    <br>Será redireccionado en 3 Segundos...
-    </p>
-    <button class="btn btn-sm btn-outline-success"> <i class="fa fa-check"></i> ¡Entendido!</button>
     </div>
     <div class="col-1"></div>
 </div>
@@ -165,6 +160,6 @@
     <button class="btn btn-sm btn-outline-dark" @click="show_costings=false"><i class="fa fa-arrow-left"></i> Volver a Gastos</button>
     <button v-if="show_form_liquidated == false && liquidated_order == false"   class="btn btn-sm btn-outline-primary" @click="show_form_liquidated = true"><i class="fa fa-check"></i> Liquidar Pedido</button>
     <button v-if="show_form_liquidated == true" class="btn btn-sm btn-outline-danger" @click="show_form_liquidated = false"><i class="fa fa-ban"></i> Cancelar</button>
-    <button v-if="show_form_liquidated == true" class="btn btn-sm btn-outline-primary" @click="liquidate_order()"><i class="fa fa-check"></i> Confirmar y Continuar </button>
+    <button v-if="show_form_liquidated == true" class="btn btn-sm btn-outline-primary" @click="liquidateOrder()"><i class="fa fa-check"></i> Confirmar y Continuar </button>
 </div>
 </div>
