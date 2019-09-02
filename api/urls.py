@@ -1,6 +1,8 @@
 from django.urls import include, path
-from api.views import (ApportionmenCreateView, ApportionmenDeleteView,
-                       ApportionmenDetailView, ApportionmentDetailCreateView,
+
+from api.views import (AllOrders, ApportionmenCreateView,
+                       ApportionmenDeleteView, ApportionmenDetailView,
+                       ApportionmentDetailCreateView,
                        ApportionmentDetailDeleteView,
                        ApportionmentDetailDetailView,
                        ApportionmentDetailUpdateView, ApportionmenUpdateView,
@@ -13,10 +15,10 @@ from api.views import (ApportionmenCreateView, ApportionmenDeleteView,
                        InfoInvoiceDetailDetailView,
                        InfoInvoiceDetailUpdateView, InfoInvoiceDetailView,
                        InfoInvoiceUpdateView, LedgerCreateView,
-                       LedgerDeleteView, LedgerDetailView, LedgerUpdateView,
-                       OrderCreateView, OrderDeleteView, OrderDetailView,
-                       OrderInvoiceCreateView, OrderInvoiceDeleteView,
-                       OrderInvoiceDetailCreateView,
+                       LedgerDeleteView, LedgerDelExisting, LedgerDetailView,
+                       LedgerUpdateView, OrderCreateView, OrderDeleteView,
+                       OrderDetailView, OrderInvoiceCreateView,
+                       OrderInvoiceDeleteView, OrderInvoiceDetailCreateView,
                        OrderInvoiceDetailDeleteView,
                        OrderInvoiceDetailDetailView,
                        OrderInvoiceDetailUpdateView, OrderInvoiceDetailView,
@@ -31,7 +33,7 @@ from api.views import (ApportionmenCreateView, ApportionmenDeleteView,
                        ProductCreateView, ProductDeleteView, ProductDetailView,
                        ProductUpdateView, SupplierCreateView,
                        SupplierDeleteView, SupplierDetailView,
-                       SupplierUpdateView, AllOrders,)
+                       SupplierUpdateView)
 
 app_name = 'api'
 
@@ -64,6 +66,7 @@ urlpatterns = [
     #Ledger
     path('ledger/create/', LedgerCreateView.as_view(), name='create-ledger'),
     path('ledger/delete/<pk>/', LedgerDeleteView.as_view(), name='delete-ledger'),
+    path('ledger/delete-existing/<nro_order>/<id_partial>/', LedgerDelExisting.as_view(), name='delete-existing-ledger'),
     path('ledger/detail/<pk>/', LedgerDetailView.as_view(), name='detail-ledger'),
     path('ledger/update/<pk>/', LedgerUpdateView.as_view(), name='update-ledger'),
     #Order

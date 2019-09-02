@@ -78,8 +78,7 @@ var app = new Vue({
         k.expenses.forEach((key,val)=>{
           legder_value += key.legder
         })
-      })      
-
+      })
       // restamos las descargas de productos
       if (parseInt('{{ data.current_partial_pos }}') > 0){
           console.log('inciando descarga de gastos')
@@ -214,19 +213,28 @@ var app = new Vue({
       this.liquidated_partial = true
       
       this.$http.post(host + 'api/ledger/create/', this.current_ledger, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {
-        console.log('Mayor Registrado correctamente')
-        this.$http.put(host + 'api/partial/update/' + partial.id_parcial + '/', partial, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {                     
-          alert('El parcial {{ data.ordinal_partial }} del pedido {{ data.nro_order }} se liquido Correctamente 😄 [Status:Cerrado]')
+        this.$http.put(host + 'api/partial/update/' + partial.id_parcial + '/', partial, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {
           this.partial_close = true
           window.print()
                   }, response => {
-          alert(response);
+          alert(response)
         });
       }, response => {
-        alert('Se produjo un error, por favor recargue la página');
+        console.log('No es posible crear el parcial')
+          this.deleteExistingLedger(this.current_ledger)
       });
       
       },
+      deleteExistingLedger: function (current_ledger){
+        console.log('eliminando mayor existente')
+        this.$http.get(host + 'api/ledger/delete-existing/' + current_ledger.nro_pedido + '/' + current_ledger.id_parcial + '/' , { headers: { "X-CSRFToken":this.csrftoken}}).then(response => {
+          console.log('Mayor eliminado correctamennte')
+          this.liquidatePartial()
+        }, response => {
+          console.log('No se puede elimiar un mayor que no existe')
+          alert('Error interno consulte con soporte, [msg] -> El mayor que intenta eliminar no existe')
+        })
+    },
     },
     mounted() {
       this.$http.get(host + 'api/order/all-data/{{ data.complete_order_info.order.nro_pedido }}', { params: {}}).then(response => {

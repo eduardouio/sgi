@@ -81,3 +81,22 @@ class Ledger(models.Model):
             return None
         
         return items.first()
+    
+    @classmethod
+    def get_by_order_and_partial(self, nro_order, id_partial):
+        """Obtiene un mayor desde el pedido y parcial
+        
+        Arguments:
+            nro_order {str}
+            id_partial {int}
+        """
+        items = self.objects.filter(nro_pedido=nro_order, id_parcial=id_partial)
+        if items.count() == 0:
+            loggin(
+                'w',
+                'No existe un mayor para el pedido {} parcial {}'
+                .format(nro_order, id_partial)
+            )
+            return None
+
+        return items.first()
