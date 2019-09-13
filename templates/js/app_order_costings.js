@@ -45,7 +45,7 @@ var app = new Vue({
           paid.paid.bg_mayor = 1
           this.current_expense.legder += parseFloat(paid.paid.valor)
       }            
-      this.$http.put('{{ data.host }}/api/paid-invoice-detail/update/' + paid.paid.id_detalle_documento_pago + '/', paid.paid, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {                     
+      this.$http.put('{{ data.host }}api/paid-invoice-detail/update/' + paid.paid.id_detalle_documento_pago + '/', paid.paid, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {                     
           this.updateLedger()
         }, response => {
           alert('Se produjo un error, por favor recargue la página');
@@ -110,14 +110,14 @@ var app = new Vue({
           paid.paid.bg_mayor = 1
           this.current_expense.legder += parseFloat(paid.paid.valor)
       }            
-      this.$http.put('{{ data.host }}/api/paid-invoice-detail/update/' + paid.paid.id_detalle_documento_pago + '/', paid.paid, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {                     
+      this.$http.put('{{ data.host }}api/paid-invoice-detail/update/' + paid.paid.id_detalle_documento_pago + '/', paid.paid, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {                     
           this.updateLedger()
         }, response => {
           alert('Se produjo un error, por favor recargue la página');
         });
   },
   get_paid_invoice : function(id_paid){
-    this.$http.get('{{ data.host }}/api/paid-invoice/all/' + id_paid  + '/', {params: {}}).then(response => {          
+    this.$http.get('{{ data.host }}api/paid-invoice/all/' + id_paid  + '/', {params: {}}).then(response => {          
         this.current_paid = response.data;
       }, response => {
         alert('Se produjo un error, por favor recargue la página');
@@ -131,9 +131,9 @@ var app = new Vue({
     this.complete_order_info.order.bg_isclosed = 1 
     this.complete_order_info.order.notas_cierre += this.comentarios 
     console.dir(this.complete_order_info)
-    this.$http.post('{{ data.host }}/api/ledger/create/', this.current_ledger, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {
+    this.$http.post('{{ data.host }}api/ledger/create/', this.current_ledger, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {
       console.log('Mayor Registrado correctamente')
-      this.$http.put('{{ data.host }}/api/order/update/{{data.complete_order_info.order}}/', this.complete_order_info.order, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {                     
+      this.$http.put('{{ data.host }}api/order/update/{{data.complete_order_info.order}}/', this.complete_order_info.order, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {                     
         alert('pedido {{ data.nro_order }} se liquido Correctamente 😄 [Status:Cerrado]')
         console.log('[debug] pedido cerrado correctamente')
         this.order_close = true
@@ -149,7 +149,7 @@ var app = new Vue({
     },
   },
   mounted() {
-    this.$http.get('{{ data.host }}/api/order/all-data/{{ data.complete_order_info.order.nro_pedido }}', { params: {}}).then(response => {
+    this.$http.get('{{ data.host }}api/order/all-data/{{ data.complete_order_info.order.nro_pedido }}', { params: {}}).then(response => {
     this.complete_order_info = response.body
     this.ajax_request = false    
     this.updateLedger()  
@@ -166,5 +166,3 @@ filters : {
   }
 }
 })
-
-app.$root.whoami = 'Eduardo Villota'

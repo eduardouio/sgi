@@ -115,3 +115,18 @@ class InfoInvoiceDetail(models.Model):
         
 
         return info_invoice_items
+    
+    @classmethod
+    def get_by_partial(self, id_partial):
+        """Obtiene los productos de un parcial
+        
+        Arguments:
+            id_partial {int} -- id de parcial
+        """
+        info_invoice = InfoInvoice.get_by_id_partial(id_partial)
+
+        if info_invoice is None:
+            loggin('e', 'El parcial {} no tiene productos'.format(id_partial))
+            return None
+        
+        return self.get_by_info_invoice(info_invoice.id_factura_informativa)

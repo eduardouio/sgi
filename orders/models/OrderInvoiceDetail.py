@@ -133,3 +133,20 @@ class OrderInvoiceDetail(models.Model):
                 .format(id_order_invoice_detail)
                 )
             return None
+    
+    @classmethod
+    def get_by_order(self, nro_order):
+        """Otiene los productos de un pedido 
+        
+        Arguments:
+            nro_order {string} -- Nro de pedido
+        """
+        order_invoice = OrderInvoice.get_by_order(nro_order)
+        if order_invoice is None:
+            loggin('e', 
+            'le pedido {}, no tiene facturas registradas'.format(nro_order))
+            return None
+        
+        return self.get_by_id_order_invoice(order_invoice.id_pedido_factura)
+
+

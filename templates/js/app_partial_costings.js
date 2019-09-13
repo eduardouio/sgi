@@ -51,7 +51,7 @@ var app = new Vue({
             paid.paid.bg_mayor = 1
             this.current_expense.legder += parseFloat(paid.paid.valor)
         }            
-        this.$http.put(host + 'api/paid-invoice-detail/update/' + paid.paid.id_detalle_documento_pago + '/', paid.paid, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {                     
+        this.$http.put('{{ data.host }}api/paid-invoice-detail/update/' + paid.paid.id_detalle_documento_pago + '/', paid.paid, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {                     
             this.updateLedger()
           }, response => {
             alert('Se produjo un error, por favor recargue la página');
@@ -186,14 +186,14 @@ var app = new Vue({
             paid.paid.bg_mayor = 1
             this.current_expense.legder += parseFloat(paid.paid.valor)
         }            
-        this.$http.put(host + 'api/paid-invoice-detail/update/' + paid.paid.id_detalle_documento_pago + '/', paid.paid, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {                     
+        this.$http.put('{{ data.host }}api/paid-invoice-detail/update/' + paid.paid.id_detalle_documento_pago + '/', paid.paid, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {                     
             this.updateLedger()
           }, response => {
             alert('Se produjo un error, por favor recargue la página');
           });
     },
     get_paid_invoice : function(id_paid){
-      this.$http.get(host + 'api/paid-invoice/all/' + id_paid  + '/', {params: {}}).then(response => {          
+      this.$http.get('{{data.host }}api/paid-invoice/all/' + id_paid  + '/', {params: {}}).then(response => {          
           this.current_paid = response.data;
         }, response => {
           alert('Se produjo un error, por favor recargue la página');
@@ -212,8 +212,8 @@ var app = new Vue({
       this.show_liquidate_btn = false
       this.liquidated_partial = true
       
-      this.$http.post(host + 'api/ledger/create/', this.current_ledger, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {
-        this.$http.put(host + 'api/partial/update/' + partial.id_parcial + '/', partial, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {
+      this.$http.post('{{ data.host }}api/ledger/create/', this.current_ledger, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {
+        this.$http.put('{{ data.host }}api/partial/update/' + partial.id_parcial + '/', partial, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {
           this.partial_close = true
           window.print()
                   }, response => {
@@ -227,7 +227,7 @@ var app = new Vue({
       },
       deleteExistingLedger: function (current_ledger){
         console.log('eliminando mayor existente')
-        this.$http.get(host + 'api/ledger/delete-existing/' + current_ledger.nro_pedido + '/' + current_ledger.id_parcial + '/' , { headers: { "X-CSRFToken":this.csrftoken}}).then(response => {
+        this.$http.get('{{ data.host }}api/ledger/delete-existing/' + current_ledger.nro_pedido + '/' + current_ledger.id_parcial + '/' , { headers: { "X-CSRFToken":this.csrftoken}}).then(response => {
           console.log('Mayor eliminado correctamennte')
           this.liquidatePartial()
         }, response => {
@@ -237,12 +237,12 @@ var app = new Vue({
     },
     },
     mounted() {
-      this.$http.get(host + 'api/order/all-data/{{ data.complete_order_info.order.nro_pedido }}', { params: {}}).then(response => {
+      this.$http.get('{{ data.host }}api/order/all-data/{{ data.complete_order_info.order.nro_pedido }}', { params: {}}).then(response => {
       this.complete_order_info = response.body 
       var x = 0
       response.body.partials.forEach(el => {        
         if (x < parseInt('{{ data.ordinal_partial }}')) {
-          this.$http.get(host + 'api/partial/all-data/' + el.id_parcial + '/',{ params: {}}).then(resp => {
+          this.$http.get('{{ data.host }}api/partial/all-data/' + el.id_parcial + '/',{ params: {}}).then(resp => {
           this.all_partials.unshift(resp.body)
           this.updateLedger()
           this.selectPartial()
