@@ -43,7 +43,13 @@
     | ID: {{ data.current_partial.info_invoice.info_invoice.id_factura_informativa }}
     </div>
     <div class="col-6 text-right">
-        ICE Reliquidado: <strong>$ {{ (data.costings.ice_reliquidado  - data.current_partial.partial.ice_advalorem_pagado - data.current_partial.partial.ice_especifico_pagado )  | round(2) }} </strong>
+        ICE Reliquidado: <strong>$ 
+    {% if data.current_partial.partial.bg_isclosed %}
+        {{ data.current_partial.ledger.reliquidacion_ice | round(2)}}
+    {% else %}
+        {{ (data.costings.ice_reliquidado  - data.current_partial.partial.ice_advalorem_pagado - data.current_partial.partial.ice_especifico_pagado )  | round(2) }} 
+    {% endif %}
+        </strong>
     </div>
 </div>
 <div class="row">

@@ -79,7 +79,7 @@ class Ledger(models.Model):
                 .format(id_partial)
                 )
             return None
-        
+        loggin('i', 'retornando mayor para el parcial {}'.format(id_partial))
         return items.first()
     
     @classmethod

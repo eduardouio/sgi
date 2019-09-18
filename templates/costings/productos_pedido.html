@@ -35,7 +35,11 @@
     
     </div>
     <div class="col-6 text-danger text-right">
-        ICE RELIQUIDADO: <strong>$ {{ data.costings.ice_reliquidado }} </strong>
+    {% if data.complete_order_info.order.bg_isclosed %}
+        ICE RELIQUIDADO: <strong>$ {{ "%.2f" | format(data.complete_order_info.ledger.reliquidacion_ice) if  data.complete_order_info.ledger.reliquidacion_ice else '0.00'}} </strong>
+    {% else %}
+        ICE RELIQUIDADO: <strong>$ {{ "%.2f" | format(data.costings.ice_reliquidado) if  data.costings.ice_reliquidado else '0.00'}} </strong>
+    {% endif %}
     </div>
 </div>
 <div class="row">
@@ -78,56 +82,56 @@
             <td nowrap> {{ item }} {# {{ loop.index }} #}</td>            
             <td nowrap>  {{ item.cod_contable_id }}</td>
             <td nowrap>  {{ item.product }}</td>
-            <td class="text-right"> {{ "%.0f" | format(item.nro_cajas) }}</td>
-            <td class="text-right"> {{ "%.2f" | format(item.cantidad_x_caja) }}</td>
-            <td class="text-right"> {{ "%.0f" | format(item.unidades) }}</td>
-            <td class="text-right"> {{ "%.2f" | format(item.fob_tasa_trimestral) }}</td>
-            <td class="text-right"> {{ "%.2f" | format(item.seguro_aduana) }}</td>
-            <td class="text-right"> {{ "%.2f" | format(item.flete_aduana) }}</td>
-            <td class="text-right"> {{ "%.2f" | format(item.cif) }}</td>
-            <td class="text-right"> {{ "%.2f" | format(item.fodinfa) }}</td>
-            <td class="text-right"> {{ "%.2f" | format(item.arancel_advalorem_pagar) }}</td>
-            <td class="text-right"> {{ "%.2f" | format(item.arancel_especifico_pagar) }}</td>
-            <td class="text-right"> {{ "%.2f" | format(item.etiquetas_fiscales) }}</td>
-            <td class="text-right"> {{ "%.2f" | format(item.ex_aduana_unitario) }}</td>
-            <td class="text-right"> {{ "%.0f" | format(item.capacidad_ml) }}</td>
-            <td class="text-right"> {{ "%.2f" | format(item.grado_alcoholico) }}</td>            
-            <td class="text-right"> {{ "%.2f" | format(item.ice_especifico_unitario) }}</td>            
-            <td class="text-right"> {{ "%.2f" | format(item.ice_advalorem_unitario ) }}</td>            
-            <td class="text-right"> {{ "%.2f" | format(item.ice_especifico) }}</td>            
-            <td class="text-right"> {{ "%.2f" | format(item.ice_advalorem_reliquidado) }}</td>
-            <td class="text-right"> {{ "%.2f" | format(item.total_ice) }}</td>
-            <td class="text-right"> {{ "%.2f" | format(item.indirectos) }}</td>
-            <td class="text-right"> {{ "%.2f" | format(item.costo_total) }}</td>
-            <td class="text-right"> {{ "%.2f" | format(item.costo_caja_final) }}</td>
-            <td class="text-right"> {{ "%.2f" | format(item.costo_caja_final / item.cantidad_x_caja) }}</td>
+            <td class="text-right"> {{ "%.0f" | format(item.nro_cajas) if item.nro_cajas else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.cantidad_x_caja) if item.cantidad_x_caja else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.0f" | format(item.unidades) if item.unidades else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.fob_tasa_trimestral) if item.fob_tasa_trimestral else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.seguro_aduana) if item.seguro_aduana else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.flete_aduana) if item.flete_aduana else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.cif) if item.cif else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.fodinfa) if item.fodinfa else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.arancel_advalorem_pagar) if item.arancel_advalorem_pagar else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.arancel_especifico_pagar) if item.arancel_especifico_pagar else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.etiquetas_fiscales) if item.etiquetas_fiscales else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.ex_aduana_unitario) if item.ex_aduana_unitario else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.0f" | format(item.capacidad_ml) if item.capacidad_ml else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.grado_alcoholico) if item.grado_alcoholico else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.ice_especifico_unitario) if item.ice_especifico_unitario else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.ice_advalorem_unitario )if  item.ice_advalorem_unitario  else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.ice_especifico) if item.ice_especifico else '0.00'  }}</td> 
+            <td class="text-right"> {{ "%.2f" | format(item.ice_advalorem_reliquidado) if item.ice_advalorem_reliquidado else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.total_ice) if item.total_ice else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.indirectos) if item.indirectos else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.costo_total) if item.costo_total else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.costo_caja_final) if item.costo_caja_final else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.costo_caja_final / item.cantidad_x_caja) if (item.costo_caja_final / item.cantidad_x_caja) else '0.00'  }}</td>
             </tr>
              {% endfor %}
         <tr class="table-success">
         <td nowrap colspan="3" class="text-right"> <strong>Sumas:</strong></td>
         <td nowrap class="text-right">   {{ data.costings.sums.nro_cajas if data.costings.sums.nro_cajas  else '0.00' }} </td>
-        <td nowrap class="text-right">-</td>
-        <td nowrap class="text-right">   {{ data.costings.sums.unidades if data.costings.sums.unidades else '0.00' }} </td>
-        <td nowrap class="text-right">$  {{ data.costings.sums.fob_tasa_trimestral if data.costings.sums.fob_tasa_trimestral else '0.00' }} </td>
-        <td nowrap class="text-right">$  {{ data.costings.sums.seguro_aduana if data.costings.sums.seguro_aduana else '0.00' }} </td>
-        <td nowrap class="text-right">$  {{ data.costings.sums.flete_aduana if data.costings.sums.flete_aduana else '0.00' }} </td>
-        <td nowrap class="text-right">$  {{ data.costings.sums.cif if data.costings.sums.cif else '0.00' }} </td>
-        <td nowrap class="text-right">$  {{ data.costings.sums.fodinfa if data.costings.sums.fodinfa else '0.00' }} </td>
-        <td nowrap class="text-right">$  {{ data.costings.sums.arancel_advalorem_pagar if data.costings.sums.arancel_advalorem_pagar else '0.00' }} </td>
-        <td nowrap class="text-right">$  {{ data.costings.sums.arancel_especifico_pagar if data.costings.sums.arancel_especifico_pagar else '0.00' }} </td>
-        <td nowrap class="text-right">$  {{ data.costings.sums.etiquetas_fiscales if data.costings.sums.etiquetas_fiscales else '0.00' }} </td>
         <td nowrap class="text-center">-</td>
-        <td nowrap class="text-center">-</td>
-        <td nowrap class="text-center">-</td>
-        <td nowrap class="text-center">-</td>
-        <td nowrap class="text-center">-</td>
-        <td nowrap class="text-right">$  {{ data.costings.sums.ice_especifico  if data.costings.sums.ice_especifico else '0.00'}} </td>
-        <td nowrap class="text-right">$  {{ data.costings.sums.ice_advalorem_reliquidado  if data.costings.sums.ice_advalorem_reliquidado else '0.00'}} </td>
-        <td nowrap class="text-right">$  {{ data.costings.sums.total_ice  if data.costings.sums.total_ice else '0.00'}} </td>
-        <td nowrap class="text-right">$  {{ data.costings.sums.indirectos  if data.costings.sums.indirectos else '0.00'}} </td>
-        <td nowrap class="text-right">$  {{ data.costings.sums.costo_total  if data.costings.sums.costo_total else '0.00'}} </td>
-        <td nowrap class="text-center">-</td>
-        <td nowrap class="text-center">-</td>
+        <td nowrap class="text-right">   {{ "%.2f" | format(data.costings.sums.unidades) if data.costings.sums.unidades else '0.00' }} </td>
+        <td nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.fob_tasa_trimestral) if data.costings.sums.fob_tasa_trimestral else '0.00' }} </td>
+        <td nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.seguro_aduana) if data.costings.sums.seguro_aduana else '0.00' }} </td>
+        <td nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.flete_aduana) if data.costings.sums.flete_aduana else '0.00' }} </td>
+        <td nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.cif) if data.costings.sums.cif else '0.00' }} </td>
+        <td nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.fodinfa) if data.costings.sums.fodinfa else '0.00' }} </td>
+        <td nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.arancel_advalorem_pagar) if data.costings.sums.arancel_advalorem_pagar else '0.00' }} </td>
+        <td nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.arancel_especifico_pagar) if data.costings.sums.arancel_especifico_pagar else '0.00' }} </td>
+        <td nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.etiquetas_fiscales) if data.costings.sums.etiquetas_fiscales else '0.00' }} </td>
+        <td nowrap class="text-center">--</td>
+        <td nowrap class="text-center">--</td>
+        <td nowrap class="text-center">--</td>
+        <td nowrap class="text-center">--</td>
+        <td nowrap class="text-center">--</td>
+        <td nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.ice_especifico)  if data.costings.sums.ice_especifico else '0.00'}} </td>
+        <td nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.ice_advalorem_reliquidado)  if data.costings.sums.ice_advalorem_reliquidado else '0.00'}} </td>
+        <td nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.total_ice)  if data.costings.sums.total_ice else '0.00'}} </td>
+        <td nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.indirectos)  if data.costings.sums.indirectos else '0.00'}} </td>
+        <td nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.costo_total)  if data.costings.sums.costo_total else '0.00'}} </td>
+        <td nowrap class="text-center">--</td>
+        <td nowrap class="text-center">--</td>
         </tr>
     </tbody>
 </table>    

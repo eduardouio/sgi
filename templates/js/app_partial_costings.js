@@ -33,7 +33,7 @@ var app = new Vue({
         'costo_producto' : parseFloat('{{ data.current_partial.info_invoice.totals.value_tct | round(3) }}'),
         'facturas_sgi' : parseFloat('{{ data.facturas_sgi | round(3) }}'),
         'provisiones_sgi' : parseFloat('{{ data.provisiones_sgi | round(3) }}'),
-        'reliquidacion_ice' : parseFloat('{{ data.reliquidacion_ice | round(2)}}'),
+        'reliquidacion_ice': parseFloat('{{ (data.costings.ice_reliquidado  - data.current_partial.partial.ice_advalorem_pagado - data.current_partial.partial.ice_especifico_pagado )  | round(2) }}'),
         'saldo_producto' : parseFloat('{{ data.saldo_producto | round(3) }}'),
         'mayor_sap' : 0,
         'mayor_sgi' : 0,

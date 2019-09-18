@@ -292,7 +292,6 @@ class CompleteOrderInfo(object):
         '''
             Retorna el mayor de un pedido desde la base de datos del sistema
         '''
-        return None
         order = Order.get_by_order(self.nro_order)
         if order is None or order.bg_isclosed == 0:
             loggin(
@@ -305,7 +304,7 @@ class CompleteOrderInfo(object):
         ledger = Ledger().get_by_order(self.nro_order)
 
         if self.serialized and ledger:
-            ledger_serializer = LedgerSerializer(ledger, many=True)
+            ledger_serializer = LedgerSerializer(ledger)
             return ledger_serializer.data
 
         return ledger
