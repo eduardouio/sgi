@@ -65,7 +65,7 @@ class Ledger(models.Model):
                 )
             return None
 
-        return items
+        return items.first()
 
 
     @classmethod

@@ -16,4 +16,11 @@ class LedgerAdmin(admin.ModelAdmin):
         'mayor_sgi',
     )
 
+    search_fields  = [
+        'tipo',
+        'nro_pedido',
+        'id_parcial',
+    ]
+
+
 admin.site.register(Ledger, LedgerAdmin)
