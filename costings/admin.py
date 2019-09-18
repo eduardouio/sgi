@@ -16,10 +16,11 @@ class LedgerAdmin(admin.ModelAdmin):
         'mayor_sgi',
     )
 
+    #si se busca en fk se usa __ par como accesos a las propiedades objeto
     search_fields  = [
         'tipo',
-        'nro_pedido',
         'id_parcial',
+        'nro_pedido__nro_pedido',
     ]
 
 
