@@ -289,6 +289,7 @@ class CompletePartialInfo(object):
             return None
         ledger =  Ledger.get_by_parcial(self.id_partial)
         
+        loggin('i', 'Mayor parcial recuperado')
         if self.serialized:
             ledger_serializer = LedgerSerializer(ledger)
             return ledger_serializer.data

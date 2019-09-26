@@ -41,6 +41,16 @@
         <td class="text-right">${ item.legder | money }</td>
         <td class="text-right">${ (item.expense.valor_provisionado - item.legder) | money }</td>
     </tr>
+        <tr v-if="current_selected_partial.partial.bg_isclosed">
+        <td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td>
+        <td>
+            <small class="text-success"><i class="fa fa-check-circle"></i></small>
+            RELIQUIDACION ICE
+        </td>
+        <td class="text-right">${ current_selected_partial.ledger.reliquidacion_ice | money }</td>
+        <td class="text-right">${ current_selected_partial.ledger.reliquidacion_ice | money }</td>
+        <td class="text-right">0.00</td>
+    </tr>
     <tr>
         <th colspan="2">Sumas</th>
         <th class="text-right">${ (current_selected_partial.total_expenses + current_selected_partial.total_taxes_product) | money }</th>
