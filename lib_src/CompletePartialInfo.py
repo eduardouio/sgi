@@ -44,7 +44,6 @@ class CompletePartialInfo(object):
         self.total_provisions = 0
         self.type_change_trimestral = 0
         self.partial_isclosed = False
-        self.ice_reliquidado = 0
 
 
     def get_data(self, id_partial, serialized = False, type_change_trimestral=1):
@@ -69,7 +68,7 @@ class CompletePartialInfo(object):
         self.type_change_trimestral = type_change_trimestral
         partial = self.get_partial()
         
-        if partial is None:            
+        if partial is None:
             return None
 
         return ({
@@ -82,7 +81,7 @@ class CompletePartialInfo(object):
             'taxes' : self.get_taxes(),
             'files' : self.get_files(),
             'total_expenses' : self.total_expenses,
-            'total_invoiced' : (self.partial_ledger + self.total_invoiced + self.ice_reliquidado),
+            'total_invoiced' : (self.partial_ledger + self.total_invoiced),
             'total_taxes_product' : self.partial_ledger,
             'total_provisions' : self.total_provisions,
             })
@@ -121,7 +120,6 @@ class CompletePartialInfo(object):
 
         self.partial_ledger += self.tributes['total']
         self.partial_isclosed = partial.bg_isclosed
-
 
         if self.serialized:
             partia_serializer = PartialSerializer(partial)
@@ -216,7 +214,6 @@ class CompletePartialInfo(object):
 
                 if paid.bg_mayor == 1:
                     item.ledger += paid.valor
-
             self.total_expenses += item.valor_provisionado
             self.total_invoiced +=  item.invoiced_value
             item.sale = (item.valor_provisionado - item.invoiced_value)
@@ -291,9 +288,8 @@ class CompletePartialInfo(object):
             loggin('w', 'Parcial abierto no tiene mayor')
             return None
         ledger =  Ledger.get_by_parcial(self.id_partial)
-        if not self.partial_isclosed:
-            self.ice_reliquidado = ledger.reliquidacion_ice
-
+        
+        loggin('i', 'Mayor parcial recuperado')
         if self.serialized:
             ledger_serializer = LedgerSerializer(ledger)
             return ledger_serializer.data
