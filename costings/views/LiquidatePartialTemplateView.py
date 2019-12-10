@@ -16,8 +16,7 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
 
     def get(self, request, nro_order , ordinal_parcial , *args, **kwargs):
         """
-        Muestra la pagina de liquidacion de gastos Parciales
-        Args:
+        Muestra la pagina de liquidacion de gastos Parciales        Args:
             nro_order (string): pedido a recuperar 000-00
         Return: TemplateView
         """

@@ -117,7 +117,13 @@ WSGI_APPLICATION = 'sgi.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
+<<<<<<< HEAD
         'NAME': 'imnacAppTEST',
+=======
+        #'ENGINE': 'django.db.backends.sqlite3',
+        #'NAME': 'db.sqlite3',
+        'NAME': 'imnacApp',
+>>>>>>> 3adf4dc76e9c5cab39617228676fef554ba7ac67
         'USER' : 'appCordovez',
         'PASSWORD' : '\DBGfW<7;vBa5(LB',
         'HOST': '179.49.60.158',
