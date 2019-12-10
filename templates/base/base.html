@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="{{ static('css/bootstrap.css') }}">
     <link rel="stylesheet" href="{{ static('css/cordovez.css') }}">
     <style>@page {size: auto;}</style>
-    <!-- <link rel="stylesheet" href="{{ static('css/animate.css') }}"> -->
     <link rel="icon" href="{{ static('favicon.ico') }}" type="image/x-icon"/>
 	  <link rel="shortcut icon" href="{{ static('favicon.ico') }} type="image/x-icon"/>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
@@ -21,53 +20,29 @@
     <title>{{ data.title_page }}</title>
 </head>
 <body>    
-    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-       <a class="navbar-brand" href="/">Agencia y Representaciones Cordovez S.A.</a>
-      <!-- <a class="navbar-brand" href="/">IMNAC Importadora Nacional Cia. Ltda.</a> -->
-      <!-- <a class="navbar-brand" href="/">VID Internacional S.A.</a> -->
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <form class="form-inline mt-2 mt-md-0" method="post" action="/pedidos/ficha/000-00/">
-          {{ csrf_input }}
-          <input class="form-control form-control-sm mr-sm-2" type="text" placeholder="Buscar" aria-label="Search" name="query">
-        </form>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="/admin/orders/order/"><i class="fas fa-cubes"></i> Pedidos <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-              <a href="/admin/paids/paidinvoice/" class="nav-link"><i class="fa fa-file"></i> Justificaciones</a>
-          </li>                        
-          <li class="nav-item">
-              <a href="/admin/suppliers/supplier/" class="nav-link"><i class="fa fa-users"></i> Proveedores</a>
-          </li>
-          <li class="nav-item">
-              <a href="/admin/products/product/" class="nav-link"><i class="fa fa-cube"></i> Productos</a>
-          </li>
-          <li class="nav-item">
-              <a href="#" class="nav-link"><i class="fa fa-table"></i> Reportes</a>
-          </li>
-          <li class="nav-item">
-            <a href="/admin/paids/paidinvoice/add/" class="nav-link"><i class="fa fa-file"></i> N. Factura</a>
-          </li>
-          <li class="nav-item">
-            <a href="/admin/orders/order/add/" class="nav-link"><i class="fa fa-cubes"></i> N Pedido</a>
-          </li>
-          <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fa fa-cog"></i> 
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Perfil</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="/admin/logout/">Salir</a>
-        </div>         
-        </ul>
-      </div>
-    </nav>  
-    <br /><br /><br />
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">{{ data.empresa.nombre }}</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse bg-dark" id="navbarColor01">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+        <a class="nav-link" href="#"> Pedidos <span class="sr-only">(current)</span></a>
+        </li>
+        {# menu adicional #}
+        {# <li class="nav-item"> #}
+        {#   <a class="nav-link" href="#">About</a> #}
+        {# </li> #}
+      </ul>
+      <form class="form-inline" method="get" action="/pedidos/listar/">
+        <input class="form-control form-control-sm mr-sm-1" type="search" placeholder="Buscar" name="q">
+        <button class="btn btn-outline-primary my-sm-0" type="submit"> <i class="fas fa-search"></i></button>
+      </form>
+        <a href="/salir" class="btn btn-outline-danger my-sm-0" style="margin-left:1rem;"><i class="fas fa-power-off" aria-hidden="true"></i></a>
+    </div>
+  </nav>
   </body>
   <div class="container-fluid">
     {% block title_content %}{% endblock title_content %}

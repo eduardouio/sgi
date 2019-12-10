@@ -1,32 +1,74 @@
 {% extends 'base/base.html' %}
 {% block title_content %}
     <div class="row border">
-   <div class="col-10">
+   <div class="col-8">
       <i class="fa fa-list"></i>
-      Lista de pedidos
+      Listado de pedidos pendientes de liquidar
    </div>
-   <div class="col-2 text-right">SGI <small>[Sistema Gestón de Importaciones]</small></div>
+   <div class="col-4 text-right">SGI <small>[Sistema Gestón de Importaciones]</small></div>
 </div>
 {% endblock title_content %}
 {% block content %}
-    <table class="table table-condensed table-bordered table-striped">
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+        <table class="table table-bordered table-striped table-sm">
     <tr>
         <th>#</th>
         <th>Pedido</th>
         <th>Proveedor</th>
-        <th>Origen</th>
-        <th>Incoterm</th>
-        <th>Incoterm</th>
+        <th>Liquidacion</th>
+        <th>Nro DAI</th>
+        <th>Fecha Liquidacion</th>
+        <th>R&eacute;gimen</th>
+        <th>Parcial</th>
+        <th>Fecha Llegada</th>
+        <th>Acciones</th>
     </tr>
-    {% for order in orders_list  %}
+    {% for order in data.orders_list %}
     <tr>
-        <td>{{ loop.index }}</td>
-        <td>{{order}}</td>
-        <td>{{ order.proveedor }}</td>
-        <td>{{ order.pais_origen }}</td>
-        <td>{{ order }}</td>
-        <td>{{ order.incoterm }}</td>
+        <td class="text-center"> {{ loop.index }}</td>
+        <td class="text-center"> {{ order.nro_pedido.replace('-','/') }} </td>
+        <td> {{ order.nombre }}</td>
+        <td class="text-right"> {{ order.nro_liquidacion }}</td>
+        <td class="text-right"> {{ order.nro_refrendo }}</td>
+        <td class="text-right"> {{ order.fecha_liquidacion }}</td>
+        <td class="text-center">
+        {% if order.regimen == '10' %}
+            <span class="text-primary">Consumo</span> 
+        {% else %}
+            <span class="text-info">Almagro</span>
+        {% endif %}
+         
+        <td class="text-center">
+        {% if order.regimen == '70' %}
+            <a target="_blank" href="/admin/partials/partial/{{order.id_parcial}}/change/" class="text-dark">{{ order.id_parcial }}</a>
+        {% else %}
+            --
+        {% endif %}
+        </td>
+        <td class="text-right"> 
+        {% if order.fecha_llegada_cliente %}
+            <span class="text-danger">{{ order.fecha_llegada_cliente }}</span> 
+        {% else %}
+            <span class="text-success">En Transito</span>
+        {% endif %}
+        </td>
+        <td class="text-center">
+        {% if data.search == False %}
+            {% if order.regimen == '10' %}
+                <a href="/costos/pedido/{{ order.nro_pedido }}/"><button class="btn btn-sm btn-outline-dark"><i class="fa fa-cart-arrow-down"></i> Costeo Pedido</button></a>
+            {% else %}
+                <a href="/costos/parcial/{{order.nro_pedido}}/{{order.partial.ordinal_parcial}}/"><button class="btn btn-sm btn-outline-dark"><i class="fa fa-cart-arrow-down"></i> Costeo Parcial</button></a>
+            {% endif %}
+        {% else %}
+                <a href="/pedidos/ficha/{{ order.nro_pedido}}/"><button class="btn btn-sm btn-outline-dark"><i class="fa fa-boxes"></i> Ficha de Pedido</button></a>            
+        {% endif %}
+        </td>
     </tr>
     {% endfor %}
     </table>
+        </div>
+    </div>
+</div>
 {% endblock content %}

@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView
+from django.conf import settings
 
 from lib_src import CompleteOrderInfo, CompletePaidInfo
 from orders.models import Order
@@ -19,6 +20,7 @@ class CompleteOrderTemplateView(LoginRequiredMixin, TemplateView):
         order_info = CompleteOrderInfo().get_data(nro_order, False)
         
         data = {
+            'empresa' : settings.EMPRESA,
             'title_page' : 'Ficha Pedido {} R {}'
                             .format(nro_order, order_info['order'].regimen),
             'order_info' : order_info,

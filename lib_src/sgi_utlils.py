@@ -1,5 +1,6 @@
 from logs.app_log import loggin
 from django.conf import settings
+from django.db import connection
 
 def get_host(request):
     '''
@@ -12,11 +13,22 @@ def get_host(request):
         return 'http://{}/'.format(request.META['HTTP_HOST'])
     except KeyError:
         loggin('e', 'No se encuentra la variable de Host en el requets')
-        if settings.DATABASES['default']['NAME'] == 'cordovezApp':
-            return 'http://192.168.0.198:5001/' if is_local else 'http://179.49.60.158:5001/'
-        
-        if settings.DATABASES['default']['NAME'] == 'imnacApp':
-            return 'http://192.168.0.198:5002/' if is_local else 'http://179.49.60.158:5002/'
+        return settings.EMPRESA['url_app']
 
-        if settings.DATABASES['default']['NAME'] == 'vidApp':
-            return 'http://192.168.0.198:5003/' if is_local else 'http://179.49.60.158:5003/'
+
+def run_query(query):
+    loggin('i',  'ejecutando sql a la base')
+    with connection.cursor() as cursor:
+        cursor.execute(query)
+        result = tuple_to_dict(cursor)
+    
+    return result
+
+def tuple_to_dict(cursor):
+    """Retorna el valor de las tuplas como diccionario
+    """
+    desc = cursor.description 
+    return [
+            dict(zip([col[0] for col in desc], row)) 
+            for row in cursor.fetchall() 
+    ]

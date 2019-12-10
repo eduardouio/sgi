@@ -112,33 +112,18 @@ WSGI_APPLICATION = 'sgi.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        #'ENGINE': 'django.db.backends.sqlite3',
-        #'NAME': 'db.sqlite3',
-        'NAME': 'cordovezApp',
+        'NAME': 'imnacAppTEST',
         'USER' : 'appCordovez',
         'PASSWORD' : '\DBGfW<7;vBa5(LB',
-        #'HOST': '192.168.0.198',
         'HOST': '179.49.60.158',
-        #'HOST': '127.0.0.1',
         'PORT' : '3306',
     }
 }
-
-# Para migracion a postgresql
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.postgresql',
-#        'NAME': 'cordovezApp',
-#        'USER' : 'postgres',
-#        'PASSWORD' : 'cordovez.2011',
-#        'HOST': '127.0.0.1',
-#        'PORT' : '5432',
-#    }
-#}
-
     
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -189,6 +174,42 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.sep.join(os.path.abspath(__file__).split(os.sep)[:-2]+['media'])
 MEDIA_URL = '/media/'
+
+DATOS_EMPRESAS = {
+    'cordovez' : {
+        'nombre' : 'AGENCIAS Y REPRESENTACIONES CORDOVEZ S.A.',
+        'ruc' : '1790023516001',
+        'direccion': 'AV. 10 DE AGOSTO N.57-186 Y LEONARDO MURIALDO ',
+        'telefono': '022405911',
+        'email' : 'sgi@cordovez.com.ec',
+        'url_logo' : 'http://179.49.60.158:8888/img/logo_cordovez.jpg',
+        'url_app' : 'http://179.49.60.158:5001/',
+        'url_app_local' : 'http://192.168.0.198:5001/',
+    },
+    'imnac' : {
+        'nombre' : 'IMNAC IMPORTADORA NACIONAL CIA LTDA',
+        'ruc' : '1792324289001',
+        'direccion': 'LA PAZ PAUL RIVET 227 Y JAMES ORTON ',
+        'telefono': '022405911',
+        'email' : 'sgi@imnac.com.ec',
+        'url_logo' : 'http://179.49.60.158:8888/img/logo_imnac.jpg',
+        'url_app' : 'http://179.49.60.158:5002/',
+        'url_app_local' : 'http://192.168.0.198:5002/',
+    },
+    'vid' : {
+        'nombre' : 'VIDINTERNACIONAL S.A.',
+        'ruc' : '1791771907001',
+        'direccion': 'AV. 10 DE AGOSTO N.57-186 Y LEONARDO MURIALDO ',
+        'telefono': '022405911',
+        'email' : 'sgi@vidinternacional.com.ec',
+        'url_logo' : 'http://179.49.60.158:8888/img/logo_vid.jpg',
+        'url_app' : 'http://179.49.60.158:5003/',
+        'url_app_local' : 'http://192.168.0.198:5003/',
+
+    },
+}
+
+EMPRESA = DATOS_EMPRESAS['imnac']
 
 GRAPPELLI_ADMIN_TITLE = "A&R CORDOVEZ S.A."
 #GRAPPELLI_ADMIN_TITLE = "IMNAC CIA LTDA"

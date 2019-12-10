@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
+from django.conf import settings
 
 from lib_src import (ApportionmentExpenses, CompleteOrderInfo,
                      CompletePartialInfo, CostingsPartial)
@@ -58,6 +59,7 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
                 ).get_costs()
         
         context['data'] = {
+            'empresa' : settings.EMPRESA,
             'title_page' : 'Liquidacion Parcial %s'%ordinal_parcial,
             'nro_order' : nro_order,
             'ordinal_partial' : int(ordinal_parcial),
