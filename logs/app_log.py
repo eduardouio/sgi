@@ -1,3 +1,7 @@
+"""
+Funcion de loggin de datos del modulo de costos
+"""
+
 import os
 from datetime import datetime 
 path = os.path.dirname(os.path.abspath(__file__)) + '/log.log'
@@ -27,21 +31,17 @@ def loggin(type_log , message, request=None):
     user_email = ''
     
     if request is not None:
-        user_id = request.user.id
         user_name = request.user
-        user_email = request.user.email
 
     log_file = open(path,'a')
     log_file.write(
-        #'[{type_log}][{date_time}][uid:{user_id}{user_name}{user_email}]    {message} \n'
+        '[{type_log}][{date_time}][{user_name}]    {message} \n'
         '[{type_log}] {message} \n' #para depurar
             .format(
                 type_log=types_message[type_log],
                 date_time=datetime.now(),
                 message=message,
-                user_id=user_id,
                 user_name = user_name,
-                user_email = user_email,
             )
     )
     log_file.close()
