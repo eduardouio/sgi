@@ -3,7 +3,7 @@
      <span>Proveedor</span>
      <input type="text" readonly="readonly" value="{{ data.order_info.order_invoice.supplier.nombre }}" class="full-width">
   </div>  
-  <div class="col-sm-1">
+  <div class="col-sm-2">
      <span>Factura</span> 
      <input type="text" readonly="readonly" value="{{ data.order_info.order_invoice.order_invoice.id_factura_proveedor }}" class="full-width">
   </div>
@@ -17,15 +17,15 @@
   </div>
   <div class="col-sm-1">
   <span>Valor</span>
-  <input type="text" class="full-width text-right" readonly="readonly" value="{{ data.order_info.order_invoice.order_invoice.valor }}">
+  <input type="text" class="full-width text-right" readonly="readonly" value="{{ data.order_info.order_invoice.order_invoice.valor | round(3) }}">
   </div>
   <div class="col-sm-1">
   <span>Tipo C</span>
-  <input type="text" class="full-width text-right" readonly="readonly" value="{{ data.order_info.order_invoice.order_invoice.tipo_cambio }}">
+  <input type="text" class="full-width text-right" readonly="readonly" value="{{ data.order_info.order_invoice.order_invoice.tipo_cambio | round(3) }}">
   </div>
-  <div class="col-sm-2">
+  <div class="col-sm-1">
   <span>Total USD</span>
-  <input type="text" class="full-width text-right" readonly="readonly" value="$ {{ data.order_info.order_invoice.order_invoice.valor * data.order_info.order_invoice.order_invoice.tipo_cambio }}">
+  <input type="text" class="full-width text-right" readonly="readonly" value="$ {{ (data.order_info.order_invoice.order_invoice.valor * data.order_info.order_invoice.order_invoice.tipo_cambio) | round(3)}}">
       </div>
    </div>
    <br>
@@ -33,41 +33,41 @@
     <div class="col-12">
         <table class="table table-bordered table-condensed table-striped">            
             <thead>
-            <tr>
+            <tr class="bg-secondary text-white">
             <th>Cod Contable</th>
             <th>Producto</th>
             <th>Capacidad</th>
-            <th>Cantidad Caja</th>
-            <th>Grado Alcoholico</th>
-            <th>Nro Cajas</th>
+            <th>C/C</th>
+            <th>Grado A.</th>
+            <th>Cajas</th>
             <th>Unidades</th>
-            <th>Costo Caja</th>
-            <th>Costo Unidad</th>
+            <th>C Caja</th>
+            <th>C Unidad</th>
             <th>Total</th>
             </tr>
             </thead>
             <tbody>
             {% for item in data.order_info.order_invoice.order_invoice_details  %}
                 <tr>
-                    <td>{{ item.cod_contable_id }}</td>
+                    <td class="text-cneter">{{ item.cod_contable_id }}</td>
                     <td>{{ item.cod_contable }}</td>
-                    <td>{{ item.capacidad_ml }}</td>
-                    <td>{{ item.cantidad_x_caja }}</td>
-                    <td>{{ item.grado_alcoholico }}</td>
-                    <td>{{ item.nro_cajas }}</td>
-                    <td>{{ item.unidades }}</td>
-                    <td>{{ item.costo_caja }}</td>
-                    <td>{{ item.costo_caja / item.nro_cajas  }}</td>
-                    <td>{{ item.nro_cajas * item.costo_caja  }}</td>
+                    <td class="text-right">{{ item.capacidad_ml | round(2) }} ml</td>
+                    <td class="text-right">{{ item.cantidad_x_caja | round(2) }}</td>
+                    <td class="text-right">{{ item.grado_alcoholico | round(2) }}</td>
+                    <td class="text-right">{{ item.nro_cajas | round(2) }}</td>
+                    <td class="text-right">{{ item.unidades | round }}</td>
+                    <td class="text-right">{{ item.costo_caja | round(2) }}</td>
+                    <td class="text-right">{{ (item.costo_caja / item.nro_cajas) | round(3)  }}</td>
+                    <td class="text-right">{{ (item.nro_cajas * item.costo_caja) | round(3)  }}</td>
                 </tr>
             {% endfor %}
-            <tr>
+            <tr class="bg-primary text-white">
             <th colspan="5">Totales</th>
-            <th>{{ data.order_info.order_invoice.totals.boxes }}</th>
-            <th>{{ data.order_info.order_invoice.totals.bottles }}</th>
+            <th class="text-right">{{ data.order_info.order_invoice.totals.boxes | round(2) }}</th>
+            <th class="text-right">{{ data.order_info.order_invoice.totals.bottles | round(2) }}</th>
             <th>--</th>
             <th>--</th>
-            <th>{{ data.order_info.order_invoice.totals.value }}</th>
+            <th class="text-right">{{ data.order_info.order_invoice.totals.value | round(3) }}</th>
             </tr>
             </tbody>
         </table>

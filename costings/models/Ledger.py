@@ -49,20 +49,13 @@ class Ledger(models.Model):
             return None
         
         if(order.regimen == '70'):
-            loggin(
-                'e', 
-                'No se debe solicitar un mayor de un pedido R70 {}'
-                .format(order.nro_pedido)
-                )
+            loggin('e', 'No existe mayor de un pedido R70 {}'.format(
+                order.nro_pedido))
             return None
 
         items = self.objects.filter(nro_pedido = order.nro_pedido)
         if items.count() == 0:
-            loggin(
-                'w', 
-                'El pedido {nro_pedido} no tiene registrado ningun mayor'
-                .format(nro_pedido=order.nro_pedido)
-                )
+            loggin('w', 'El pedido {} no tiene mayor'.format(order.nro_pedido))
             return None
 
         return items.first()

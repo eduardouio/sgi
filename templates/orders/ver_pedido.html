@@ -33,6 +33,7 @@
 </div>
 {% endblock title_content %}
 {% block content %}
+<div class="containder">
 <div class="row">
 <div class="col-12">
     <table class="table table-bordered table-condensed">
@@ -52,21 +53,8 @@
                   <td>{{ data.order_info.order_invoice.order_invoice.tipo_cambio }}</td>
                </tr>
                <tr>
-                  <td style="width:100px;" class="text-right bg-light">Incoterm:</td>
-                  <td class="text-danger">{{ data.order_info.order.incoterm }}</td>
-                  <td style="width:100px;" class="text-right bg-light">Pais Origen:</td>
-                  <td>{{ data.order_info.order.pais_origen }}</td>
-                  <td style="width:100px;" class="text-right bg-light">Ciudad Origen:</td>
-                  <td>{{ data.order_info.order.ciudad_origen }}</td>
-                  <td style="width:100px;" class="text-right bg-light">Registrado Por:</td>
-                  <td>Pendiete</td>
-                  <td style="width:100px;" class="text-right bg-light">Fecha Registro:</td>
-                  <td>{{ data.order_info.order.date_create.strftime('%d/%m/%Y')  if data.order_info.order.date_create is not none else ''}}</td>
-               </tr>
-               <tr>
                   <td style="width:100px;" class="text-right bg-light">Comentarios:</td>
-                  <td colspan="8">{{ data.order_info.order.observaciones }} {{ data.order_info.order.comentarios }}</td>
-                  <td class="text-right"><a href="" class="btn btn-sm btn-outline-dark"> <i class="fa fa-archive"></i> Archivos</a></td>
+                  <td colspan="9">{{ data.order_info.order.observaciones }} {{ data.order_info.order.comentarios }}</td>
                </tr>
         </tbody>
     </table>
@@ -76,7 +64,6 @@
 <div class="row">
   <div class="col-12">
     <div class="nav nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-      <a class="nav-link my-tabs" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true"><i class="fa fa-folder"></i> Cabeceras Pedido</a>
       <a class="nav-link my-tabs" id="v-pills-products-tab" data-toggle="pill" href="#v-pills-products" role="tab" aria-controls="v-pills-products" aria-selected="false"><i class="fa fa-boxes"></i> Detalle de Productos</a>
       {% if data.order_info.order.regimen == '70' %}
          <a class="nav-link show active my-tabs" id="v-pills-partials-tab" data-toggle="pill" href="#v-pills-partials" role="tab" aria-controls="v-pills-partials" aria-selected="false"><i class="fa fa-list"></i> Parciales Pedido</a>
@@ -87,10 +74,7 @@
     </div>
     <br>
     <div class="tab-content bordered" id="v-pills-tabContent">
-      <div class="tab-pane fade" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-      {% include 'orders/sections/cabeceras_pedido.html' %}
-      </div>
-      <div 
+      <div
       {% if data.order_info.order.regimen == '70' %}
          class="tab-pane fade"
          {% else %}
@@ -112,5 +96,6 @@
       <br>
     </div>
   </div>
+</div>
 </div>
 {% endblock content %}
