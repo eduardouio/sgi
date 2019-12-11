@@ -30,14 +30,24 @@
         <td class="text-center"> {{ loop.index }}</td>
         <td class="text-center"> {{ order.nro_pedido.replace('-','/') }} </td>
         <td> {{ order.nombre }}</td>
-        <td class="text-right"> {{ order.nro_liquidacion }}</td>
+        <td class="text-center">
+        {% if order.partial %}
+            {{ order.nro_liquidacion }}
+        {% else %}
+            Almagro
+        {% endif %}
+         </td>
         <td class="text-right"> {{ order.nro_refrendo }}</td>
         <td class="text-right"> {{ order.fecha_liquidacion }}</td>
         <td class="text-center">
         {% if order.regimen == '10' %}
             <span class="text-primary">Consumo</span> 
         {% else %}
-            <span class="text-info">Almagro</span>
+            {% if order.partial %}
+                <span class="text-info">Parcial {{ order.partial.ordinal_parcial }}</span>
+                {% else %}
+            <span class="text-primary">Almagro</span> 
+            {% endif %}
         {% endif %}
          
         <td class="text-center">

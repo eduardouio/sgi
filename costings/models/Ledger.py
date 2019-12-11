@@ -7,8 +7,7 @@ from orders.models.Order import Order
 from simple_history.models import HistoricalRecords
 
 
-class Ledger(models.Model):    
-
+class Ledger(models.Model):
     id_mayor = models.AutoField(primary_key=True)
     tipo = models.CharField(max_length=50)
     nro_pedido = models.ForeignKey(Order, models.PROTECT, db_column='nro_pedido')

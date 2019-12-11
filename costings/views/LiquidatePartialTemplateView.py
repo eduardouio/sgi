@@ -29,6 +29,7 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
         if not self.check_order_and_partial_exist(nro_order, ordinal_parcial):
             self.template_name = 'errors/404.html'
             context['data'] = {
+                'empresa' : settings.EMPRESA,
                 'title_page' : 'Parcial No Econtrado',
                 'msg' : 'El parcial que busca no existe',
             }
@@ -42,8 +43,7 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
                 CompletePartialInfo().get_data(
                             partial.id_parcial,
                             False,
-                            complete_order_info['order_invoice']['order_invoice']
-                            .tipo_cambio
+                            complete_order_info['tipo_cambio_trimestral']
                             ))
         
         apportiments_expenses = ApportionmentExpenses(
