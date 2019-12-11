@@ -97,7 +97,6 @@ class InfoInvoiceDetail(models.Model):
         verbose_name_plural = 'Factura Informativa Detalle'
         ordering = ['id_factura_informativa']
 
-
     @property
     def cantidad_x_caja(self):
         return self.detalle_pedido_factura.cantidad_x_caja
@@ -113,7 +112,6 @@ class InfoInvoiceDetail(models.Model):
                 )
             return self.objects.none()
         
-
         return info_invoice_items
     
     @classmethod
@@ -130,3 +128,27 @@ class InfoInvoiceDetail(models.Model):
             return None
         
         return self.get_by_info_invoice(info_invoice.id_factura_informativa)
+    
+    @classmethod
+    def get_totals(self, id_parcial):
+        """Retorna los totales de una factura informativa 
+        
+        Arguments:
+            id_info_invoice {[type]} -- [description]
+        """
+
+        details = self.get_by_partial(id_parcial)
+
+        if details:
+            totals = {
+                'nro_cajas': 0,
+                'valor_total' : 0,
+            }
+
+            for item in details:
+                totals['nro_cajas'] += item.nro_cajas
+                totals['valor_total'] += item.nro_cajas * item.costo_caja
+            
+            return totals
+
+        return None
