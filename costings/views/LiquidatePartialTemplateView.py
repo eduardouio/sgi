@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 from django.conf import settings
@@ -10,6 +11,7 @@ from partials.models.Partial import Partial
 from lib_src.sgi_utlils import get_host
 
 
+#/costos/parcial/[nro-pedido]/[ornidal_parcial]/
 class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
     template_name = 'costings/liquidar_parcial.html'
     login_url = '/admin/'
@@ -32,7 +34,7 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
             }
             return self.render_to_response(context)
 
-        complete_order_info = CompleteOrderInfo().get_data(nro_order)
+        complete_order_info = CompleteOrderInfo().get_data(nro_order=nro_order, request=request)
         all_partials = []
 
         for partial in complete_order_info['partials']:
@@ -42,8 +44,7 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
                             False,
                             complete_order_info['order_invoice']['order_invoice']
                             .tipo_cambio
-                            )
-                )
+                            ))
         
         apportiments_expenses = ApportionmentExpenses(
             complete_order_info=complete_order_info,
