@@ -1,15 +1,18 @@
+import json
 from decimal import Decimal
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView, RedirectView
+
 from django.conf import settings
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
+from django.views.generic import RedirectView, TemplateView
 
 from lib_src import (ApportionmentExpenses, CompleteOrderInfo,
                      CompletePartialInfo, CostingsPartial)
+from lib_src.sgi_utlils import get_host
 from logs.app_log import loggin
 from orders.models.Order import Order
 from partials.models.Partial import Partial
-from lib_src.sgi_utlils import get_host
+
 
 #/costos/parcial/[nro-pedido]/[ornidal_parcial]/
 class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
@@ -60,7 +63,6 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
                         my_partial.nro_pedido, my_partial.ordinal_parcial)
                 )
 
-                            
         apportiments_expenses = ApportionmentExpenses(
             complete_order_info=complete_order_info,
             all_partials=all_partials,
@@ -86,7 +88,7 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
 
             ice_reliquidado  = {
                 'expense' : 'ICE ADVALOREM RELIQUIDADO',
-                'provision' : producto_costs['ice_reliquidado'] - current_parcial['partial'].ice_advalorem_pagado -current_parcial['partial'].ice_especifico_pagado,
+                'provision' : float(producto_costs['ice_reliquidado'] - current_parcial['partial'].ice_advalorem_pagado -current_parcial['partial'].ice_especifico_pagado),
                 'invoiced_value' : 0,
                 'legder' : 0,
             }
@@ -99,7 +101,7 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
             'total_parcials' : all_partials.__len__(),
             'current_partial' : all_partials[(int(ordinal_parcial) - 1)],
             'current_partial_pos' : int(ordinal_parcial) - 1,
-            'have_ice_reliquidated' : have_ice_reliquidated,
+            'have_ice_reliquidated' : int(have_ice_reliquidated),
             'ice_reliquidado' : ice_reliquidado,
             'complete_order_info' : complete_order_info,
             'all_partials' : all_partials,

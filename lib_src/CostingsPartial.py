@@ -2,7 +2,6 @@ from decimal import Decimal
 
 from logs.app_log import loggin
 
-
 class CostingsPartial(object):
     '''
         Realiza la reliquidacion de un parcial
@@ -25,7 +24,7 @@ class CostingsPartial(object):
         self.rates = self.set_rates()
         self.ice_reliquidado = 0
 
-    
+
     def get_costs(self):     
         '''Realiza el costeo del producto en base a los costos indirectos
             y costos adicionales en la liquidacion, de forma adicional 
@@ -125,24 +124,26 @@ class CostingsPartial(object):
             )
         line_item.ex_aduana_unitario = (line_item.ex_aduana / line_item.unidades)
         line_item.base_advalorem_reliquidado = (self.rates['base_ice_advalorem'] * (line_item.capacidad_ml/1000))
+        ice_reliquidado = 0
 
-        if line_item.ex_aduana_unitario > line_item.base_advalorem_reliquidado:
-            line_item.ice_advalorem_reliquidado = (
-                (line_item.ex_aduana_unitario - line_item.base_advalorem_reliquidado)
-                * self.rates['porcentaje_ice_advalorem']
-            ) * line_item.unidades
+        if line_item.ex_aduana_unitario > line_item.base_advalorem_reliquidado:  
+            if self.rates['base_etiquetas'] == 0 :
+                line_item.ice_advalorem_reliquidado = 0
+            else:
+                line_item.ice_advalorem_reliquidado = (
+                    (line_item.ex_aduana_unitario - line_item.base_advalorem_reliquidado)
+                    * self.rates['porcentaje_ice_advalorem']
+                ) * line_item.unidades
+                
+                ice_reliquidado = (line_item.ice_advalorem_reliquidado - line_item.ice_advalorem_pagado)
 
-            line_item.total_ice = line_item.ice_advalorem_reliquidado + line_item.ice_especifico
-            ice_reliquidado = (line_item.ice_advalorem_reliquidado - line_item.ice_advalorem)
-        else:
-            line_item.total_ice = line_item.ice_advalorem + line_item.ice_especifico
-            
+        line_item.total_ice = line_item.ice_advalorem_pagado + line_item.ice_especifico
         line_item.fob_tasa_trimestral = ( 
                 self.current_partial['info_invoice']['totals']['value'] 
                 * self.rates['tipo_cambio_trimestral']
                 * line_item.fob_percent
                 )
-        self.ice_reliquidado += line_item.total_ice
+        self.ice_reliquidado += ice_reliquidado
         line_item.ice_advalorem_diferencia = 0
         line_item.gastos_origen_tasa_trimestral = 0
         line_item.gastos_origen_tasa_trimestral = (self.origin_expenses * line_item.fob_percent)

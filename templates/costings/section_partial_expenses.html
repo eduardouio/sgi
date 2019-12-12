@@ -32,10 +32,10 @@
     <tr @click="showReliquidacionICE()">
         <td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td>
         <td>
-            <small class="text-success"><i class="fa fa-check-circle"></i></small>
+            <small class="text-danger"><i class="fa fa-exclamation-triangle"></i></small>
             RELIQUIDACION ICE
         </td>
-        <td class="text-right">${ reliquidacion_ice }</td>
+        <td class="text-right">${ ice_reliquidado.provision | money }</td>
         <td class="text-right">0.00</td>
         <td class="text-right">0.00</td>
     </tr>

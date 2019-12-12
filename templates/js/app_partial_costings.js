@@ -1,8 +1,6 @@
 /**
  * Modulo de muestra de costos de parcial 
  * 
- * {{ data.ice_reliquidado }}
- * 
  * Eduardo Villota (2019) <eduardouio7@gmail.com> 
  */
 var app = new Vue({
@@ -23,6 +21,13 @@ var app = new Vue({
       current_selected_partial : null,
       current_paid : null,
       comentarios : '',
+      have_ice_reliquidated : Boolean(parseInt('{{ data.have_ice_reliquidated}}')),
+      ice_reliquidado : {
+          expense : 'ICE ADVALOREM RELIQUIDADO',
+          provision : parseFloat('{{ data.ice_reliquidado.provision }}'),
+          invoiced_value : 0,
+          legder : 0,
+      },
       show_expense : false,
       show_costings : false,
       show_order_invoice : false,
