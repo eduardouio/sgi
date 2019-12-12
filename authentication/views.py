@@ -1,5 +1,5 @@
-from django.views.generic import TemplateView
-from django.contrib.auth import authenticate, login
+from django.views.generic import TemplateView, RedirectView
+from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
@@ -40,3 +40,13 @@ class LoginTemplateView(TemplateView):
             return HttpResponseRedirect(self.success_url)
         
         return HttpResponseRedirect(self.error_url)
+
+
+#/logout/
+class LogoutRedirectView(RedirectView):
+    """Realiza el cierre de la sesion del usuario"""
+    url = '/'
+
+    def get(self, request, *args, **kwargs):
+        logout(request)
+        return HttpResponseRedirect(self.get_redirect_url())
