@@ -23,6 +23,7 @@ class Ledger(models.Model):
     provisiones_sgi = models.DecimalField(max_digits=20, decimal_places=13, default=0)
     facturas_sgi = models.DecimalField(max_digits=20, decimal_places=13, default=0)
     reliquidacion_ice = models.DecimalField(max_digits=20, decimal_places=13, default=0)
+    bg_mayor = models.SmallIntegerField(default=0) #columna adicional para registrar en el mayor el impuesto
     last_update = models.DateTimeField(blank=True, null=True)
     id_user = models.PositiveIntegerField(blank=True, null=True)
     history = HistoricalRecords()

@@ -74,13 +74,11 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
             'request' : request,
             'host': get_host(request),
         } 
-
         context['data'].update(self.checkStatusValues(
                     complete_order_info, 
                     all_partials,
                     producto_costs
         ))
-        
         return self.render_to_response(context)
     
 

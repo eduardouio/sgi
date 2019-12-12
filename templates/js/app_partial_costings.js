@@ -1,3 +1,8 @@
+/**
+ * Modulo de muestra de costos de parcial 
+ * 
+ * Eduardo Villota (2019) <eduardouio7@gmail.com> 
+ */
 var app = new Vue({
     el: '#app',
     delimiters: ['${', '}'],
@@ -12,12 +17,12 @@ var app = new Vue({
       current_info_invoice : {},
       csrftoken : Cookies.get('csrftoken'),
       current_expense : null,
-      show_expense : false,
       liquidated_partial : Boolean(parseInt('{{ data.current_partial.partial.bg_isclosed }}')),
-      show_costings : false,
+      current_selected_partial : null,
       current_paid : null,
       comentarios : '',
-      current_selected_partial : null,
+      show_expense : false,
+      show_costings : false,
       show_order_invoice : false,
       show_origin_expense : false,
       show_liquidate_btn : true,
@@ -51,7 +56,7 @@ var app = new Vue({
             paid.paid.bg_mayor = 1
             this.current_expense.legder += parseFloat(paid.paid.valor)
         }            
-        this.$http.put('{{ data.host }}api/paid-invoice-detail/update/' + paid.paid.id_detalle_documento_pago + '/', paid.paid, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {                     
+        this.$http.put('{{ data.host }}api/paid-invoice-detail/update/' + paid.paid.id_detalle_documento_pago + '/', paid.paid, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {
             this.updateLedger()
           }, response => {
             alert('Se produjo un error, por favor recargue la página');

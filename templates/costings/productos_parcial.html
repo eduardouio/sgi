@@ -8,9 +8,9 @@
         <td style="width:10%" class="bg-light text-right">Fecha Llegada:</td>
         <td class="text-right">
         {% if data.current_partial.partial.fecha_llegada_cliente %}
-        {{ data.current_partial.partial.fecha_llegada_cliente.strftime('%d/%m/%Y') }}
+            {{ data.current_partial.partial.fecha_llegada_cliente.strftime('%d/%m/%Y') }}
         {% else %}
-            No en bodega local
+            En tránsito
         {% endif %}
         </td>
         <td style="width:10%" class="bg-light text-right">Items:</td> <td class="text-right">{{ data.current_partial.info_invoice.info_invoice_details.__len__() }}</td>
@@ -64,9 +64,7 @@
                <th>Cajas</th>
                <th>UxC</th>
                <th>Unds</th>
-               <th>C/C</th>
                <th>FOB TCT</th>
-               <th>% FOB</th>
                <th>Seguro A</th>
                <th>Flete A</th>
                <th>CIF</th>
@@ -98,9 +96,7 @@
                 <td class="text-right" nowrap>{{ item.nro_cajas | round(2)}}</td>
                 <td class="text-right" nowrap>{{ item.cantidad_x_caja | round(0)}}</td>
                 <td class="text-right" nowrap>{{ item.unidades | round(0)}}</td>
-                <td class="text-right" nowrap>{{ item.costo_caja | round(0)}}</td>
                 <td class="text-right" nowrap>{{ item.fob_tasa_trimestral | round(2)}}</td>
-                <td class="text-right" nowrap>{{ item.fob_percent  | round(2)}}</td>
                 <td class="text-right" nowrap>{{ item.seguro_aduana | round(2)}}</td>
                 <td class="text-right" nowrap>{{ item.flete_aduana | round(2)}}</td>
                 <td class="text-right" nowrap>{{ item.cif | round(2)}}</td>
