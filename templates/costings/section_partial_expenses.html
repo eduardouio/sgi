@@ -29,6 +29,16 @@
         <td class="text-right"> ${ current_selected_partial.taxes.total_pagado | money  }</td>
         <td class="text-right"> ${ (current_selected_partial.taxes.total_provisionado - current_selected_partial.taxes.total_pagado ) | money  }</td>
     </tr>
+    <tr @click="showReliquidacionICE()">
+        <td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td>
+        <td>
+            <small class="text-success"><i class="fa fa-check-circle"></i></small>
+            RELIQUIDACION ICE
+        </td>
+        <td class="text-right">${ reliquidacion_ice }</td>
+        <td class="text-right">0.00</td>
+        <td class="text-right">0.00</td>
+    </tr>
     <tr v-for="item in current_selected_partial.expenses" @click="selectExpense(item)">
         <td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td>
         <td>
@@ -40,16 +50,6 @@
         <td class="text-right">${ item.expense.valor_provisionado | money }</td>
         <td class="text-right">${ item.legder | money }</td>
         <td class="text-right">${ (item.expense.valor_provisionado - item.legder) | money }</td>
-    </tr>
-   <tr>
-        <td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td>
-        <td>
-            <small class="text-success"><i class="fa fa-check-circle"></i></small>
-            RELIQUIDACION ICE
-        </td>
-        <td class="text-right">0.00</td>
-        <td class="text-right">0.00</td>
-        <td class="text-right">0.00</td>
     </tr>
     <tr>
         <th colspan="2">Sumas</th>

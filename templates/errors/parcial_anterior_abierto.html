@@ -1,0 +1,25 @@
+{% extends 'base/base.html' %}
+{% block title_content %}
+<div class="row border">
+   <div class="col-12 text-danger">
+      <i class="fa fa-folder"></i>
+      Error en Pedido {{ data.nro_order }}
+   </div>
+</div>
+{% endblock title_content %}
+{% block content %}
+<div class="container">
+    <div class="col-12 border text-center">
+<br>
+    <h1 class="text-danger"><i class="fas fa-ban"></i> Error</h1>
+    <h4 class="text-danger">
+        El pedido tiene un parcial anterior abierto [Parcial {{ data.ordinal_partial }}]
+    </h4>
+    <h5 class="text-secondary">
+        Favor cerrar al parcial anterior para poder liquidar este parcial, use el botón para ir a la ficha del pedido
+    </h5>
+    <a href="/pedidos/ficha/{{data.nro_order}}/" class="btn btn-bg btn-primary"> <i class="fas fa-boxes"></i> Ficha Pedido</a>
+<br>
+    </div>
+</div>
+{% endblock content %}

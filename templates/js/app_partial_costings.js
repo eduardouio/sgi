@@ -1,6 +1,8 @@
 /**
  * Modulo de muestra de costos de parcial 
  * 
+ * {{ data.ice_reliquidado }}
+ * 
  * Eduardo Villota (2019) <eduardouio7@gmail.com> 
  */
 var app = new Vue({
@@ -25,6 +27,7 @@ var app = new Vue({
       show_costings : false,
       show_order_invoice : false,
       show_origin_expense : false,
+      show_ice_reliquidated : false,
       show_liquidate_btn : true,
       show_liquidate_confirm_btn : false,
       diff_ledgers : 0,
@@ -134,6 +137,7 @@ var app = new Vue({
         this.show_origin_expense = false
         this.show_order_invoice = false
         this.show_info_invoice = false
+        this.show_ice_reliquidated = false
       },
       showOrderInvoice : function(){
         console.log('mostrando factura del pedido')
@@ -142,10 +146,10 @@ var app = new Vue({
         this.show_origin_expense = false
         this.show_order_invoice = true
         this.show_info_invoice = false
+        this.show_ice_reliquidated = false
         this.current_order_invoice = this.complete_order_info.order_invoice
         return true
       },
-
       showOriginExpense : function(){
         console.log('Mostrando Gastos en Origen')
         this.show_expense = false
@@ -153,6 +157,7 @@ var app = new Vue({
         this.show_origin_expense = true
         this.show_order_invoice = false
         this.show_info_invoice = false
+        this.show_ice_reliquidated = false
       },
 
       showInfoInvoice : function(id_partial){
@@ -162,7 +167,19 @@ var app = new Vue({
         this.show_origin_expense = false
         this.show_order_invoice = false
         this.show_info_invoice = true
+        this.show_ice_reliquidated = false
         this.current_info_invoice = this.all_partials[id_partial].info_invoice
+      },
+
+      showReliquidacionICE : function(){
+        console.log('se muestra el gasto de reliquidacion ice')
+        this.show_ice_reliquidated = true
+        this.show_expense = false
+        this.show_taxes = false
+        this.show_origin_expense = false
+        this.show_order_invoice = false
+        this.show_info_invoice = false
+
       },
 
       selectExpense : function(item){
@@ -172,6 +189,7 @@ var app = new Vue({
         this.show_origin_expense = false
         this.show_order_invoice = false
         this.show_info_invoice = false
+        this.show_ice_reliquidated = false
         this.current_expense = item
       },
       showTaxes : function(){
@@ -179,6 +197,7 @@ var app = new Vue({
         this.show_expense = false
         this.show_origin_expense = false
         this.show_order_invoice = false
+        this.show_ice_reliquidated = false
         this.show_info_invoice = false
         this.show_taxes = true
       },
@@ -257,7 +276,7 @@ var app = new Vue({
         })        
     }, response => {
       alert('Ocurrio un error al cargar la aplicacion, por recargue la pagina')
-    });
+    })
   },
   filters : {
     money : function(number){

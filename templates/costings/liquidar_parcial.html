@@ -383,77 +383,6 @@
             <div class="taxes" v-if="show_taxes"> 
             <div class="text-tittle"> IMPUESTOS DEL PARCIAL </div>
             <br>
-            {# reliqudiacion de ICE  #}
-            <div class="row">
-               <div class="col-7">
-                  <h6 class="text-dark"> RELIQUIDACION DE ICE PARA PARCIAL ${ current_selected_partial.partial.ordinal_parcial } </h6>
-               </div>
-               <div class="col-5 text-right">
-                  <small class="text-success">
-                  <i class="fa fa-check-circle"></i> 
-                  Completa 
-                  </small>         
-               </div>
-            </div>
-            <div class="row">
-               <div class="col-12">
-                  <table class="table table-condensed table-bordered">
-                     <thead>
-                        <tr>
-                           <th>Impuesto</th>
-                           <th>Liquidación</th>
-                           <th>Valor</th>
-                           <th>En Mayor</th>
-                        </tr>
-                     </thead>
-                     <tbody>
-                        <tr>
-                           <td>RELIQUIDACION DE ICE ADVALOREM </td>
-                           <td>${ current_selected_partial.partial.nro_liquidacion }</td>
-                           <td class="text-right">$ ${ current_selected_partial.ledger.reliquidacion_ice }</td>
-                           <td class="text-right">
-                               <div class="custom-control custom-checkbox">
-                                 <input type="checkbox" class="custom-control-input" @click="">
-                                 <label class="custom-control-label">
-                                 <span  class="text-success">
-                                 SI
-                                 </span>
-                                 <span class="text-danger">
-                                 NO
-                                 </span>
-                                 </label>
-                           </div>
-                           </td>
-                        </tr>
-                        
-                        <tr>
-                           <th colspan="2">Sumas</th>
-                           <th class="text-right">$ ${ current_selected_partial.ledger.reliquidacion_ice | money}</th>
-                           <th>--</th>
-                        </tr>
-                     </tbody>
-                  </table>
-               </div>
-            </div>
-            <br>
-            <div class="row">
-               <div class="col-4 text-center">
-                  <h6>$ ${ current_selected_partial.ledger.reliquidacion_ice | money }</h6>
-                  <span class="text-secondary">Monto Gasto</span>
-               </div>
-               <div class="col-4 text-center">
-                  <h6>$ ${ current_selected_partial.ledger.reliquidacion_ice | money }</h6>
-                  <span class="text-success">Justificado</span>
-               </div>
-               <div class="col-4 text-center">
-                  <h6>$  ${0  | money }</h6>
-                  <span class="text-danger">Provisión</span>
-               </div>
-            </div>
-            </div>
-            <div class="taxes" v-if="show_taxes"> 
-            <div class="text-tittle"> IMPUESTOS DEL PARCIAL </div>
-            <br>
             <div class="row">
                <div class="col-7">
                   <h6 class="text-dark"> TRIBUTOS SENAE LIQ ${ current_selected_partial.partial.nro_liquidacion } </h6>
@@ -681,7 +610,7 @@
             <div class="col-6 text-center">
                <h4 class="text-secondary">Cargado Aplicaci&oacute;n...</h4>
                <img src="{{ static('img/Loading_icon.gif') }}">
-               <h6 class="text-primary">Este proceso no deber&iacute;a tardar mas de 10 segundos</h6>
+               <h5 class="text-secondary">{{ data.empresa.nombre }}</h5>
             </div>
             <div class="col-3"></div>
          </div>

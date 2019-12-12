@@ -1,7 +1,8 @@
 from decimal import Decimal
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, RedirectView
 from django.conf import settings
+from django.http import HttpResponseRedirect
 
 from lib_src import (ApportionmentExpenses, CompleteOrderInfo,
                      CompletePartialInfo, CostingsPartial)
@@ -9,7 +10,6 @@ from logs.app_log import loggin
 from orders.models.Order import Order
 from partials.models.Partial import Partial
 from lib_src.sgi_utlils import get_host
-
 
 #/costos/parcial/[nro-pedido]/[ornidal_parcial]/
 class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
@@ -38,14 +38,29 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
         complete_order_info = CompleteOrderInfo().get_data(nro_order=nro_order, request=request)
         all_partials = []
 
-        for partial in complete_order_info['partials']:
-            all_partials.append(
-                CompletePartialInfo().get_data(
-                            partial.id_parcial,
-                            False,
-                            complete_order_info['tipo_cambio_trimestral']
-                            ))
+        for count, partial in enumerate(complete_order_info['partials']):
+            if count < int(ordinal_parcial) :
+                all_partials.append(
+                    CompletePartialInfo().get_data(
+                                partial.id_parcial,
+                                False,
+                                complete_order_info['tipo_cambio_trimestral']
+                                ))
         
+        last = False
+        for x,partial in enumerate(all_partials):            
+            if x == all_partials.__len__() - 1:
+                last = True
+            my_partial = partial['partial']
+
+            if last == False and my_partial.bg_isclosed == 0:
+                loggin('e', 'Existe un parcial anterior abierto')
+                return HttpResponseRedirect(
+                    '/costos/error/{}/{}/'.format(
+                        my_partial.nro_pedido, my_partial.ordinal_parcial)
+                )
+
+                            
         apportiments_expenses = ApportionmentExpenses(
             complete_order_info=complete_order_info,
             all_partials=all_partials,
@@ -59,6 +74,23 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
                 ordinal_current_partial = all_partials[(int(ordinal_parcial)-1)]
                 ).get_costs()
         
+        current_parcial = all_partials[(int(ordinal_parcial) - 1)]
+        have_ice_reliquidated = False
+        
+        if current_parcial['partial'].bg_isclosed == 0:
+            provision = (producto_costs['ice_reliquidado'] 
+                        - current_parcial['partial'].ice_advalorem_pagado 
+                        -current_parcial['partial'].ice_especifico_pagado)
+            if provision:
+                have_ice_reliquidated = True
+
+            ice_reliquidado  = {
+                'expense' : 'ICE ADVALOREM RELIQUIDADO',
+                'provision' : producto_costs['ice_reliquidado'] - current_parcial['partial'].ice_advalorem_pagado -current_parcial['partial'].ice_especifico_pagado,
+                'invoiced_value' : 0,
+                'legder' : 0,
+            }
+        
         context['data'] = {
             'empresa' : settings.EMPRESA,
             'title_page' : 'Liquidacion Parcial %s'%ordinal_parcial,
@@ -67,6 +99,8 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
             'total_parcials' : all_partials.__len__(),
             'current_partial' : all_partials[(int(ordinal_parcial) - 1)],
             'current_partial_pos' : int(ordinal_parcial) - 1,
+            'have_ice_reliquidated' : have_ice_reliquidated,
+            'ice_reliquidado' : ice_reliquidado,
             'complete_order_info' : complete_order_info,
             'all_partials' : all_partials,
             'apportioments' : apportiments_expenses,

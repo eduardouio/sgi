@@ -32,6 +32,7 @@ class CompletePartialInfo(object):
             'ledger' : False,
             'taxes' : False,
             'have_files' : False,
+            'have_ice_reliquidado' : False
         }
         self.id_partial = None
         self.nro_order = None
@@ -67,16 +68,19 @@ class CompletePartialInfo(object):
         self.serialized = serialized
         self.type_change_trimestral = type_change_trimestral
         partial = self.get_partial()
-        
+
         if partial is None:
             return None
+
+        ledger = self.get_ledger()
 
         return ({
             'partial': partial,
             'info_invoice': self.get_info_invoice(),
             'expenses':self.get_expenses(),
-            'ledger' : self.get_ledger(),
+            'ledger' : ledger,
             'apportiomen' : self.get_apportioment(),
+            'ice_reliquidado' : self.get_ice_reliquidated(partial, ledger),
             'status' : self.status_parcial,
             'taxes' : self.get_taxes(),
             'files' : self.get_files(),
@@ -85,6 +89,31 @@ class CompletePartialInfo(object):
             'total_taxes_product' : self.partial_ledger,
             'total_provisions' : self.total_provisions,
             })
+
+    def get_ice_reliquidated(self, partial, ledger):
+        """Retorna el valor del ice reliquidado en el sistema, 
+        solo para parciales cerrados
+        """
+        if self.serialized:
+            return None
+
+        if bool(partial.bg_isclosed):
+            self.status_parcial['have_ice_reliquidado'] = True
+            
+            ice_reliquidado = {
+                'expense' : 'ICE ADVALOREM RELIQUIDADO',
+                'provision' : ledger.reliquidacion_ice,
+                'invoiced_value' : 0,
+                'legder' : 0,
+            }
+
+            if ledger.bg_mayor:
+                ice_reliquidado['ledger'] = ledger.reliquidacion_ice
+                ice_reliquidado['invoiced_value'] = ledger.reliquidacion_ice
+
+            return ice_reliquidado
+            
+        return None
 
 
     def get_partial(self):
@@ -115,8 +144,7 @@ class CompletePartialInfo(object):
                 + partial.arancel_especifico_pagar_pagado
                 + partial.ice_especifico_pagado
                 + partial.ice_advalorem_pagado
-                + partial.fodinfa_pagado
-            )
+                + partial.fodinfa_pagado)
 
         self.partial_ledger += self.tributes['total']
         self.partial_isclosed = partial.bg_isclosed
@@ -227,13 +255,11 @@ class CompletePartialInfo(object):
                     paid_serializer = PaidInvoiceDetailSerializer(p['paid'])
                     invoice_serializer = PaidInvoiceSerializer(p['invoice'])
                     supplier_serializer = SupplierSerializer(p['supplier'])
-                    paids_serialized.append(
-                        {
+                    paids_serialized.append({
                         'paid' : paid_serializer.data,
                         'invoice' : invoice_serializer.data,
                         'supplier': supplier_serializer.data,
-                        }
-                    )
+                        })
 
                 data_expenses.append({
                     'expense' : expense_serializer.data,
