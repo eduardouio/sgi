@@ -67,6 +67,7 @@ var app = new Vue({
         this.$http.put('{{ data.host }}api/paid-invoice-detail/update/' + paid.paid.id_detalle_documento_pago + '/', paid.paid, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {
             this.updateLedger()
           }, response => {
+            console.dir(response)
             alert('Se produjo un error, por favor recargue la página');
           });
     },

@@ -85,7 +85,6 @@ class CostingsPartial(object):
         for line_item in self.current_partial['info_invoice']['info_invoice_details']:
             taxes_line_items.append(self.get_costs_item(line_item)) 
     
-
         return taxes_line_items
 
 

@@ -77,6 +77,7 @@ class Partial(models.Model):
     bg_isliquidated = models.IntegerField(blank=True, null=True)
     bg_have_tasa_control = models.IntegerField(blank=True, null=True)
     id_user_cierre = models.PositiveSmallIntegerField(blank=True, null=True)
+    saldo_mayor = models.DecimalField(max_digits=10, decimal_places=3, blank=True, null=True)
     id_user = models.SmallIntegerField(default=0)
     date_create = models.DateTimeField(blank=True, null=True, default=timezone.now)
     last_update = models.DateTimeField(blank=True, null=True)
