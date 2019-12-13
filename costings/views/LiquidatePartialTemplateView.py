@@ -88,7 +88,7 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
 
             ice_reliquidado  = {
                 'expense' : 'ICE ADVALOREM RELIQUIDADO',
-                'provision' : float(producto_costs['ice_reliquidado'] - current_parcial['partial'].ice_advalorem_pagado -current_parcial['partial'].ice_especifico_pagado),
+                'provision' : float(producto_costs['ice_reliquidado']),
                 'invoiced_value' : 0,
                 'legder' : 0,
             }

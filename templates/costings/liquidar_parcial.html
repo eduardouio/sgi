@@ -311,7 +311,8 @@
                   </div>
                </div>
             </div>
-            <div class="origin-expenses" v-if="show_origin_expense">
+            {# reliquidacion de ICE #}
+                        <div class="origin-expenses" v-if="show_origin_expense">
               <div class="text-tittle">GASTOS EN ORIGEN DEL PEDIDO</div>
                <div class="row">
                   <div class="col-7">
@@ -380,12 +381,46 @@
                   </div>
                </div>
             </div>
+            {# /reliquidacion de ICE #}
+            <div class="origin-expenses" v-if="show_ice_reliquidated">
+              <div class="text-tittle">PROVISION RELIQUIDACION DE ICE</div>
+               <div class="row">
+                  <div class="col-7">
+                     <h6 class="text-dark">${ ice_reliquidado.provision | money }</h6>
+                  </div>
+                  <div class="col-5 text-right">
+                     <small class="text-danger">
+                     <i class="fa fa-exclamation-triangle"></i>
+                     Provision
+                     </small>
+                  </div>
+               </div>
+                <div class="row">
+                  <div class="col-12">
+                     <br>
+                     <div class="row">
+                        <div class="col-4 text-center">
+                           <h6>$ ${ ice_reliquidado.provision | money }</h6>
+                           <span class="text-secondary">Monto Gasto</span>
+                        </div>
+                        <div class="col-4 text-center">
+                           <h6>$  ${ 0 | money }</h6>
+                           <span class="text-success">Justificado</span>
+                        </div>
+                        <div class="col-4 text-center">
+                           <h6>$  ${ ice_reliquidado.provision  | money }</h6>
+                           <span class="text-danger">Provisión</span>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
             <div class="taxes" v-if="show_taxes"> 
             <div class="text-tittle"> IMPUESTOS DEL PARCIAL </div>
             <br>
             <div class="row">
                <div class="col-7">
-                  <h6 class="text-dark"> TRIBUTOS SENAE LIQ ${ current_selected_partial.partial.nro_liquidacion } </h6>
+                  <h6 class="text-dark"> TRIBUTOS SENAE ${ current_selected_partial.partial.nro_liquidacion } Hola</h6>
                </div>
                <div class="col-5 text-right">
                   <small class="text-success">
@@ -599,7 +634,6 @@
             </div>
             <br>
          </div>
-
          </div>
       </div>
    </div>

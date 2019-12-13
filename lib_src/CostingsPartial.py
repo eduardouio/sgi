@@ -102,7 +102,6 @@ class CostingsPartial(object):
 
     def get_apportionment_item(self, line_item):
         ''' Obtiene el prorrateo del item NO SE USA INDIRECTOS  '''
-        ice_reliquidado = 0
         line_item.fob_percent = (
             (line_item.nro_cajas * line_item.costo_caja) 
             / self.current_partial['info_invoice']['totals']['value']
@@ -124,8 +123,8 @@ class CostingsPartial(object):
             )
         line_item.ex_aduana_unitario = (line_item.ex_aduana / line_item.unidades)
         line_item.base_advalorem_reliquidado = (self.rates['base_ice_advalorem'] * (line_item.capacidad_ml/1000))
-        ice_reliquidado = 0
 
+        ice_reliquidado = 0
         if line_item.ex_aduana_unitario > line_item.base_advalorem_reliquidado:  
             if self.rates['base_etiquetas'] == 0 :
                 line_item.ice_advalorem_reliquidado = 0
@@ -137,7 +136,8 @@ class CostingsPartial(object):
                 
                 ice_reliquidado = (line_item.ice_advalorem_reliquidado - line_item.ice_advalorem_pagado)
 
-        line_item.total_ice = line_item.ice_advalorem_pagado + line_item.ice_especifico
+        line_item.total_ice = line_item.ice_advalorem_pagado + line_item.ice_especifico + ice_reliquidado
+
         line_item.fob_tasa_trimestral = ( 
                 self.current_partial['info_invoice']['totals']['value'] 
                 * self.rates['tipo_cambio_trimestral']

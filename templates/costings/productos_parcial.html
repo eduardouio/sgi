@@ -117,12 +117,10 @@
         {% endfor %}
         <tr>
         <th nowrap colspan="3" class="text-right"><strong>Sumas:</strong></th>
-        <th nowrap class="text-right">{{ data.costings.sums.nro_cajas }}</th>
+        <th nowrap class="text-right">{{ data.costings.sums.nro_cajas | round(2) }}</th>
         <th nowrap class="text-center text-secondary">-</th>
         <th nowrap class="text-right">{{ data.costings.sums.unidades | round(2) }}</th>
-        <th nowrap class="text-center text-secondary">-</th>
         <th nowrap class="text-right">$ {{ data.costings.sums.fob_tasa_trimestral | round(2) }}</th>
-        <th nowrap class="text-right">{{ data.costings.sums.fob_percent | round(2) }}</th>
         <th nowrap class="text-right">$ {{ data.costings.sums.seguro_aduana | round(2) }}</th>
         <th nowrap class="text-right">$ {{ data.costings.sums.flete_aduana | round(2) }}</th>
         <th nowrap class="text-right">$ {{ data.costings.sums.cif | round(2) }}</th>
