@@ -613,7 +613,7 @@
          <div class="row">
             <div class="col-4">
                <div class="fomr-group"><label for="">Saldo Mayor Sap</label>
-                  <input type="number" class="form-control form-control-sm text-right" v-model="current_ledger.mayor_sap" step="0.001" @keyup="updateLedger()">
+                  <input type="number" class="form-control form-control-sm text-right" v-model="current_ledger.mayor_sap" step="0.001" @keyup="updateLedger()" @change="updatePartial()">
                </div>
             </div>
             <div class="col-4">

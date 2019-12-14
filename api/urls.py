@@ -15,7 +15,7 @@ from api.views import (AllOrders, ApportionmenCreateView,
                        InfoInvoiceDetailDetailView,
                        InfoInvoiceDetailUpdateView, InfoInvoiceDetailView,
                        InfoInvoiceUpdateView, LedgerCreateView,
-                       LedgerDeleteView, LedgerDelExisting, LedgerDetailView,
+                       LedgerDeleteView, LedgerExisting, LedgerDetailView,
                        LedgerUpdateView, OrderCreateView, OrderDeleteView,
                        OrderDetailView, OrderInvoiceCreateView,
                        OrderInvoiceDeleteView, OrderInvoiceDetailCreateView,
@@ -66,7 +66,7 @@ urlpatterns = [
     #Ledger
     path('ledger/create/', LedgerCreateView.as_view(), name='create-ledger'),
     path('ledger/delete/<pk>/', LedgerDeleteView.as_view(), name='delete-ledger'),
-    path('ledger/delete-existing/<nro_order>/<id_partial>/', LedgerDelExisting.as_view(), name='delete-existing-ledger'),
+    path('ledger/ledger-exist/<nro_order>/<id_partial>/', LedgerExisting.as_view(), name='delete-existing-ledger'),
     path('ledger/detail/<pk>/', LedgerDetailView.as_view(), name='detail-ledger'),
     path('ledger/update/<pk>/', LedgerUpdateView.as_view(), name='update-ledger'),
     #Order

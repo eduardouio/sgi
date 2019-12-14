@@ -48,7 +48,7 @@ var app = new Vue({
         'provisiones_sgi' : parseFloat('{{ data.provisiones_sgi | round(3) }}'),
         'reliquidacion_ice': parseFloat('{{ (data.costings.ice_reliquidado  - data.current_partial.partial.ice_advalorem_pagado - data.current_partial.partial.ice_especifico_pagado )  | round(2) }}'),
         'saldo_producto' : parseFloat('{{ data.saldo_producto | round(3) }}'),
-        'mayor_sap' : 0,
+        'mayor_sap' : parseFloat('{{ data.current_partial.partial.saldo_mayor }}'),
         'mayor_sgi' : 0,
         'precio_entrega' : parseFloat('{{ data.costings.sums.prorrateos_total | round(3) }}'),
       },
@@ -81,18 +81,22 @@ var app = new Vue({
       //Cargamos los costos iniciales
       var descargas = 0
       var legder_value = (this.complete_order_info.init_ledger + this.complete_order_info.origin_expenses_tct)
+      console.log('Saldos Productos mas GO -> ' + legder_value )
       /** sumamos los gastos iniciales */
       this.complete_order_info.expenses.forEach((k,v)=>{
+          console.log(k.expense.concepto + ' Mayor -> ' + k.ledger + ' Facturado-> ' + k.invoiced_value)
           legder_value += k.legder
       })
-      
+      console.log('saldo Gastos iniciales ->' + legder_value)
       // Sumamos los gastos de cada parcial
       this.all_partials.forEach((k,v)=>{
         legder_value += k.taxes.total_pagado
         k.expenses.forEach((key,val)=>{
+          console.log(key.expense.concepto + ' Mayor -> ' + key.ledger + ' Facturado -> ' + k.invoiced_value)
           legder_value += key.legder
         })
       })
+      console.log('Saldos Gastos Parcial ->' + legder_value)
       // restamos las descargas de productos
       if (parseInt('{{ data.current_partial_pos }}') > 0){
           console.log('inciando descarga de gastos')
@@ -106,9 +110,7 @@ var app = new Vue({
               parseFloat(k.partial.ice_advalorem_pagado )
               + parseFloat(k.partial.ice_especifico_pagado)
               )
-
               var ice_reliquidado = 0
-
               k.info_invoice.info_invoice_detail.forEach((idx,val) => {
                 ice_reliquidado += parseFloat(idx.ice_advalorem)
                 ice_reliquidado += parseFloat(idx.ice_especifico)
@@ -116,9 +118,7 @@ var app = new Vue({
               console.log('Calculanfo diferencia de ice ')
               console.log(ice_reliquidado - ice_pagado)
               legder_value += (ice_reliquidado - ice_pagado)
-            }
-          })
-        }
+            }})}
 
       this.diff_ledgers = Math.abs((this.current_ledger.mayor_sap - legder_value).toFixed(3))
       return this.current_ledger.mayor_sgi = legder_value.toFixed(3)
@@ -144,6 +144,25 @@ var app = new Vue({
         this.show_order_invoice = false
         this.show_info_invoice = false
         this.show_ice_reliquidated = false
+      },
+      updatePartial: function(){
+        //Actualiza el valor del mayor en el parcial
+        console.log('Arcualizando parcial')
+        var partial = {
+          id_parcial : this.current_partial.partial.id_parcial,
+          saldo_mayor : this.current_ledger.mayor_sap,
+          nro_pedido : this.complete_order_info.order.nro_pedido,
+        }
+
+        this.$http.put('{{ data.host }}api/partial/update/' + partial.id_parcial + '/', partial,{
+          headers : {"X-CSRFToken":this.csrftoken}}).then(response=>{
+              console.log('Salfo del Mayor actualizado')
+              console.log(response)
+          },response=>{
+              console.log('Error actualizando el saldo del mayor')
+              console.dir(response)
+              alert('Hubo un error actualizando el saldo del Mayor')
+          })
       },
       showOrderInvoice : function(){
         console.log('mostrando factura del pedido')
@@ -230,7 +249,8 @@ var app = new Vue({
         });
   },
     liquidatePartial : function(){
-      console.log('Llamamos a liquidar el parcial')
+      console.log('Liquidando parcial')
+
       var partial = {
         id_parcial : this.current_partial.partial.id_parcial,
         observaciones : this.current_partial.partial.observaciones += this.comentarios,
@@ -241,29 +261,42 @@ var app = new Vue({
       this.show_liquidate_confirm_btn = false
       this.show_liquidate_btn = false
       this.liquidated_partial = true
-      
+
       this.$http.post('{{ data.host }}api/ledger/create/', this.current_ledger, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {
         this.$http.put('{{ data.host }}api/partial/update/' + partial.id_parcial + '/', partial, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {
           this.partial_close = true
           window.print()
                   }, response => {
-          alert(response)
+          console.log('Mayor registrado correctamente')
+          console.dir(response)
         });
       }, response => {
-        console.log('No es posible crear el parcial')
-          this.deleteExistingLedger(this.current_ledger)
+        console.log('No es posible crear el mayor del parcial')
+        console.dir(response)
+        alery('No es posible crear el parcial')
       });
-      
       },
-      deleteExistingLedger: function (current_ledger){
-        console.log('eliminando mayor existente')
-        this.$http.get('{{ data.host }}api/ledger/delete-existing/' + current_ledger.nro_pedido + '/' + current_ledger.id_parcial + '/' , { headers: { "X-CSRFToken":this.csrftoken}}).then(response => {
-          console.log('Mayor eliminado correctamennte')
-          this.liquidatePartial()
+      deleteExistingLedger: function (){
+        console.log('Intentado eliminar el mayor existente ')
+        this.$http.get('{{ data.host }}api/ledger/ledger-exist/' + this.current_ledger.nro_pedido + '/' + this.current_ledger.id_parcial + '/' , { headers: { "X-CSRFToken":this.csrftoken}}).then(response => {
+          console.log('resultado de busqueda de parcial')
+          console.dir(response)
+          if (response.data['exist'] === 1){
+              this.$http.delete('{{ data.host }}api/ledger/delete/' + response.data['id_mayor'], { headers: { "X-CSRFToken":this.csrftoken}}).then(response => {
+                console.log('Mayor del parcial Eliminado')
+                this.liquidatePartial()
+              })
+          }else{
+            console.log('El parcial no tiene registrado un mayor')
+            this.liquidatePartial()
+          }
         }, response => {
-          console.log('No se puede elimiar un mayor que no existe')
-          alert('Error interno consulte con soporte, [msg] -> El mayor que intenta eliminar no existe')
+          console.log('Error en comunicaicon http')
+          console.dir(response)
+          alert('No es posible comunicarse con el servidor')
         })
+
+        return 0;
     },
     },
     mounted() {

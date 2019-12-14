@@ -165,7 +165,7 @@
     <button class="btn btn-sm btn-outline-dark" data-toggle="modal" data-target="#modal-prorrateos"><i class="fas fa-chart-pie"></i> Prorrateos de Pedido</button>
     <span v-if="liquidated_partial == false">
         <button v-if="show_liquidate_btn" class="btn btn-sm btn-outline-primary" @click="show_liquidate_confirm_btn = true;show_liquidate_btn=false"><i class="fa fa-check"></i> Liquidar Parcial</button>
-        <button v-if="show_liquidate_confirm_btn" class="btn btn-sm btn-warning" @click="liquidatePartial()"><i class="fas fa-exclamation-triangle"></i> Confirmar y Continuar </button>
+        <button v-if="show_liquidate_confirm_btn" class="btn btn-sm btn-warning" @click="deleteExistingLedger()"><i class="fas fa-exclamation-triangle"></i> Confirmar y Continuar </button>
     </span>
         <button class="btn btn-sm btn-outline-danger" disabled v-else><i class="fas fa-stop"></i>  Parcial Cerrado</button>
 </div>

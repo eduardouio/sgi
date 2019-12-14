@@ -31,15 +31,11 @@ class LedgerUpdateView(UpdateAPIView):
     serializer_class = LedgerSerializer
 
 
-class LedgerDelExisting(APIView):
-    """Elimina un mayor"""
-
+class LedgerExisting(APIView):
+    """Verifica la existencia de un mayor"""
     def get(self, requets, nro_order, id_partial):
         loggin('i', 'Recuprando mayor pedido {} parcial {}'.format(nro_order, id_partial))
         my_ledger = Ledger.get_by_order_and_partial(nro_order, id_partial)
-        loggin('i', my_ledger)
-        if my_ledger:
-            if my_ledger.delete():
-                return Response(status=status.HTTP_200_OK)
-        
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response({
+            'exist' : 1 if my_ledger else 0, 
+            'id_mayor' : my_ledger.id_mayor if my_ledger else 0})

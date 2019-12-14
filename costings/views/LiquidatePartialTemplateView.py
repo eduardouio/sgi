@@ -78,6 +78,8 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
         
         current_parcial = all_partials[(int(ordinal_parcial) - 1)]
         have_ice_reliquidated = False
+
+        ice_reliquidado = None
         
         if current_parcial['partial'].bg_isclosed == 0:
             provision = (producto_costs['ice_reliquidado'] 
