@@ -165,15 +165,6 @@ class Order(models.Model):
         pass
 
     @classmethod
-    def close_order(self, nro_order):
-        pass
-
-    @classmethod
-    def reopen_order(self, nro_order):
-        pass
-
-
-    @classmethod
     def get_open_orders(self):
         orders = self.objects.filter(bg_isclosed = 0).exclude(nro_pedido='000-00')
         if orders.count() == 0:
