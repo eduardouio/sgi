@@ -33,6 +33,7 @@ var app = new Vue({
       show_order_invoice : false,
       show_origin_expense : false,
       show_ice_reliquidated : false,
+      show_ice_reliquidated_mayor : false,
       show_liquidate_btn : true,
       show_liquidate_confirm_btn : false,
       diff_ledgers : 0,
@@ -97,6 +98,17 @@ var app = new Vue({
           legder_value += key.legder
         })
       })
+      console.log('Sumamos reliquidaciones del ICE agreagadas a los mayores')
+      console.dir(this.current_ordinal_parcial)
+      var cop = this.current_ordinal_parcial
+      $.each(this.all_partials, function(k,v){
+        if (cop-1 > k){
+          console.log('Sumamos los ices reliquidados de los anteriores parciales')
+          if (v.ledger.bg_mayor){
+            legder_value += parseFloat(v.ledger.reliquidacion_ice)
+          }
+        }
+      })
       console.log('Saldos Gastos Parcial ->' + legder_value)
       // restamos las descargas de productos
       if (parseInt('{{ data.current_partial_pos }}') > 0){
@@ -105,20 +117,6 @@ var app = new Vue({
             if(k.partial.bg_isclosed === 1){
               legder_value -= parseFloat(k.ledger.costo_producto)
               legder_value -= parseFloat(k.ledger.precio_entrega)
-              
-              //Verificamos si existe reliquidacion de ICE
-            var ice_pagado = (
-              parseFloat(k.partial.ice_advalorem_pagado )
-              + parseFloat(k.partial.ice_especifico_pagado)
-              )
-              var ice_reliquidado = 0
-              k.info_invoice.info_invoice_detail.forEach((idx,val) => {
-                ice_reliquidado += parseFloat(idx.ice_advalorem)
-                ice_reliquidado += parseFloat(idx.ice_especifico)
-              })
-              console.log('Calculanfo diferencia de ice ')
-              console.log(ice_reliquidado - ice_pagado)
-              legder_value += (ice_reliquidado - ice_pagado)
             }})}
 
       this.diff_ledgers = Math.abs((this.current_ledger.mayor_sap - legder_value).toFixed(3))
@@ -146,6 +144,7 @@ var app = new Vue({
         this.show_order_invoice = false
         this.show_info_invoice = false
         this.show_ice_reliquidated = false
+        this.show_ice_reliquidated_mayor = false
       },
       updatePartial: function(){
         //Actualiza el valor del mayor en el parcial
@@ -174,6 +173,7 @@ var app = new Vue({
         this.show_order_invoice = true
         this.show_info_invoice = false
         this.show_ice_reliquidated = false
+        this.show_ice_reliquidated_mayor = false
         this.current_order_invoice = this.complete_order_info.order_invoice
         return true
       },
@@ -184,6 +184,7 @@ var app = new Vue({
         this.show_origin_expense = true
         this.show_order_invoice = false
         this.show_info_invoice = false
+        this.show_ice_reliquidated_mayor = false
         this.show_ice_reliquidated = false
       },
 
@@ -194,10 +195,10 @@ var app = new Vue({
         this.show_origin_expense = false
         this.show_order_invoice = false
         this.show_info_invoice = true
+        this.show_ice_reliquidated_mayor = false
         this.show_ice_reliquidated = false
         this.current_info_invoice = this.all_partials[id_partial].info_invoice
       },
-
       showReliquidacionICE : function(){
         console.log('se muestra el gasto de reliquidacion ice')
         this.show_ice_reliquidated = true
@@ -205,10 +206,20 @@ var app = new Vue({
         this.show_taxes = false
         this.show_origin_expense = false
         this.show_order_invoice = false
+        this.show_ice_reliquidated_mayor = false
+        this.show_info_invoice = false
+      },
+      showReliquidacionICEMayor : function(){
+        console.log('se muestra el gasto de reliquidacion ice tomada del mayor')
+        this.show_ice_reliquidated = false
+        this.show_expense = false
+        this.show_taxes = false
+        this.show_origin_expense = false
+        this.show_order_invoice = false
+        this.show_ice_reliquidated_mayor = true
         this.show_info_invoice = false
 
       },
-
       selectExpense : function(item){
         console.log('Seleccionando Gasto', item)
         this.show_expense = true
@@ -217,6 +228,7 @@ var app = new Vue({
         this.show_order_invoice = false
         this.show_info_invoice = false
         this.show_ice_reliquidated = false
+        this.show_ice_reliquidated_mayor = false
         this.current_expense = item
       },
       showTaxes : function(){
@@ -225,11 +237,35 @@ var app = new Vue({
         this.show_origin_expense = false
         this.show_order_invoice = false
         this.show_ice_reliquidated = false
+        this.show_ice_reliquidated_mayor = false
         this.show_info_invoice = false
         this.show_taxes = true
       },
-      contabilized : function(paid){
-        console.log('Envio actualizacion de pago')
+      contabilized : function(paid = null, ice_mayor = false){
+        if(ice_mayor){
+          if (this.current_selected_partial.ledger.bg_mayor){
+            this.current_selected_partial.ledger.bg_mayor = 0
+          }else{
+            this.current_selected_partial.ledger.bg_mayor = 1
+          }
+          console.log('Contabilizando ice del mayor, de un parcial anterior')
+          this.$http.put('{{ data.host }}api/ledger/update/' + this.current_selected_partial.ledger.id_mayor + '/' ,
+              {
+                id_mayor : this.current_selected_partial.ledger.id_mayor,
+                bg_mayor : this.current_selected_partial.ledger.bg_mayor,
+                nro_pedido : this.current_selected_partial.ledger.nro_pedido,
+                id_parcial : this.current_selected_partial.ledger.id_parcial,
+                tipo : this.current_selected_partial.ledger.tipo,
+              }, {headers: {"X-CSRFToken":this.csrftoken }}).then(response=>{
+                console.log('Se actualiza ledger base de datos')
+                console.dir(response)
+                this.updateLedger()
+              }, response => {
+                console.log('Hubo un error actualizando el valor del mayor')
+                console.dir(response)
+              })
+        }else{
+          console.log('Envio actualizacion de pago')
         if (paid.paid.bg_mayor){
             paid.paid.bg_mayor = 0
             this.current_expense.legder -= parseFloat(paid.paid.valor)
@@ -237,11 +273,13 @@ var app = new Vue({
             paid.paid.bg_mayor = 1
             this.current_expense.legder += parseFloat(paid.paid.valor)
         }            
-        this.$http.put('{{ data.host }}api/paid-invoice-detail/update/' + paid.paid.id_detalle_documento_pago + '/', paid.paid, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {                     
+        this.$http.put('{{ data.host }}api/paid-invoice-detail/update/' + paid.paid.id_detalle_documento_pago + '/', 
+              paid.paid, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {                     
             this.updateLedger()
           }, response => {
             alert('Se produjo un error, por favor recargue la página');
           });
+        }
     },
     get_paid_invoice : function(id_paid){
       this.$http.get('{{data.host }}api/paid-invoice/all/' + id_paid  + '/', {params: {}}).then(response => {          
@@ -310,7 +348,7 @@ var app = new Vue({
           this.$http.get('{{ data.host }}api/partial/all-data/' + el.id_parcial + '/',{ params: {}}).then(resp => {
           this.all_partials.unshift(resp.body)
           this.updateLedger()
-          this.selectPartial()
+          this.selectPartial()          
           })
           x=x+1
       }
