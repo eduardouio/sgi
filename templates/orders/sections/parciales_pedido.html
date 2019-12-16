@@ -3,7 +3,7 @@
       <div class="col-sm-12">
          <table class="table table-bordered">
             <thead>
-               <tr class="bg-secondary text-white">
+               <tr class="bg-secondary text-white" >
                   <th>#</th>
                   <th>Nro Factura</th>
                   <th>Liquidacion</th>
@@ -18,7 +18,11 @@
             </thead>
             <tbody>
             {% for partial in data.order_info.partials_details %}
-                <tr>
+                <tr 
+                {% if partial.bg_isclosed %}
+                  style="background-color:#ddd"
+               {% endif %}
+                >
                   <td class="text-center"> 
                   <a href="/admin/partials/partial/{{partial.id_parcial}}/change/" target="_blank">
                     {{ loop.index }} 
