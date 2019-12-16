@@ -318,6 +318,8 @@ class CompletePartialInfo(object):
         loggin('i', 'Mayor parcial recuperado')
         if self.serialized:
             ledger_serializer = LedgerSerializer(ledger)
+            loggin('i', 'Retornando mayor del parcial')
+            loggin('t', ledger_serializer.data)
             return ledger_serializer.data
         
         return ledger
