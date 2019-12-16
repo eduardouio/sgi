@@ -364,7 +364,20 @@ class CompleteOrderInfo(object):
             
             partials_details.append(item_data)
 
+        last_partial = Partial.get_last_close_partial(self.nro_order)
+        
+        if last_partial:
+            last_apportionment = Apportionment.get_by_parcial(last_partial.id_parcial)
+            if self.serialized:
+                apportioment_serializer = ApportionmentSerializer(last_apportionment)
+                self.last_apportionment = apportioment_serializer.data
+            else:
+                self.last_apportionment = last_apportionment
+
+
         if self.serialized:
-            return None
+            partial_serializer = PartialSerializer(partials, many=True)
+            return partial_serializer.data
+
 
         return partials_details if partials_details else None
