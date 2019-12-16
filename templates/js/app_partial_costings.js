@@ -46,7 +46,7 @@ var app = new Vue({
         'costo_producto' : parseFloat('{{ data.current_partial.info_invoice.totals.value_tct | round(3) }}'),
         'facturas_sgi' : parseFloat('{{ data.facturas_sgi | round(3) }}'),
         'provisiones_sgi' : parseFloat('{{ data.provisiones_sgi | round(3) }}'),
-        'reliquidacion_ice': parseFloat('{{ (data.costings.ice_reliquidado  - data.current_partial.partial.ice_advalorem_pagado - data.current_partial.partial.ice_especifico_pagado )  | round(2) }}'),
+        'reliquidacion_ice': parseFloat('{{ data.costings.ice_reliquidado  | round(2) }}'),
         'saldo_producto' : parseFloat('{{ data.saldo_producto | round(3) }}'),
         'mayor_sap' : parseFloat('{{ data.current_partial.partial.saldo_mayor }}'),
         'mayor_sgi' : 0,
@@ -64,7 +64,8 @@ var app = new Vue({
             paid.paid.bg_mayor = 1
             this.current_expense.legder += parseFloat(paid.paid.valor)
         }            
-        this.$http.put('{{ data.host }}api/paid-invoice-detail/update/' + paid.paid.id_detalle_documento_pago + '/', paid.paid, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {
+        this.$http.put('{{ data.host }}api/paid-invoice-detail/update/' + paid.paid.id_detalle_documento_pago + '/', 
+        paid.paid, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {
             this.updateLedger()
           }, response => {
             console.dir(response)
@@ -131,6 +132,7 @@ var app = new Vue({
         }
       },
       changePartial : function(id){
+        console.log('Cambiando de parcial, parcial ' + id + ' activo')
         var current_partial = null
         this.all_partials.forEach((key,val)=>{
           if(key.partial.ordinal_parcial === (id +1 )){
