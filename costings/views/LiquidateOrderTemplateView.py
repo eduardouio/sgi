@@ -5,6 +5,7 @@ from logs.app_log import loggin
 from orders.models.Order import Order
 from lib_src import CompleteOrderInfo, CostingsOrder
 from lib_src.sgi_utlils import get_host
+from django.conf import settings
 
 # /costos/pedio/{nro_pedido}
 class LiquidateOrderTemplateView(LoginRequiredMixin, TemplateView):
@@ -25,6 +26,7 @@ class LiquidateOrderTemplateView(LoginRequiredMixin, TemplateView):
         )
         costs = costs_order.get_costs()
         context['data']  = {
+            'empresa' : settings.EMPRESA,
             'title_page' : 'Liquidación Pedido {} Consumo'.format(nro_order),
             'nro_order' : nro_order,
             'complete_order_info' : cmp_order_inf,
@@ -36,7 +38,6 @@ class LiquidateOrderTemplateView(LoginRequiredMixin, TemplateView):
             cmp_order_inf, costs))
 
         return self.render_to_response(context)
-    
 
     def __check_status_values(self, order_info, product_costs):
         ''' realiza el calculo de facturas provisiones y producto '''

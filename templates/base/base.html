@@ -32,9 +32,6 @@
 
     <div class="collapse navbar-collapse bg-dark" id="navbarColor01">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-        <a class="nav-link" href="#"> Pedidos <span class="sr-only">(current)</span></a>
-        </li>
         {# menu adicional #}
         {# <li class="nav-item"> #}
         {#   <a class="nav-link" href="#">About</a> #}
@@ -44,7 +41,9 @@
         <input class="form-control form-control-sm mr-sm-1" type="search" placeholder="Buscar" name="q">
         <button class="btn btn-outline-primary my-sm-0" type="submit"> <i class="fas fa-search"></i></button>
       </form>
-        <a href="/logout/" class="btn btn-outline-danger my-sm-0" style="margin-left:1rem;"><i class="fas fa-power-off" aria-hidden="true"></i></a>
+        <a href="/admin/" target="_blank" class="btn btn-outline-info my-sm-0" style="margin-left:0.5rem;"><i class="fas fa-tachometer-alt"></i></a>
+        <a href="/logout/" class="btn btn-outline-danger my-sm-0" style="margin-left:0.5rem;"><i class="fas fa-power-off" aria-hidden="true"></i></a>
+        &nbsp;
     </div>
   </nav>
   </body>
@@ -60,11 +59,11 @@
   <div class="col-12 text-right" style="line-height: 1">
   <div style="border-right:0.04rem solid teal;padding:0.3rem">
   <small>
-        {{ data.host }}  
-        🏢 &copy;Todos los Derechos reservados<br>
-        💻: Eduardo Villota M.
+         &copy; Derechos reservados {{ data.empresa.nombre }} 
+         <br>
+        <strong class="text-primary">{{ request.user.first_name }} {{ request.user.last_name }}</strong> <strong id="timestamp"></strong>
         <br />
-        📧: <a href="mailto:eduardouio7@gmail.com">eduardouio7@gmail.com</a>
+        Desarrollado por: <a href="mailto:eduardouio7@gmail.com">eduardouio7@gmail.com</a>
       </small>
   </div>
   </div>
@@ -76,6 +75,16 @@
 <script>
   {% block script %}
   {% endblock script %}
+</script>
+<script>
+$(document).ready(function(){
+  setInterval(
+  function settime(){
+    var dt = new Date();
+    var time =  dt.getDate() + "/" + (dt.getMonth() + 1) + "/" + dt.getFullYear() + " " + dt.getHours() + ":" + dt.getMinutes();
+    $('#timestamp').text(time)
+  }, 10000)
+})
 </script>
 {% block footer %}
 {% endblock %}

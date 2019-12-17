@@ -8,10 +8,10 @@
    <div class="col-4">
       <i class="fa fa-cog"></i>
       Liquidar Pedido A consumo {{ data.complete_order_info.order }}
-       {% if data.complete_order_info.order.bg_isclosed  == 0 %}
-      <span class="badge badge-success">Abierto</span>
-       {% else %}
+       {% if data.complete_order_info.order.bg_isclosed %}
       <span class="badge badge-dark">Liquidado y Cerrado</span>
+       {% else %}
+      <span class="badge badge-success">Abierto</span>
        {% endif %}
    </div>
    <div class="col-8 text-right">
@@ -490,7 +490,7 @@
          <div class="row">
             <div class="col-4">
                <div class="fomr-group"><label for="">Saldo Mayor Sap</label>
-                  <input type="number" class="form-control form-control-sm text-right" v-model="current_ledger.mayor_sap" step="0.001"  @keyup="updateLedger()">
+                  <input type="number" class="form-control form-control-sm text-right" v-model="current_ledger.mayor_sap" step="0.001"  @keyup="updateLedger()" @change="updateLedger()">
                </div>
             </div>
             <div class="col-4">

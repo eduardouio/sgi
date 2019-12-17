@@ -81,7 +81,6 @@ var app = new Vue({
           return false
       }
       //Cargamos los costos iniciales
-      var descargas = 0
       var legder_value = (this.complete_order_info.init_ledger + this.complete_order_info.origin_expenses_tct)
       console.log('Saldos Productos mas GO -> ' + legder_value )
       /** sumamos los gastos iniciales */

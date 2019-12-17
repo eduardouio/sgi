@@ -6,7 +6,6 @@ from simple_history.models import HistoricalRecords
 from logs.app_log import loggin
 from orders.models.Order import Order
 
-
 class Partial(models.Model):
     id_parcial = models.AutoField(primary_key=True)
     nro_pedido = models.ForeignKey(Order,models.PROTECT, db_column='nro_pedido')
@@ -92,16 +91,13 @@ class Partial(models.Model):
         verbose_name_plural = 'Parciales'
         ordering = ['id_parcial']
 
-
     @property
     def ordinal_parcial(self):
         return self.get_ordinal_number(self.id_parcial)
 
-
     @property
     def partial_url(self):
         return ''.join([self.nro_pedido_id, '/' , str(self.ordinal_parcial) , '/'])
-
 
     @classmethod
     def get_by_order(self, nro_order):
@@ -111,7 +107,6 @@ class Partial(models.Model):
             return self.objects.none()
             
         return parcials
-
 
     @classmethod
     def get_by_id(self, id_partial):
@@ -123,7 +118,6 @@ class Partial(models.Model):
 
         return partial
 
-
     @classmethod
     def get_last_partial(self, nro_order):
         partials = self.get_by_order(nro_order)
@@ -133,7 +127,6 @@ class Partial(models.Model):
         
         return partials.last()
         
-
     @classmethod
     def get_last_close_partial(self, nro_order, id_partial = None):
         '''Retorna el ultimo parcial liquidado, si el pedido es R10 o no
@@ -162,8 +155,6 @@ class Partial(models.Model):
             return None
         
         return partials.last()
-        
-
 
     @classmethod
     def get_ordinal_number(self, id_partial):
@@ -179,7 +170,6 @@ class Partial(models.Model):
                 return ordinal
             ordinal += 1
 
-
     @classmethod
     def get_order_by_parcial(self, id_parcial):
         try:
@@ -193,7 +183,6 @@ class Partial(models.Model):
             return None
 
         return Order.get_by_order(parcial.nro_pedido_id)
-
 
     @classmethod
     def get_paid_taxes(self, id_partial):

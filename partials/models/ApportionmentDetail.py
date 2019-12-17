@@ -5,7 +5,6 @@ from simple_history.models import HistoricalRecords
 from logs.app_log import loggin
 from partials.models.Apportionment import Apportionment
 
-
 class ApportionmentDetail(models.Model):
     id_prorrateo_detalle = models.AutoField(primary_key=True)
     id_prorrateo = models.ForeignKey(Apportionment, models.CASCADE, db_column='id_prorrateo')

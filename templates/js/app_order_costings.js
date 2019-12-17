@@ -1,3 +1,9 @@
+/**
+ * Modulo de liquidacion de pedido 
+ * 
+ * Eduardo Villota (2019) <eduardouio7@gmail.com>
+ */
+
 var app = new Vue({
   el: '#app',
   delimiters: ['${', '}'],
@@ -9,6 +15,8 @@ var app = new Vue({
     csrftoken : Cookies.get('csrftoken'),
     liquidated_order : Boolean(parseInt('{{ data.complete_order_info.order.bg_isclosed }}')),
     show_form_liquidated : false,
+    show_ice_reliquidated : false,
+    show_ice_reliquidated_mayor : false,
     current_expense : null,
     show_expense : false,
     show_costings : false,
@@ -19,6 +27,12 @@ var app = new Vue({
     show_liquidate_btn : false,
     show_liquidate_confirm_btn : false,
     diff_ledgers : 0,
+    ice_reliquidado : {
+      expense : 'ICE ADVALOREM RELIQUIDADO',
+      provision : "parseFloat(' data.ice_reliquidado.provision }})",
+      invoiced_value : 0,
+      legder : 0,
+    },
     show_taxes : false,
     current_ledger : {
       'tipo' : 'pedido',
@@ -48,6 +62,7 @@ var app = new Vue({
       this.$http.put('{{ data.host }}api/paid-invoice-detail/update/' + paid.paid.id_detalle_documento_pago + '/', paid.paid, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {                     
           this.updateLedger()
         }, response => {
+          console.dir(response)
           alert('Se produjo un error, por favor recargue la página');
         });
   },
@@ -59,13 +74,13 @@ var app = new Vue({
         return false
     }
     //Cargamos los costos iniciales
-    var descargas = 0
     var legder_value = (this.complete_order_info.init_ledger + this.complete_order_info.origin_expenses_tct)
     /** sumamos los gastos iniciales */
     this.complete_order_info.expenses.forEach((k,v)=>{
         legder_value += k.legder
     })
-    
+    console.log('sumamos la reliquidacion del ice')
+    console.log('pendiente')
     this.diff_ledgers = Math.abs((this.current_ledger.mayor_sap - legder_value).toFixed(3))
     return this.current_ledger.mayor_sgi = legder_value.toFixed(3)
   },
@@ -78,7 +93,6 @@ var app = new Vue({
       this.current_order_invoice = this.complete_order_info.order_invoice
       return true
     },
-
     showOriginExpense : function(){
       console.log('Mostrando Gastos en Origen')
       this.show_expense = false
@@ -110,10 +124,13 @@ var app = new Vue({
           paid.paid.bg_mayor = 1
           this.current_expense.legder += parseFloat(paid.paid.valor)
       }            
-      this.$http.put('{{ data.host }}api/paid-invoice-detail/update/' + paid.paid.id_detalle_documento_pago + '/', paid.paid, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {                     
+      this.$http.put('{{ data.host }}api/paid-invoice-detail/update/' + paid.paid.id_detalle_documento_pago + '/', 
+            paid.paid, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {
+              console.log('')
           this.updateLedger()
         }, response => {
           alert('Se produjo un error, por favor recargue la página');
+          console.dir(response)
         });
   },
   get_paid_invoice : function(id_paid){
@@ -121,8 +138,25 @@ var app = new Vue({
         this.current_paid = response.data;
       }, response => {
         alert('Se produjo un error, por favor recargue la página');
+        console.dir(response)
       });
 },
+  updateOrder : function(){
+    console.log('Actualizamos el pedido para retistrar el valor del mayor')
+    var my_order = {
+      nro_pedido : '{{ data.nro_order }}',
+      saldo_mayor : this.current_ledger.saldo_mayor,
+    }
+    this.$http.put('{{ data_host }}api/order/update/{{ data.nro_order }}/', my_order, { 
+      headers : {"X-CSRFToken":this.csrftoken}}).then(response=>{
+        console.log('saldo de mayor actualizado')
+        console.dir(response)
+      },response=>{
+        console.log('No fue posible actualizar el pedido')
+        console.dir(response)
+        alert('Hubo un error actualizando el saldo del Mayor')
+      })
+  },
   liquidateOrder : function(){
     console.log('Iniciamos la liquidacion del pedido')
     this.show_liquidate_confirm_btn = false
@@ -152,9 +186,10 @@ var app = new Vue({
     this.$http.get('{{ data.host }}api/order/all-data/{{ data.complete_order_info.order.nro_pedido }}', { params: {}}).then(response => {
     this.complete_order_info = response.body
     this.ajax_request = false    
-    this.updateLedger()  
+    this.updateLedger()
   }, response => {
     alert('Ocurrio un error al cargar la aplicacion, por recargue la pagina')
+    console.dir(response)
   });
 },
 filters : {

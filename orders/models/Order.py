@@ -101,6 +101,7 @@ class Order(models.Model):
     id_user = models.SmallIntegerField(default=0)
     date_create = models.DateTimeField(blank=True, null=True, default=timezone.now)
     last_update = models.DateTimeField(blank=True, null=True)
+    saldo_mayor = models.DecimalField(max_digits=10, decimal_places=3, blank=True, null=True)
     history = HistoricalRecords()
 
     def __str__(self):
@@ -129,15 +130,12 @@ class Order(models.Model):
 
         return order
 
-
     @property
     def diferencia_ice_senae(self):
-        return (
-             self.ice_advalorem
-            + self.ice_especifico
-            - self.ice_advalorem_pagado
-            - self.ice_especifico_pagado
-            )
+        return 0
+        diferencia = (self.ice_advalorem + self.ice_especifico 
+                - self.ice_advalorem_pagado- self.ice_especifico_pagado)
+        return diferencia if diferencia else 0
 
     @property
     def reliquidacion_ice(self):
@@ -170,7 +168,6 @@ class Order(models.Model):
         
         loggin('i', 'Retornando todos los pedidos abiertos')
         return orders
-
 
     @classmethod
     def get_paid_taxes(self, nro_order):

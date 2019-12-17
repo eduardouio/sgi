@@ -37,7 +37,9 @@ class CostingsOrder(object):
         }
     
     def get_costs(self) -> dict:
-        """Retorna los costos de un pedido
+        """Realiza el costo de un pedido r10, en base a los costos indirectos
+        y costos adicionales en la liquidacion, de forma adicional realiza
+        el calculo de pago de ice advalorem reliquidado
         
         Returns:
             dict -- {
@@ -136,12 +138,12 @@ class CostingsOrder(object):
                 (line_item.ex_aduana_unitario - line_item.base_advalorem_reliquidado)
                 * self.rates['porcentaje_ice_advalorem']
             ) * line_item.unidades
-            line_item.total_ice = (line_item.ice_advalorem_reliquidado 
+            line_item.total_ice = (line_item.ice_advalorem_pagado 
                                     + line_item.ice_especifico)
             line_item.ice_advalorem_reliquidado = (line_item.ice_advalorem_reliquidado -
-                                 line_item.ice_advalorem)
+                                 line_item.ice_advalorem_pagado)
         else:
-            line_item.total_ice = (line_item.ice_advalorem 
+            line_item.total_ice = (line_item.ice_advalorem_pagado 
                                     + line_item.ice_especifico)
             line_item.ice_advalorem_reliquidado = 0
 
