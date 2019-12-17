@@ -140,11 +140,8 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
             if x+1 == int(ordinal_parcial):
                 return True
 
-        loggin(
-            'e', 
-            'El numero ordinal del parcial {} , no existe en el pedido {}'
-            .format(ordinal_parcial, nro_order)
-            )
+        loggin('e', 'El ordinal parcial {} , no existe pedido {}'.format(
+            ordinal_parcial, nro_order))
 
         return False
     

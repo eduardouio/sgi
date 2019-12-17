@@ -75,7 +75,7 @@ var app = new Vue({
     },
 
     updateLedger: function(){
-        console.log('actualizando mayor')
+          console.log('actualizando mayor')
         if (typeof(this.complete_order_info.expenses) != 'object'){                
           console.log('[Debug] El pedido no tiene gastos')
           return false
@@ -99,7 +99,6 @@ var app = new Vue({
         })
       })
       console.log('Sumamos reliquidaciones del ICE agreagadas a los mayores')
-      console.dir(this.current_ordinal_parcial)
       var cop = this.current_ordinal_parcial
       $.each(this.all_partials, function(k,v){
         if (cop-1 > k){
@@ -109,6 +108,13 @@ var app = new Vue({
           }
         }
       })
+      console.log('suma reliquidacion ice parcial actual si esta cerrado')
+      if (this.current_partial.partial.bg_isclosed === 1){
+        if(this.current_partial.ledger.bg_mayor){
+          legder_value += parseFloat(this.current_partial.ledger.reliquidacion_ice)
+        }
+      }
+            
       console.log('Saldos Gastos Parcial ->' + legder_value)
       // restamos las descargas de productos
       if (parseInt('{{ data.current_partial_pos }}') > 0){
@@ -354,8 +360,8 @@ var app = new Vue({
         if (x < parseInt('{{ data.ordinal_partial }}')) {
           this.$http.get('{{ data.host }}api/partial/all-data/' + el.id_parcial + '/',{ params: {}}).then(resp => {
           this.all_partials.unshift(resp.body)
-          this.updateLedger()
           this.selectPartial()          
+          this.updateLedger()
           })
           x=x+1
       }

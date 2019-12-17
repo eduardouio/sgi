@@ -57,10 +57,16 @@
                   </tr>
                   <tr>
                      <td style="width:100px;" class="text-right bg-light">Comentarios:</td>
-                     <td colspan="4">{{ data.current_partial.partial.observaciones }}</td>
-                     <td colspan="4" class="text-right">
+                     <td colspan="3">{{ data.current_partial.partial.observaciones }}</td>
+                     <td colspan="2" class="text-right">
+                     <strong class="text-secondary" v-if="current_selected_partial">
+                     Saldo Parcial ${current_selected_partial.partial.ordinal_parcial} $
+                     ${ current_selected_partial.partial.saldo_mayor | money} 
+                     </strong>
+                     </td>
+                     <td colspan="3" class="text-right">
                      <strong class="text-primary" v-if=" current_ordinal_parcial > 1">
-                        &Uacute;ltimo Saldo de Mayor : ${ all_partials[current_ordinal_parcial - 2].ledger.mayor_sap | money}
+                        &Uacute;ltimo Mayor : ${ all_partials[current_ordinal_parcial - 2].ledger.mayor_sap | money}
                      </strong>
                      <strong class="text-primary" v-else="">
                      $ 0.00

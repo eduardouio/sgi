@@ -50,12 +50,8 @@ class ApportionmentExpenses(object):
 
             if 'IMPUESTO' not in  apportionment.concepto and 'ETIQUETAS FISCALES' not in apportionment.concepto:
                 current_approtionment['total_aplicado_sin_tributos'] += apportionment.valor_prorrateado
-              
-            
-            if apportionment.tipo == 'gasto_inicial':
-                apportionment.tipo = 'Gasto Inicial'
-            else:
-                apportionment.tipo = 'Gasto Parcial'
+
+            apportionment.tipo =  apportionment.tipo.replace('_', ' ').title()
 
         return current_approtionment
         
