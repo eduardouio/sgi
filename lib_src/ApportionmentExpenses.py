@@ -52,7 +52,6 @@ class ApportionmentExpenses(object):
                 current_approtionment['total_aplicado_sin_tributos'] += apportionment.valor_prorrateado
 
             apportionment.tipo =  apportionment.tipo.replace('_', ' ').title()
-
         return current_approtionment
         
 
@@ -181,7 +180,7 @@ class ApportionmentExpenses(object):
         
         if self.current_partial_data['status']['partial_expenses']:
             for expense in self.current_partial_data['expenses']:
-                if (expense.concepto.find('DEPOSITO 201') == -1) and bool(expense.bg_isdrop) is False:
+                if (expense.concepto.find('DEPOSITO 20') == -1) and bool(expense.bg_isdrop) is False:
                     apportionment_expenses.append({
                         'id_gastos_nacionalizacion': expense.id_gastos_nacionalizacion,
                         'tipo':'parcial',

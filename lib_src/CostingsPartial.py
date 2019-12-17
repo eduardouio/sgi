@@ -160,10 +160,16 @@ class CostingsPartial(object):
             + line_item.arancel_especifico_pagar
             + line_item.arancel_advalorem_pagar
             )
-        line_item.indirectos = self.apportionment_expenses['total_aplicado_sin_tributos'] * line_item.fob_percent
+        line_item.indirectos = (
+            self.apportionment_expenses['total_aplicado_sin_tributos'] 
+            * line_item.fob_percent) + (self.apportionment_expenses['apportionment'].almacenaje_aplicado * line_item.fob_percent)
+
+        for item in self.apportionment_expenses['apportionment_detail']:
+            if (item.concepto == 'POLIZA SEGURO') or (item.concepto == 'FLETE'):
+                line_item.indirectos -= (item.valor_prorrateado * line_item.fob_percent)
+            
         line_item.prorrateos_total = (
             line_item.prorrateo_parcial 
-            + line_item.prorrateo_pedido
-            )
+            + line_item.prorrateo_pedido)
 
         return line_item
