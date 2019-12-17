@@ -13,7 +13,6 @@ class PartialCreateView(generics.CreateAPIView):
     serializer_class = PartialSerializer
 
 
-
 class PartialDeleteView(generics.DestroyAPIView):
     queryset = Partial.objects.all()
     serializer_class = PartialSerializer
@@ -27,6 +26,7 @@ class PartialDetailView(generics.RetrieveAPIView):
 class PartialUpdateView(generics.UpdateAPIView):
     queryset = Partial.objects.all()
     serializer_class = PartialSerializer
+       
 
 
 class CompletePartialInfoApiView(generics.GenericAPIView):

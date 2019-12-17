@@ -21,7 +21,7 @@ from api.views.Ledger import (LedgerCreateView, LedgerDeleteView,
                               LedgerExisting, LedgerDetailView,
                               LedgerUpdateView)
 from api.views.Order import (GetCompleteOrderInfoAPIView, OrderCreateView,
-                             OrderDeleteView, OrderDetailView, OrderUpdateView)
+                             OrderDeleteView, OrderDetailView, OrderUpdateView, OrderCloseView)
 from api.views.OrderInvoice import (OrderInvoiceCreateView,
                                     OrderInvoiceDeleteView,
                                     OrderInvoiceDetailView,

@@ -305,6 +305,13 @@ var app = new Vue({
       this.$http.post('{{ data.host }}api/ledger/create/', this.current_ledger, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {
         this.$http.put('{{ data.host }}api/partial/update/' + partial.id_parcial + '/', partial, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {
           this.partial_close = true
+          this.$http.get('{{data.host}}api/order/close/{{data.nro_order}}/',{ headers: { "X-CSRFToken":this.csrftoken}}).then(response=>{
+            console.log('Intenando cerrar pedido')
+            console.dir(response)
+          },response=>{
+            alert('No es posible cerrar el pedido')
+            console.dir(response)
+          });
           window.print()
                   }, response => {
           console.log('Mayor registrado correctamente')

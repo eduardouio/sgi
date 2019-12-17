@@ -13,7 +13,6 @@ from logs.app_log import loggin
 from orders.models.Order import Order
 from partials.models.Partial import Partial
 
-
 #/costos/parcial/[nro-pedido]/[ornidal_parcial]/
 class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
     template_name = 'costings/liquidar_parcial.html'
@@ -63,23 +62,26 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
                         my_partial.nro_pedido, my_partial.ordinal_parcial)
                 )
 
-        apportiments_expenses = ApportionmentExpenses(
-            complete_order_info=complete_order_info,
-            all_partials=all_partials,
-            ordinal_current_partial=ordinal_parcial,
-            ).get_apportionments()
-        
-        producto_costs = CostingsPartial(
-                complete_order_info = complete_order_info, 
-                all_partials = all_partials,
-                apportionment_expenses = apportiments_expenses,
-                ordinal_current_partial = all_partials[(int(ordinal_parcial)-1)]
-                ).get_costs()
-        
         current_parcial = all_partials[(int(ordinal_parcial) - 1)]
+        apportiments_expenses = None
+        producto_costs = None
         have_ice_reliquidated = False
-
         ice_reliquidado = None
+
+        if current_parcial['info_invoice']:
+            apportiments_expenses = ApportionmentExpenses(
+                complete_order_info=complete_order_info,
+                all_partials=all_partials,
+                ordinal_current_partial=ordinal_parcial,
+                ).get_apportionments()
+            
+            producto_costs = CostingsPartial(
+                    complete_order_info = complete_order_info, 
+                    all_partials = all_partials,
+                    apportionment_expenses = apportiments_expenses,
+                    ordinal_current_partial = all_partials[(int(ordinal_parcial)-1)]
+                    ).get_costs()
+        
         
         if current_parcial['partial'].bg_isclosed == 0:
             provision = (producto_costs['ice_reliquidado'] 

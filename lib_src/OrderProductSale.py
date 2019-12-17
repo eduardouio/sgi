@@ -72,7 +72,7 @@ class OrderProductSale(object):
                 'detalle_pedido_factura' : item.detalle_pedido_factura,
                 'nro_cajas' : item.nro_cajas,
                 'producto' : item.product,
-                'cod_contable' : item.cod_contable,
+                'cod_contable' : item.cod_contable_id,
                 'nacionalizado' : 0,
                 'costo_caja' : item.costo_caja,
                 'costo_caja_tct' : item.costo_caja * self.type_change_trim,

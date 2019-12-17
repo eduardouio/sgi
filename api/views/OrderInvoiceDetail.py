@@ -7,6 +7,7 @@ from rest_framework.generics import (
     RetrieveAPIView
 )
 
+
 class OrderInvoiceDetailCreateView(CreateAPIView):
     queryset = OrderInvoiceDetail.objects.all()
     serializer_class = OrderInvoiceDetailSerializer
@@ -26,3 +27,5 @@ class OrderInvoiceDetailDetailView(RetrieveAPIView):
 class OrderInvoiceDetailUpdateView(UpdateAPIView):
     queryset = OrderInvoiceDetail.objects.all()
     serializer_class = OrderInvoiceDetailSerializer
+
+

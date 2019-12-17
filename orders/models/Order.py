@@ -127,9 +127,6 @@ class Order(models.Model):
         if order.nro_refrendo is None or order.nro_refrendo is '':
             order.nro_refrendo = 'Pendiente'
 
-        if order.nro_liquidacion is None or order.nro_liquidacion is '':
-            order.nro_liquidacion = 'Sin Liquidación SENAE'
-
         return order
 
 
