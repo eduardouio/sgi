@@ -44,7 +44,7 @@ var app = new Vue({
       'provisiones_sgi' : parseFloat('{{ data.provisiones_sgi | round(3) }}'),
       'reliquidacion_ice' : parseFloat('{{ data.reliquidacion_ice | round(2)}}'),
       'saldo_producto' : parseFloat('{{ data.saldo_producto | round(3) }}'),
-      'mayor_sap' : 0,
+      'mayor_sap' : parseFloat('{{ data.complete_order_info.order.saldo_mayor }}'),
       'mayor_sgi' : 0,
       'precio_entrega' : parseFloat('{{ data.costings.sums.prorrateos_total | round(3) }}'),
     },
@@ -145,9 +145,12 @@ var app = new Vue({
     console.log('Actualizamos el pedido para retistrar el valor del mayor')
     var my_order = {
       nro_pedido : '{{ data.nro_order }}',
-      saldo_mayor : this.current_ledger.saldo_mayor,
+      flete_aduana : '{{ data.complete_order_info.order.flete_aduana }}',
+      incoterm : '{{ data.complete_order_info.order.incoterm }}',
+      seguro_aduana : '{{ data.complete_order_info.order.seguro_aduana }}',
+      saldo_mayor : this.current_ledger.mayor_sap,
     }
-    this.$http.put('{{ data_host }}api/order/update/{{ data.nro_order }}/', my_order, { 
+    this.$http.put('{{ data.host }}api/order/update/{{ data.nro_order }}/', my_order, { 
       headers : {"X-CSRFToken":this.csrftoken}}).then(response=>{
         console.log('saldo de mayor actualizado')
         console.dir(response)
