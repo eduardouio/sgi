@@ -83,6 +83,7 @@ class OrderProductSale(object):
                 for nat in p:
                     if (nat.detalle_pedido_factura_id == status['detalle_pedido_factura']):
                         status['nacionalizado'] += nat.nro_cajas
+            
             sale_status.append(status)
         
         return sale_status
