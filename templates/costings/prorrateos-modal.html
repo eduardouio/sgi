@@ -59,7 +59,6 @@
         <table class="table table-bordered table-condensed">
         <thead>
         <tr>
-        <th>#</th>
         <th>Concepto</th>
         <th>Tipo</th>
         <th>Provicion</th>
@@ -69,24 +68,31 @@
         </thead>
         <tbody>
         {% for apportionment in data.apportioments.apportionment_detail %}
+        {% if apportionment.tipo == 'Gasto Inicial' %}
           <tr>
-          <td class="text-center">{{ loop.index }}</td>
           <td>{{ apportionment.concepto }}</td>
-          <td>{{ apportionment.tipo }}</td>
-          <td class="text-right">{{ apportionment.valor_provisionado }}</td>
-          {% if apportionment.tipo == 'Gasto Parcial' %}
+          <td class="text-center">{{ apportionment.tipo }}</td>
+          <td class="text-right">{{ apportionment.valor_provisionado | round(2)}}</td>
+          <td class="text-right">{{ '%0.2f' % (data.apportioments.apportionment.fob_parcial_razon_inicial * 100) | float  }} %</td>
+          <td class="text-right text-success">{{ '%0.2f' % apportionment.valor_prorrateado | float }}</td>
+          </tr>
+        {% endif %}
+        {% endfor %}
+        {% for apportionment in data.apportioments.apportionment_detail %}
+        {% if apportionment.tipo == 'Parcial' %}
+          <tr>
+          <td>{{ apportionment.concepto }}</td>
+          <td class="text-center">{{ apportionment.tipo }}</td>
+          <td class="text-right">{{ apportionment.valor_provisionado | round(2)}}</td>
             <td class="text-right">100.000 %</td>
-          {% else %}
-            <td class="text-right">{{ '%0.2f' % (data.apportioments.apportionment.fob_parcial_razon_inicial * 100) | float  }} %</td>
-          {% endif %}
           <td class="text-right">{{ '%0.2f' % apportionment.valor_prorrateado | float }}</td>
           </tr>
+          {% endif %}
         {% endfor %}
         <tr>
         <th>
           <th class="text-right" colspan="2">Sumas:</th>
           <th class="text-right">$ {{ '%0.2f' % data.apportioments.total_provisionado | float }}</th>
-          <th class="text-right">--</th>
           <th class="text-right text-primary">$ {{ '%0.2f' % data.apportioments.total_aplicado | float }}</th>
         </th>
         </tr>
