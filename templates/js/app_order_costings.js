@@ -78,7 +78,15 @@ var app = new Vue({
         legder_value += k.legder
     })
     console.log('sumamos la reliquidacion del ice')
-    console.log('pendiente')
+    if( this.complete_order_info.order.bg_isclosed ){
+      console.log('Restar el valor de la reliquidacion del ice')
+    }
+
+    console.log('Restamos las cargas de los productos')
+    if(this.liquidated_order){
+      legder_value -= parseFloat(this.complete_order_info.ledger.precio_entrega)
+      legder_value -= parseFloat(this.complete_order_info.ledger.saldo_producto)
+    }
     this.diff_ledgers = Math.abs((this.current_ledger.mayor_sap - legder_value).toFixed(3))
     return this.current_ledger.mayor_sgi = legder_value.toFixed(3)
   },
@@ -166,7 +174,6 @@ var app = new Vue({
     this.liquidated_partial = true
     this.complete_order_info.order.bg_isclosed = 1 
     this.complete_order_info.order.notas_cierre += this.comentarios 
-    console.dir(this.complete_order_info)
     this.$http.post('{{ data.host }}api/ledger/create/', this.current_ledger, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {
       console.log('Mayor Registrado correctamente')
       this.$http.put('{{ data.host }}api/order/update/{{data.complete_order_info.order}}/', this.complete_order_info.order, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {                     

@@ -24,7 +24,7 @@
         <td style="width:10%" class="bg-warning text-right">Precion Entrega:</td> <td class="text-right">${ current_ledger.precio_entrega | money }</td>
         <td style="width:10%" class="bg-warning text-right">Costo Producto:</td> <td class="text-right">${ current_ledger.costo_producto | money }</td>
         <td style="width:10%" class="bg-light text-right">Provisiones SGI:</td> <td class="text-right">${ current_ledger.provisiones_sgi | money }</td>
-        <td style="width:10%" class="bg-light text-right">Provisiones SAP.:</td> <td class="text-right">${ ( current_ledger.mayor_sap - current_ledger.costo_producto-current_ledger.precio_entrega) | money }</td>
+        <td style="width:10%" class="bg-light text-right text-primary">Mayor Liquidado.:</td> <td class="text-right text-primary" v-if="liquidated_order">$ ${ complete_order_info.ledger.mayor_sap | money }</td>
         </tr>
     </table>    
     </div>
@@ -136,16 +136,6 @@
 </div>
 </div>
 </div>
-<br>
-<div class="row animate flash delay-1s" v-if="liquidated_order == true">
-    <div class="col-1"></div>
-    <div class="col-10 text-center">
-    <h1><i class="fa fa-check text-success"></i></h1>
-    <h3>Pedido Liquidado Y Cerrado 🐼 </h3>
-    <p>
-    </div>
-    <div class="col-1"></div>
-</div>
 <div class="row animate" v-if="show_form_liquidated" v-bind:class="{'fadeInDown' : show_form_liquidated}">
     <div class="col-12 bg-light border border-primary">
     <div class="input-group mb-3">
@@ -159,6 +149,7 @@
 <br>
 <div class="row">
 <div class="col-12 text-right">
+    <strong class="text-danger" v-if="liquidated_order == true" style="margin-right:1rem"><i class="fas fa-exclamation-triangle"></i> LIQUIDADO Y CERRADO</strong>
     <button class="btn btn-sm btn-outline-dark" @click="show_costings=false"><i class="fa fa-arrow-left"></i> Volver a Gastos</button>
     <button v-if="show_form_liquidated == false && liquidated_order == false"   class="btn btn-sm btn-outline-primary" @click="show_form_liquidated = true"><i class="fa fa-check"></i> Liquidar Pedido</button>
     <button v-if="show_form_liquidated == true" class="btn btn-sm btn-outline-danger" @click="show_form_liquidated = false"><i class="fa fa-ban"></i> Cancelar</button>

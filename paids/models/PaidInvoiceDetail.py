@@ -15,6 +15,7 @@ class PaidInvoiceDetail(models.Model):
     bg_isnotprovisioned = models.IntegerField(default=0)
     bg_mayor = models.SmallIntegerField(default=0)
     id_user = models.SmallIntegerField(default=0)
+    comentarios = models.TextField(blank=True, null=True)
     date_create = models.DateTimeField(blank=True, null=True, default=timezone.now)
     last_update = models.DateTimeField(blank=True, null=True)
     history = HistoricalRecords()
@@ -39,7 +40,6 @@ class PaidInvoiceDetail(models.Model):
 
         return paids_detail
     
-
     @classmethod
     def get_by_paid_invoice(self, id_paid_invoice):        
         details = self.objects.filter(id_documento_pago = id_paid_invoice)

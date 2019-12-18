@@ -18,4 +18,5 @@ urlpatterns = [
     path('importaciones/', include('importations.urls', namespace='importaciones_urls')),
     path('productos/', include('products.urls', namespace='productos_urls')),
     path('archivos/', include('filemanager.urls', namespace='filemanager_urls')),
+    path('auditoria/', include('audit.urls', namespace='audit_urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

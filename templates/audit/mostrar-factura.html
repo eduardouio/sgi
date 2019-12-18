@@ -1,0 +1,106 @@
+{% extends 'base/base.html' %}
+{% block title_content %}
+<div class="row border">
+   <div class="col-4">
+      <i class="fa fa-cog"></i>
+      Auditoría Revisión de Facturas 
+   </div>
+   <div class="col-8 text-right">
+   INTERNATIONAL RUM & SPIRITS DISTRIBUTORS UNIPESSOAL LTD
+   </div>
+</div>
+{% endblock title_content %}
+{% block content %}
+<div class="container">
+   <div class="row">
+      <div class="col-12">
+         <table class="table table-bordered table-condensed">
+            <tbody>
+               <tr>
+                  <td style="width:100px;" class="text-right bg-light">ID:</td>
+                  <td></td>
+                  <td style="width:100px;" class="text-right bg-light">Factura:</td>
+                  <td></td>
+                  <td style="width:100px;" class="text-right bg-light">Ruc:</td>
+                  <td></td>
+                  <td style="width:100px;" class="text-right bg-light">Fecha:</td>
+                  <td></td>
+                  <td style="width:100px;" class="text-right bg-light">Valor:</td>
+                  <td></td>
+               </tr>
+               <tr>
+                  <td style="width:100px;" class="text-right bg-light">Comentarios:</td>
+                  <td colspan="7"></td>
+                  <td style="width:100px;" class="text-right bg-light">Usuario:</td>
+                  <td></td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+   </div>
+   <div class="row">
+    <div class="col-6">
+            <h6 class="text-success"><span class="fa fa-check"></span> <small>&nbsp;&nbsp; Factura Completa</small><small> | &nbsp;&nbsp; Aprobada</small></h6>
+    </div> <div class="col-md-2"><h6 class="text-primary"><small>Val Factura: $</small> <span> 165,00</span></h6></div> <div class="col-md-2"><h6 class="text-success"><small>Val Justificado: </small> <span> 165.00 </span></h6></div> <div class="col-md-2"><h6 class="text-defult"><small>Val Pendiente: $</small> <span> 0.00</span></h6></div></div>
+   <div class="row">
+   <table class="table table-bordered table-striped table-hover table-condensed">
+   <tr>
+   <th>#</th>
+   <th>Detalle</th>
+   <th>Pedido</th>
+   <th>Parcial</th>
+   <th>F Inicio</th>
+   <th>F Fin</th>
+   <th>Provisi&oacute;n</th>
+   <th>Justificaci&oacute;n</th>
+   <th>Ajuste</th>
+   <th>Saldo</th>
+   </tr>
+   <tr>
+   <td>1</td>
+   <td>GASTOS LOCALES</td>
+   <td class="text-center">119/19</td>
+   <td class="text-center">0</td>
+   <td class="text-right">2019/07/01</td>
+   <td class="text-right">2019/07/01</td>
+   <td class="text-right">145.42</td>
+   <td class="text-right">145.42</td>
+   <td class="text-right">0</td>
+   <td class="text-right">0</td>
+   </tr>
+   <tr>
+   <td>1</td>
+   <td>FLETE</td>
+   <td class="text-center">119/19</td>
+   <td class="text-center">0</td>
+   <td class="text-right">2019/07/01</td>
+   <td class="text-right">2019/07/01</td>
+   <td class="text-right">145.42</td>
+   <td class="text-right">145.42</td>
+   <td class="text-right">0</td>
+   <td class="text-right">0</td>
+   </tr>
+   <tr class="bg-info text-white">
+   <th colspan="6">TOTALES</th>
+   <th class="text-right">145.42</th>
+   <th class="text-right">145.42</th>
+   <th class="text-right">0</th>
+   <th class="text-right">0</th>
+   </tr>
+   <tr class=""></tr>
+   </table>
+   </div>
+   <div class="row">
+   <div class="col-1">
+   Comentarios:
+   </div>
+   <div class="col-7">
+   <textarea cols="90" rows="1"></textarea>
+   </div>
+   <div class="col-4 text-right">
+        <a href="" class="btn btn-outline-danger"><i class="fas fa-ban"></i> Rechazar Documento</a>
+        <a href="" class="btn btn-outline-success"> <i class="fas fa-check-circle"></i>  Aprobar Documento</a>
+   </div>
+   </div>
+</div>
+{% endblock content %}

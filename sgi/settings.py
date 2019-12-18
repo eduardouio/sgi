@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'products',
     'warenhouse',
     'importations',
+    'audit',
 ]
 
 MIDDLEWARE = [
@@ -117,7 +118,7 @@ WSGI_APPLICATION = 'sgi.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'imnacAppTEST',
+        'NAME': 'sgi_base',
         'USER' : 'appCordovez',
         'PASSWORD' : '\DBGfW<7;vBa5(LB',
         'HOST': '179.49.60.158',

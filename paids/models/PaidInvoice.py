@@ -6,7 +6,6 @@ from simple_history.models import HistoricalRecords
 from logs import loggin
 from suppliers.models import Supplier
 
-
 class PaidInvoice(models.Model):
     id_documento_pago = models.AutoField(primary_key=True)
     identificacion_proveedor = models.ForeignKey(Supplier, models.PROTECT, db_column='identificacion_proveedor')
@@ -16,6 +15,8 @@ class PaidInvoice(models.Model):
     saldo = models.DecimalField(max_digits=20, decimal_places=13)
     comentarios = models.CharField(max_length=250)
     bg_closed = models.IntegerField(default=0)
+    bg_audit = models.IntegerField(default=0)
+    audit_date = models.DateTimeField(blank=True, null=True)
     tipo = models.CharField(max_length=8)
     id_user = models.SmallIntegerField(default=0)
     date_create = models.DateTimeField(blank=True, null=True, default=timezone.now)
