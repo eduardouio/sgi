@@ -170,7 +170,6 @@ class CostingsOrder(object):
             + line_item.arancel_advalorem_pagar
             + line_item.gastos_origen_tasa_trimestral
             )
-  
         line_item.prorrateo_pedido += (
             self.cmp_order_info['init_expenses'] - 
             self.cmp_order_info['etiquetas_fiscales']
@@ -179,8 +178,13 @@ class CostingsOrder(object):
         line_item.fob_tasa_trimestral = (
             line_item.costo_caja 
             * line_item.nro_cajas
-            * self.cmp_order_info['order_invoice']['order_invoice'].tipo_cambio
-            )
+            * self.cmp_order_info['order_invoice']['order_invoice'].tipo_cambio)
+        line_item.indirectos = 0
+        for item in self.cmp_order_info['expenses']:
+            if (item.concepto != 'POLIZA SEGURO') and (item.concepto != 'FLETE'):
+                line_item.indirectos += (item.valor_provisionado * line_item.fob_percent)
+        
+        line_item.indirectos -= self.cmp_order_info['etiquetas_fiscales']
+
         line_item.prorrateos_total = line_item.prorrateo_pedido
-        line_item.indirectos = line_item.prorrateo_pedido
         return line_item

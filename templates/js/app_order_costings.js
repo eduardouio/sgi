@@ -3,7 +3,6 @@
  * 
  * Eduardo Villota (2019) <eduardouio7@gmail.com>
  */
-
 var app = new Vue({
   el: '#app',
   delimiters: ['${', '}'],
@@ -125,7 +124,8 @@ var app = new Vue({
       }            
       this.$http.put('{{ data.host }}api/paid-invoice-detail/update/' + paid.paid.id_detalle_documento_pago + '/', 
             paid.paid, {headers: {"X-CSRFToken":this.csrftoken }} ).then(response => {
-              console.log('')
+            console.log('pago actualizado')
+            console.dir(response)
           this.updateLedger()
         }, response => {
           alert('Se produjo un error, por favor recargue la página');
