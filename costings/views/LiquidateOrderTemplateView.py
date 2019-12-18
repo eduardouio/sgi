@@ -22,9 +22,14 @@ class LiquidateOrderTemplateView(LoginRequiredMixin, TemplateView):
         context = self.get_context_data(*args, **kwargs)        
         cmp_order_inf = CompleteOrderInfo().get_data(nro_order=nro_order)
         costs_order = CostingsOrder(
-            complete_order_info = cmp_order_inf
-        )
+            complete_order_info = cmp_order_inf)
         costs = costs_order.get_costs()
+        ice_reliquidado = {
+            'expense' : 'ICE ADVALOREM RELIQUIDADO',
+            'provision' : float(costs['ice_reliquidado']),
+            'invoiced_value' : 0,
+            'legder' : 0,
+        }
         context['data']  = {
             'empresa' : settings.EMPRESA,
             'title_page' : 'Liquidación Pedido {} Consumo'.format(nro_order),
@@ -32,6 +37,7 @@ class LiquidateOrderTemplateView(LoginRequiredMixin, TemplateView):
             'complete_order_info' : cmp_order_inf,
             'costings' : costs,
             'request' : request,
+            'ice_reliquidado' : ice_reliquidado,
             'host' : get_host(request)
         }
         context['data'].update(self.__check_status_values(

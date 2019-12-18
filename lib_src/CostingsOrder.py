@@ -132,22 +132,30 @@ class CostingsOrder(object):
         line_item.base_advalorem_reliquidado = (
             self.rates['base_ice_advalorem'] * (line_item.capacidad_ml / 1000 )
             )
-        
+        ice_reliquidado = 0
         if line_item.ex_aduana_unitario > line_item.base_advalorem_reliquidado:
-            line_item.ice_advalorem_reliquidado = (
-                (line_item.ex_aduana_unitario - line_item.base_advalorem_reliquidado)
-                * self.rates['porcentaje_ice_advalorem']
-            ) * line_item.unidades
-            line_item.total_ice = (line_item.ice_advalorem_pagado 
-                                    + line_item.ice_especifico)
-            line_item.ice_advalorem_reliquidado = (line_item.ice_advalorem_reliquidado -
-                                 line_item.ice_advalorem_pagado)
+            if self.rates['base_etiquetas'] == 0:
+                line_item.ice_advalorem_reliquidado = 0
+            else:    
+                line_item.ice_advalorem_reliquidado = (
+                    (line_item.ex_aduana_unitario - line_item.base_advalorem_reliquidado)
+                    * self.rates['porcentaje_ice_advalorem']
+                ) * line_item.unidades
+
+                ice_reliquidado = (line_item.ice_advalorem_reliquidado 
+                                            - line_item.ice_advalorem_pagado)    
+
+            line_item.total_ice = (line_item.ice_advalorem_pagado  
+                                    + line_item.ice_especifico 
+                                    + ice_reliquidado)
+            line_item.ice_advalorem_reliquidado = (line_item.ice_advalorem_reliquidado 
+                                            - line_item.ice_advalorem_pagado)
         else:
             line_item.total_ice = (line_item.ice_advalorem_pagado 
                                     + line_item.ice_especifico)
             line_item.ice_advalorem_reliquidado = 0
 
-        self.ice_reliquidado += line_item.ice_advalorem_reliquidado
+        self.ice_reliquidado += ice_reliquidado
         line_item.ice_advalorem_diferencia = 0
         line_item.gastos_origen_tasa_trimestral = 0
         line_item.gastos_origen_tasa_trimestral = (

@@ -29,7 +29,7 @@ var app = new Vue({
     diff_ledgers : 0,
     ice_reliquidado : {
       expense : 'ICE ADVALOREM RELIQUIDADO',
-      provision : "parseFloat(' data.ice_reliquidado.provision }})",
+      provision : parseFloat('{{ data.ice_reliquidado.provision }}'),
       invoiced_value : 0,
       legder : 0,
     },
@@ -66,7 +66,6 @@ var app = new Vue({
           alert('Se produjo un error, por favor recargue la página');
         });
   },
-
   updateLedger: function(){
       console.log('actualizando mayor')
       if (typeof(this.complete_order_info.expenses) != 'object'){                
@@ -176,13 +175,15 @@ var app = new Vue({
         this.order_close = true
         this.show_form_liquidated = false
         window.print()
-                }, response => {
-        alert(response);
+      }, response => {
+        console.log('Error en la solicitud')
+        console.dir(response)
+        alert('No es posible conectarse al servidor');
       });
     }, response => {
+      console.dir(response)
       alert('Se produjo un error, por favor recargue la página');
     });
-    
     },
   },
   mounted() {
@@ -201,6 +202,5 @@ filters : {
   },
   int_val : function(number){
     return parseInt(number)
-  }
-}
+  }}
 })

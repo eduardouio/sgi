@@ -107,6 +107,16 @@
                   <td class="text-right">   ${ complete_order_info.order.gasto_origen | money } </td>
                   <td class="text-right">   ${ 0 | money }</td>
                </tr>
+               <tr @click="showOriginExpense()">
+                  <td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td>
+                  <td>
+                     <small class="text-success"><i class="fa fa-check-circle"></i></small>
+                     ICE RELIQUIDADO
+                  </td>
+                  <td class="text-right">   ${ complete_order_info.order.gasto_origen | money } </td>
+                  <td class="text-right">   ${ complete_order_info.order.gasto_origen | money } </td>
+                  <td class="text-right">   ${ 0 | money }</td>
+               </tr>
                <tr @click="showTaxes()" v-if="complete_order_info['order'].regimen === '10'">
                   <td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td>
                   <td>
@@ -451,7 +461,6 @@
                      </div>
                   </div>
                </div>
-
             </div>
          <div  v-if="show_taxes">
             <div class="text-tittle"> DESCRIPCIÓN IMPUESTOS</div>

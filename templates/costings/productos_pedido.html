@@ -32,14 +32,9 @@
 <br>
 <div class="row">    
     <div class="col-6 text-secondary">
-    
     </div>
     <div class="col-6 text-danger text-right">
-    {% if data.complete_order_info.order.bg_isclosed %}
-        ICE RELIQUIDADO: <strong>$ {{ "%.2f" | format(data.complete_order_info.ledger.reliquidacion_ice) if  data.complete_order_info.ledger.reliquidacion_ice else '0.00'}} </strong>
-    {% else %}
-        ICE RELIQUIDADO: <strong>$ {{ "%.2f" | format(data.costings.ice_reliquidado) if  data.costings.ice_reliquidado else '0.00'}} </strong>
-    {% endif %}
+        ICE RELIQUIDADO: <strong>$ ${ ice_reliquidado.provision | money }</strong>
     </div>
 </div>
 <div class="row">
