@@ -27,7 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*',]
 
-
 # Application definition
 INSTALLED_APPS = [
     'grappelli',
@@ -114,11 +113,11 @@ WSGI_APPLICATION = 'sgi.wsgi.application'
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
 
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'cordovezAppTEST',
+        #'NAME': 'sgi_base',
         'USER' : 'appCordovez',
         'PASSWORD' : '\DBGfW<7;vBa5(LB',
         'HOST': '179.49.60.158',
