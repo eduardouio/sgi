@@ -4,7 +4,6 @@
 __pycache__/
 local_settings.py
 */__pycache__/
-*/migrations/
 .env
 db.sqlite3
 sgi/settings.py

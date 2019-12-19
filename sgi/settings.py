@@ -118,7 +118,7 @@ WSGI_APPLICATION = 'sgi.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sgi_base',
+        'NAME': 'cordovezAppTEST',
         'USER' : 'appCordovez',
         'PASSWORD' : '\DBGfW<7;vBa5(LB',
         'HOST': '179.49.60.158',
@@ -210,7 +210,7 @@ DATOS_EMPRESAS = {
     },
 }
 
-EMPRESA = DATOS_EMPRESAS['imnac']
+EMPRESA = DATOS_EMPRESAS['cordovez']
 
 GRAPPELLI_ADMIN_TITLE = "A&R CORDOVEZ S.A."
 #GRAPPELLI_ADMIN_TITLE = "IMNAC CIA LTDA"
