@@ -106,10 +106,8 @@ class OrderInvoiceDetail(models.Model):
 
         if order_items.count() == 0:
             loggin(
-                'w', 
-                'La factura de producto {id_order_invoice} no tiene items registrados'
-                .format(id_order_invoice=id_order_invoice)
-                )
+                'w', 'La factura {id_order_invoice} no tiene items'
+                .format(id_order_invoice=id_order_invoice))
 
             return []
 

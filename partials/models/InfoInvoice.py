@@ -24,6 +24,7 @@ class InfoInvoice(models.Model):
     nro_refrendo = models.CharField(max_length=22, blank=True, null=True)
     tipo_cambio = models.DecimalField(max_digits=20, decimal_places=13, default=1)    
     comentarios = models.CharField(max_length=250, blank=True, null=True)
+    comentarios_audit = models.TextField(blank=True, null=True)
     bg_isclosed = models.IntegerField(default=0)
     gasto_origen = models.DecimalField(max_digits=20, decimal_places=13)
     bg_gst_origen_por_factura = models.IntegerField()

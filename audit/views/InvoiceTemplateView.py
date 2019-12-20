@@ -11,11 +11,13 @@ class InvoiceTemplateView(LoginRequiredMixin,TemplateView):
 
     def get(self, request, id_invoice, *args, **kwargs):
         context = self.get_context_data(**kwargs)
+        complete_paid_invoice = CompletePaidInvoice()
+        invoice = complete_paid_invoice.get(id_invoice)
         context['data'] = {
             'empresa' : settings.EMPRESA,
-            'title_page' : 'Factura {}'.format(id_invoice),
+            'title_page' : 'Factura {} -> {}'.format(invoice['invoice'].nro_factura, id_invoice),
             'host' : get_host(request),
             'request' : request,
-            'invoice' : CompletePaidInvoice.get(id_invoice)
+            'invoice' : invoice
         }  
         return self.render_to_response(context)
