@@ -209,5 +209,6 @@ filters : {
   },
   int_val : function(number){
     return parseInt(number)
-  }}
+  }
+}
 })

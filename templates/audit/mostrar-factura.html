@@ -75,9 +75,9 @@
    <td class="text-center">{{ loop.index }}</td>
    <td>{{ item.expense.concepto }}</td>
    <td @click="loadOrder('{{ item.order.order.nro_pedido }}')"><span data-toggle="modal" data-target=".modal-pedido-parcial" class="text-primary">{{ item.order.order.nro_pedido }} | {{item.order.order_invoice.identificacion_proveedor}}</span></td>
-   <td class="text-center">{% if item.partial %}<span @click="loadPartial(item.partial.partial.id_parcial)" data-toggle="modal" data-target=".bd-example-modal-lg" class="text-primary">P {{item.partial.partial.ordinal_parcial}}</span>{% else %}P1{% endif %}</td>
-   <td>{{ item.expense.fecha }}</td>
-   <td>{{ item.expense.fecha_fin }}</td>
+   <td class="text-center">{% if item.partial %}<span @click="loadPartial({{item.partial.partial.id_parcial}})" data-toggle="modal" data-target=".modal-pedido-parcial" class="text-primary">P {{item.partial.partial.ordinal_parcial}}</span>{% else %}P1{% endif %}</td>
+   <td class="text-center">{{ item.expense.fecha }}</td>
+   <td class="text-center"> {% if item.expense.fecha_fin %} {{ item.expense.fecha_fin }} {% else %}--{% endif %} </td>
    <td class="text-right">{{ item.expense.valor_provisionado }}</td>
    <td class="text-right">{{ item.detail.valor }}</td>
    <td class="text-right">{{ item.expense.valor_ajuste }}</td>

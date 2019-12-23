@@ -10,6 +10,10 @@
 	color:  teal;
 	font-size: 13px;
 }
+
+.bordered_padding {
+	padding: 3px;
+}
 tr:hover{
 	background-color: #ff9;
 }

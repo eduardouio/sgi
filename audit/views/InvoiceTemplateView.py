@@ -15,9 +15,9 @@ class InvoiceTemplateView(LoginRequiredMixin,TemplateView):
         invoice = complete_paid_invoice.get(id_invoice)
         context['data'] = {
             'empresa' : settings.EMPRESA,
-            'title_page' : 'Factura {} -> {}'.format(invoice['invoice'].nro_factura, id_invoice),
+            'title_page' : 'Factura {} [{}]'.format(invoice['invoice'].nro_factura, id_invoice),
             'host' : get_host(request),
             'request' : request,
-            'invoice' : invoice
+            'invoice' : invoice,
         }  
         return self.render_to_response(context)

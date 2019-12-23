@@ -1,5 +1,6 @@
-<div class="modal fade modal-pedido-parcial" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
- <div class="modal-dialog modal-lg" role="document">
+<div class="modal fade modal-pedido-parcial" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h6 class="modal-title" id="exampleModalLongTitle">${title_modal}</h6>
@@ -8,200 +9,254 @@
         </button>
       </div>
       <div class="modal-body">
-      <div v-if="show_order === false && show_partial === false" >
-            <div class="row">
+        <div v-if="show_order === false && show_partial === false">
+          <div class="row">
             <div class="col-3"></div>
             <div class="col-6 text-center">
-               <h4 class="text-secondary">Cargado Aplicaci&oacute;n...</h4>
-               <img src="/static/img/Loading_icon.gif" style="width:50%;height:auto">
-               <h5 class="text-secondary">{{ data.empresa.nombre }}</h5>
+              <h4 class="text-secondary">Cargado Aplicaci&oacute;n...</h4>
+              <img src="/static/img/Loading_icon.gif" style="width:50%;height:auto">
+              <h5 class="text-secondary">{{ data.empresa.nombre }}</h5>
             </div>
             <div class="col-3"></div>
-         </div>
-      </div>
-      </div>
-        <div id="pedido" v-if="show_order">
-        <div class="tab-content bordered" id="v-pills-tabContent">
-      <div class="tab-pane fade active show" id="v-pills-products" role="tabpanel" aria-labelledby="v-pills-products-tab">
-      <div class="row">
-<div class="col-sm-4">
-     <span>Proveedor</span> <span class="text-primary bordered">${ current_order.order.proveedor }</span>
-  </div>  
-  <div class="col-sm-2"> 
-     <span>Puerto</span> <span class="text-primary bordered">${ current_order.order.ciudad_origen }</span> 
-  </div>
-  <div class="col-sm-2">
-    <span>Pais Origen</span> <span class="text-primary bordered">${ current_order.order.pais_origen }</span>
-  </div>      
-  <div class="col-sm-2">
-  <span>Incoterm</span> <span class="text-primary bordered">${ current_order.order.incoterm }</span>
-  
-  </div>
-  <div class="col-sm-2">
-  <span>F. Arribo:</span> <span class="text-primary bordered">${ current_order.order.fecha_arribo }</span>
-
-  </div>
-   </div>
-   <div class="row">
-   <div class="col-sm-2">
-     <span>Estado</span> 
-     <span class="text-danger bordered" v-if="current_order.order.bg_isclosed"> <i class="fas fa-lock"></i> Cerrado</span>
-     <span class="text-success bordered" v-else=""> <i class="fas fa-lock"></i> Abierto</span>
-  </div>  
-  <div class="col-sm-2"> 
-     <span>F Liq.</span> <span class="text-primary bordered">${ current_order.order.fecha_liquidacion }</span> 
-  </div>
-  <div class="col-sm-2">
-    <span>DAI</span> <span class="text-primary bordered">${ current_order.order.nro_refrendo }</span>
-  </div>      
-  <div class="col-sm-2">
-  <span>Régimen</span> <span class="text-primary bordered">${ current_order.order.regimen }</span>
-  
-  </div>
-  <div class="col-sm-2">
-  <span>F Llegada B:</span> <span class="text-primary bordered">${ current_order.order.fecha_llegada_cliente }</span>
-  </div>
-   </div>
-   <div class="row">
-     <div class="col-12">
-      <span>Observaciones Pedidos:</span> <span class="text-primary bordered">${ current_order.order.comentarios }</span>
-     </div>
-   </div>
-   <br>
-<div class="row">
-    <div class="col-12">
-        <table class="table table-bordered table-condensed table-striped">            
-            <thead>
-            <tr class="bg-secondary text-white">
-            <th>Cod Contable</th>
-            <th>Producto</th>
-            <th>Capacidad</th>
-            <th>C/C</th>
-            <th>Grado A.</th>
-            <th>Cajas</th>
-            <th>Unidades</th>
-            <th>C Caja</th>
-            <th>C Unidad</th>
-            <th>Total</th>
-            </tr>
-            </thead>
-            <tbody>
-            
-                <tr>
-                    <td class="text-cneter">02012130020103080750</td>
-                    <td>WHISKY CHIVAS REGAL EXTRA</td>
-                    <td class="text-right">750.00 ml</td>
-                    <td class="text-right">6.00</td>
-                    <td class="text-right">40.0</td>
-                    <td class="text-right">975</td>
-                    <td class="text-right">5850</td>
-                    <td class="text-right">95.00</td>
-                    <td class="text-right">0.097</td>
-                    <td class="text-right">92625.000</td>
-                </tr>
-            
-            <tr class="bg-primary text-white">
-            <th colspan="5">Totales</th>
-            <th class="text-right">975</th>
-            <th class="text-right">5850</th>
-            <th>--</th>
-            <th>--</th>
-            <th class="text-right">92625.000</th>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-
-      </div>
-      
-      <div class="tab-pane fade" id="v-pills-partials" role="tabpanel" aria-labelledby="v-pills-partials-tab">
-      <div role="tabpanel" class="tab-pane active" id="facturas-informativas">
-   <div class="row">
-      <div class="col-sm-12">
-         <table class="table table-bordered">
-            <thead>
-               <tr class="bg-secondary text-white">
-                  <th>#</th>
-                  <th>Nro Factura</th>
-                  <th>Liquidacion</th>
-                  <th>Refrendo</th>
-                  <th>Salida A</th>
-                  <th>Fecha Ll. Bodega</th>
-                  <th>Cajas</th>
-                  <th>FOB</th>
-                  <th>Estado</th>
-                  <th>Costos</th>
-               </tr>
-            </thead>
-            <tbody>
-            
-                <tr style="background-color:#ddd">
-                  <td class="text-center"> 
-                  <a href="/admin/partials/partial/335/change/" target="_blank">
-                    1 
-                  </a>
-                  </td>
-                    <td class="text-center">
-                     
-                     2017133
-                     
-                    </td>
-                    <td class="text-right">
-                    
-                        40605460
-                        <span class="text-success"><i class="fas fa-check-circle" aria-hidden="true"></i></span>
-                    
-                    </td>
-                    <td class="text-center">
-                    
-                     055-2019-10-00753036
-                     
-                    </td>
-                    <td class="text-right">
-                    
-                     --
-                    
-                    </td>
-                    <td class="text-right">
-                    
-                        2019-10-25
-                     
-                    </td>
-                    <td td="" class="text-right">975.000</td>
-                    <td td="" class="text-right">92625.000</td>
-                     <td td="" class="text-right">
-                    
-                        <span class="text-dark">Liquidado <i class="fas fa-lock"></i></span>
-                                        
-                    </td>
-                    <td class="text-center"> <a href="/costos/parcial/025-19/1/" class="btn btn-outline-dark btn-sm"><i class="fas fa-cart-arrow-down"></i></a></td>
-                </tr>
-            
-            <tr class="bg-primary text-white text-center">
-            <th colspan="10"> 1 PARCIALE(S) EN TOTAL</th>
-            </tr>
-            </tbody>
-         </table>
-      </div>
-   </div>
-</div>
-     </div>
-     
-      <!--
-      <div class="tab-pane fade" id="v-pills-sale" role="tabpanel" aria-labelledby="v-pills-sale-tab">
-      Saldos del Pedido
-      </div>
-      -->
-      <br>
-    </div>
+          </div>
         </div>
-        <div id="parcial" v-if="show_partial">
+      <div id="pedido" v-if="show_order">
+        <div class="row">
+          <div class="col-sm-3">
+            <span>Proveedor</span> <span class="text-primary bordered bordered_padding">${ current_order.order.proveedor
+              }</span>
+          </div>
+          <div class="col-sm-2">
+            <span>Puerto</span> <span class="text-primary bordered bordered_padding">${
+              current_order.order.ciudad_origen }</span>
+          </div>
+          <div class="col-sm-3">
+            <span>Pais Origen</span> <span class="text-primary bordered bordered_padding">${
+              current_order.order.pais_origen }</span>
+          </div>
+          <div class="col-sm-2">
+            <span>Incoterm</span> <span class="text-primary bordered bordered_padding">${ current_order.order.incoterm
+              }</span>
+
+          </div>
+          <div class="col-sm-2">
+            <span>F. Arribo:</span> <span class="text-primary bordered bordered_padding">${
+              current_order.order.fecha_arribo }</span>
+
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-2">
+            <span>Estado</span>
+            <span class="text-danger bordered bordered_padding" v-if="current_order.order.bg_isclosed"> <i
+                class="fas fa-lock bordered bordered_padding"></i> Cerrado</span>
+            <span class="text-success bordered bordered_padding" v-else=""> <i class="fas fa-unlock"></i> Abierto</span>
+          </div>
+          <div class="col-sm-2">
+            <span>F Liq.</span> <span class="text-primary bordered bordered_padding">${
+              current_order.order.fecha_liquidacion }</span>
+          </div>
+          <div class="col-sm-4">
+            <span>DAI</span> <span class="te-primary bordered bordered_padding">${ current_order.order.nro_refrendo
+              }</span>
+          </div>
+          <div class="col-sm-2">
+            <span>Régimen</span> <span class="text-primary bordered bordered_padding">${ current_order.order.regimen
+              }</span>
+
+          </div>
+          <div class="col-sm-2">
+            <span>F Llegada B:</span> <span class="text-primary bordered bordered_padding">${
+              current_order.order.fecha_llegada_cliente }</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <span>Observaciones Pedidos:</span> <span class="text-primary bordered bordered_padding">${
+              current_order.order.comentarios }</span>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-3">
+            <span>Factura Exterior:</span> <span class="text-primary bordered bordered_padding">${
+              current_order.order_invoice.order_invoice.id_factura_proveedor }</span>
+          </div>
+          <div class="col-2">
+            <span>Moneda:</span> <span
+              class="text-primary bordered bordered_padding">${current_order.order_invoice.order_invoice.moneda }</span>
+          </div>
+          <div class="col-2">
+            <span>Valor:</span> <span
+              class="text-primary bordered bordered_padding">${current_order.order_invoice.order_invoice.valor | money
+              }</span>
+          </div>
+          <div class="col-1">
+            <span>TCT:</span> <span
+              class="text-primary bordered bordered_padding">${current_order.order_invoice.order_invoice.tipo_cambio |
+              money}</span>
+          </div>
+          <div class="col-2">
+            <span>Total SAP:</span> <span
+              class="text-primary bordered bordered_padding">${(current_order.order_invoice.order_invoice.valor *
+              current_order.order_invoice.order_invoice.tipo_cambio ) | money }</span>
+          </div>
+          <div class="col-2">
+            <span>Estado:</span>
+            <span class="text-success bordered bordered_padding" v-if="current_order.order_invoice.complete"> <i
+                class="fas fa-check-circle"></i> Completa</span>
+            <span class="text-danger bordered bordered_padding" v-else=""> <i class="fas fa-ban"></i> Incompleta</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <table class="table table-bordered bordered_padding table-condensed table-striped">
+              <thead>
+                <tr class="bg-secondary text-white">
+                  <th>Cod Contable</th>
+                  <th>Producto</th>
+                  <th>Capacidad</th>
+                  <th>C/C</th>
+                  <th>Grado A.</th>
+                  <th>Cajas</th>
+                  <th>Unidades</th>
+                  <th>C Caja</th>
+                  <th>C Unidad</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in current_order.order_invoice.order_invoice_detail">
+                  <td class="text-cneter">${item.cod_contable}</td>
+                  <td>${ item.product}</td>
+                  <td class="text-right">${ item.capacidad_ml | int } ml</td>
+                  <td class="text-right">${ item.cantidad_x_caja | int }</td>
+                  <td class="text-right">${ item.grado_alcoholico | money }</td>
+                  <td class="text-right">${ item.nro_cajas | int }</td>
+                  <td class="text-right">${ item.unidades | int}</td>
+                  <td class="text-right">${ item.costo_caja | money }</td>
+                  <td class="text-right">${ (item.costo_caja /item.cantidad_x_caja) | money }</td>
+                  <td class="text-right">${ (item.costo_caja * item.nro_cajas)| money }</td>
+                </tr>
+
+                <tr class="bg-primary text-white">
+                  <th colspan="5">Totales</th>
+                  <th class="text-right">${ current_order.order_invoice.order_invoice_detail_sums.boxes | int }</th>
+                  <th class="text-right">${ current_order.order_invoice.order_invoice_detail_sums.bottles | int }</th>
+                  <th>--</th>
+                  <th>--</th>
+                  <th class="text-right">${ current_order.order_invoice.order_invoice_detail_sums.value | money }</th>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div id="parcial" v-if="show_partial">
+        <div class="row">
+          <div class="col-sm-2">
+            <span>Estado</span> 
+                <span class="bordered bordered_padding" v-if="current_partial.partial.bg_isclosed"> <i class="fas fa-lock"></i> Cerrado</span>
+                <span class="text-success bordered bordered_padding" v-else=""> <i class="fas fa-unlock"></i> Abierto</span>
+          </div>
+          <div class="col-sm-4">
+            <span>Proveedor</span> <span class="text-primary bordered bordered_padding">ALMACENERA DEL AGRO ALMAGRO
+              S.A.</span>
+          </div>
+          <div class="col-sm-3">
+            <span>Fecha Liq.</span> <span
+              class="text-primary bordered bordered_padding">${ current_partial.partial.fecha_liquidacion }</span>
+          </div>
+          <div class="col-sm-3">
+            <span> DAI:</span> <span class="text-primary bordered bordered_padding">${ current_partial.info_invoice.info_invoice.nro_refrendo }</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-3">
+            <span>T/C:</span> <span class="text-primary bordered bordered_padding">${ current_partial.partial.tipo_cambio }</span>
+          </div>
+          <div class="col-3">
+            <span>Fecha Llegada:</span> <span class="text-primary bordered bordered_padding">${ current_partial.partial.fecha_llegada_cliente }</span>
+          </div>
+              <div class="col-6">
+                <span>Observaciones:</span> <span class="text-primary bordered bordered_padding">${ current_partial.info_invoice.info_invoice.comentarios }</span>
+              </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-2">
+            <span>Factura I:</span> <span class="text-primary bordered bordered_padding">${current_partial.info_invoice.info_invoice.nro_factura_informativa}</span>
+          </div>
+          <div class="col-2">
+            <span>Moneda:</span> <span
+              class="text-primary bordered bordered_padding">${current_partial.info_invoice.info_invoice.moneda }</span>
+          </div>
+          <div class="col-2">
+            <span>Valor:</span> <span
+              class="text-primary bordered bordered_padding">${current_partial.info_invoice.info_invoice_detail_sums.value | money}</span>
+          </div>
+          <div class="col-2">
+            <span>TCT:</span> <span
+              class="text-primary bordered bordered_padding">${current_partial.info_invoice.info_invoice.tipo_cambio | money}</span>
+          </div>
+          <div class="col-2">
+            <span>Total SAP:</span> <span
+              class="text-primary bordered bordered_padding">${ current_partial.info_invoice.info_invoice_detail_sums.value_tct | money }</span>
+          </div>
+          <div class="col-2">
+            <span>Estado:</span>
+            <span class="text-success bordered bordered_padding" v-if="current_partial.info_invoice.complete"> <i
+                class="fas fa-check-circle"></i> Completa</span>
+            <span class="text-danger bordered bordered_padding" v-else=""> <i class="fas fa-ban"></i> Incompleta</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <table class="table table-bordered bordered_padding table-condensed table-striped">
+              <thead>
+                <tr class="bg-secondary text-white">
+                  <th>Cod Contable</th>
+                  <th>Producto</th>
+                  <th>Capacidad</th>
+                  <th>C/C</th>
+                  <th>Grado A.</th>
+                  <th>Cajas</th>
+                  <th>Unidades</th>
+                  <th>C Caja</th>
+                  <th>C Unidad</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in current_partial.info_invoice.info_invoice_detail">
+                  <td class="text-cneter">${item.cod_contable}</td>
+                  <td>${ item.product}</td>
+                  <td class="text-right">${ item.capacidad_ml | int } ml</td>
+                  <td class="text-right">${ (item.unidades / item.nro_cajas ) | int }</td>
+                  <td class="text-right">${ item.grado_alcoholico | money }</td>
+                  <td class="text-right">${ item.nro_cajas | int }</td>
+                  <td class="text-right">${ item.unidades | int}</td>
+                  <td class="text-right">${ item.costo_caja | money }</td>
+                  <td class="text-right">${ (item.costo_unidad) | money }</td>
+                  <td class="text-right">${ (item.costo_caja * item.nro_cajas)| money }</td>
+                </tr>
+                <tr class="bg-primary text-white">
+                  <th colspan="5">Totales</th>
+                  <th class="text-right">${ current_partial.info_invoice.info_invoice_detail_sums.boxes | int }</th>
+                  <th class="text-right">${ current_partial.info_invoice.info_invoice_detail_sums.bottles | int }</th>
+                  <th>--</th>
+                  <th>--</th>
+                  <th class="text-right">${ current_partial.info_invoice.info_invoice_detail_sums.value | money }</th>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="closeModal()"> <i
+            class="fas fa-window-close"></i> Cerrar</button>
       </div>
-  </div>
+    </div>
   </div>
 </div>

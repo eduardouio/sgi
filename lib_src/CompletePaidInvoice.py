@@ -54,6 +54,11 @@ class CompletePaidInvoice(object):
         for item in details:
             expense = item.id_gastos_nacionalizacion
             self.jutified_value += item.valor
+            
+            if expense.tipo == 'NACIONALIZACION':
+                partial = Partial.get_by_id(expense.id_parcial)
+                expense.nro_pedido = partial.nro_pedido
+
             my_details.append({
                 'expense' : expense,
                 'detail' : item,
