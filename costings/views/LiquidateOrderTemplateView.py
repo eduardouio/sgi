@@ -1,11 +1,13 @@
+from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView
-from logs.app_log import loggin
-from orders.models.Order import Order
+
 from lib_src import CompleteOrderInfo, CostingsOrder
 from lib_src.sgi_utlils import get_host
-from django.conf import settings
+from logs.app_log import loggin
+from orders.models.Order import Order
+
 
 # /costos/pedio/{nro_pedido}
 class LiquidateOrderTemplateView(LoginRequiredMixin, TemplateView):

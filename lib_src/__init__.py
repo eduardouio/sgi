@@ -21,3 +21,4 @@ from lib_src.serializers import (ApportionmentDetailSerializer,
 from lib_src.TypeChangeOrder import get_by_order, get_by_parcial
 from lib_src.sgi_utlils import get_host
 from lib_src.CompletePaidInvoice import CompletePaidInvoice
+from lib_src.ExpensesReportSale import ExpensesReportSale

@@ -25,6 +25,9 @@ class OrderInvoice(models.Model):
     date_create = models.DateTimeField(blank=True, null=True)
     last_update = models.DateTimeField(blank=True, null=True)
     bg_isclosed = models.IntegerField(blank=True, null=True,default=0)
+    bg_audit = models.IntegerField(default=0)
+    bg_isrejected = models.IntegerField(default=0)
+    audit_date = models.DateTimeField(blank=True, null=True)
     gasto_origen = models.DecimalField(max_digits=20, decimal_places=13,default=0)
     gasto_origen_tasa_trimestral = models.DecimalField(max_digits=20, decimal_places=13, blank=True, null=True)
     factura_proveedor = models.FileField(blank=True,null=True, upload_to='factura_proveedor/'),

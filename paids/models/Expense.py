@@ -70,6 +70,7 @@ class Expense(models.Model):
         
         if expenses.count() is 0:
             loggin('w', 'No existen gastos para el pedido {}'.format(nro_order))
+            return []
         
         return expenses
     

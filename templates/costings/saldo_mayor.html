@@ -1,0 +1,120 @@
+{% extends 'base/base.html' %}
+{% block title_content %}
+<div class="row border">
+   <div class="col-4">
+      <i class="fa fa-cog"></i>
+      consulta Saldo Mayor Pedido {{ data.nro_order }}
+   </div>
+   <div class="col-8 text-right">
+      <span> Producto:</span>
+      <span>| Provisiones</span>
+      <span>| Facturas: </span>
+      <span>| Saldos: </span>
+      <span></span>
+   </div>
+</div>
+{% endblock title_content %}
+{% block content %}
+<div class="container">
+    <div class="row">
+      <table class="table table-bordered table-striped">
+      <tr>
+      <th colspan="7" class="text-center">SALDO FOB  PROCUTO TCT</th>
+      </tr>
+      <tr>
+      <th>Producto</th>
+      <th>Nro Cajas</th>
+      <th>C Caja TCT</th>
+      <th>FOB TCT</th>
+      <th>NAC TCT</th>
+      <th>SAL TCT</th>
+      <th>% SALDO</th>
+      </tr>
+      {% for item in data.saldo_producto.status_general %}
+         <tr>
+         <td>{{ item.producto }}</td>
+         <td class="text-right">{{ item.nro_cajas }}</td>
+         <td class="text-right">{{ item.costo_caja_tct | round(2) }}</td>
+         <td class="text-right">{{ item.fob_tct | round(2)}}</td>
+         <td class="text-right">{{ item.nacionalizado_tct | round(2)}}</td>
+         <td class="text-right">{{ (item.fob_tct - item.nacionalizado_tct) | round(2)}}</td>
+         <td class="text-right">{{  ((item.nacionalizado * item.costo_caja_tct) / item.fob_tct) | round(2)}}</td>
+         </tr>   
+      {% endfor %}
+      <tr>
+      <th colspan="3" class="text-right">SUMAS</th>
+      <th class="text-right">{{ data.saldo_producto.sums.fob_tct | round(2) }}</th>
+      <th class="text-right">{{ data.saldo_producto.sums.nacionalizado_tct | round(2) }}</th>
+      <th class="text-right text-danger">{{ data.saldo_producto.sums.saldo_tct | round(2) }}</th>
+      <th class="text-right">{{ data.saldo_producto.sums.porcentaje | round(2) }}</th>
+      </tr>
+      </table>
+      <br>
+      <table class="table table-bordered table-striped">
+         <tr>
+         <th colspan="4">GASTOS INICIALES</th>
+         </tr>
+         <tr>
+            <th>Concepto</th>
+            <th>Provision</th>
+            <th>Utilizado</th>
+            <th>Saldo</th>
+         </tr>
+         {% for item in data.saldo_gastos.init_expenses.expenses %}
+         <tr>
+         <td> {{ item.gasto }} </td>
+         <td class="text-right">{{ item.valor_provisionado | round(2) }}</td>
+         <td class="text-right">{{ item.valor_utilizado | round(2) }}</td>
+         <td class="text-right">{{ item.valor_saldo | round(2) }}</td>
+         </tr>
+         {% endfor %}
+         <tr>
+         <th class="text-right">SUMAS</th>
+         <th class="text-right">{{ data.saldo_gastos.init_expenses.valor_provisionado | round(2) }}</th>
+         <th class="text-right">{{ data.saldo_gastos.init_expenses.valor_utilizado | round(2) }}</th>
+         <th class="text-right text-danger">{{ data.saldo_gastos.init_expenses.valor_saldo | round(2) }}</th>
+         </tr>
+      </table>
+      <br>
+      <table class="table table-bordered table-striped">
+      <tr>
+         <th colspan="8">ULTIMO PRORRATEO</th>
+      </tr>
+         <tr>
+         <th>ID</th>
+         <th>Alm Prox P</th>
+         <th>Fob Rz Saldo</th>
+         <th>Fob Prox P</th>
+         <th>Fob Saldo</th>
+         <th>Gst O Prox P</th>
+         <th>% P</th>
+         <th>Fob P</th>
+         </tr>
+         <tr>
+         <td class="text-right">{{ data.saldo_gastos.ultimo_prorrateo  }}</td>
+         <td class="text-right text-danger">{{ data.saldo_gastos.ultimo_prorrateo.almacenaje_proximo_parcial  | round(2)}}</td>
+         <td class="text-right">{{ data.saldo_gastos.ultimo_prorrateo.fob_parcial_razon_saldo  | round(2)}}</td>
+         <td class="text-right">{{ data.saldo_gastos.ultimo_prorrateo.fob_proximo_parcial  | round(2)}}</td>
+         <td class="text-right">{{ data.saldo_gastos.ultimo_prorrateo.fob_saldo  | round(2)}}</td>
+         <td class="text-right">{{ data.saldo_gastos.ultimo_prorrateo.gastos_origen_proximo_parcial  | round(2)}}</td>
+         <td class="text-right">{{ data.saldo_gastos.ultimo_prorrateo.porcentaje_parcial  | round(2)}}</td>
+         <td class="text-right">{{ data.saldo_gastos.ultimo_prorrateo.fob_parcial  | round(2)}}</td>
+         </tr>
+      </table>
+
+   <br>
+    {{ data.saldo_gastos.ultimo_parcial }}
+   <table class="table table-bordered table-striped">
+   <tr>
+      <th colspan="2"> Ultimo Parcial</th>
+   </tr>
+   {% for item in data.saldo_gastos.gastos_parcial %}
+   <tr>
+   <td>{{item.concepto}}</td>
+   <td class="text-danger">{{ item.valor_provisionado }}</td>
+   </tr>
+   {% endfor %}
+   </table>
+    </div>
+</div>
+{% endblock content %}
