@@ -101,7 +101,7 @@ class Partial(models.Model):
 
     @classmethod
     def get_by_order(self, nro_order):
-        parcials =  self.objects.filter(nro_pedido= nro_order)
+        parcials =  self.objects.filter(nro_pedido= nro_order).order_by('id_parcial')
         if parcials.count() == 0:
             loggin('w', 'No existe informacion para el id del parcial indicado')
             return self.objects.none()

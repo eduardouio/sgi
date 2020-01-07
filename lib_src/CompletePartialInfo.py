@@ -311,7 +311,8 @@ class CompletePartialInfo(object):
     def get_ledger(self):
         ''' Recupera el mayor del Parcial solo si esta cerrado'''
         if self.partial_isclosed == False:
-            loggin('w', 'Parcial abierto no tiene mayor')
+            loggin('w', 'Parcial abierto no tiene mayor parcial {}'
+            .format(self.id_partial))
             return None
         ledger =  Ledger.get_by_parcial(self.id_partial)
         
@@ -320,7 +321,7 @@ class CompletePartialInfo(object):
             ledger_serializer = LedgerSerializer(ledger)
             loggin('i', 'Retornando mayor del parcial')
             return ledger_serializer.data
-        
+
         return ledger
     
 

@@ -124,18 +124,20 @@ DATOS_EMPRESAS = {
         'url_logo' : 'http://179.49.60.158:8888/img/logo_cordovez.jpg',
         'url_app' : 'http://179.49.60.158:5001/',
         'url_app_local' : 'http://192.168.0.198:5001/',
+        'admin_title' : 'A&R Cordovez S.A.',
         'database' : 'cordovezApp',
     },
-    'cordovezTest' : {
-        'nombre' : 'AGENCIAS Y REPRESENTACIONES CORDOVEZ S.A. TEST',
-        'empresa' : 'cordovez',
-        'ruc' : '1790023516001',
-        'direccion': 'AV. 10 DE AGOSTO N.57-186 Y LEONARDO MURIALDO ',
+    'test' : {
+        'nombre' : 'AMBIENTE DE PRUEBAS TEST',
+        'empresa' : 'test',
+        'ruc' : '1722919725001',
+        'direccion': 'AV COLO 1133 Y AMAZONAS EDF ARISTA OF 500 ',
         'telefono': '022405911',
         'email' : 'sgi@cordovez.com.ec',
-        'url_logo' : 'http://179.49.60.158:8888/img/logo_cordovez.jpg',
-        'url_app' : 'http://179.49.60.158:5001/',
-        'url_app_local' : 'http://192.168.0.198:5001/',
+        'url_logo' : 'http://179.49.60.158:8888/img/logo_test.png',
+        'url_app' : 'http://localhost:8000/',
+        'url_app_local' : 'http://localhost:8000/',
+        'admin_title' : 'TEST',
         'database' : 'cordovezAppTEST',
     },
     'imnac' : {
@@ -148,6 +150,7 @@ DATOS_EMPRESAS = {
         'url_logo' : 'http://179.49.60.158:8888/img/logo_imnac.jpg',
         'url_app' : 'http://179.49.60.158:5002/',
         'url_app_local' : 'http://192.168.0.198:5002/',
+        'admin_title' : 'IMNAC CIA LTDA',
         'database' : 'imnacApp',
     },
     'vid' : {
@@ -160,16 +163,15 @@ DATOS_EMPRESAS = {
         'url_logo' : 'http://179.49.60.158:8888/img/logo_vid.jpg',
         'url_app' : 'http://179.49.60.158:5003/',
         'url_app_local' : 'http://192.168.0.198:5003/',
+        'admin_title' : 'VIDINTERNACIONAL S.A.',
         'database' : 'vidApp',
 
     },
 }
 
 #Seleccionamos la empresa
-EMPRESA = DATOS_EMPRESAS['cordovez']
-GRAPPELLI_ADMIN_TITLE = "A&R CORDOVEZ S.A."
-#GRAPPELLI_ADMIN_TITLE = "IMNAC CIA LTDA"
-#GRAPPELLI_ADMIN_TITLE = "VID INTERNACIONAL"
+EMPRESA = DATOS_EMPRESAS['test']
+GRAPPELLI_ADMIN_TITLE = EMPRESA['admin_title']
 
 DATABASES = {
     'default': {
@@ -181,7 +183,7 @@ DATABASES = {
         'PORT' : '3306',
     }
 }
-    
+
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 

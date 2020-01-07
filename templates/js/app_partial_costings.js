@@ -98,14 +98,16 @@ var app = new Vue({
         })
       })
       console.log('Sumamos reliquidaciones del ICE agreagadas a los mayores')
-      var cop = this.current_ordinal_parcial
       $.each(this.all_partials, function(k,v){
-        if (cop-1 > k){
           console.log('Sumamos los ices reliquidados de los anteriores parciales')
-          if (v.ledger.bg_mayor){
-            legder_value += parseFloat(v.ledger.reliquidacion_ice)
+          if (v.ledger){
+            if (v.ledger.bg_mayor){
+              legder_value += parseFloat(v.ledger.reliquidacion_ice)
+            }
+          }else{
+            console.error('Parcial no sumado en mayor')
+            console.dir(v)
           }
-        }
       })
       console.log('suma reliquidacion ice parcial actual si esta cerrado')
       if (this.current_partial.partial.bg_isclosed === 1){
@@ -353,20 +355,30 @@ var app = new Vue({
     },
     mounted() {
       this.$http.get('{{ data.host }}api/order/all-data/{{ data.complete_order_info.order.nro_pedido }}', { params: {}}).then(response => {
+      console.log('inicio de proceso recuperar parcial')
+      console.dir(response)
       this.complete_order_info = response.body 
       var x = 0
+      this.all_partials = []
       response.body.partials.forEach(el => {        
         if (x < parseInt('{{ data.ordinal_partial }}')) {
           this.$http.get('{{ data.host }}api/partial/all-data/' + el.id_parcial + '/',{ params: {}}).then(resp => {
-          this.all_partials.unshift(resp.body)
-          this.selectPartial()          
-          this.updateLedger()
-          })
-          x=x+1
+            console.log('obteniendo informacion completa del parcial orinal nro' + x )
+            console.dir(resp)
+            this.all_partials.unshift(resp.body)
+            this.selectPartial()
+            this.updateLedger()
+            }, err=>{
+              console.log('No se puede obtener informacion del parcial ordinal ' + x)
+              console.dir(err)
+            })
+            x=x+1
       }
-        })        
-    }, response => {
+        })
+    }, error => {
       alert('Ocurrio un error al cargar la aplicacion, por recargue la pagina')
+      console.log('Error al iniciar la aplicaicon')
+      console.dir(error)
     })
   },
   filters : {
