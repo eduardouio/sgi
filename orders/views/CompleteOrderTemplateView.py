@@ -21,6 +21,15 @@ class CompleteOrderTemplateView(LoginRequiredMixin, TemplateView):
         loggin('i', 'Mostrando ficha completa del pedido', request)
         context = self.get_context_data(**kwargs)
         order_info = CompleteOrderInfo().get_data(nro_order, False)
+        if order_info is None:
+            self.template_name = 'errors/404.html'
+            context['data'] = {
+                'empresa' : settings.EMPRESA,
+                'title_page' : 'Pedido No Econtrado',
+                'msg' : 'el pedido que busca no existe',
+            }
+            return self.render_to_response(context)
+        
         data = {
             'empresa' : settings.EMPRESA,
             'title_page' : 'Ficha Pedido {} R {}'
