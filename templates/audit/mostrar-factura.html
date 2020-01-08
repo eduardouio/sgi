@@ -70,6 +70,7 @@
    <th>Justificaci&oacute;n</th>
    <th>Ajuste</th>
    <th>Saldo</th>
+   {% if data.invoice.details %}
    {% for item in data.invoice.details %}
    <tr>
    <td class="text-center">{{ loop.index }}</td>
@@ -84,6 +85,14 @@
    <td class="text-right">{{ item.expense.valor_provisionado - item.detail.valor +  item.expense.valor_ajuste }}</td>
    </tr>
    {% endfor %}
+   {% else %}
+   <tr>
+      <td colspan="10" class="text-danger text-center">
+      <i class="fas fa-exclamation-triangle"></i>
+      ESTE DOCUMENTO NO REGISTRA JUSTIFICACIONES, FAVOR COMUNIQUESE CON EL DEPARTAMENTO DE IMPORTACIONES
+      </td>
+   </tr>
+   {% endif %}
    </table>
    </div>
    <div class="row">

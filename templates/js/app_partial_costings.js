@@ -110,6 +110,7 @@ var app = new Vue({
           }
       })
       console.log('suma reliquidacion ice parcial actual si esta cerrado')
+
       if (this.current_partial.partial.bg_isclosed === 1){
         if(this.current_partial.ledger.bg_mayor){
           legder_value += parseFloat(this.current_partial.ledger.reliquidacion_ice)
@@ -166,9 +167,9 @@ var app = new Vue({
           headers : {"X-CSRFToken":this.csrftoken}}).then(response=>{
               console.log('Salfo del Mayor actualizado')
               console.log(response)
-          },response=>{
+          },err=>{
               console.log('Error actualizando el saldo del mayor')
-              console.dir(response)
+              console.dir(err)
               alert('Hubo un error actualizando el saldo del Mayor')
           })
       },

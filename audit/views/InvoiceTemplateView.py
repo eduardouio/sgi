@@ -13,6 +13,15 @@ class InvoiceTemplateView(LoginRequiredMixin,TemplateView):
         context = self.get_context_data(**kwargs)
         complete_paid_invoice = CompletePaidInvoice()
         invoice = complete_paid_invoice.get(id_invoice)
+        if invoice is None:
+            self.template_name = 'errors/404.html'
+            context['data'] = {
+                'empresa' : settings.EMPRESA,
+                'title_page' : 'Factura no encontrada',
+                'msg' : 'La factura {} no existe'.format(id_invoice),
+            }
+            return self.render_to_response(context)
+
         context['data'] = {
             'empresa' : settings.EMPRESA,
             'title_page' : 'Factura {} [{}]'.format(invoice['invoice'].nro_factura, id_invoice),

@@ -11,6 +11,7 @@ class PaidInvoiceDetail(models.Model):
     id_gastos_nacionalizacion = models.ForeignKey(Expense, models.PROTECT, db_column='id_gastos_nacionalizacion')
     id_documento_pago = models.ForeignKey(PaidInvoice, models.PROTECT, db_column='id_documento_pago')
     valor = models.DecimalField(max_digits=8, decimal_places=2)
+    valor_ajuste = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     bg_closed = models.IntegerField(default=0)
     bg_isnotprovisioned = models.IntegerField(default=0)
     bg_mayor = models.SmallIntegerField(default=0)

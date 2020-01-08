@@ -26,7 +26,7 @@ class CompleteOrderTemplateView(LoginRequiredMixin, TemplateView):
             context['data'] = {
                 'empresa' : settings.EMPRESA,
                 'title_page' : 'Pedido No Econtrado',
-                'msg' : 'el pedido que busca no existe',
+                'msg' : 'el pedido {} no existe'.format(nro_order),
             }
             return self.render_to_response(context)
         
