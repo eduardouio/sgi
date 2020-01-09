@@ -149,7 +149,7 @@ class ApportionmentExpenses(object):
             return warenhousing
         
         for w in self.current_partial_data['expenses']:
-            if w.concepto.find('DEPOSITO 201') == 0:
+            if w.concepto.find('DEPOSITO 20') == 0:
                 warenhousing['almacenaje_parcial'] += float(w.valor_provisionado)                
         
         if self.ordinal_current_partial > 1:
