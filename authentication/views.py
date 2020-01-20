@@ -1,10 +1,12 @@
-from django.views.generic import TemplateView, RedirectView
-from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponseRedirect
-from django.contrib.auth.models import User
-from django.core.exceptions import ObjectDoesNotExist
-from logs.app_log import loggin
 from django.conf import settings
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import Group, User
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponseRedirect
+from django.views.generic import RedirectView, TemplateView
+
+from logs.app_log import loggin
+
 
 class LoginTemplateView(TemplateView):
     template_name = 'base/login-form.html'
@@ -37,6 +39,10 @@ class LoginTemplateView(TemplateView):
         if user_is_valid:
             user = authenticate(request=request, username=data['username'], password=data['password'])
             login(request=request, user=user, backend='django.contrib.auth.backends.ModelBackend')
+            #colocar aqui la redireccion para los otros perfiles
+            if user.groups.filter(name='auditoria').exists():
+                self.success_url = 'auditoria/'
+
             return HttpResponseRedirect(self.success_url)
         
         return HttpResponseRedirect(self.error_url)

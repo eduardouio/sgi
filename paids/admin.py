@@ -21,6 +21,7 @@ class ExpensesAdmin(SimpleHistoryAdmin):
     search_fields = (
     'id_gastos_nacionalizacion',
     'concepto',
+    'id_parcial',
     'tipo',
     'valor_provisionado',
     'fecha',

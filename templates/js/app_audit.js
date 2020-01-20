@@ -43,7 +43,6 @@ var app = new Vue({
                         console.dir(error)
                         alert('Error al interntar comunicarse con el servidor')
                     })
-           
         },
         closeModal : function(){
             console.log('Cerrando modal del pedido')
