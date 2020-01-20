@@ -1,4 +1,6 @@
-import pytest
+from django.test import TestCase
 
-def test_init():
-    assert 1 == 1
+class CompletePaidInfoTestCase(TestCase):
+
+    def test_hello(self):
+        self.assertEqual(1,1)
