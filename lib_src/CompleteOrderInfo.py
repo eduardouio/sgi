@@ -198,6 +198,9 @@ class CompleteOrderInfo(object):
     def get_expenses(self):
         data_expenses = []
         expenses = Expense.get_all_by_order(self.nro_order)
+        
+        if not expenses:
+            return expenses
 
         if expenses.count() == 0:
             return expenses

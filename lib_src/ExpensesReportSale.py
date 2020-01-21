@@ -9,14 +9,17 @@ class ExpensesReportSale(object):
     """
     def __init__(self):
         self.last_partial = None
+        self.nro_order = None
+        self.all_partials = None
     
     def get(self, nro_order):
-        
+        self.nro_order = nro_order
         return {
             'init_expenses' : self.get_init_expenses(nro_order),
             'ultimo_prorrateo': self.get_last_apportionment(nro_order),
             'ultimo_parcial' : self.last_partial,
             'gastos_parcial' : self.get_partial_expenses(),
+            'partial_expenses' : self.get_all_partial_expenses(),
         }
     
     def get_init_expenses(self, nro_order):
@@ -55,6 +58,7 @@ class ExpensesReportSale(object):
     def get_last_apportionment(self, nro_order):
         '''Obtiene los datos del ultimo prorrateo del sistema'''
         complete_order_info = CompleteOrderInfo().get_data(nro_order)
+        self.all_partials = complete_order_info['partials']
 
         if complete_order_info['partials']:
             self.last_partial = complete_order_info['partials'].last()
@@ -73,3 +77,15 @@ class ExpensesReportSale(object):
             return expenses
         
         return []
+
+    def get_all_partial_expenses(self):
+        '''Obtiene todos los gastos de los parciales'''
+        if self.all_partials is None:
+            return []
+
+        partial_expenses  = []
+
+        for p in self.all_partials:
+            partial_expenses.append(Expense.get_by_parcial(p.id_parcial))
+        
+        return partial_expenses

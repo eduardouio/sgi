@@ -6,3 +6,4 @@ from costings.views.LiquidatePartialTemplateView import \
     LiquidatePartialTemplateView
 
 from .LedgerReportView import LedgerReportView
+from .GeneralLedgerTemplateView import GeneralLedgerTemplateView
