@@ -170,7 +170,7 @@ DATOS_EMPRESAS = {
 }
 
 #Seleccionamos la empresa
-EMPRESA = DATOS_EMPRESAS['cordovez']
+EMPRESA = DATOS_EMPRESAS['test']
 GRAPPELLI_ADMIN_TITLE = EMPRESA['admin_title']
 
 DATABASES = {

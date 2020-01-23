@@ -8,16 +8,15 @@ class OrderProductSale(object):
         Retorna los saldos de un pedido, los productos que se encuentren en 
         un parcial no son tomados como saldo
     '''
-    def __init__(self):
-       self.nro_order = None
+    def __init__(self, nro_order):
+       self.nro_order = nro_order
        self.order = None
        self.have_partials = False
        self.type_change_trim = 1
     
-    def get(self, nro_order):
+    def get(self):
         """Obtiene un resumen de los saldos de los prodcutos"""
 
-        self.nro_order = nro_order
         self.order = Order.get_by_order(self.nro_order)
         if self.order is None:
             loggin('i', 'No se puede retorar el saldo')
@@ -57,9 +56,7 @@ class OrderProductSale(object):
     def get_init_sale(self):
         """Obtiene el saldo inicial del producto"""
         init_sale = OrderInvoiceDetail.get_by_order(self.nro_order)
-        if init_sale:
-            return init_sale
-        return None
+        return init_sale if init_sale else None         
     
 
     def get_nationalized(self):
