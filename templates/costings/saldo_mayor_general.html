@@ -1,0 +1,41 @@
+{% extends 'base/base.html' %}
+{% block title_content %}
+<div class="row border">
+   <div class="col-4">
+      <i class="fa fa-cog"></i>
+      Consulta General de Saldo de Mayor {{ data.empresa.nombre }}
+   </div>
+   <div class="col-8 text-right">
+      <span>Contabilidad</span>
+   </div>
+</div>
+{% endblock title_content %}
+{% block content %}
+<div class="container">
+    <div class="row">
+      <table class="table table-bordered table-striped">
+      <tr>
+      <th colspan="7" class="text-center">SALDO FOB  PROCUTO TCT</th>
+      </tr>
+      <tr>
+      <th>Pedido</th>
+      <th>Fob Pendiente</th>
+      <th>Gastos Iniciales</th>
+      <th>Almacenaje Pendiente</th>
+      <th>Go Pendiente</th>
+      <th>Saldo Mayor</th>
+      </tr>
+      {% for item in data.mayor %}
+         <tr>
+         <td class="text-right">{{ item.nro_order }}</td>
+         <td class="text-right">{{ item.sums.fob_tct_saldo }}</td>
+         <td class="text-right">{{ item.por_prorratear_gi  + item.saldo_inicial_lp }}</td>
+         <td class="text-right">{{ item.almacenjae_pendiente }}</td>
+         <td class="text-right">{{ item.gasto_origen_prox_parcial }}</td>
+         <td class="text-right">{{ item.saldo_mayor }}</td>
+         </tr>   
+      {% endfor %}
+      </table>
+    </div>
+</div>
+{% endblock content %}
