@@ -35,6 +35,7 @@ class PaidInvoice(models.Model):
         ordering = ['nro_factura']
         verbose_name_plural = 'Facturas Servicios'
     
+
     @classmethod
     def  get_by_id(self, id_invoice):        
         try:
@@ -44,3 +45,25 @@ class PaidInvoice(models.Model):
             return None
         
         return invoice
+    
+
+    @classmethod
+    def get_autorized_by_audit(self):
+        ''' Obtiene la lista de facturas aprobadas por auditoria'''
+        autorized_invoices = self.objects.filter(bg_audit = 1)
+        return autorized_invoices
+    
+
+    @classmethod
+    def get_deny_by_audit(self):
+        ''' Obtiene la lista de factura no apobadas por audotiria'''
+        deny_invoices = self.objects.filter(bg_audit = 0)
+        return deny_invoices
+    
+
+    def search_invoice(self, query):
+        '''Busca una factura en el sistema
+        ruc_proveedor
+        
+        '''
+        pass

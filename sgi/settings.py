@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'import_export',
     'authentication',
+    'numpy',
     'api',
     'filemanager',
     'costings',
@@ -53,6 +54,7 @@ INSTALLED_APPS = [
     'warenhouse',
     'importations',
     'audit',
+    'reports',
 ]
 
 MIDDLEWARE = [
