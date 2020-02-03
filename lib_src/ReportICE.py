@@ -25,7 +25,7 @@ class ReportICE(object):
         return {
             'almacenera' : self.get_almacenera(),
             'consumo' : self.get_consumo(),
-            'almagro': [],
+            'parciales': self.get_partials(),
         }
 
     
@@ -78,7 +78,7 @@ class ReportICE(object):
             details = [] if details is None else list(details)
             for det in details:
                 products_arrived.append(det)
-                
+
         return products_arrived
 
 

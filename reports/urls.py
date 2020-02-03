@@ -4,5 +4,5 @@ from .views import ICEReportTemplateView
 app_name = 'reports'
 
 urlpatterns = [
-    path('ice/<year>/<month>/', ICEReportTemplateView.as_view(),name='reporte-ice'),
+    path('ice/<int:year>/<int:month>/', ICEReportTemplateView.as_view(),name='reporte-ice'),
 ]
