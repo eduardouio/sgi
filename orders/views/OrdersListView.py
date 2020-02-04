@@ -66,12 +66,11 @@ class OrdersListView(LoginRequiredMixin, TemplateView):
         """
         results = run_query(orders_r10)
         results_almagro = run_query(orders_r70)
-
         for item in results_almagro:
             item['partial'] = Partial.objects.get(pk=item['id_parcial'])
-
         return (results + results_almagro)
         
+
     def search_order(self, query):
         query = query.replace('/','-')
         limit = 10 if (query == '') else 50

@@ -31,7 +31,7 @@
         <td style="width:10%" class="bg-warning text-right">Precion Entrega:</td> <td class="text-right" style="backgroud-color:#ff9;">$ <strong>{{ data.costings.sums.prorrateos_total | round(2)}}</strong></td>
         <td style="width:10%" class="bg-warning text-right">Costo Producto:</td> <td class="text-right" style="backgroud-color:#ff9;">$ <strong>{{ data.costings.sums.fob_tasa_trimestral | round(2)}}</strong></td>
         <td style="width:10%" class="bg-light text-right">Factura Inf:</td> <td class="text-right">{{ data.current_partial.info_invoice.info_invoice.nro_factura_informativa }}</td>
-        <td style="width:10%" class="bg-light text-right">Diferencia Senae:</td> <td class="text-right text-danger">{{ data.current_partial.partial.ice_advalorem - data.current_partial.partial.ice_advalorem_pagado  | round(2)}}</td>
+        <td style="width:10%" class="bg-light text-right">Diferencia Senae:</td> <td class="text-right text-danger">{{ data.current_partial.partial.ice_advalorem_pagado - data.current_partial.partial.ice_advalorem_pagado  | round(2)}}</td>
         </tr>
     </table>    
     </div>
@@ -108,7 +108,7 @@
                 <td class="text-right" nowrap>{{ item.ice_especifico_unitario | round(2)}}</td>
                 <td class="text-right" nowrap>{{ item.ice_advalorem_unitario | round(2)}}</td>
                 <td class="text-right" nowrap>{{ item.ice_especifico | round(2)}}</td>
-                <td class="text-right" nowrap>{{ item.ice_advalorem_reliquidado  | round(2)}}</td>
+                <td class="text-right" nowrap>{{ item.ice_advalorem_pagado  | round(2)}}</td>
                 <td class="text-right" nowrap>{{ item.total_ice  | round(2)}}</td>
                 <td class="text-right" nowrap>{{ item.indirectos  | round(2)}}</td>
                 <td class="text-right" nowrap>{{ item.prorrateos_total  | round(2)}}</td>
