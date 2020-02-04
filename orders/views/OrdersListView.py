@@ -51,10 +51,10 @@ class OrdersListView(LoginRequiredMixin, TemplateView):
             where 
             o.regimen = 10
             AND
-            o.bg_isliquidated = 1 and o.bg_isclosed = 0
+            o.bg_isliquidated = 1 and (o.bg_isclosed = 0 OR o.bg_isclosed IS NULL )
         """
         orders_r70 = """
-            select p.nro_pedido, s.nombre, p.nro_liquidacion, fi.nro_refrendo, 
+           select p.nro_pedido, s.nombre, p.nro_liquidacion, fi.nro_refrendo, 
             p.fecha_liquidacion, o.regimen, p.id_parcial, p.fecha_llegada_cliente 
             from parcial as p
             left join factura_informativa as fi on (fi.id_parcial = p.id_parcial)
@@ -62,7 +62,7 @@ class OrdersListView(LoginRequiredMixin, TemplateView):
             left join pedido_factura as pf on (pf.nro_pedido = o.nro_pedido)
             left join proveedor as s on (s.identificacion_proveedor = pf.identificacion_proveedor)
             where 
-            p.bg_isliquidated and p.bg_isclosed = 0
+            p.bg_isliquidated =1 and (p.bg_isclosed = 0 or p.bg_isclosed IS NULL )
         """
         results = run_query(orders_r10)
         results_almagro = run_query(orders_r70)
