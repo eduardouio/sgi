@@ -85,6 +85,17 @@ class Expense(models.Model):
                 'El parcial {} no se tiene gastos'
                 .format(id_partial)
                 )
-            return None
+            return []
         
         return provisions
+    
+    
+    @classmethod
+    def get_complete_expenses(self, nro_order)->list:
+        '''Lista completa de gastos de un pedido'''
+        expenses = list(self.get_all_by_order(nro_order))
+        partials = Partial.get_by_order(nro_order)
+        for p in partials:
+            expenses.extend(list(self.get_by_parcial(p.id_parcial)))
+
+        return expenses

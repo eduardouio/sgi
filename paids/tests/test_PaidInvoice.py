@@ -1,7 +1,9 @@
+import pdb
 from decimal import Decimal
 
 from django.db import connection
 from django.db.models import QuerySet
+from paids.models import PaidInvoice
 from django.test import TestCase
 
 from logs import loggin
@@ -31,7 +33,7 @@ class PaidInvoiceTEST(TestCase):
 
     
     def test_get_autorizedby_audit(self):
-        '''
+        ''' 
         update documento_pago set bg_audit = 1 where fecha_emision < '2019-12-31'
         '''
         with connection.cursor() as cursor:
@@ -45,7 +47,7 @@ class PaidInvoiceTEST(TestCase):
     
     
     def test_get_deny_by_audit(self):   
-        spected_rows = 186
+        spected_rows = 284
         data = self.paid_invoice.get_deny_by_audit()
         self.assertIsInstance(data, QuerySet)
         self.assertEqual(data.count(), spected_rows)

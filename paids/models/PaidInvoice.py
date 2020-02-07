@@ -1,3 +1,5 @@
+import pdb
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.utils import timezone
@@ -5,6 +7,7 @@ from simple_history.models import HistoricalRecords
 
 from logs import loggin
 from suppliers.models import Supplier
+
 
 class PaidInvoice(models.Model):
     id_documento_pago = models.AutoField(primary_key=True)
@@ -46,7 +49,6 @@ class PaidInvoice(models.Model):
         
         return invoice
     
-
     @classmethod
     def get_autorized_by_audit(self):
         ''' Obtiene la lista de facturas aprobadas por auditoria'''
@@ -60,10 +62,3 @@ class PaidInvoice(models.Model):
         deny_invoices = self.objects.filter(bg_audit = 0)
         return deny_invoices
     
-
-    def search_invoice(self, query):
-        '''Busca una factura en el sistema
-        ruc_proveedor
-        
-        '''
-        pass
