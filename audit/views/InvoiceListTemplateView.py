@@ -22,8 +22,10 @@ class InvoiceListTemplateView(LoginRequiredMixin, TemplateView):
     
 
     def get_local(self):
+        ''' lista de facturas locales'''
         return True
 
 
     def get_international(self):
+        
         pass

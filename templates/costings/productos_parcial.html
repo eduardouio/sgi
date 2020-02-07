@@ -106,7 +106,7 @@
                 <td class="text-right" nowrap>{{ item.capacidad_ml | round(0)}}</td>
                 <td class="text-right" nowrap>{{ item.grado_alcoholico | round(2)}}</td>
                 <td class="text-right" nowrap>{{ item.ice_especifico_unitario | round(2)}}</td>
-                <td class="text-right" nowrap>{{ item.ice_advalorem_unitario | round(2)}}</td>
+                <td class="text-right" nowrap>{{ (item.ice_advalorem_pagado / item.unidades) | round(2)}}</td>
                 <td class="text-right" nowrap>{{ item.ice_especifico | round(2)}}</td>
                 <td class="text-right" nowrap>{{ item.ice_advalorem_pagado  | round(2)}}</td>
                 <td class="text-right" nowrap>{{ item.total_ice  | round(2)}}</td>

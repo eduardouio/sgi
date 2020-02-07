@@ -34,10 +34,10 @@ class GetCompleteOrderInfoAPIView(APIView):
         order = CompleteOrderInfo().get_data(nro_order=nro_order,serialized=True)
         return Response(order)
 
-#/order/close/<nro_pedido>
+#/order/close/<nro_pedido>/
 class OrderCloseView(APIView):
     """Compueba saldos de un pedido y lo cierra"""
-    def get(self, requets, nro_pedido):
+    def get(self, request, nro_pedido):
         order_sale = OrderProductSale()
         products_sale = order_sale.get(nro_pedido)
         if products_sale:

@@ -91,7 +91,12 @@ class OrderInvoiceDetail(models.Model):
     class Meta:
         managed = True
         db_table = 'detalle_pedido_factura'
-        unique_together = (('id_pedido_factura', 'cod_contable', 'grado_alcoholico', 'date_create'),)
+        unique_together = (
+            ('id_pedido_factura', 
+            'cod_contable', 
+            'grado_alcoholico', 
+            'date_create'),
+            )
         ordering = ['id_pedido_factura','detalle_pedido_factura']
         verbose_name_plural = 'Detalle Facturas Pedido'
 
