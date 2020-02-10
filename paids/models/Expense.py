@@ -52,26 +52,21 @@ class Expense(models.Model):
     @classmethod
     def get_by_id_expense(self, id_expense):
         try:
-            expense = self.objects.get(pk=id_expense)
+            return self.objects.get(pk=id_expense)
         except ObjectDoesNotExist:
             loggin('w', 'La provision {id_expense} no existe'.format(id_expense=id_expense))
             return None
-        
-        return expense
 
 
     @classmethod
     def get_all_by_order(self, nro_order):
         ''' Obtiene los gastos inciales de un pedido '''
         expenses =  self.objects.filter(nro_pedido = nro_order)
-        order = Order.get_by_order(nro_order)
-        
+        order = Order.get_by_order(nro_order)        
         loggin('i', 'Obteniendo todos los gastos iniciales Pedido Consumo {}'.format(nro_order))
-        
         if expenses.count() is 0:
             loggin('w', 'No existen gastos para el pedido {}'.format(nro_order))
             return []
-        
         return expenses
     
 

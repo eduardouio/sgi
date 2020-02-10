@@ -1,3 +1,5 @@
+from django.core.exceptions import ObjectDoesNotExist
+import pdb
 from django.db import models
 from django.utils import timezone
 from simple_history.models import HistoricalRecords
@@ -30,17 +32,30 @@ class PaidInvoiceDetail(models.Model):
         unique_together = (('id_documento_pago', 'id_gastos_nacionalizacion'),)
         verbose_name_plural = 'Detalle Documento Pago'
 
+    
+    @classmethod
+    def get_by_id(self, id_paid_detail):
+        try:
+            return self.objects.get(pk=id_paid_detail)
+        except ObjectDoesNotExist:
+            loggin('i', 'El detalle de la factura no existe')
+            return None
+
 
     @classmethod
-    def get_by_expense(self, expense):
-        paids_detail = self.objects.filter(id_gastos_nacionalizacion = expense.id_gastos_nacionalizacion)
-        
-        if paids_detail.count() == 0:
-            loggin('w', 'No existe justificaciones para este gasto {expense_concept} {id_expense}'.format(expense_concept = expense.concepto, id_expense=expense.id_gastos_nacionalizacion))
-            return []
+    def get_by_expense(self, expense, id_expense = 0):
+        '''Justificaciones de una provision'''
+        if expense:
+            paids_detail = self.objects.filter(id_gastos_nacionalizacion = expense.id_gastos_nacionalizacion)
+            if paids_detail.count() == 0:
+                loggin('w', 'No existe justificaciones para este gasto {expense_concept} {id_expense}'.format(expense_concept = expense.concepto, id_expense=expense.id_gastos_nacionalizacion))
+                return []
+            return paids_detail
+        else:
+            paids_detail = self.objects.filter(id_gastos_nacionalizacion = id_expense)
+            return list(paids_detail)
 
-        return paids_detail
-    
+
     @classmethod
     def get_by_paid_invoice(self, id_paid_invoice):        
         details = self.objects.filter(id_documento_pago = id_paid_invoice)
@@ -49,3 +64,34 @@ class PaidInvoiceDetail(models.Model):
             return None
         
         return details
+    
+    
+    @classmethod
+    def get_invoices_from_expense(self, id_expense):
+        '''Lista de facturas para un gasto de nacionalizacion'''
+        detail_invoices = self.get_by_expense(False, id_expense)
+        invoices = []
+        for item in detail_invoices:
+            invoices.extend([item.id_documento_pago])
+
+        return invoices
+
+        
+    @classmethod
+    def get_from_order(self, nro_order):
+        '''Listado de facturas de un pedido'''
+        order_expenses = Expense.get_complete_expenses(nro_order)
+        invoices = []
+        index_invoices = set()
+        for expense in order_expenses:
+            detail = self.get_by_expense(False, expense.id_gastos_nacionalizacion)
+            for det in detail:
+                index_invoices.add(det.id_documento_pago_id) 
+                invoices.extend([det.id_documento_pago])
+        
+        unique_invoices = []
+        for invoice in invoices:
+            if invoice.id_documento_pago in index_invoices:
+                unique_invoices.extend([invoice])
+                index_invoices.discard(invoice.id_documento_pago)
+        return unique_invoices
