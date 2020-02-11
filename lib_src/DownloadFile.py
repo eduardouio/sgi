@@ -7,7 +7,6 @@ import PyPDF2
 import requests
 
 from logs.app_log import loggin
-from lib_src.empresas_agentes import agentes, empresas
 
 
 class DownloadFile(object):

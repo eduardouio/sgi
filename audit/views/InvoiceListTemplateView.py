@@ -17,15 +17,16 @@ class InvoiceListTemplateView(LoginRequiredMixin, TemplateView):
         context['data'] = {
             'empresa' : settings.EMPRESA,
             'title_page' : 'Facturas Pendientes',
+            'local_invoices': self.get_local(),
+            'product_invoices' : self.get_international()
         }
         return self.render_to_response(context)
     
 
     def get_local(self):
         ''' lista de facturas locales'''
-        return True
+        return []
 
 
     def get_international(self):
-        
-        pass
+        return []
