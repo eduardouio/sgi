@@ -52,7 +52,6 @@ class PaidInvoiceDetailTEST(TestCase):
             {'id_gastos_nacionalizacion' : 9272, 'result' : [PaidInvoice.get_by_id(4590)]},
             {'id_gastos_nacionalizacion' : 10415, 'result' : [PaidInvoice.get_by_id(5379)]},
         ]
-
         for item in spected_data:
             result = PaidInvoiceDetail.get_invoices_from_expense(item['id_gastos_nacionalizacion'])
             self.assertIsInstance(result, list)
@@ -61,18 +60,16 @@ class PaidInvoiceDetailTEST(TestCase):
 
     def test_get_from_order(self):
         spected_data = [
-            2294,2056,2195,2223,1668,1669,1700,2606,2222,2865,
-            2059,2194,2607,2750,2494,2650,3039,3098,3368,3503,
-            3296,3347,3659,3544,3554,3542,3538,3661,3532,3544,
-            3554,3541,3627,3950,4156,4365,4926,5213,5379,5360,
-            5372,5302,5384,5424,5668,6066,6579,6598,6917,6626,
-            7215,
-        ]
-        data = PaidInvoiceDetail.get_from_order('256-18')
-        self.assertIsInstance(data, list)
-        self.assertEqual(spected_data.__len__() , data.__len__())
+            1668, 1699, 1700, 2056, 2059, 2060, 2147, 2194, 2195, 2222, 2223, 
+            2294, 2494, 2606, 2607, 2650, 2750, 2865, 3039, 3098, 3296, 3347, 
+            3368, 3503, 3532, 3538, 3541, 3542, 3544, 3554, 3627, 3659, 3661,
+            3950, 4156, 4365, 4926, 5213, 5302, 5360, 5372, 5379, 5384, 5424,
+            5668, 6066, 6579, 6598, 6626, 6917, 7215 ]
 
-        #comprobar las facturas devueltas contra las esperadas
+        data = PaidInvoiceDetail.get_from_order('256-18')
+        keys = [id_ddp.id_documento_pago for id_ddp in data]
+        self.assertListEqual(spected_data, keys)
+
         for invoice in data:
             loggin('t', invoice)
             self.assertTrue(invoice.id_documento_pago in spected_data)

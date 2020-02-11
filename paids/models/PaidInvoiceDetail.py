@@ -89,9 +89,12 @@ class PaidInvoiceDetail(models.Model):
                 index_invoices.add(det.id_documento_pago_id) 
                 invoices.extend([det.id_documento_pago])
         
+        index_invoices = sorted(index_invoices)
         unique_invoices = []
-        for invoice in invoices:
-            if invoice.id_documento_pago in index_invoices:
-                unique_invoices.extend([invoice])
-                index_invoices.discard(invoice.id_documento_pago)
+        for idx in index_invoices:
+            for invoice in invoices:
+                if invoice.id_documento_pago == idx:
+                    unique_invoices.extend([invoice])
+                    break
+        
         return unique_invoices
