@@ -19,7 +19,7 @@ from lib_src.serializers import (ApportionmentDetailSerializer,
                                  ProductSerializer, RateExpenseSerializer,
                                  RateIncotermSerializer, SupplierSerializer)
 from lib_src.TypeChangeOrder import get_by_order, get_by_parcial
-from lib_src.sgi_utlils import get_host
+from lib_src.sgi_utlils import get_host,run_query
 from lib_src.CompletePaidInvoice import CompletePaidInvoice
 from lib_src.ExpensesReportSale import ExpensesReportSale
 from lib_src.InvoicesUtils import InvoicesUtils

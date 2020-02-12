@@ -25,7 +25,7 @@ SECRET_KEY = 'sj-z02b^$ifmzup+&qb+6!fi4mgbah_n3ddss@9m4=e0u$fdrr'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*',]
+ALLOWED_HOSTS = ['*', ]
 
 # Application definition
 INSTALLED_APPS = [
@@ -105,8 +105,8 @@ TEMPLATES = [
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
-    'rest_framework.permissions.IsAuthenticated',
-)
+        'rest_framework.permissions.IsAuthenticated',
+    )
 }
 
 WSGI_APPLICATION = 'sgi.wsgi.application'
@@ -116,62 +116,62 @@ WSGI_APPLICATION = 'sgi.wsgi.application'
 
 
 DATOS_EMPRESAS = {
-    'cordovez' : {
-        'nombre' : 'AGENCIAS Y REPRESENTACIONES CORDOVEZ S.A.',
-        'empresa' : 'cordovez',
-        'ruc' : '1790023516001',
+    'cordovez': {
+        'nombre': 'AGENCIAS Y REPRESENTACIONES CORDOVEZ S.A.',
+        'empresa': 'cordovez',
+        'ruc': '1790023516001',
         'direccion': 'AV. 10 DE AGOSTO N.57-186 Y LEONARDO MURIALDO ',
         'telefono': '022405911',
-        'email' : 'sgi@cordovez.com.ec',
-        'url_logo' : 'http://179.49.60.158:8888/img/logo_cordovez.jpg',
-        'url_app' : 'http://179.49.60.158:5001/',
-        'url_app_local' : 'http://192.168.0.198:5001/',
-        'admin_title' : 'A&R Cordovez S.A.',
-        'database' : 'cordovezApp',
+        'email': 'sgi@cordovez.com.ec',
+        'url_logo': 'http://179.49.60.158:8888/img/logo_cordovez.jpg',
+        'url_app': 'http://179.49.60.158:5001/',
+        'url_app_local': 'http://192.168.0.198:5001/',
+        'admin_title': 'A&R Cordovez S.A.',
+        'database': 'cordovezApp',
     },
-    'test' : {
-        'nombre' : 'AMBIENTE DE PRUEBAS TEST',
-        'empresa' : 'test',
-        'ruc' : '1722919725001',
+    'test': {
+        'nombre': 'AMBIENTE DE PRUEBAS TEST',
+        'empresa': 'test',
+        'ruc': '1722919725001',
         'direccion': 'AV COLO 1133 Y AMAZONAS EDF ARISTA OF 500 ',
         'telefono': '022405911',
-        'email' : 'sgi@cordovez.com.ec',
-        'url_logo' : 'http://179.49.60.158:8888/img/logo_test.png',
-        'url_app' : 'http://localhost:8000/',
-        'url_app_local' : 'http://localhost:8000/',
-        'admin_title' : 'TEST',
-        'database' : 'cordovezAppTEST',
+        'email': 'sgi@cordovez.com.ec',
+        'url_logo': 'http://179.49.60.158:8888/img/logo_test.png',
+        'url_app': 'http://localhost:8000/',
+        'url_app_local': 'http://localhost:8000/',
+        'admin_title': 'TEST',
+        'database': 'cordovezAppTEST',
     },
-    'imnac' : {
-        'nombre' : 'IMNAC IMPORTADORA NACIONAL CIA LTDA',
-        'empresa' : 'imnac',
-        'ruc' : '1792324289001',
+    'imnac': {
+        'nombre': 'IMNAC IMPORTADORA NACIONAL CIA LTDA',
+        'empresa': 'imnac',
+        'ruc': '1792324289001',
         'direccion': 'LA PAZ PAUL RIVET 227 Y JAMES ORTON ',
         'telefono': '022405911',
-        'email' : 'sgi@imnac.com.ec',
-        'url_logo' : 'http://179.49.60.158:8888/img/logo_imnac.jpg',
-        'url_app' : 'http://179.49.60.158:5002/',
-        'url_app_local' : 'http://192.168.0.198:5002/',
-        'admin_title' : 'IMNAC CIA LTDA',
-        'database' : 'imnacApp',
+        'email': 'sgi@imnac.com.ec',
+        'url_logo': 'http://179.49.60.158:8888/img/logo_imnac.jpg',
+        'url_app': 'http://179.49.60.158:5002/',
+        'url_app_local': 'http://192.168.0.198:5002/',
+        'admin_title': 'IMNAC CIA LTDA',
+        'database': 'imnacApp',
     },
-    'vid' : {
-        'nombre' : 'VIDINTERNACIONAL S.A.',
-        'empresa' : 'vid',
-        'ruc' : '1791771907001',
+    'vid': {
+        'nombre': 'VIDINTERNACIONAL S.A.',
+        'empresa': 'vid',
+        'ruc': '1791771907001',
         'direccion': 'AV. 10 DE AGOSTO N.57-186 Y LEONARDO MURIALDO ',
         'telefono': '022405911',
-        'email' : 'sgi@vidinternacional.com.ec',
-        'url_logo' : 'http://179.49.60.158:8888/img/logo_vid.jpg',
-        'url_app' : 'http://179.49.60.158:5003/',
-        'url_app_local' : 'http://192.168.0.198:5003/',
-        'admin_title' : 'VIDINTERNACIONAL S.A.',
-        'database' : 'vidApp',
+        'email': 'sgi@vidinternacional.com.ec',
+        'url_logo': 'http://179.49.60.158:8888/img/logo_vid.jpg',
+        'url_app': 'http://179.49.60.158:5003/',
+        'url_app_local': 'http://192.168.0.198:5003/',
+        'admin_title': 'VIDINTERNACIONAL S.A.',
+        'database': 'vidApp',
 
     },
 }
 
-#Seleccionamos la empresa
+# Seleccionamos la empresa
 EMPRESA = DATOS_EMPRESAS['test']
 GRAPPELLI_ADMIN_TITLE = EMPRESA['admin_title']
 
@@ -179,10 +179,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': EMPRESA['database'],
-        'USER' : 'appCordovez',
-        'PASSWORD' : '\DBGfW<7;vBa5(LB',
+        'USER': 'appCordovez',
+        'PASSWORD': '\DBGfW<7;vBa5(LB',
         'HOST': '179.49.60.158',
-        'PORT' : '3306',
+        'PORT': '3306',
     }
 }
 
@@ -218,12 +218,14 @@ USE_L10N = True
 
 USE_TZ = True
 
-AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend', 'guardian.backends.ObjectPermissionBackend')
+AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',
+                           'guardian.backends.ObjectPermissionBackend')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-STATIC_ROOT = os.sep.join(os.path.abspath(__file__).split(os.sep)[:-2]+['static_django'])
+STATIC_ROOT = os.sep.join(os.path.abspath(
+    __file__).split(os.sep)[:-2]+['static_django'])
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
@@ -233,5 +235,6 @@ STATICFILES_DIRS = [
 STATIC_URL = '/static/'
 
 
-MEDIA_ROOT = os.sep.join(os.path.abspath(__file__).split(os.sep)[:-2]+['media'])
+MEDIA_ROOT = os.sep.join(os.path.abspath(
+    __file__).split(os.sep)[:-2]+['media'])
 MEDIA_URL = '/media/'
