@@ -100,10 +100,11 @@
    Comentarios:
 
    </div>
-   <div class="col-8">
+   <div class="col-7">
    <textarea cols="90" rows="1">{% if data.invoice.invoice.comentarios_audit %}{{ data.invoice.invoice.comentarios_audit }}{% endif %}</textarea>
    </div>
-   <div class="col-3 text-right">
+   <div class="col-4 text-right">
+   <a href="/auditoria/"class="btn btn-outline-primary"><i class="fas fa-list"></i> Volver a Listado</a>
       {% if  data.invoice.invoice.bg_audit%}
         <a href="" class="btn btn-outline-danger"><i class="fas fa-ban"></i> Rechazar Documento</a>
         {% else %}

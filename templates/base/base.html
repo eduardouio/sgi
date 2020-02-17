@@ -37,10 +37,19 @@
         {#   <a class="nav-link" href="#">About</a> #}
         {# </li> #}
       </ul>
-      <form class="form-inline" method="get" action="/pedidos/listar/">
-        <input class="form-control form-control-sm mr-sm-1" type="search" placeholder="Buscar" name="q">
-        <button class="btn btn-outline-primary my-sm-0" type="submit"> <i class="fas fa-search"></i></button>
-      </form>
+      {% if '/auditoria/' in request.path   %}
+      {# Buscador de auditoria #}
+            <form class="form-inline" method="get" action="/auditoria/">
+              <input class="form-control form-control-sm mr-sm-1" type="search" placeholder="Buscar" name="q">
+              <button class="btn btn-outline-primary my-sm-0" type="submit"> <i class="fas fa-search"></i></button>
+            </form>
+        {% else %}
+      {# Buscador de pedidos #}
+          <form class="form-inline" method="get" action="/pedidos/listar/">
+            <input class="form-control form-control-sm mr-sm-1" type="search" placeholder="Buscar" name="q">
+            <button class="btn btn-outline-primary my-sm-0" type="submit"> <i class="fas fa-search"></i></button>
+          </form>
+      {% endif %}
         <a href="/admin/" target="_blank" class="btn btn-outline-info my-sm-0" style="margin-left:0.5rem;"><i class="fas fa-tachometer-alt"></i></a>
         <a href="/logout/" class="btn btn-outline-danger my-sm-0" style="margin-left:0.5rem;"><i class="fas fa-power-off" aria-hidden="true"></i></a>
         &nbsp;
