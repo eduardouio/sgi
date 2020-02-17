@@ -2,6 +2,7 @@ from datetime import date
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
+from django.contrib.auth.models import User
 from django.utils import timezone
 from simple_history.models import HistoricalRecords
 
@@ -39,8 +40,38 @@ class PaidInvoice(models.Model):
         managed = True
         db_table = 'documento_pago'
         unique_together = (('identificacion_proveedor', 'nro_factura'),)
-        ordering = ['fecha_emision']
+        ordering = ['-id_documento_pago']
         verbose_name_plural = 'Facturas Servicios'
+
+    @property
+    def user(self):
+        '''Retorna el objeto usuario del auditor'''
+        if self.audit_user:
+            try:
+                return User.objects.get(pk=self.audit_user)
+            except ObjectDoesNotExist:
+                return None
+
+        return None
+
+    @property
+    def days(self):
+        today = date.today()
+        diff_date = today - self.fecha_emision
+        return diff_date.days
+    
+    @property
+    def justify_value(self):
+        from paids.models import PaidInvoiceDetail
+        details = PaidInvoiceDetail.get_by_paid_invoice(self.id_documento_pago)
+        if details is None:
+            return 0
+        total_justified = 0
+
+        for det in details:
+            total_justified += det.valor
+        return total_justified
+
 
     @classmethod
     def get_by_id(self, id_invoice):
@@ -52,12 +83,6 @@ class PaidInvoice(models.Model):
             return None
 
         return invoice
-    
-    @property
-    def days(self):
-        today = date.today()
-        diff_date = today - self.fecha_emision
-        return diff_date.days
 
 
     @classmethod
