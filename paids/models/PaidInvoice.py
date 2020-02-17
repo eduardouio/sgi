@@ -1,4 +1,4 @@
-import pdb
+from datetime import date
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
@@ -24,6 +24,7 @@ class PaidInvoice(models.Model):
     bg_audit = models.IntegerField(default=0)
     bg_isrejected = models.IntegerField(default=0)
     audit_date = models.DateTimeField(blank=True, null=True)
+    audit_user = models.SmallIntegerField(default=0, blank=True, null=True)
     tipo = models.CharField(max_length=8)
     id_user = models.SmallIntegerField(default=0)
     date_create = models.DateTimeField(
@@ -38,7 +39,7 @@ class PaidInvoice(models.Model):
         managed = True
         db_table = 'documento_pago'
         unique_together = (('identificacion_proveedor', 'nro_factura'),)
-        ordering = ['nro_factura']
+        ordering = ['fecha_emision']
         verbose_name_plural = 'Facturas Servicios'
 
     @classmethod
@@ -51,6 +52,13 @@ class PaidInvoice(models.Model):
             return None
 
         return invoice
+    
+    @property
+    def days(self):
+        today = date.today()
+        diff_date = today - self.fecha_emision
+        return diff_date.days
+
 
     @classmethod
     def get_autorized_by_audit(self):
