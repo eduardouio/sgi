@@ -13,9 +13,17 @@ class InvoiceListTemplateView(LoginRequiredMixin, TemplateView):
     def get(self, request, *args, **kwargs):
         invoice_utils = InvoicesUtils()
         context = self.get_context_data(**kwargs)
+
+        if request.GET['q']:
+            local_invoices = invoice_utils.search(request.GET['q'])
+        else:
+            local_invoices = invoice_utils.get_unapproved_invoices()
+            
         context['data'] = {
             'empresa': settings.EMPRESA,
             'title_page': 'Facturas Pendientes',
-            'local_invoices': invoice_utils.get_unapproved_invoices(),
+            'local_invoices': local_invoices,
         }
+
         return self.render_to_response(context)
+        
