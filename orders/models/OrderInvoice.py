@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.utils import timezone
@@ -49,6 +51,11 @@ class OrderInvoice(models.Model):
     def valor_tasa_trimestral(self):
         return (self.valor * self.tipo_cambio)
 
+    @property
+    def days(self):
+        today = date.today()
+        diff_date = today - self.fecha_emision
+        return diff_date.days
 
     @classmethod
     def get_by_id(self, id_invoice):
@@ -68,3 +75,13 @@ class OrderInvoice(models.Model):
             loggin('e', 'Existe mas de una factura para el pedido {nro_order}'.format(nro_order=nro_order))
 
         return order_invoice.first()
+
+    @classmethod
+    def get_authorized_by_audit(cls):
+        '''Facturas Aprobadas'''
+        return cls.objects.filter(bg_audit=1)
+
+    @classmethod
+    def get_deny_by_audit(cls):
+        '''Facturas pendientes de aprobacion'''
+        return cls.objects.filter(bg_audit=0)
