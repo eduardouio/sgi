@@ -1,0 +1,38 @@
+{% extends 'base/base.html' %}
+  {% block content %}
+   <table class="table table-bordered table-condensed table-striped">
+    <thead>
+        <tr>
+            <td>#</td>
+            <td>Pedido</td>
+            <td>Factura</td>
+            <td>Nombre de Producto</td>
+            <td>Cajas</td>
+            <td>C/C</td>
+            <td>Unds</td>
+            <td>Valor</td>
+            <td>Valor T</td>
+            <td>Moneda</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in data.report.invoices %}
+            {% for detail in item.details %}
+            <tr>
+            <td>{{ loop.index }}</td>
+            <td> {{ item.invoice.nro_pedido }} </td>
+            <td> {{ item.invoice.id_factura_proveedor }} </td>
+            <td> {{ detail.cod_contable.nombre }} </td>
+            <td> {{ detail.nro_cajas }} </td>
+            <td> {{ detail.cod_contable.cantidad_x_caja }} </td>
+            <td> {{ detail.nro_cajas  * detail.cod_contable.cantidad_x_caja }} </td>
+            <td> {{ detail.costo_caja }} </td>
+            <td> {{ (detail.nro_cajas * detail.nro_cajas) | round(2) }} </td>
+            <td>{{ item.invoice.moneda }}</td>
+            {% endfor %}
+
+            </tr>
+        {% endfor %}
+    </tbody>
+   </table>
+  {% endblock %}

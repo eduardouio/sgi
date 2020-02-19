@@ -5,7 +5,7 @@ from lib_src import CompletePaidInvoice
 
 from lib_src.sgi_utlils import get_host
 
-#/audotoria/factura/<id_invoice>/
+#/auditoria/factura/<id_invoice>/
 class InvoiceTemplateView(LoginRequiredMixin,TemplateView):
     template_name = 'audit/mostrar-factura.html'
 

@@ -22,6 +22,16 @@
         </div>
       <div id="pedido" v-if="show_order">
         <div class="row">
+        <table class="table table-bordered table-condensed table-striped">
+          <thead>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </thead>
+        </table>
           <div class="col-sm-3">
             <span>Proveedor</span> <span class="text-primary bordered bordered_padding">${ current_order.order.proveedor
               }</span>

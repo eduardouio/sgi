@@ -1,0 +1,59 @@
+{% extends 'base/base.html' %}
+{% block title_content %}
+<div class="row border">
+   <div class="col-4">
+      <i class="fa fa-cog"></i>
+      Auditoría Revisión de Facturas 
+   </div>
+   <div class="col-8 text-right">
+   <strong>Proveedor</strong> {{ data.invoice.identificacion_proveedor.nombre }} 
+   | <strong>RUC:</strong>  {{ data.invoice.identificacion_proveedor_id }}
+   | <strong>Tipo:</strong> Exterior
+   | <strong>Moneda:</strong> {{ data.invoice.identificacion_proveedor.moneda_transaccion }}
+   </div>
+</div>
+{% endblock title_content %}
+{% block content %}
+<div class="container">
+    <div class="row">
+    <table class="table table-bordered table-condensed">
+        <tr>
+            <th style="width:100px;" class="text-right bg-light">Nro Factura</th>
+            <td>{{ data.invoice.id_factura_proveedor }}</td>
+            <th style="width:100px;" class="text-right bg-light">Proveedor</th>
+            <td>{{ data.invoice.identificacion_proveedor.nombre }}</td>
+            <th style="width:100px;" class="text-right bg-light">F Emision</th>
+            <td>{{ data.invoice.fecha_emision }}</td>
+            <th style="width:100px;" class="text-right bg-light">Moneda</th>
+            <td>{{ data.invoice.moneda }}</td>
+        </tr>
+        <tr>
+            <th style="width:100px;" class="text-right bg-light">Valor</th>
+            <td class="text-right">{{ data.invoice.valor | round(2) }}</td>
+            <th style="width:100px;" class="text-right bg-light">TC</th>
+            <td class="text-right">{{ data.invoice.tipo_cambio | round(2)}}</td>
+             <th style="width:100px;" class="text-right bg-light">Nro Pedido</th>
+            <td class="text-right">{{ data.invoice.nro_pedido }}</td>
+        </tr>
+    </table>
+    </div>
+      <div class="row">
+    <div class="col-6" style="font-size:14px">
+    {% if data.invoice.bg_audit %}
+      <span class="text-success"><span class="fa fa-check"></span>Aprovado</span>
+    {% else %}
+      <span class="text-danger"><span class="fa fa-ban"></span>&nbsp; Pendiente</span>
+    {% endif %}
+    &nbsp; <span class="text-secondary">|</span> &nbsp;
+    {% if data.status.is_complete %}
+         <span class="text-success"><span class="fa fa-check"></span>&nbsp; Factura Completa</span>
+         {% else %}
+         <span class="text-danger"><span class="fa fa-ban"></span>&nbsp; Factura Incompleta</span>
+    {% endif %}
+    </div> 
+    <div class="col-md-2"><h6 class="text-primary"><small>Val Factura: $</small> <span> {{ data.status.value | round(2) }} </span></h6></div>
+    <div class="col-md-2"><h6 class="text-success"><small>Val Justificado: </small> <span> {{ data.status.justified | round(2)}} </span></h6></div>
+    <div class="col-md-2"><h6 class="text-defult"><small>Val Pendiente: $</small> <span> {{(data.status.value - data.status.justified) | round(2)}} </span></h6></div>
+    </div>
+</div>
+{% endblock content %}

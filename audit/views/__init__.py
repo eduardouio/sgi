@@ -1,2 +1,3 @@
-from audit.views.InvoiceTemplateView import InvoiceTemplateView
-from audit.views.InvoiceListTemplateView import InvoiceListTemplateView
+from .InvoiceTemplateView import InvoiceTemplateView
+from .InvoiceListTemplateView import InvoiceListTemplateView
+from .ProductInvoiceTemplateView import ProductInvoiceTemplateView
