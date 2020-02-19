@@ -1,1 +1,2 @@
 from .ICEReportTemplateView import ICEReportTemplateView
+from .PurcharseSupplierTemplateView import PurcharseSupplierTemplateView

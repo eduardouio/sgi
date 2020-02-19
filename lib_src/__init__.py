@@ -23,3 +23,4 @@ from lib_src.sgi_utlils import get_host,run_query
 from lib_src.CompletePaidInvoice import CompletePaidInvoice
 from lib_src.ExpensesReportSale import ExpensesReportSale
 from lib_src.InvoicesUtils import InvoicesUtils
+from .PurcharsesProductSupplier import PurcharsesProductSupplier
