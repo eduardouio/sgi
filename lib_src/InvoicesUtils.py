@@ -35,4 +35,11 @@ class InvoicesUtils(object):
 
     def search_foreign(self,query):
         '''Reotorna la lista de facturas del exterior'''
-        return []
+        invoices = OrderInvoice.objects.filter(
+            Q(id_factura_proveedor__contains = query)
+            | Q(id_factura_proveedor__icontains = query)
+            | Q(identificacion_proveedor__nombre__icontains = query)
+            | Q(identificacion_proveedor__nombre__startswith = query)
+            | Q(identificacion_proveedor__nombre__istartswith = query)
+        )[:100]
+        return list(invoices)
