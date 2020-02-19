@@ -1,5 +1,6 @@
 from datetime import date
 
+from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.utils import timezone
@@ -48,6 +49,17 @@ class OrderInvoice(models.Model):
         verbose_name_plural = 'Facturas de Pedido'  
 
     @property
+    def user(self):
+        '''Retorna el objeto usuario del auditor'''
+        if self.audit_user:
+            try:
+                return User.objects.get(pk=self.audit_user)
+            except ObjectDoesNotExist:
+                return None
+
+        return None
+
+    @property
     def valor_tasa_trimestral(self):
         return (self.valor * self.tipo_cambio)
 
@@ -79,9 +91,12 @@ class OrderInvoice(models.Model):
     @classmethod
     def get_authorized_by_audit(cls):
         '''Facturas Aprobadas'''
-        return cls.objects.filter(bg_audit=1)
+        result = cls.objects.filter(bg_audit=1)
+        result.exclude(id_factura_proveedor__startswith = 'SF-')
+        return result
 
     @classmethod
     def get_deny_by_audit(cls):
         '''Facturas pendientes de aprobacion'''
-        return cls.objects.filter(bg_audit=0)
+        result = cls.objects.filter(bg_audit=0)
+        return result.exclude(id_factura_proveedor__startswith = 'SF-')

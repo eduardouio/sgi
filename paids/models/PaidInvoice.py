@@ -84,9 +84,8 @@ class PaidInvoice(models.Model):
 
         return invoice
 
-
     @classmethod
-    def get_autorized_by_audit(self):
+    def get_authorized_by_audit(self):
         ''' facturas aprobadas por auditoria'''
         autorized_invoices = self.objects.filter(bg_audit=1)
         return autorized_invoices
