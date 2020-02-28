@@ -56,7 +56,8 @@
     </div> 
     <div class="col-md-2"><h6 class="text-primary"><small>Val Factura: $</small> <span> {{ data.invoice.invoiced_value }} </span></h6></div>
     <div class="col-md-2"><h6 class="text-success"><small>Val Justificado: </small> <span> {{ data.invoice.justified_value | round(2)}} </span></h6></div>
-    <div class="col-md-2"><h6 class="text-defult"><small>Val Pendiente: $</small> <span> {{data.invoice.balance | round(2)}} </span></h6></div></div>
+    <div class="col-md-2"><h6 class="text-defult"><small>Val Pendiente: $</small> <span> {{data.invoice.balance | round(2)}} </span></h6></div>
+    </div>
    <div class="row">
    <table class="table table-bordered table-striped table-hover table-condensed">
    <tr>
@@ -98,14 +99,13 @@
    <div class="row">
    <div class="col-1 text-right">
    Comentarios:
-
    </div>
    <div class="col-7">
    <textarea cols="90" rows="1">{% if data.invoice.invoice.comentarios_audit %}{{ data.invoice.invoice.comentarios_audit }}{% endif %}</textarea>
    </div>
    <div class="col-4 text-right">
    <a href="/auditoria/"class="btn btn-outline-primary"><i class="fas fa-list"></i> Volver a Listado</a>
-      {% if  data.invoice.invoice.bg_audit%}
+      {% if  data.invoice.invoice.bg_audit %}
         <a href="" class="btn btn-outline-danger"><i class="fas fa-ban"></i> Rechazar Documento</a>
         {% else %}
         <a href="" class="btn btn-outline-success"> <i class="fas fa-check-circle"></i>  Aprobar Documento</a>

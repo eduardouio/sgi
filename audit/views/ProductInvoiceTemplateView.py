@@ -38,5 +38,11 @@ class ProductInvoiceTemplateView(TemplateView):
             'justified':0,
             'tc_trimestral' : invoice.tipo_cambio,
         }
+        
+        for item in invoice_items:
+            status['justified'] += item.costo_caja * item.nro_cajas
+        
+        if status['value'] == status['justified']:
+            status['is_complete'] = True
 
         return status
