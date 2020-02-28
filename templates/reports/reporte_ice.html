@@ -73,16 +73,16 @@
         <td nowrap="" class="text-right">{{ item.nro_cajas }}</td>
         <td nowrap="" class="text-right">{{ item.unidades | round(0) }}</td>
         <td nowrap="" class="text-right">{{ (item.nro_cajas  * item.costo_caja * item.id_pedido_factura.tipo_cambio ) | round(2)}}</td>
-        <td nowrap="" class="bg-secondary text-center"></td>
+        <td nowrap="" class="text-right">{{ item.costo_total - item.ice_advalorem_pagado -  item.ice_especifico }}</td>
         <td nowrap="" class="text-right">{{ item.capacidad_ml | round(0) }}</td>
         <td nowrap="" class="text-right">{{ item.grado_alcoholico | round(2) }}</td>
-        <td nowrap="" class="bg-secondary text-center"></td>
-        <td nowrap="" class="bg-secondary text-center"></td>
-        <td nowrap="" class="bg-secondary text-center"></td>
-        <td nowrap="" class="bg-secondary text-center"></td>
-        <td nowrap="" class="bg-secondary text-center"></td>
-        <td nowrap="" class="bg-secondary text-center"></td>
-        <td nowrap="" class="bg-secondary text-center"></td>
+        <td nowrap="" class="text-right">{{ item.ex_aduana_unitario }}</td>
+        <td nowrap="" class="text-right">{{ item.ice_especifico / item.unidades }}</td>
+        <td nowrap="" class="text-right">{{ item.ice_advalorem_pagado / item.unidades }}</td>
+        <td nowrap="" class="text-right">{{ item.ice_unitario }}</td>
+        <td nowrap="" class="text-right">{{ (item.ice_advalorem_pagado +  item.ice_especifico) | round(3)}}</td>
+        <td nowrap="" class="text-right">{{ item.costo_total }}</td>
+        <td nowrap="" class="text-right">{{ item.costo_total / item.unidades }}</td>
         <td nowrap="" class="text-right">{{ item.id_pedido_factura.nro_pedido.nro_refrendo[:3] }}</td>
         <td nowrap="" class="text-right">{{ item.id_pedido_factura.nro_pedido.nro_refrendo[4:8] }}</td>
         <td nowrap="" class="text-right">{{ item.id_pedido_factura.nro_pedido.nro_refrendo[9:11] }}</td>
