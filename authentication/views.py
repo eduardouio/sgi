@@ -25,11 +25,9 @@ class LoginTemplateView(TemplateView):
         context['empresa'] = settings.EMPRESA
         context['have_next'] = True if request.GET else False
         context['next'] = '' if not request.GET else request.GET['next']
-        import ipdb;ipdb.set_trace()
         return self.render_to_response(context)
     
     def post(self, request, *args, **kwargs):
-        import ipdb;ipdb.set_trace()
         loggin('i', 'Verificando informacion')
         data = request.POST
         user_is_valid = True
