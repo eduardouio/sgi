@@ -42,7 +42,7 @@
         <td nowrap="">{{ item.id_pedido_factura.nro_pedido_id.replace('-','/') }}</td>
         <td nowrap="">{{ item.cod_contable.nombre }}</td>
         <td nowrap="">{{ item.cod_contable.cod_ice }}</td>
-        <td nowrap="" class="text-right">{{ item.id_pedido_factura.nro_pedido.fecha_ingreso_almacenera.strftime('%d/%m/%d/%Y') }}</td>
+        <td nowrap="" class="text-right">{{ item.id_pedido_factura.nro_pedido.fecha_ingreso_almacenera.strftime('%d/%m/%Y') }}</td>
         <td nowrap=""> {% if item.id_pedido_factura.nro_pedido.pais_origen == 'ESCOCIA' %} REINO UNIDO {% else %} {{ item.id_pedido_factura.nro_pedido.pais_origen }}{% endif %}</td>
         <td nowrap="" class="text-right">{{ item.nro_cajas }}</td>
         <td nowrap="" class="text-right">{{ item.unidades | round(0) }}</td>
@@ -68,7 +68,7 @@
         <td nowrap="">{{ item.id_pedido_factura.nro_pedido_id.replace('-','/') }}</td>
         <td nowrap="">{{ item.cod_contable.nombre }}</td>
         <td nowrap="">{{ item.cod_contable.cod_ice }}</td>
-        <td nowrap="" class="text-right">{{ item.id_pedido_factura.nro_pedido.fecha_llegada_cliente.strftime('%d/%m/%d/%Y') }}</td>
+        <td nowrap="" class="text-right">{{ item.id_pedido_factura.nro_pedido.fecha_llegada_cliente.strftime('%d/%m/%Y') }}</td>
         <td nowrap=""> {% if item.id_pedido_factura.nro_pedido.pais_origen == 'ESCOCIA' %} REINO UNIDO {% else %} {{ item.id_pedido_factura.nro_pedido.pais_origen }}{% endif %}</td>
         <td nowrap="" class="text-right">{{ item.nro_cajas }}</td>
         <td nowrap="" class="text-right">{{ item.unidades | round(0) }}</td>
@@ -94,7 +94,7 @@
         <td nowrap="">{{ item.id_factura_informativa.id_parcial.nro_pedido_id.replace('-','/') }}</td>
         <td nowrap="">{{ item.product }}</td>
         <td nowrap="">{{ item.detalle_pedido_factura.cod_contable.cod_ice }}</td>
-        <td nowrap="" class="text-right">{{ item.id_factura_informativa.id_parcial.fecha_llegada_cliente.strftime('%d/%m/%d/%Y') }}</td>
+        <td nowrap="" class="text-right">{{ item.id_factura_informativa.id_parcial.fecha_llegada_cliente.strftime('%d/%m/%Y') }}</td>
         <td nowrap="">{% if item.detalle_pedido_factura.id_pedido_factura.nro_pedido.pais_origen == 'ESCOCIA' %}REINO UNIDO{% else %}{{ item.detalle_pedido_factura.id_pedido_factura.nro_pedido.pais_origen }}{% endif %}</td>
         <td nowrap="" class="text-right">{{ item.nro_cajas | round(0) }}</td>
         <td nowrap="" class="text-right">{{ item.unidades | round(0) }}</td>
