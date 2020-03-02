@@ -93,10 +93,13 @@ body {
 </head>
   <body class="text-center">
     <form class="form-signin" action="" method="post" >
+    {{ csrf_input }}
     {% if request.GET['error'] %}
     <strong class="text-danger"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Error en Clave o Usuario</strong>
     {% endif %}
-    {{ csrf_input }}
+    {% if have_next %}
+      <input type="hidden" name="next" value="{{ next }}">
+    {% endif %}
   <img class="mb-4" src="{{ empresa.url_logo }}" alt="{{ empresa.nombre }}">
   <label for="inputEmail" class="sr-only">Usuario</label>
   <input type="text" id="inputEmail" name="username" class="form-control" placeholder="Usuario" required autofocus>

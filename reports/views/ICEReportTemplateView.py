@@ -10,6 +10,7 @@ from lib_src import ReportICE
 # /reportes/ice/<year>/<month>/
 class ICEReportTemplateView(LoginRequiredMixin, TemplateView):
     template_name = 'reports/reporte_ice.html'
+    login_url = '/'
 
     def get(self, response, year, month, *args, **kwargs):
         context = self.get_context_data(**kwargs)

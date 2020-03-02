@@ -26,7 +26,7 @@ class LoginTemplateView(TemplateView):
         context['have_next'] = True if request.GET else False
         context['next'] = '' if not request.GET else request.GET['next']
         return self.render_to_response(context)
-    
+
     def post(self, request, *args, **kwargs):
         loggin('i', 'Verificando informacion')
         data = request.POST
@@ -36,24 +36,31 @@ class LoginTemplateView(TemplateView):
         except ObjectDoesNotExist:
             loggin('w', 'Usuario incorrecto {}'.format(data['username']))
             return HttpResponseRedirect(self.error_url)
-        
         if user_db.check_password(data['password']) == False:
             loggin('w', 'Password incorrecto {}'.format(data['password']))
             return HttpResponseRedirect(self.error_url)
-        
         if user_is_valid:
-            user = authenticate(request=request, username=data['username'], password=data['password'])
-            login(request=request, user=user, backend='django.contrib.auth.backends.ModelBackend')
-            #colocar aqui la redireccion para los otros perfiles
-            if user.groups.filter(name='auditoria').exists():
+            user = authenticate(
+                    request=request,
+                    username=data['username'],
+                    password=data['password'])
+            login(
+                request=request,
+                user=user,
+                backend='django.contrib.auth.backends.ModelBackend'
+                )
+
+            # colocar aqui la redireccion para los otros perfiles
+            if data.get('next'):
+                self.success_url = data['next']
+            elif user.groups.filter(name='auditoria').exists():
                 self.success_url = 'auditoria/'
 
             return HttpResponseRedirect(self.success_url)
-        
         return HttpResponseRedirect(self.error_url)
 
 
-#/logout/
+# /logout/
 class LogoutRedirectView(RedirectView):
     """Realiza el cierre de la sesion del usuario"""
     url = '/'

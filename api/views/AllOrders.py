@@ -6,7 +6,9 @@ from lib_src.serializers import OrderSerializer, PartialSerializer
 from logs.app_log import loggin
 
 
+# /api/orders/all/
 class AllOrders(APIView):
+
     def get(self, request):
         data = []
         orders = Order.get_open_orders()
@@ -19,7 +21,7 @@ class AllOrders(APIView):
 
             data.append({
                 'order': order_serializer.data,
-                'partials' : partial_serializer.data
+                'partials': partial_serializer.data
             })
-        
+
         return Response(data)

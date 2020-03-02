@@ -24,3 +24,4 @@ from lib_src.CompletePaidInvoice import CompletePaidInvoice
 from lib_src.ExpensesReportSale import ExpensesReportSale
 from lib_src.InvoicesUtils import InvoicesUtils
 from .PurcharsesProductSupplier import PurcharsesProductSupplier
+from .AnexoICE import AnexoICE
