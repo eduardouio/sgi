@@ -1,0 +1,65 @@
+{% extends 'base/base.html' %}
+{% block add_style %}
+    <style>
+    .card:hover {
+        background-color:#f8ffbd;
+    }
+    </style>
+{% endblock add_style %}
+{% block title_content %}
+<div class="row border">
+   <div class="col-4">
+      <i class="fa fa-cog"></i>
+      Lista de Reportes Disponibles
+   </div>
+   <div class="col-8 text-right">
+   Sistema de Importaciones | <strong>SGI</strong>
+   </div>
+</div>
+{% endblock title_content %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-3">
+            <div class="card" style="width: 13rem;">
+  <img class="card-img-top" src="{{ static('img/report-header.png')}}" alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title">Compras</h5>
+    <p class="card-text">Histórico de compras para un producto o proveedor específico </p>
+    <a href="compras/P20532416036/" class="btn btn-outline-dark">Acceder al Reporte <i class="fas fa-arrow-circle-right"></i></a>
+  </div>
+</div>
+        </div>
+          <div class="col-3">
+            <div class="card" style="width: 13rem;">
+  <img class="card-img-top" src="{{ static('img/report-header.png')}}" alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title">Reporte ICE</h5>
+    <p class="card-text">Rerpote ICE de las importaciones realizadas durante un período</p>
+    <a href="ice/2020/02/" class="btn btn-outline-dark">Acceder al Reporte <i class="fas fa-arrow-circle-right"></i></a>
+  </div>
+</div>
+        </div>
+        <div class="col-3">
+            <div class="card" style="width: 13rem;">
+  <img class="card-img-top" src="{{ static('img/report-header.png')}}" alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title">Anexo ICE <strong class="text-primary" style="font-size:11px">SRI</strong></h5>
+    <p class="card-text">Anexo ICE de las importaciones realizadas durante un período</p>
+    <a href="anexo-ice/2020/02/" class="btn btn-outline-dark">Acceder al Reporte <i class="fas fa-arrow-circle-right"></i></a>
+  </div>
+</div>
+        </div>
+         <div class="col-3">
+            <div class="card" style="width: 13rem;">
+  <img class="card-img-top" src="{{ static('img/report-header.png')}}" alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title">Nacionalizaciones</h5>
+    <p class="card-text">Detalle de pedidos llegados a las bodegas locales del importador</p>
+    <a href="llegadas/bodega/local/2019/0/" class="btn btn-outline-dark">Acceder al Reporte <i class="fas fa-arrow-circle-right"></i></a>
+  </div>
+</div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

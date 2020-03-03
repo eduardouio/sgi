@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{{ static('css/bootstrap.css') }}">
     <link rel="stylesheet" href="{{ static('css/cordovez.css') }}">
     <style>@page {size: auto;}</style>
+    {% block add_style %}{% endblock add_style %}
     <link rel="icon" href="{{ static('favicon.ico') }}" type="image/x-icon"/>
 	  <link rel="shortcut icon" href="{{ static('favicon.ico') }} type="image/x-icon"/>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
