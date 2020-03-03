@@ -2,6 +2,7 @@ from orders.models import Order, OrderInvoice, OrderInvoiceDetail
 from logs import loggin
 from suppliers.models import Supplier
 
+# /reportes/compras/<id_supplier/>
 class PurcharsesProductSupplier(object):
     ''' Lista copleta de productos importados a un proveedor'''
     
