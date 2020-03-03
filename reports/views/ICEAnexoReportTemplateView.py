@@ -20,8 +20,8 @@ class ICEAnexoReportTemplateView(LoginRequiredMixin, TemplateView):
             'empresa': settings.EMPRESA,
             'title_page': 'Anexo ICE {} {}'.format(year, month),
             'anexo': anexo,
-            'year' : year,
-            'month' : self.get_meta(month),
+            'year': year,
+            'month': self.get_meta(month),
         }
         return self.render_to_response(context)
 

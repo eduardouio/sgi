@@ -1,3 +1,5 @@
 from .ICEReportTemplateView import ICEReportTemplateView
 from .PurcharseSupplierTemplateView import PurcharseSupplierTemplateView
 from .ICEAnexoReportTemplateView import ICEAnexoReportTemplateView
+from .WarenhouseArrivalsTemplateView import WarenhouseArrivalsTemplateView
+from .HomeTemplateView import HomeTemplateView
