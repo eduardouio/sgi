@@ -25,3 +25,4 @@ from lib_src.ExpensesReportSale import ExpensesReportSale
 from lib_src.InvoicesUtils import InvoicesUtils
 from .PurcharsesProductSupplier import PurcharsesProductSupplier
 from .AnexoICE import AnexoICE
+from .LocalWarenhouseArrivals import LocalWarenhouseArrivals

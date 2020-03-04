@@ -1,0 +1,450 @@
+[
+	{
+		"nro_pedido" : "280-18",
+		"fecha_llegada_cliente" : "2019-01-03"
+	},
+	{
+		"nro_pedido" : "005-19",
+		"fecha_llegada_cliente" : "2019-03-15"
+	},
+	{
+		"nro_pedido" : "004-19",
+		"fecha_llegada_cliente" : "2019-03-16"
+	},
+	{
+		"nro_pedido" : "006-19",
+		"fecha_llegada_cliente" : "2019-03-16"
+	},
+	{
+		"nro_pedido" : "002-19",
+		"fecha_llegada_cliente" : "2019-03-17"
+	},
+	{
+		"nro_pedido" : "003-19",
+		"fecha_llegada_cliente" : "2019-03-19"
+	},
+	{
+		"nro_pedido" : "106-19",
+		"fecha_llegada_cliente" : "2019-05-10"
+	},
+	{
+		"nro_pedido" : "107-19",
+		"fecha_llegada_cliente" : "2019-05-10"
+	},
+	{
+		"nro_pedido" : "108-19",
+		"fecha_llegada_cliente" : "2019-05-11"
+	},
+	{
+		"nro_pedido" : "115-19",
+		"fecha_llegada_cliente" : "2019-06-07"
+	},
+	{
+		"nro_pedido" : "126-19",
+		"fecha_llegada_cliente" : "2019-06-07"
+	},
+	{
+		"nro_pedido" : "116-19",
+		"fecha_llegada_cliente" : "2019-06-08"
+	},
+	{
+		"nro_pedido" : "129-19",
+		"fecha_llegada_cliente" : "2019-06-08"
+	},
+	{
+		"nro_pedido" : "117-19",
+		"fecha_llegada_cliente" : "2019-06-09"
+	},
+	{
+		"nro_pedido" : "127-19",
+		"fecha_llegada_cliente" : "2019-06-09"
+	},
+	{
+		"nro_pedido" : "128-19",
+		"fecha_llegada_cliente" : "2019-06-09"
+	},
+	{
+		"nro_pedido" : "119-19",
+		"fecha_llegada_cliente" : "2019-07-03"
+	},
+	{
+		"nro_pedido" : "120-19",
+		"fecha_llegada_cliente" : "2019-07-03"
+	},
+	{
+		"nro_pedido" : "118-19",
+		"fecha_llegada_cliente" : "2019-07-09"
+	},
+	{
+		"nro_pedido" : "157-19",
+		"fecha_llegada_cliente" : "2019-07-27"
+	},
+	{
+		"nro_pedido" : "150-19",
+		"fecha_llegada_cliente" : "2019-08-05"
+	},
+	{
+		"nro_pedido" : "153-19",
+		"fecha_llegada_cliente" : "2019-08-09"
+	},
+	{
+		"nro_pedido" : "154-19",
+		"fecha_llegada_cliente" : "2019-08-09"
+	},
+	{
+		"nro_pedido" : "152-19",
+		"fecha_llegada_cliente" : "2019-08-13"
+	},
+	{
+		"nro_pedido" : "155-19",
+		"fecha_llegada_cliente" : "2019-08-14"
+	},
+	{
+		"nro_pedido" : "162-19",
+		"fecha_llegada_cliente" : "2019-08-18"
+	},
+	{
+		"nro_pedido" : "166-19",
+		"fecha_llegada_cliente" : "2019-08-18"
+	},
+	{
+		"nro_pedido" : "160-19",
+		"fecha_llegada_cliente" : "2019-08-19"
+	},
+	{
+		"nro_pedido" : "159-19",
+		"fecha_llegada_cliente" : "2019-08-20"
+	},
+	{
+		"nro_pedido" : "161-19",
+		"fecha_llegada_cliente" : "2019-08-20"
+	},
+	{
+		"nro_pedido" : "168-19",
+		"fecha_llegada_cliente" : "2019-08-20"
+	},
+	{
+		"nro_pedido" : "200-19",
+		"fecha_llegada_cliente" : "2019-08-20"
+	},
+	{
+		"nro_pedido" : "164-19",
+		"fecha_llegada_cliente" : "2019-08-21"
+	},
+	{
+		"nro_pedido" : "167-19",
+		"fecha_llegada_cliente" : "2019-08-21"
+	},
+	{
+		"nro_pedido" : "163-19",
+		"fecha_llegada_cliente" : "2019-08-22"
+	},
+	{
+		"nro_pedido" : "282-19",
+		"fecha_llegada_cliente" : "2019-08-22"
+	},
+	{
+		"nro_pedido" : "165-19",
+		"fecha_llegada_cliente" : "2019-08-23"
+	},
+	{
+		"nro_pedido" : "195-19",
+		"fecha_llegada_cliente" : "2019-09-02"
+	},
+	{
+		"nro_pedido" : "194-19",
+		"fecha_llegada_cliente" : "2019-09-03"
+	},
+	{
+		"nro_pedido" : "285-19",
+		"fecha_llegada_cliente" : "2019-09-03"
+	},
+	{
+		"nro_pedido" : "302-19",
+		"fecha_llegada_cliente" : "2019-09-03"
+	},
+	{
+		"nro_pedido" : "197-19",
+		"fecha_llegada_cliente" : "2019-09-04"
+	},
+	{
+		"nro_pedido" : "198-19",
+		"fecha_llegada_cliente" : "2019-09-04"
+	},
+	{
+		"nro_pedido" : "199-19",
+		"fecha_llegada_cliente" : "2019-09-04"
+	},
+	{
+		"nro_pedido" : "215-19",
+		"fecha_llegada_cliente" : "2019-09-04"
+	},
+	{
+		"nro_pedido" : "283-19",
+		"fecha_llegada_cliente" : "2019-09-04"
+	},
+	{
+		"nro_pedido" : "287-19",
+		"fecha_llegada_cliente" : "2019-09-04"
+	},
+	{
+		"nro_pedido" : "294-19",
+		"fecha_llegada_cliente" : "2019-09-04"
+	},
+	{
+		"nro_pedido" : "172-19",
+		"fecha_llegada_cliente" : "2019-09-05"
+	},
+	{
+		"nro_pedido" : "201-19",
+		"fecha_llegada_cliente" : "2019-09-05"
+	},
+	{
+		"nro_pedido" : "207-19",
+		"fecha_llegada_cliente" : "2019-09-05"
+	},
+	{
+		"nro_pedido" : "210-19",
+		"fecha_llegada_cliente" : "2019-09-05"
+	},
+	{
+		"nro_pedido" : "289-19",
+		"fecha_llegada_cliente" : "2019-09-05"
+	},
+	{
+		"nro_pedido" : "291-19",
+		"fecha_llegada_cliente" : "2019-09-05"
+	},
+	{
+		"nro_pedido" : "292-19",
+		"fecha_llegada_cliente" : "2019-09-05"
+	},
+	{
+		"nro_pedido" : "293-19",
+		"fecha_llegada_cliente" : "2019-09-05"
+	},
+	{
+		"nro_pedido" : "170-19",
+		"fecha_llegada_cliente" : "2019-09-06"
+	},
+	{
+		"nro_pedido" : "171-19",
+		"fecha_llegada_cliente" : "2019-09-06"
+	},
+	{
+		"nro_pedido" : "193-19",
+		"fecha_llegada_cliente" : "2019-09-06"
+	},
+	{
+		"nro_pedido" : "196-19",
+		"fecha_llegada_cliente" : "2019-09-06"
+	},
+	{
+		"nro_pedido" : "202-19",
+		"fecha_llegada_cliente" : "2019-09-06"
+	},
+	{
+		"nro_pedido" : "212-19",
+		"fecha_llegada_cliente" : "2019-09-06"
+	},
+	{
+		"nro_pedido" : "218-19",
+		"fecha_llegada_cliente" : "2019-09-06"
+	},
+	{
+		"nro_pedido" : "225-19",
+		"fecha_llegada_cliente" : "2019-09-06"
+	},
+	{
+		"nro_pedido" : "288-19",
+		"fecha_llegada_cliente" : "2019-09-06"
+	},
+	{
+		"nro_pedido" : "284-19",
+		"fecha_llegada_cliente" : "2019-09-11"
+	},
+	{
+		"nro_pedido" : "206-19",
+		"fecha_llegada_cliente" : "2019-09-22"
+	},
+	{
+		"nro_pedido" : "239-19",
+		"fecha_llegada_cliente" : "2019-09-22"
+	},
+	{
+		"nro_pedido" : "240-19",
+		"fecha_llegada_cliente" : "2019-09-22"
+	},
+	{
+		"nro_pedido" : "244-19",
+		"fecha_llegada_cliente" : "2019-10-01"
+	},
+	{
+		"nro_pedido" : "245-19",
+		"fecha_llegada_cliente" : "2019-10-02"
+	},
+	{
+		"nro_pedido" : "247-19",
+		"fecha_llegada_cliente" : "2019-10-02"
+	},
+	{
+		"nro_pedido" : "229-19",
+		"fecha_llegada_cliente" : "2019-10-04"
+	},
+	{
+		"nro_pedido" : "231-19",
+		"fecha_llegada_cliente" : "2019-10-04"
+	},
+	{
+		"nro_pedido" : "233-19",
+		"fecha_llegada_cliente" : "2019-10-04"
+	},
+	{
+		"nro_pedido" : "235-19",
+		"fecha_llegada_cliente" : "2019-10-04"
+	},
+	{
+		"nro_pedido" : "242-19",
+		"fecha_llegada_cliente" : "2019-10-04"
+	},
+	{
+		"nro_pedido" : "252-19",
+		"fecha_llegada_cliente" : "2019-10-04"
+	},
+	{
+		"nro_pedido" : "264-19",
+		"fecha_llegada_cliente" : "2019-10-04"
+	},
+	{
+		"nro_pedido" : "266-19",
+		"fecha_llegada_cliente" : "2019-10-04"
+	},
+	{
+		"nro_pedido" : "227-19",
+		"fecha_llegada_cliente" : "2019-10-06"
+	},
+	{
+		"nro_pedido" : "228-19",
+		"fecha_llegada_cliente" : "2019-10-06"
+	},
+	{
+		"nro_pedido" : "230-19",
+		"fecha_llegada_cliente" : "2019-10-06"
+	},
+	{
+		"nro_pedido" : "241-19",
+		"fecha_llegada_cliente" : "2019-10-06"
+	},
+	{
+		"nro_pedido" : "243-19",
+		"fecha_llegada_cliente" : "2019-10-06"
+	},
+	{
+		"nro_pedido" : "246-19",
+		"fecha_llegada_cliente" : "2019-10-06"
+	},
+	{
+		"nro_pedido" : "232-19",
+		"fecha_llegada_cliente" : "2019-10-11"
+	},
+	{
+		"nro_pedido" : "234-19",
+		"fecha_llegada_cliente" : "2019-10-11"
+	},
+	{
+		"nro_pedido" : "236-19",
+		"fecha_llegada_cliente" : "2019-10-14"
+	},
+	{
+		"nro_pedido" : "237-19",
+		"fecha_llegada_cliente" : "2019-10-14"
+	},
+	{
+		"nro_pedido" : "238-19",
+		"fecha_llegada_cliente" : "2019-10-14"
+	},
+	{
+		"nro_pedido" : "300-19",
+		"fecha_llegada_cliente" : "2019-10-20"
+	},
+	{
+		"nro_pedido" : "301-19",
+		"fecha_llegada_cliente" : "2019-10-20"
+	},
+	{
+		"nro_pedido" : "304-19",
+		"fecha_llegada_cliente" : "2019-10-22"
+	},
+	{
+		"nro_pedido" : "305-19",
+		"fecha_llegada_cliente" : "2019-10-22"
+	},
+	{
+		"nro_pedido" : "307-19",
+		"fecha_llegada_cliente" : "2019-10-22"
+	},
+	{
+		"nro_pedido" : "303-19",
+		"fecha_llegada_cliente" : "2019-10-27"
+	},
+	{
+		"nro_pedido" : "271-19",
+		"fecha_llegada_cliente" : "2019-11-10"
+	},
+	{
+		"nro_pedido" : "273-19",
+		"fecha_llegada_cliente" : "2019-11-10"
+	},
+	{
+		"nro_pedido" : "277-19",
+		"fecha_llegada_cliente" : "2019-11-10"
+	},
+	{
+		"nro_pedido" : "280-19",
+		"fecha_llegada_cliente" : "2019-11-10"
+	},
+	{
+		"nro_pedido" : "269-19",
+		"fecha_llegada_cliente" : "2019-11-11"
+	},
+	{
+		"nro_pedido" : "272-19",
+		"fecha_llegada_cliente" : "2019-11-11"
+	},
+	{
+		"nro_pedido" : "274-19",
+		"fecha_llegada_cliente" : "2019-11-11"
+	},
+	{
+		"nro_pedido" : "270-19",
+		"fecha_llegada_cliente" : "2019-11-12"
+	},
+	{
+		"nro_pedido" : "360-19",
+		"fecha_llegada_cliente" : "2019-11-26"
+	},
+	{
+		"nro_pedido" : "366-19",
+		"fecha_llegada_cliente" : "2019-11-26"
+	},
+	{
+		"nro_pedido" : "367-19",
+		"fecha_llegada_cliente" : "2019-11-26"
+	},
+	{
+		"nro_pedido" : "365-19",
+		"fecha_llegada_cliente" : "2019-11-28"
+	},
+	{
+		"nro_pedido" : "275-19",
+		"fecha_llegada_cliente" : "2019-12-03"
+	},
+	{
+		"nro_pedido" : "361-19",
+		"fecha_llegada_cliente" : "2019-12-03"
+	},
+	{
+		"nro_pedido" : "368-19",
+		"fecha_llegada_cliente" : "2019-12-07"
+	}
+]
