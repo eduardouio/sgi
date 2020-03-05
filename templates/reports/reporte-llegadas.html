@@ -1,1 +1,25 @@
 {% extends 'base/base.html' %}
+{% block content %}
+<table class="table table-bordered table-hover">
+    <tr>
+        <th>Nro Pedido</th>
+        <th>Parcial</th>
+        <th>Proveedor</th>
+        <th>Nro. Referendo</th>
+        <th>Producto</th>
+        <th>Cap Ml</th>
+        <th>Grado A.</th>
+        <th>Nro Cajas</th>
+        <th>Unds</th>
+        <th>F Llegada</th>
+    </tr>
+    {% for item in data.report %}
+        <tr>
+            {% for k in item %}
+                <td nowrap>{{item[k]}}</td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+
+</table>
+{% endblock content %}
