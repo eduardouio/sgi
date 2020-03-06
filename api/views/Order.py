@@ -38,11 +38,13 @@ class GetCompleteOrderInfoAPIView(APIView):
 class OrderCloseView(APIView):
     """Compueba saldos de un pedido y lo cierra"""
     def get(self, request, nro_pedido):
-        order_sale = OrderProductSale()
-        products_sale = order_sale.get(nro_pedido)
+        order_sale = OrderProductSale(nro_pedido)
+        products_sale = order_sale.get_sale()
+        import ipdb; ipdb.set_trace()
         if products_sale:
-            for item in products_sale['status_general']:
-                if int(item['nro_cajas']) != int(item['nacionalizado']):
+            for item in products_sale['items']:
+                import ipdb; ipdb.set_trace()
+                if int(item['cajas']) != int(item['nacionalizado']):
                     return Response({
                         'nro_pedido':nro_pedido,
                         'is_closable' : 0, 
