@@ -72,7 +72,6 @@ class OrderProductSale(object):
                 'costo_caja' : item.costo_caja * self.type_change_trim,
             })
         return init_sale_product
-    
 
     def get_nationalized(self):
         """ Obtiene lo nacionalizado"""

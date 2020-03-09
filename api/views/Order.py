@@ -30,36 +30,35 @@ class OrderUpdateView(UpdateAPIView):
 
 
 class GetCompleteOrderInfoAPIView(APIView):
-    def get(self,request, nro_order):
-        order = CompleteOrderInfo().get_data(nro_order=nro_order,serialized=True)
+    def get(self, request, nro_order):
+        order = CompleteOrderInfo().get_data(
+            nro_order=nro_order, serialized=True)
         return Response(order)
 
-#/order/close/<nro_pedido>/
+
+# /order/close/<nro_pedido>/
 class OrderCloseView(APIView):
     """Compueba saldos de un pedido y lo cierra"""
     def get(self, request, nro_pedido):
+        order = Order().get_by_order(nro_pedido)
         order_sale = OrderProductSale(nro_pedido)
         products_sale = order_sale.get_sale()
-        import ipdb; ipdb.set_trace()
         if products_sale:
-            for item in products_sale['items']:
-                import ipdb; ipdb.set_trace()
-                if int(item['cajas']) != int(item['nacionalizado']):
-                    return Response({
-                        'nro_pedido':nro_pedido,
-                        'is_closable' : 0, 
-                    })
-            order = Order().get_by_order(nro_pedido)
-            if order.bg_isclosed == 0:
+            if (int(products_sale['sums']['cajas']) == int(
+                products_sale['sums']['nacionalizado'])):
                 order.bg_isclosed = 1
                 order.save()
-                loggin('i', 'Cerrando pedido en SGI')
-            return Response({
-                        'nro_pedido':nro_pedido,
-                        'is_closable' : 1, 
+                return Response({
+                        'nro_pedido': nro_pedido,
+                        'is_closable': 1,
+                    })
+            else:
+                return Response({
+                        'nro_pedido': nro_pedido,
+                        'is_closable': 0,
                     })
         else:
             return Response({
-                        'nro_pedido':nro_pedido,
-                        'is_closable' : 0, 
+                        'nro_pedido': nro_pedido,
+                        'is_closable': 0,
                     })
