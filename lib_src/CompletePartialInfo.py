@@ -20,6 +20,7 @@ from suppliers.models import Supplier
 class CompletePartialInfo(object):
     '''
         Return all information from parcial include order data and int Expenses
+        etste es un ejemplo del comentario en el navegador
     '''
     def __init__(self):
         self.status_parcial = {
