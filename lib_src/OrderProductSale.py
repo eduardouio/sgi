@@ -84,7 +84,7 @@ class OrderProductSale(object):
 
         if all_partials:
             for p in all_partials:
-                if p.bg_isclose == 0:
+                if bool(p.bg_isclosed) == True:
                     details = InfoInvoiceDetail.get_by_partial(p.id_parcial)
                     if details:
                         for det in details:
@@ -100,11 +100,11 @@ class OrderProductSale(object):
 
         for id_item in id_items:
             items_nationalized.append({
-                'detalle_pedido_factura' : id_item,
-                'nombre' : None,
-                'cajas' : 0,
-                'costo_caja' : 0,
-                'fob_tct' : 0,
+                'detalle_pedido_factura': id_item,
+                'nombre': None,
+                'cajas': 0,
+                'costo_caja': 0,
+                'fob_tct': 0,
             })
 
         for item in items_nationalized:

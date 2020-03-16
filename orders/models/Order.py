@@ -145,7 +145,7 @@ class Order(models.Model):
 
     @classmethod
     def get_all(self):
-        return self.objects.all()
+        return self.objects.all().exclude(nro_pedido='000-00')
 
     @classmethod
     def search(self, query):

@@ -77,7 +77,6 @@ var app = new Vue({
     updateLedger: function(){
           console.log('actualizando mayor')
         if (typeof(this.complete_order_info.expenses) != 'object'){                
-          console.log('[Debug] El pedido no tiene gastos')
           return false
       }
       //Cargamos los costos iniciales
@@ -109,7 +108,6 @@ var app = new Vue({
             console.dir(v)
           }
       })
-      console.log('suma reliquidacion ice parcial actual si esta cerrado')
 
       if (this.current_partial.partial.bg_isclosed === 1){
         if(this.current_partial.ledger.bg_mayor){
