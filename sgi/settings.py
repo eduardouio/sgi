@@ -146,7 +146,7 @@ DATABASES = {
         'USER': 'appCordovez',
         'PASSWORD': EMPRESA['db_passwd'],
         'HOST': EMPRESA['db_host'],
-        'PORT': EMPRESA['port'],
+        'PORT': EMPRESA['db_port'],
     }
 }
 
