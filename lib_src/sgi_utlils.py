@@ -6,14 +6,8 @@ def get_host(request):
     '''
     Obtiene la direccion con la que el usuario se conecta al servidor
     '''
-    loggin('i', 'Obteniendo ip del server')
-    # indica si loa configuracion queda en modo red interna
-    is_local = False
-    try:
-        return 'http://{}/'.format(request.META['HTTP_HOST'])
-    except KeyError:
-        loggin('e', 'No se encuentra la variable de Host en el requets')
-        return settings.EMPRESA['url_app']
+    loggin('i', 'Obteniendo ip del server') 
+    return settings.EMPRESA['url_app']
 
 
 def run_query(query):

@@ -15,7 +15,7 @@ class LoginTemplateView(TemplateView):
 
     def get(self, request, *args, **kwargs):
         if request.GET:
-                self.success_url = request.GET['next']
+            self.success_url = request.GET['next']
 
         if request.user.is_authenticated:            
             return HttpResponseRedirect(self.success_url)
