@@ -116,19 +116,6 @@ WSGI_APPLICATION = 'sgi.wsgi.application'
 
 
 DATOS_EMPRESAS = {
-    'cordovez': {
-        'nombre': 'AGENCIAS Y REPRESENTACIONES CORDOVEZ S.A.',
-        'empresa': 'cordovez',
-        'ruc': '1790023516001',
-        'direccion': 'AV. 10 DE AGOSTO N.57-186 Y LEONARDO MURIALDO ',
-        'telefono': '022405911',
-        'email': 'sgi@cordovez.com.ec',
-        'url_logo': 'http://179.49.60.158:8888/img/logo_cordovez.jpg',
-        'url_app': 'http://179.49.60.158:5001/',
-        'url_app_local': 'http://192.168.0.198:5001/',
-        'admin_title': 'A&R Cordovez S.A.',
-        'database': 'cordovezApp',
-    },
     'test': {
         'nombre': 'AMBIENTE DE PRUEBAS TEST',
         'empresa': 'test',
@@ -141,38 +128,15 @@ DATOS_EMPRESAS = {
         'url_app_local': 'http://localhost:8000/',
         'admin_title': 'TEST',
         'database': 'cordovezAppTEST',
-    },
-    'imnac': {
-        'nombre': 'IMNAC IMPORTADORA NACIONAL CIA LTDA',
-        'empresa': 'imnac',
-        'ruc': '1792324289001',
-        'direccion': 'LA PAZ PAUL RIVET 227 Y JAMES ORTON ',
-        'telefono': '022405911',
-        'email': 'sgi@imnac.com.ec',
-        'url_logo': 'http://179.49.60.158:8888/img/logo_imnac.jpg',
-        'url_app': 'http://179.49.60.158:5002/',
-        'url_app_local': 'http://192.168.0.198:5002/',
-        'admin_title': 'IMNAC CIA LTDA',
-        'database': 'imnacApp',
-    },
-    'vid': {
-        'nombre': 'VIDINTERNACIONAL S.A.',
-        'empresa': 'vid',
-        'ruc': '1791771907001',
-        'direccion': 'AV. 10 DE AGOSTO N.57-186 Y LEONARDO MURIALDO ',
-        'telefono': '022405911',
-        'email': 'sgi@vidinternacional.com.ec',
-        'url_logo': 'http://179.49.60.158:8888/img/logo_vid.jpg',
-        'url_app': 'http://179.49.60.158:5003/',
-        'url_app_local': 'http://192.168.0.198:5003/',
-        'admin_title': 'VIDINTERNACIONAL S.A.',
-        'database': 'vidApp',
+        'db_host' : '179.49.60.158',
+        'db_port' : '3306',
+        'db_passwd' : '\DBGfW<7;vBa5(LB',
 
     },
 }
 
 # Seleccionamos la empresa
-EMPRESA = DATOS_EMPRESAS['cordovez']
+EMPRESA = DATOS_EMPRESAS['test']
 GRAPPELLI_ADMIN_TITLE = EMPRESA['admin_title']
 
 DATABASES = {
@@ -180,9 +144,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': EMPRESA['database'],
         'USER': 'appCordovez',
-        'PASSWORD': '\DBGfW<7;vBa5(LB',
-        'HOST': '179.49.60.158',
-        'PORT': '3306',
+        'PASSWORD': EMPRESA['db_passwd'],
+        'HOST': EMPRESA['db_host'],
+        'PORT': EMPRESA['port'],
     }
 }
 
