@@ -4,7 +4,6 @@ from lib_src import get_host
 
 
 class ListFilesTemplateView(LoginRequiredMixin, TemplateView):
-    login_url = '/admin/'
     template_name = "filemanager/lista_archivos.html"
 
 

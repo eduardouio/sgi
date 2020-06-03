@@ -8,7 +8,6 @@ from lib_src import InvoicesUtils
 class InvoiceListTemplateView(LoginRequiredMixin, TemplateView):
     '''Muestra la lista de facturas por aprobar'''
     template_name = 'audit/listado-facturas.html'
-    login_url = '/'
 
     # /auditoria/
     def get(self, request, *args, **kwargs):

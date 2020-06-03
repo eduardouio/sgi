@@ -16,7 +16,6 @@ from partials.models.Partial import Partial
 #/costos/parcial/[nro-pedido]/[ornidal_parcial]/
 class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
     template_name = 'costings/liquidar_parcial.html'
-    login_url = '/admin/'
 
     def get(self, request, nro_order , ordinal_parcial , *args, **kwargs):
         """

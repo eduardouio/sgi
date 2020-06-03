@@ -11,7 +11,6 @@ from orders.models.Order import Order
 
 # /costos/pedio/{nro_pedido}
 class LiquidateOrderTemplateView(LoginRequiredMixin, TemplateView):
-    login_url = '/admin/'
     template_name = 'costings/liquidar_pedido.html'
     
     def get(self, request, nro_order , *args, **kwargs):

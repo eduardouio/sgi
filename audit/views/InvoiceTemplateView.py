@@ -8,7 +8,6 @@ from lib_src.sgi_utlils import get_host
 #/auditoria/factura/<id_invoice>/
 class InvoiceTemplateView(LoginRequiredMixin,TemplateView):
     template_name = 'audit/mostrar-factura.html'
-    login_url = '/'
 
 
     def get(self, request, id_invoice, *args, **kwargs):

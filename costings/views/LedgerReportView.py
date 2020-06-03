@@ -13,7 +13,6 @@ from partials.models import Partial
 #/costos/saldo-mayor-general/
 class LedgerReportView(LoginRequiredMixin, TemplateView):
     template_name = 'costings/saldo_mayor_general.html'
-    loggin_url = '/'
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)

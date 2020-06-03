@@ -8,7 +8,6 @@ from lib_src import AnexoICE
 # /reportes/anexo-ice/<int:year>/<int:month>/
 class ICEAnexoReportTemplateView(LoginRequiredMixin, TemplateView):
     '''Anexo ICE segundo formato contable'''
-    login_url = '/'
     template_name = 'reports/anexo_ice.html'
 
     def get(self, request, year, month, *args, **kwargs):

@@ -63,7 +63,7 @@ class LoginTemplateView(TemplateView):
 # /logout/
 class LogoutRedirectView(RedirectView):
     """Realiza el cierre de la sesion del usuario"""
-    url = '/'
+    url = 'login/'
 
     def get(self, request, *args, **kwargs):
         logout(request)

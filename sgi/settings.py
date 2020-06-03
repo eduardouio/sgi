@@ -202,3 +202,5 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.sep.join(os.path.abspath(
     __file__).split(os.sep)[:-2]+['media'])
 MEDIA_URL = '/media/'
+
+LOGIN_URL = '/login/'

@@ -6,7 +6,6 @@ from lib_src import LocalWarenhouseArrivals
 
 # /reportes/llegadas/bodega/local/<year>/<month>/
 class WarenhouseArrivalsTemplateView(LoginRequiredMixin, TemplateView):
-    login_url = '/'
     template_name = 'reports/reporte-llegadas.html'
 
     def get(self, requets, year, month, *args, **kwargs):        

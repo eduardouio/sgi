@@ -10,7 +10,6 @@ from partials.models import Partial
 
 
 class UploadFileView(LoginRequiredMixin, FormView):
-    login_url = '/admin/'
     form_class = FileUploadModelForm
     template_name = 'filemanager/frm_subir_archivos.html'
 

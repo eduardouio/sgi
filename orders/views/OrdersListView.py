@@ -11,7 +11,6 @@ from logs.app_log import loggin
 
 #/pedidos/listar/
 class OrdersListView(LoginRequiredMixin, TemplateView):
-    login_url = '/'
     template_name = 'orders/lista_pedidos.html'
 
     def get(self, request, *args, **kwargs):
