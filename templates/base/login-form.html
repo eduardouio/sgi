@@ -17,7 +17,7 @@
     <title>Inicio de Sesión</title>
     <style>
      body { 
-         background: url('http://179.49.60.158:8888/cordovez//img/appbackground.jpg') no-repeat center center fixed; 
+         background: url('http://179.49.60.158:8888/cordovez/img/appbackground.jpg') no-repeat center center fixed; 
          -webkit-background-size: cover;
          -moz-background-size: cover;
          -o-background-size: cover;
@@ -100,7 +100,7 @@ body {
     {% if have_next %}
       <input type="hidden" name="next" value="{{ next }}">
     {% endif %}
-  <img class="mb-4" src="{{ empresa.url_logo }}" alt="{{ empresa.nombre }}">
+  <img class="mb-4" src="{{ empresa.url_logo }}" alt="{{ empresa.nombre }}" style="width:250px;height:auto;">
   <label for="inputEmail" class="sr-only">Usuario</label>
   <input type="text" id="inputEmail" name="username" class="form-control" placeholder="Usuario" required autofocus>
   <label for="inputPassword" class="sr-only">Password</label>
