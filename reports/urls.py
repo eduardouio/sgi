@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import (AllOpenOrders, HomeTemplateView,
+from .views import (AllOpenOrders, HomeReportsTemplateView,
                     ICEAnexoReportTemplateView, ICEReportTemplateView,
                     PurcharseSupplierTemplateView,
                     WarenhouseArrivalsTemplateView)
@@ -8,7 +8,7 @@ from .views import (AllOpenOrders, HomeTemplateView,
 app_name = 'reports'
 
 urlpatterns = [
-    path('', HomeTemplateView.as_view(),name='home-reportes'),
+    path('', HomeReportsTemplateView.as_view(),name='home-reportes'),
     path('ice/<int:year>/<int:month>/', ICEReportTemplateView.as_view(),name='reporte-ice'),
     path('anexo-ice/<int:year>/<int:month>/',ICEAnexoReportTemplateView.as_view(), name='anexo-ice'),
     path('compras/<str:id_supplier>/', PurcharseSupplierTemplateView.as_view(),name='reporte-compras'),

@@ -21,3 +21,4 @@ class ICEReportTemplateView(LoginRequiredMixin, TemplateView):
             'report' : ReportICE(year, month).get()
         }     
         return self.render_to_response(context)
+

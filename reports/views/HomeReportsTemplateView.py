@@ -6,7 +6,7 @@ from logs import loggin
 
 
 # /reportes/
-class HomeTemplateView(LoginRequiredMixin, TemplateView):
+class HomeReportsTemplateView(LoginRequiredMixin, TemplateView):
     template_name = 'reports/home-reports.html'
 
     def get(self, request, *args, **kwargs):

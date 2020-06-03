@@ -1,4 +1,4 @@
-from .HomeTemplateView import HomeTemplateView
+from .HomeReportsTemplateView import HomeReportsTemplateView
 from .ICEAnexoReportTemplateView import ICEAnexoReportTemplateView
 from .ICEReportTemplateView import ICEReportTemplateView
 from .PurcharseSupplierTemplateView import PurcharseSupplierTemplateView
