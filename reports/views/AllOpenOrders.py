@@ -1,5 +1,4 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.conf import settings
 from django.views.generic import TemplateView
 from orders.models import Order
 from lib_src import CloseOpenOrdersWithoutProduct
@@ -22,7 +21,6 @@ class AllOpenOrders(LoginRequiredMixin, TemplateView):
                 orders.append(o)
         context['data'] = {
             'title_page': 'Pedidos Abiertos',
-            'empresa': settings.EMPRESA,
             'data': orders
             }
         return self.render_to_response(context)

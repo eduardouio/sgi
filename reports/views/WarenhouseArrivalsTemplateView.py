@@ -1,6 +1,5 @@
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.conf import settings
 from lib_src import LocalWarenhouseArrivals
 
 
@@ -12,7 +11,6 @@ class WarenhouseArrivalsTemplateView(LoginRequiredMixin, TemplateView):
         context = self.get_context_data(**kwargs)
         report = LocalWarenhouseArrivals(year, month).get()
         context['data'] = {
-            'empresa': settings.EMPRESA,
             'title_page': 'Llegadas Bodega Local',
             'report': report,
         }

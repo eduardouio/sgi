@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.views.generic import TemplateView
 
 from lib_src import ExpenseSerializer, OrderProductSale, ExpensesReportSale
@@ -29,7 +28,6 @@ class GeneralLedgerTemplateView(TemplateView):
             break
             
         context['data'] = {
-            'empresa' : settings.EMPRESA,
             'orders' : data,
         }
 

@@ -1,9 +1,9 @@
-from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import Group, User
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django.views.generic import RedirectView, TemplateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from logs.app_log import loggin
 
@@ -22,7 +22,6 @@ class LoginTemplateView(TemplateView):
 
         loggin('i', 'intentando inciar sesion')
         context = self.get_context_data(**kwargs)
-        context['empresa'] = settings.EMPRESA
         context['have_next'] = True if request.GET else False
         context['next'] = '' if not request.GET else request.GET['next']
         return self.render_to_response(context)
@@ -61,10 +60,22 @@ class LoginTemplateView(TemplateView):
 
 
 # /logout/
-class LogoutRedirectView(RedirectView):
+class LogoutRedirectView(LoginRequiredMixin, RedirectView):
     """Realiza el cierre de la sesion del usuario"""
     url = 'login/'
 
     def get(self, request, *args, **kwargs):
         logout(request)
         return HttpResponseRedirect(self.get_redirect_url())
+
+
+# /home/
+class HomeTemplateView(LoginRequiredMixin, TemplateView):
+    '''Direcciona al home del proyecto'''
+    template_name = 'base/home.html'
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        context['data'] = {
+        }
+        return self.render_to_response(context)

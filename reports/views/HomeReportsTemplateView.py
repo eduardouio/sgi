@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
@@ -13,7 +12,6 @@ class HomeReportsTemplateView(LoginRequiredMixin, TemplateView):
         loggin('i', 'Llamando a pagina de reportes')
         context = self.get_context_data(**kwargs)
         context['data'] = {
-            'empresa': settings.EMPRESA,
             'title_page': 'Reportes'
         }
         return self.render_to_response(context)

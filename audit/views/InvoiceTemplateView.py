@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 from lib_src import CompletePaidInvoice
@@ -17,17 +16,13 @@ class InvoiceTemplateView(LoginRequiredMixin,TemplateView):
         if invoice is None:
             self.template_name = 'errors/404.html'
             context['data'] = {
-                'empresa' : settings.EMPRESA,
                 'title_page' : 'Factura no encontrada',
                 'msg' : 'La factura {} no existe'.format(id_invoice),
             }
             return self.render_to_response(context)
 
         context['data'] = {
-            'empresa' : settings.EMPRESA,
             'title_page' : 'Factura {} [{}]'.format(invoice['invoice'].nro_factura, id_invoice),
-            'host' : get_host(request),
-            'request' : request,
             'invoice' : invoice,
         }  
         return self.render_to_response(context)

@@ -1,7 +1,6 @@
 import json
 from decimal import Decimal
 
-from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.views.generic import RedirectView, TemplateView
@@ -30,7 +29,6 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
         if not self.check_order_and_partial_exist(nro_order, ordinal_parcial):
             self.template_name = 'errors/404.html'
             context['data'] = {
-                'empresa' : settings.EMPRESA,
                 'title_page' : 'Parcial No Econtrado',
                 'msg' : 'El parcial que busca no existe',
             }
@@ -97,7 +95,6 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
             }
         
         context['data'] = {
-            'empresa' : settings.EMPRESA,
             'title_page' : 'Liquidacion Parcial %s'%ordinal_parcial,
             'nro_order' : nro_order,
             'ordinal_partial' : int(ordinal_parcial),

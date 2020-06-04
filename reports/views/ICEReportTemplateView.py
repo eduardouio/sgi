@@ -1,6 +1,5 @@
 import calendar
 
-from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
@@ -14,7 +13,6 @@ class ICEReportTemplateView(LoginRequiredMixin, TemplateView):
     def get(self, response, year, month, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         context['data'] = {
-            'empresa': settings.EMPRESA,
             'title_page': 'Rreporte ICE {} {}'.format(
                 year,calendar.month_name[month]
                 ),

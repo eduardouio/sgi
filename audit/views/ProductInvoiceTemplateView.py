@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.views.generic import TemplateView
 from orders.models import OrderInvoice, OrderInvoiceDetail
 
@@ -14,7 +13,6 @@ class ProductInvoiceTemplateView(TemplateView):
         if invoice is None:
             self.template_name = 'errors/404.html'
             context['data'] = {
-                'empresa' : settings.EMPRESA,
                 'title_page' : 'Factura no encontrada',
                 'msg' : 'La factura {} no existe'.format(id_invoice),
             }
@@ -22,7 +20,6 @@ class ProductInvoiceTemplateView(TemplateView):
         invoice_items = OrderInvoiceDetail.get_by_id_order_invoice(id_invoice)
 
         context['data'] = {
-            'empresa' : settings.EMPRESA,
             'title_page' : 'Factura del Exterior',
             'invoice' : invoice,
             'invoice_items': invoice_items,

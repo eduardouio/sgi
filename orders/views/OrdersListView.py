@@ -1,5 +1,4 @@
 #django
-from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
@@ -28,7 +27,6 @@ class OrdersListView(LoginRequiredMixin, TemplateView):
         context = self.get_context_data(**kwargs)
         context['data']  = {
             'search' : search,
-            'empresa' : settings.EMPRESA,
             'title_page' : 'Pedidos por liquidar',
             'request' : request,
             'host' : get_host(request),

@@ -1,6 +1,5 @@
 from django.views.generic import TemplateView
 from logs import loggin
-from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from lib_src import AnexoICE
 
@@ -16,7 +15,6 @@ class ICEAnexoReportTemplateView(LoginRequiredMixin, TemplateView):
         anexo = AnexoICE(year, month).get()
 
         context['data'] = {
-            'empresa': settings.EMPRESA,
             'title_page': 'Anexo ICE {} {}'.format(year, month),
             'anexo': anexo,
             'year': year,

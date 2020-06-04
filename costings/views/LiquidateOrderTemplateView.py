@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView
@@ -32,7 +31,6 @@ class LiquidateOrderTemplateView(LoginRequiredMixin, TemplateView):
             'legder' : 0,
         }
         context['data']  = {
-            'empresa' : settings.EMPRESA,
             'title_page' : 'Liquidación Pedido {} Consumo'.format(nro_order),
             'nro_order' : nro_order,
             'complete_order_info' : cmp_order_inf,

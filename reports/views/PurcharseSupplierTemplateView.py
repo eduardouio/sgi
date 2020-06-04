@@ -1,5 +1,4 @@
 from django.views.generic import TemplateView
-from django.conf import settings
 from logs import loggin
 from lib_src import PurcharsesProductSupplier
 
@@ -12,7 +11,6 @@ class PurcharseSupplierTemplateView(TemplateView):
         purcharses = PurcharsesProductSupplier()        
     
         context['data'] = {
-             'empresa': settings.EMPRESA,
             'title_page': 'Reporte de Compras',
             'report' : purcharses.get_purcharses('P9999999999993')
         }

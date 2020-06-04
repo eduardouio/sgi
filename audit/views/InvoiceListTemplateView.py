@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from lib_src import InvoicesUtils
@@ -22,7 +21,6 @@ class InvoiceListTemplateView(LoginRequiredMixin, TemplateView):
             foreign_invoices = invoice_utils.get_unapproved_foreign_invoices()
             
         context['data'] = {
-            'empresa': settings.EMPRESA,
             'title_page': 'Facturas Pendientes',
             'local_invoices': local_invoices,
             'foreign_invoices' : foreign_invoices,

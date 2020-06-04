@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
@@ -32,7 +31,6 @@ class LedgerReportView(LoginRequiredMixin, TemplateView):
             mayor.append({**product_sale,**expenses_sale , **{'nro_order': nro_order, 'saldo_mayor':saldo_mayor}})
 
         context['data'] = {
-            'empresa' : settings.EMPRESA,
             'title_page' : 'Saldo General de Mayor',
             'host' : get_host(request),
             'mayor' : mayor,
