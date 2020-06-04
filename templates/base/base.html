@@ -34,9 +34,9 @@
     <div class="collapse navbar-collapse bg-dark" id="navbarColor01">
       <ul class="navbar-nav mr-auto">
         {# menu adicional #}
-        {# <li class="nav-item"> #}
-        {#   <a class="nav-link" href="#">About</a> #}
-        {# </li> #}
+        <li class="nav-item">
+          <a class="nav-link" href="#">({{ request.user.first_name }} {{ request.user.last_name }})</a> 
+         </li> 
       </ul>
       {% if '/auditoria/' in request.path   %}
       {# Buscador de auditoria #}
@@ -66,11 +66,11 @@
   <div class="container-fluid">  
   <div class="row">
   <div class="col-12 text-right" style="line-height: 1">
-  <div style="border-right:0.04rem solid teal;padding:0.3rem">
-  <small>
+  <div style="border-right:0.5rem solid teal;padding:1rem;border-radius:15px;border-top:0.04rem solid #aaa;">
+  <small style="font-size:10px;">
          &copy; Derechos reservados {{ request.enterprise.nombre }} 
          <br>
-        <strong class="text-primary">{{ request.user.first_name }} {{ request.user.last_name }}</strong> <strong id="timestamp"></strong>
+        <strong class="text-primary">{{ request.user.first_name }} {{ request.user.last_name }} ({{ request.user }})</strong> <strong id="timestamp"></strong>
         <br />
         Desarrollado por: <a href="mailto:eduardouio7@gmail.com">eduardouio7@gmail.com</a>
       </small>
@@ -92,7 +92,7 @@ $(document).ready(function(){
     var dt = new Date();
     var time =  dt.getDate() + "/" + (dt.getMonth() + 1) + "/" + dt.getFullYear() + " " + dt.getHours() + ":" + dt.getMinutes();
     $('#timestamp').text(time)
-  }, 5000)
+  }, 1000)
 })
 </script>
 {% block footer %}
