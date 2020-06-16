@@ -128,7 +128,7 @@ DATOS_EMPRESAS = {
         'url_app_local': 'http://localhost:8000/',
         'admin_title': 'TEST',
         'database': 'cordovezAppTEST',
-        'db_host' : '179.49.60.158',
+        'db_host' : '179.46.60.158',
         'db_port' : '3306',
         'db_passwd' : '\DBGfW<7;vBa5(LB',
 
@@ -146,7 +146,7 @@ DATABASES = {
         'USER': 'appCordovez',
         'PASSWORD': EMPRESA['db_passwd'],
         'HOST': EMPRESA['db_host'],
-        'PORT': EMPRESA['port'],
+        'PORT': EMPRESA['db_port'],
     }
 }
 
