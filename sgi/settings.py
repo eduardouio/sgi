@@ -117,7 +117,7 @@ WSGI_APPLICATION = 'sgi.wsgi.application'
 
 
 DATOS_EMPRESAS = {
-    'test': {
+    'test_remoto': {
         'nombre': 'AMBIENTE DE PRUEBAS TEST',
         'empresa': 'test',
         'ruc': '1722919725001',
@@ -128,8 +128,25 @@ DATOS_EMPRESAS = {
         'url_app': 'http://localhost:8000/',
         'url_app_local': 'http://localhost:8000/',
         'admin_title': 'TEST',
-        'database': 'cordovezAppTEST',
+        'database': 'vidApp',
         'db_host' : '179.49.60.158',
+        'db_port' : '3306',
+        'db_passwd' : '\DBGfW<7;vBa5(LB',
+
+    },
+     'test_local': {
+        'nombre': 'AMBIENTE DE PRUEBAS TEST',
+        'empresa': 'test',
+        'ruc': '1722919725001',
+        'direccion': 'AV COLO 1133 Y AMAZONAS EDF ARISTA OF 500 ',
+        'telefono': '022405911',
+        'email': 'sgi@cordovez.com.ec',
+        'url_logo': 'http://179.49.60.158:8888/img/logo_test.png',
+        'url_app': 'http://localhost:8000/',
+        'url_app_local': 'http://localhost:8000/',
+        'admin_title': 'TEST',
+        'database': 'vidApp',
+        'db_host' : '192.168.0.198',
         'db_port' : '3306',
         'db_passwd' : '\DBGfW<7;vBa5(LB',
 
@@ -137,8 +154,8 @@ DATOS_EMPRESAS = {
 }
 
 # Seleccionamos la empresa
-EMPRESA = DATOS_EMPRESAS['test']
-GRAPPELLI_ADMIN_TITLE = EMPRESA['admin_title']
+EMPRESA = DATOS_EMPRESAS['test_remoto']
+GRAPPELLI_ADMIN_TITE = EMPRESA['admin_title']
 
 DATABASES = {
     'default': {

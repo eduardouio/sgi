@@ -100,7 +100,8 @@ body {
     {% if have_next %}
       <input type="hidden" name="next" value="{{ next }}">
     {% endif %}
-  <img class="mb-4" src="{{ empresa.url_logo }}" alt="{{ empresa.nombre }}" style="width:250px;height:auto;">
+  <img class="mb-4" src="{{ enterprise.url_logo }}" alt="{{ enterprise.nombre }}" style="width:250px;height:auto;">
+  <span>{{ enterprise.nombre }}</span>
   <label for="inputEmail" class="sr-only">Usuario</label>
   <input type="text" id="inputEmail" name="username" class="form-control" placeholder="Usuario" required autofocus>
   <label for="inputPassword" class="sr-only">Password</label>
@@ -111,7 +112,7 @@ body {
     </label>
   </div>
   <button class="btn btn-lg btn-primary btn-block" type="submit">Iniciar Sesi&oacute;n</button>
-  <p class="mt-5 mb-3 text-muted">Todos los derechos reservados <br/>  {{ empresa.nombre }} &copy; 2020 <br>
+  <p class="mt-5 mb-3 text-muted">Todos los derechos reservados <br/>  {{ enterprise.direccion }} &copy; 2020 <br>
   <small>Desarrollado por Eduardo Villota eduardouio7@gmail.com </small> </p>
 </form>
 

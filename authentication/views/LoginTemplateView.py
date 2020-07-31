@@ -1,13 +1,14 @@
-from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import Group, User
+from django.contrib.auth import authenticate, login
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
-from django.views.generic import RedirectView, TemplateView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import TemplateView
+from sgi.settings import EMPRESA
 
 from logs.app_log import loggin
 
 
+# /login/
 class LoginTemplateView(TemplateView):
     template_name = 'base/login-form.html'
     success_url = 'pedidos/listar/'
@@ -24,6 +25,7 @@ class LoginTemplateView(TemplateView):
         context = self.get_context_data(**kwargs)
         context['have_next'] = True if request.GET else False
         context['next'] = '' if not request.GET else request.GET['next']
+        context['enterprise'] = EMPRESA
         return self.render_to_response(context)
 
     def post(self, request, *args, **kwargs):
@@ -57,25 +59,3 @@ class LoginTemplateView(TemplateView):
 
             return HttpResponseRedirect(self.success_url)
         return HttpResponseRedirect(self.error_url)
-
-
-# /logout/
-class LogoutRedirectView(LoginRequiredMixin, RedirectView):
-    """Realiza el cierre de la sesion del usuario"""
-    url = 'login/'
-
-    def get(self, request, *args, **kwargs):
-        logout(request)
-        return HttpResponseRedirect(self.get_redirect_url())
-
-
-# /home/
-class HomeTemplateView(LoginRequiredMixin, TemplateView):
-    '''Direcciona al home del proyecto'''
-    template_name = 'base/home.html'
-
-    def get(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
-        context['data'] = {
-        }
-        return self.render_to_response(context)
