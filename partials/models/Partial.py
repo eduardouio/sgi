@@ -6,6 +6,7 @@ from simple_history.models import HistoricalRecords
 from logs.app_log import loggin
 from orders.models.Order import Order
 
+
 class Partial(models.Model):
     id_parcial = models.AutoField(primary_key=True)
     nro_pedido = models.ForeignKey(Order,models.PROTECT, db_column='nro_pedido')

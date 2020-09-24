@@ -1,0 +1,11 @@
+django
+django-grappelli
+django-simple_history
+django-guardian
+django-rest_framework
+django-import_export
+django_extensions
+numpy
+PyPDF2
+PyMySQL
+jinja2

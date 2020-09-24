@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'guardian',
     'rest_framework',
     'import_export',
+    'django_extensions',
     'authentication',
     'numpy',
     'api',
@@ -128,13 +129,13 @@ DATOS_EMPRESAS = {
         'url_app': 'http://localhost:8000/',
         'url_app_local': 'http://localhost:8000/',
         'admin_title': 'TEST',
-        'database': 'vidApp',
+        'database': 'cordovezAppTEST',
         'db_host' : '179.49.60.158',
         'db_port' : '3306',
         'db_passwd' : '\DBGfW<7;vBa5(LB',
 
     },
-     'test_local': {
+    'test_local': {
         'nombre': 'AMBIENTE DE PRUEBAS TEST',
         'empresa': 'test',
         'ruc': '1722919725001',
@@ -145,23 +146,23 @@ DATOS_EMPRESAS = {
         'url_app': 'http://localhost:8000/',
         'url_app_local': 'http://localhost:8000/',
         'admin_title': 'TEST',
-        'database': 'vidApp',
-        'db_host' : '192.168.0.198',
-        'db_port' : '3306',
-        'db_passwd' : '\DBGfW<7;vBa5(LB',
+        'database': 'cordovezApp',
+        'db_host': 'localhost',
+        'db_port': '3306',
+        'db_passwd': '#$%#$%$#!SDFSDF()elian.2011$$#',
 
     },
 }
 
 # Seleccionamos la empresa
-EMPRESA = DATOS_EMPRESAS['test_remoto']
+EMPRESA = DATOS_EMPRESAS['test_local']
 GRAPPELLI_ADMIN_TITE = EMPRESA['admin_title']
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': EMPRESA['database'],
-        'USER': 'appCordovez',
+        'USER': 'root',
         'PASSWORD': EMPRESA['db_passwd'],
         'HOST': EMPRESA['db_host'],
         'PORT': EMPRESA['db_port'],

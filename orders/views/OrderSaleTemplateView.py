@@ -1,6 +1,5 @@
 from multiprocessing import context
 
-from django.shortcuts import render_to_response
 from django.views.generic import TemplateView
 
 from lib_src import OrderProductSale

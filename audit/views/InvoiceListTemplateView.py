@@ -27,3 +27,14 @@ class InvoiceListTemplateView(LoginRequiredMixin, TemplateView):
         }
         return self.render_to_response(context)
         
+
+
+class inicio():
+    """[summary]
+
+    Args:
+        Object ([type]): [description]
+    """
+
+    def __init__(self):
+        pass
