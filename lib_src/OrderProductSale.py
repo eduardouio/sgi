@@ -5,10 +5,13 @@ from logs import loggin
 
 
 class OrderProductSale(object):
-    '''
-        Retorna los saldos de un pedido, los productos que se encuentren en
-        un parcial no son tomados como saldo
-    '''
+    """get a sale of order items, no son conciderados los productos
+    que se ecuentran en los parciales con liquidacion   
+
+    Arguments:
+        nro_order {str} -- numero de pedido
+    """
+
     def __init__(self, nro_order):
         self.nro_order = nro_order
         self.have_partials = False

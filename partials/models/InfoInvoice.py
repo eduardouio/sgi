@@ -64,15 +64,25 @@ class InfoInvoice(models.Model):
         
     @classmethod
     def get_by_order(self, nro_order):
-        parcials = Partial.get_by_order(nro_order) 
+        """Retorna las facturas informativas de un pedido
+
+        Arguments:
+            nro_order {str} -- 
+
+        Returns:
+            querySet | None
+        """
+        parcials = Partial().get_by_order(nro_order) 
         infoinvoices = []
         
-        if parcials.first() is None:
+        if parcials.count() == 0:
             loggin('w', 'El pedido {nro_order} no tiente facturas informativas'.format(nro_order=nro_order))
             return None
 
         for p in parcials:
-            infoinvoices.append(self.objects.filter(id_parcial=p))
+            inf_invoice = self.objects.filter(id_parcial=p)
+            if inf_invoice:
+                infoinvoices.append(inf_invoice.first())
 
         return infoinvoices
     
