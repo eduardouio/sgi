@@ -1,5 +1,5 @@
 from orders.models import OrderInvoiceDetail, Order
-from partials.models import InfoInvoice, InfoInvoiceDetail
+from partials.models import InfoInvoice, InfoInvoiceDetail, Partial
 
 from logs.app_log import loggin
 
@@ -77,19 +77,18 @@ class OrderDetailProductSale():
             return self.get_init_sale(order.nro_pedido)
 
         nationalized = []
-        info_invoices = InfoInvoice().get_by_order(order.nro_pedido)
+        partials = Partial().get_by_order(order.nro_pedido)
 
-        for inv in info_invoices:
-            nationalized.append(
-                InfoInvoiceDetail().get_by_info_invoice(
-                    inv.id_factura_informativa
-                ))
+        for p in partials:
+            if p.bg_isliquidated:
+                nationalized.append(self.get_partial_products(p.id_parcial))
 
-        import ipdb; ipdb.set_trace()               
         # TODO terminar de recolectar los productos nacionalizados
         # solo quremos el saldo del produco, nada mas
         return nationalized
-        
+
+    def get_partial_products(self, nro_partial):
+        items = InfoInvoiceDetail().get_by_partial(id_partial)
 
     def calculate_sale(self, init_sale, nationalized):
         return []

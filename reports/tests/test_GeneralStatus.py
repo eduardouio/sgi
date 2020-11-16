@@ -120,7 +120,7 @@ class TestGeneralStatusOrders(TestCase):
                     if s['nro_cajas'] != r['nro_cajas']:
                         loggin('t', 'Falla en cajas')
                         return False
-                    if s['costo_caja'] != r['costo_caja']:
+                    if round(float(s['costo_caja']), 3) != round(float(r['costo_caja']), 3):
                         loggin('t', 'Falla en costo')
                         return False
         return True
