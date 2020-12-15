@@ -130,9 +130,9 @@ DATOS_EMPRESAS = {
         'url_app_local': 'http://localhost:8000/',
         'admin_title': 'TEST',
         'database': 'cordovezAppTEST',
-        'db_host' : '179.49.60.158',
-        'db_port' : '3306',
-        'db_passwd' : '\DBGfW<7;vBa5(LB',
+        'db_host': '179.49.60.158',
+        'db_port': '3306',
+        'db_passwd': '\DBGfW<7;vBa5(LB',
 
     },
     'test_local': {
@@ -149,7 +149,7 @@ DATOS_EMPRESAS = {
         'database': 'cordovezApp',
         'db_host': 'localhost',
         'db_port': '3306',
-        'db_passwd': '#$%#$%$#!SDFSDF()elian.2011$$#',
+        'db_passwd': 'elian.2011',
 
     },
 }

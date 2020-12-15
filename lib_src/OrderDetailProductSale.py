@@ -44,8 +44,9 @@ class OrderDetailProductSale():
             'sale': self.calculate_sale(init_sale, nationalized)
         }
 
-    def get_init_sale(self, nro_order):                   
-        # TODO validar que sume por producto, ya que hay pedidos con productos repetidos
+    def get_init_sale(self, nro_order):
+        # TODO validar que sume por producto,
+        # tenemos pedidos con productos repetidos
         products = OrderInvoiceDetail().get_by_order(nro_order)
         if products is None:
             return None
@@ -53,12 +54,13 @@ class OrderDetailProductSale():
         init_sale = []
         for p in products:
             init_sale.append({
-                'cod_contable': p.cod_contable,
-                'nro_cajas': p.nro_cajas,
-                'costo_caja': p.costo_caja
+                'detalle_pedido_factura': p.detalle_pedido_factura,
+                'cod_contable': p.cod_contable_id,
+                'nro_cajas': float(p.nro_cajas),
+                'costo_caja': float(p.costo_caja)
             })
 
-        return init_sale
+        return self.unify_items(init_sale)
 
     def get_nationalized(self, order):
         """busca los productos que han sido nacionalizados, la referencia
@@ -78,31 +80,48 @@ class OrderDetailProductSale():
 
         nationalized = []
         partials = Partial().get_by_order(order.nro_pedido)
-
         for p in partials:
             if p.bg_isliquidated:
-                nationalized.append(self.get_partial_products(p.id_parcial))
+                nationalized += list(InfoInvoiceDetail().get_by_partial(p.id_parcial))
 
-        # TODO terminar de recolectar los productos nacionalizados
-        # solo quremos el saldo del produco, nada mas
-        return nationalized
+        all_products = [{
+                'detalle_pedido_factura': item.detalle_pedido_factura_id,
+                'cod_contable': item.detalle_pedido_factura.cod_contable_id,
+                'nro_cajas': float(item.nro_cajas),
+                'costo_caja': float(item.costo_caja)
+            } for item in nationalized]
 
-    def get_partial_products(self, nro_partial):
-        items = InfoInvoiceDetail().get_by_partial(id_partial)
+        return self.unify_items(all_products)
 
     def calculate_sale(self, init_sale, nationalized):
-        return []
-        sale = []
-        for item in init_sale:
-            sale.append({
-                'cod_contable': item['cod_contable'],
-                'nro_cajas': item['nro_cajas'],
-                'costo_caja': item['costo_caja']
-            })
-
-        for item in sale:
-            for nat in nationalized:
-                if item['cod_contable'] == nat['cod_contable']:
-                    item['nro_cajas'] -= nat['nro_cajas']
+        sale = init_sale
+        for itm_sale in sale:
+            for itm_nat in nationalized:
+                pass
 
         return sale
+
+    def unify_items(self, products):
+        """group items for detalle_pedido_factura and sum boxes value
+
+        Args:
+            products (list): list of dict products
+        """
+        index = set([itm['detalle_pedido_factura'] for itm in products])
+        result = []
+        for idx in index:
+            product = {
+                'detalle_pedido_factura': idx,
+                'cod_contable': '',
+                'nro_cajas': 0.0,
+                'costo_caja': 0.0
+            }
+            for item in products:
+                if idx == item['detalle_pedido_factura']:
+                    product['cod_contable'] = item['cod_contable']
+                    product['costo_caja'] = item['costo_caja']
+                    product['nro_cajas'] += item['nro_cajas']
+
+            result.append(product)
+
+        return result
