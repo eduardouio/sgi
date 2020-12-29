@@ -129,7 +129,7 @@ DATOS_EMPRESAS = {
         'url_app': 'http://localhost:8000/',
         'url_app_local': 'http://localhost:8000/',
         'admin_title': 'TEST',
-        'database': 'cordovezAppTEST',
+        'database': 'cuadre',
         'db_host': '179.49.60.158',
         'db_port': '3306',
         'db_passwd': '\DBGfW<7;vBa5(LB',

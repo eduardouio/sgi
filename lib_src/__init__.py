@@ -25,3 +25,4 @@ from lib_src.ExpensesReportSale import ExpensesReportSale
 from lib_src.OrderProductSale import OrderProductSale
 from lib_src.InvoicesUtils import InvoicesUtils
 from lib_src.OrderDetailProductSale import OrderDetailProductSale
+from lib_src.ExpensesWithSale import ExpensesWithSale

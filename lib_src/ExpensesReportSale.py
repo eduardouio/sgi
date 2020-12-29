@@ -46,7 +46,7 @@ class ExpensesReportSale(object):
         values['por_prorratear_gi'] = (float(values['saldo_inicial_gi']) - values['valor_prorrateado_gi']).__round__(2)
         return values
 
-    
+
     def get_last_apportionment(self):
         '''Obtiene los datos del ultimo prorrateo del sistema'''
         complete_order_info = CompleteOrderInfo().get_data(self.nro_order)

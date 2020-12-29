@@ -133,8 +133,7 @@ class Order(models.Model):
     @property
     def diferencia_ice_senae(self):
         return 0
-        diferencia = (self.ice_advalorem + self.ice_especifico 
-                - self.ice_advalorem_pagado- self.ice_especifico_pagado)
+        diferencia = (self.ice_advalorem + self.ice_especifico  - self.ice_advalorem_pagado- self.ice_especifico_pagado)
         return diferencia if diferencia else 0
 
     @property

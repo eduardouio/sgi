@@ -5,6 +5,12 @@
     "editor.rulers": [79,80],
     "workbench.colorCustomizations": {
         "editorRuler.foreground": "#2a9df4"
-    }
+    },
+    "python.testing.pytestArgs": [
+        "."
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.nosetestsEnabled": false,
+    "python.testing.pytestEnabled": true
 
 }
