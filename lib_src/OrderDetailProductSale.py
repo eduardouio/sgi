@@ -38,15 +38,14 @@ class OrderDetailProductSale():
         init_sale = self.get_init_sale(nro_order)
         nationalized = self.get_nationalized(order)
 
-        return {
+        data = {
             'init_sale': init_sale,
             'nationalized': nationalized,
             'sale': self.calculate_sale(init_sale, nationalized)
         }
+        return data
 
     def get_init_sale(self, nro_order):
-        # TODO validar que sume por producto,
-        # tenemos pedidos con productos repetidos
         products = OrderInvoiceDetail().get_by_order(nro_order)
         if products is None:
             return None
@@ -56,11 +55,11 @@ class OrderDetailProductSale():
             init_sale.append({
                 'detalle_pedido_factura': p.detalle_pedido_factura,
                 'cod_contable': p.cod_contable_id,
-                'nro_cajas': float(p.nro_cajas),
+                'nro_cajas': int(p.nro_cajas),
                 'costo_caja': float(p.costo_caja)
             })
 
-        return self.unify_items(init_sale)
+        return init_sale
 
     def get_nationalized(self, order):
         """busca los productos que han sido nacionalizados, la referencia
@@ -87,18 +86,25 @@ class OrderDetailProductSale():
         all_products = [{
                 'detalle_pedido_factura': item.detalle_pedido_factura_id,
                 'cod_contable': item.detalle_pedido_factura.cod_contable_id,
-                'nro_cajas': float(item.nro_cajas),
+                'nro_cajas': int(item.nro_cajas),
                 'costo_caja': float(item.costo_caja)
             } for item in nationalized]
 
         return self.unify_items(all_products)
 
     def calculate_sale(self, init_sale, nationalized):
-        sale = init_sale
-        for itm_sale in sale:
-            for itm_nat in nationalized:
-                pass
-
+        sale = []
+        for itm in init_sale:
+            sale.append({
+                'detalle_pedido_factura': itm['detalle_pedido_factura'],
+                'cod_contable': itm['cod_contable'],
+                'nro_cajas': itm['nro_cajas'],
+                'costo_caja': itm['costo_caja'],
+            })
+        for item in sale:
+            for nat in nationalized:
+                if item['detalle_pedido_factura'] == nat['detalle_pedido_factura']:
+                    item['nro_cajas'] -= nat['nro_cajas']
         return sale
 
     def unify_items(self, products):
@@ -113,7 +119,7 @@ class OrderDetailProductSale():
             product = {
                 'detalle_pedido_factura': idx,
                 'cod_contable': '',
-                'nro_cajas': 0.0,
+                'nro_cajas': 0,
                 'costo_caja': 0.0
             }
             for item in products:

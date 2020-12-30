@@ -130,6 +130,8 @@ DATOS_EMPRESAS = {
         'url_app_local': 'http://localhost:8000/',
         'admin_title': 'TEST',
         'database': 'cordovezApp',
+        #'database': 'imnacApp',
+        #'database': 'vidApp',
         'db_host': 'localhost',
         'db_port': '3306',
         'db_passwd': 'elian.2011',
