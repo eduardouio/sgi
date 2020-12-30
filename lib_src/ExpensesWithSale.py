@@ -21,7 +21,7 @@ class ExpensesWithSale(object):
         cursor = connection.cursor()
         cursor.execute(""" SELECT *
                             FROM v_sgi_provisiones_pagos
-                            WHERE saldo != 0 order by concepto, fecha""")
+                            WHERE saldo != 0 order by tipo, concepto, fecha""")
         columns = [col[0] for col in cursor.description]
         result = [dict(zip(columns, row)) for row in cursor.fetchall()]
         for expense in result:

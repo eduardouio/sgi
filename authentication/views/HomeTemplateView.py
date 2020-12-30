@@ -17,5 +17,7 @@ class HomeTemplateView(LoginRequiredMixin, TemplateView):
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         context['data'] = {
+            'title_page': 'SGI ' + EMPRESA['nombre'],
         }
+        print(dir(request))
         return self.render_to_response(context)

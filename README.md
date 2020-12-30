@@ -30,3 +30,6 @@ Dividir los gastos iniciales y de cada uno de los parciales en pestañas lateral
         <input type="checkbox">
 Tener una lista de los prorrateos aplicados al costeo en cada uno de los parciales</li>
 </ul>
+
+
+ALTER TABLE `gastos_nacionalizacion` CHANGE `date_create` `date_create` TIMESTAMP(6) NULL DEFAULT CURRENT_TIMESTAMP(6);

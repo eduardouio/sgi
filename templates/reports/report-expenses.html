@@ -1,0 +1,59 @@
+{% extends 'base/base.html' %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row border">
+        <div class="col-8">
+            <h5 class="text-primary">Reporte De Provisiones Pendientes</h5>
+        </div>
+            <div class="col-4 text-right">
+                <span class="text-muted"> Se encontraron {{ data.expenses.__len__() }} registros</span>
+            </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-bordered table-condensed table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>ID</th>
+                        <th>IDP</th>
+                        <th>Pedido</th>
+                        <th>Reg</th>
+                        <th>Fecha</th>
+                        <th>Concepto</th>
+                        <th>Tipo</th>
+                        <th>I Almagro</th>
+                        <th>I Vinesa</th>
+                        <th>Comentarios</th>
+                        <th>Registro</th>
+                        <th>Provision</th>
+                        <th>Pagos</th>
+                        <th>Saldo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for exp in data.expenses %}
+                        <tr>
+                            <td nowrap>{{ loop.index }}</td>
+                            <td nowrap> <a target="_blank" href="http://179.49.60.158:8888/cordovez/index.php/gstnacionalizacion/presentar/{{exp.id_gastos_nacionalizacion}}">{{exp.id_gastos_nacionalizacion}}</a></td>
+                            <td nowrap>{{exp.id_parcial}}</td>
+                            <td nowrap>{{exp.pedido}}</td>
+                            <td nowrap>{{exp.regimen}}</td>
+                            <td nowrap>{{exp.fecha}}</td>
+                            <td nowrap>{{exp.concepto}}</td>
+                            <td nowrap>{{exp.tipo}}</td>
+                            <td nowrap>{{exp.fecha_ingreso_almacenera}}</td>
+                            <td nowrap>{{exp.fecha_llegada_cliente}}</td>
+                            <td>{{exp.comentarios}}</td>
+                            <td nowrap>{{exp.date_create}}</td>
+                            <td nowrap class="text-right">{{exp.valor_provisionado}}</td>
+                            <td nowrap class="text-right">{{exp.pago}}</td>
+                            <td nowrap class="text-right">{{exp.saldo}}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>    
+        </div>
+    </div>
+</div>
+{% endblock content %}

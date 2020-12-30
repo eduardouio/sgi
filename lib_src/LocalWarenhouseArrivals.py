@@ -30,29 +30,43 @@ class LocalWarenhouseArrivals(object):
         report = []
         for item in self.get_orders():
             report.append({
+                'id': item.detalle_pedido_factura,
+                'idf': item.id_pedido_factura_id, 
                 'nro_pedido': item.id_pedido_factura.nro_pedido,
                 'id_parcial': 0,
                 'proveedor': item.id_pedido_factura.identificacion_proveedor,
                 'nro_refrendo': item.id_pedido_factura.nro_pedido.nro_refrendo,
+                'cod_contable': item.cod_contable_id,
                 'producto': item.cod_contable.nombre,
-                'capacidad_ml': item.capacidad_ml,
+                'cod_ice': item.cod_contable.cod_ice,
+                'capacidad_ml': int(item.capacidad_ml),
                 'grado_al': item.grado_alcoholico,
                 'nro_cajas': item.nro_cajas,
                 'unidades': item.nro_cajas * item.cod_contable.cantidad_x_caja,
+                'ex_aduana': item.ex_aduana_unitario,
+                'costo': item.costo_caja_final / item.cod_contable.cantidad_x_caja,
+                'costo_total' : item.costo_total,
                 'llegada': item.id_pedido_factura.nro_pedido.fecha_llegada_cliente,
             })
 
         for item in self.get_partials():
             report.append({
+                'id': item.id_factura_informativa_detalle,
+                'idf': item.id_factura_informativa_id,
                 'nro_pedido': item.id_factura_informativa.id_parcial.nro_pedido,
-                'id_parcial': item.id_factura_informativa.id_parcial.ordinal_parcial,
+                'id_parcial': item.id_factura_informativa.id_parcial_id,
                 'proveedor': item.detalle_pedido_factura.id_pedido_factura.identificacion_proveedor,
                 'nro_refrendo': item.id_factura_informativa.nro_refrendo,
+                'cod_contable': item.detalle_pedido_factura.cod_contable.cod_contable,
                 'producto': item.product,
-                'capacidad_ml': item.capacidad_ml,
-                'grado_al': item.grado_alcoholico,
-                'nro_cajas': item.nro_cajas,
-                'unidades': item.unidades,
+                'cod_ice': item.detalle_pedido_factura.cod_contable.cod_ice,
+                'capacidad_ml': int(item.capacidad_ml),
+                'grado_al': round(float(item.grado_alcoholico),2),
+                'nro_cajas': int(item.nro_cajas),
+                'unidades': int(item.unidades),
+                'ex_aduana_unitario': item.ex_aduana_unitario,
+                'costo': item.costo_caja_final / item.detalle_pedido_factura.cod_contable.cantidad_x_caja,
+                'costo_total' : item.costo_total,
                 'llegada': item.id_factura_informativa.id_parcial.fecha_llegada_cliente,
             })
 

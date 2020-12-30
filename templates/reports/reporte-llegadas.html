@@ -1,25 +1,56 @@
 {% extends 'base/base.html' %}
 {% block content %}
-<table class="table table-bordered table-hover">
-    <tr>
-        <th>Nro Pedido</th>
-        <th>Parcial</th>
-        <th>Proveedor</th>
-        <th>Nro. Referendo</th>
-        <th>Producto</th>
-        <th>Cap Ml</th>
-        <th>Grado A.</th>
-        <th>Nro Cajas</th>
-        <th>Unds</th>
-        <th>F Llegada</th>
-    </tr>
-    {% for item in data.report %}
-        <tr>
-            {% for k in item %}
-                <td nowrap>{{item[k]}}</td>
-            {% endfor %}
-        </tr>
-    {% endfor %}
+<div class="container-fluid">
+    <div class="border">
+        <div class="row">
+            <div class="col-8">
+                <h5 class="text-primary">Reporte De Producto Llegado a Bodega</h5>
+            </div>
+            <div class="col-4 text-right">
+                <span class="text-muted"> Se encontraron {{ data.report.__len__() }} registros</span>
+            </div>
+        </div>
+        <div class="row">
+            <span>Para vizualizar datos ingrese las fechas que desea consultar</span>
+            <form action="" method="get">
+                
+            </form>
+        </div>
+    </div>
+    <div class="row" style="width:fit-content">
+        <div class="col-12">
+            <table class="table table-bordered table-hover table-striped">
+                <tr>
+                    <th>#</th>
+                    <th>ID</th>
+                    <th>IDF</th>
+                    <th>Nro Pedido</th>
+                    <th>IDP</th>
+                    <th>Proveedor</th>
+                    <th>Nro. Referendo</th>
+                    <th>Cod Contable</th>
+                    <th>Producto</th>
+                    <th>Código ICE</th>
+                    <th>Cap Ml</th>
+                    <th>Grado A.</th>
+                    <th>Nro Cajas</th>
+                    <th>Unds</th>
+                    <th>Ex_ad</th>
+                    <th>C Und</th>
+                    <th>Costo T</th>
+                    <th>F Llegada</th>
+                </tr>
+                {% for item in data.report %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        {% for k in item %}
+                            <td nowrap>{{item[k]}}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
 
-</table>
+</div>
 {% endblock content %}

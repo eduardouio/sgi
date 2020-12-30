@@ -3,10 +3,8 @@ from django.contrib import admin
 from django.contrib.staticfiles.urls import static
 from django.urls import include, path
 
-#admin.site.site_title = 'SGI'
-#admin.site.site_header = 'Agencia Y Representaciones Cordovez S.A.'
-#admin.site.site_header = 'IMNAC Importadora Nacional Cia. Ltda.'
-#admin.site.site_header = 'VID Internacional S.A.'
+admin.site.site_title = 'SGI'
+admin.site.site_header = settings.EMPRESA['nombre']
 
 urlpatterns = [
     path('grappelli/', include('grappelli.urls')),
