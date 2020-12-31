@@ -134,8 +134,7 @@ DATOS_EMPRESAS = {
         #'database': 'vidApp',
         'db_host': 'localhost',
         'db_port': '3306',
-        'db_passwd': 'elian.2011',
-
+        'db_passwd': '$:_&EN*P7+KkZDT}',
     },
 }
 

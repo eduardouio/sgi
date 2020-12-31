@@ -256,6 +256,48 @@ class TestGeneralStatusOrders(TestCase):
         self.match(spected['nationalized'], sale['nationalized'])
         self.match(spected['sale'], sale['sale'])
 
+    def test_R70WithSaleandPartialWithouClosed(self):
+        OrderDetSale = OrderDetailProductSale()
+        sale = OrderDetSale.get('147-19', ignore_liquidated=True)
+        spected = {
+            'init_sale': [{
+                'detalle_pedido_factura': 840,
+                'cod_contable': '01011080010503010750',
+                'nro_cajas': 882,
+                'costo_caja': 24.00
+            },{
+                'detalle_pedido_factura': 841,
+                'cod_contable': '01011080010508010750',
+                'nro_cajas': 98,
+                'costo_caja': 24.00
+            }],
+            'nationalized': [{
+                'detalle_pedido_factura': 840,
+                'cod_contable': '01011080010503010750',
+                'nro_cajas': 0,
+                'costo_caja': 24.00
+            },{
+                'detalle_pedido_factura': 841,
+                'cod_contable': '01011080010508010750',
+                'nro_cajas': 0,
+                'costo_caja': 24.00
+            }],
+            'sale': [{
+                'detalle_pedido_factura': 840,
+                'cod_contable': '01011080010503010750',
+                'nro_cajas': 882,
+                'costo_caja': 24.00
+            },{
+                'detalle_pedido_factura': 841,
+                'cod_contable': '01011080010508010750',
+                'nro_cajas': 98,
+                'costo_caja': 24.00
+            }]
+        }
+        self.match(spected['init_sale'], sale['init_sale'])
+        self.match(spected['nationalized'], sale['nationalized'])
+        self.match(spected['sale'], sale['sale'])
+
     def match(self, spected, recived):
         """Realiza el test de igualdad en los items de los diccionarios
 

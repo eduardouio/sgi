@@ -11,14 +11,53 @@
             </div>
         </div>
         <div class="row">
-            <span>Para vizualizar datos ingrese las fechas que desea consultar</span>
-            <form action="" method="get">
-                
-            </form>
+            <div class="col-12">
+                <form>
+                    <div class="form-row">
+                        <div class="form-group col-md-2">
+                            <label for="inputEmail4">Año</label>
+                            <select class="form-control form-control-sm" name="year" >
+                                <option value="0" disabled>Todos</option>
+                                <option value="2018">2018</option>
+                                <option value="2019">2019</option>
+                                <option value="2020">2020</option>
+                                <option value="2021">2021</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="inputPassword4">Mes</label>
+                            <select class="form-control form-control-sm" name="mont" >
+                                <option value="0">Todos</option>
+                                <option value="1">Enero</option>
+                                <option value="2">Febrero</option>
+                                <option value="3">Marzo</option>
+                                <option value="4">Abril</option>
+                                <option value="5">Mayo</option>
+                                <option value="6">Junio</option>
+                                <option value="7">Julio</option>
+                                <option value="8">Agosto</option>
+                                <option value="9">Semptiembre</option>
+                                <option value="10">Octubre</option>
+                                <option value="11">Noviembre</option>
+                                <option value="12">Diciembre</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-5">
+                            <label for="inputPassword4">Producto</label>
+                            <input type="text" class="form-control form-control-sm" id="inputPassword4" placeholder="Seleccione" disabled>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <br>
+                            <button class="btn btn-sm btn-outline-primary" ><i class="fa fa-search"></i> Buscar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
     <div class="row" style="width:fit-content">
         <div class="col-12">
+            {% if data.report %}
             <table class="table table-bordered table-hover table-striped">
                 <tr>
                     <th>#</th>
@@ -49,8 +88,12 @@
                     </tr>
                 {% endfor %}
             </table>
+        {% else %}
+        <h5>Nada para mostrar</h5>
+        {% endif %}
         </div>
     </div>
+
 
 </div>
 {% endblock content %}

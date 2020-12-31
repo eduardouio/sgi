@@ -31,7 +31,6 @@ class Expense(models.Model):
     last_update = models.DateTimeField(blank=True, null=True)
     history = HistoricalRecords()
 
-    
     def __str__(self):
         return  ''.join([str(self.id_gastos_nacionalizacion), ' ', self.concepto]) 
 

@@ -1,5 +1,5 @@
 from orders.models import OrderInvoiceDetail, Order
-from partials.models import InfoInvoice, InfoInvoiceDetail, Partial
+from partials.models import InfoInvoiceDetail, Partial
 
 from logs.app_log import loggin
 
@@ -7,9 +7,10 @@ from logs.app_log import loggin
 class OrderDetailProductSale():
     """Obtiene el saldo en detalle de un pedido metodo get()"""
 
-    def get(self, nro_order):
+    def get(self, nro_order, ignore_liquidated=False):
         """Obtiene el detalle de productos del pedido
         el detalle contiene saldo y nacionalizaciones
+
 
         return   {
             init_sale = {
@@ -21,11 +22,12 @@ class OrderDetailProductSale():
             sale = {
                 {cod_contable, nro_cajas, costo_caja, tipo_cambio},
             }
-
         }
 
         Arguments:
             nro_order {str} -- nro de pedido a consultar
+            ignore_liquidated {bool} -- no se concideran parciales sin 
+                                        con liqudiacion y sin cerrar
         """
         loggin('w', 'Iniciando verificacion de saldos {}'.format(__name__))
         order = Order().get_by_order(nro_order)
@@ -36,7 +38,7 @@ class OrderDetailProductSale():
             return None
 
         init_sale = self.get_init_sale(nro_order)
-        nationalized = self.get_nationalized(order)
+        nationalized = self.get_nationalized(order, ignore_liquidated)
 
         data = {
             'init_sale': init_sale,
@@ -61,7 +63,7 @@ class OrderDetailProductSale():
 
         return init_sale
 
-    def get_nationalized(self, order):
+    def get_nationalized(self, order, ignore_liquidated):
         """busca los productos que han sido nacionalizados, la referencia
         es que el pedido o parcial tenga la liquidacion de aduana ingresada
 
@@ -80,8 +82,12 @@ class OrderDetailProductSale():
         nationalized = []
         partials = Partial().get_by_order(order.nro_pedido)
         for p in partials:
-            if p.bg_isliquidated:
-                nationalized += list(InfoInvoiceDetail().get_by_partial(p.id_parcial))
+            if ignore_liquidated:
+                if p.bg_isclosed:
+                    nationalized += list(InfoInvoiceDetail().get_by_partial(p.id_parcial))
+            else:
+                if p.bg_isliquidated:
+                    nationalized += list(InfoInvoiceDetail().get_by_partial(p.id_parcial))
 
         all_products = [{
                 'detalle_pedido_factura': item.detalle_pedido_factura_id,
