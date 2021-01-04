@@ -2,125 +2,52 @@
 {% block content %}   
     <!-- cards -->
     <section>
-      <div class="container-fluid">
+      <div class="container">
         <div class="row">
-          <div class="col-xl-12 col-lg-9 col-md-8 ml-auto">
-            <div class="row pt-md-5 mt-md-3 mb-5">
-              <div class="col-xl-3 col-sm-6 p-2">
-                <div class="card card-common">
-                  <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <i class="fas fa-money-bill-alt fa-3x text-success"></i>
-                      <div class="text-right text-secondary">
-                          <h5>Liquidaciones</h5>
-                        <h3>Costeo Productos</h3>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card-footer text-secondary">
-                    <a href="/pedidos/listar/" class="btn btn-outline-success btn-block"> <i class="fas fa-arrow-right mr-3"></i> Ir a Módulo</a>
-                        </div>
-                </div>
-              </div>
-              <div class="col-xl-3 col-sm-6 p-2">
-                <div class="card card-common">
-                  <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                      <i class="fas fa-users fa-3x text-info"></i>
-                      <div class="text-right text-secondary">
-                          <h5>Auditoría</h5>
-                          <h3>Revisión Facturas</h3>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card-footer text-secondary">
-                        <a href="/auditoria/" class="btn btn-outline-info btn-block"> <i class="fas fa-arrow-right mr-3"></i> Ir a Módulo</a>
-                </div>
-              </div>
-              </div>
-              <div class="col-xl-3 col-sm-6 p-2">
-                <div class="card card-common">
-                  <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <i class="fas fa-chart-line fa-3x text-secondary"></i>
-                      <div class="text-right text-dark">
-                        <h5>Informes</h5>
-                        <h3>Lista Reportes SGI</h3>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card-footer text-secondary">     
-                        <a href="/reportes/" class="btn btn-outline-dark btn-block"> <i class="fas fa-arrow-right mr-3"></i> Ir a Módulo</a>
-                </div>
-                </div>
-              </div>
-              <div class="col-xl-3 col-sm-6 p-2">
-                <div class="card card-common">
-                  <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                      <i class="fas fa-cog fa-3x text-primary"></i>
-                      <div class="text-right text-secondary">
-                        <h5>Administración</h>
-                        <h3>Consola Administrador</h3>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card-footer text-secondary">
-                        <a href="/admin/" class="btn btn-outline-primary btn-block"> <i class="fas fa-arrow-right mr-3"></i> Ir a Módulo</a>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div class="col-3"></div>
+          <div class="col-6 text-center text-dark border bg-light">SGI {{ request.enterprise['nombre']}} </div>
+          <div class="col-3"></div>
+        </div>
+        <div class="row border bg-info">
+          <div class="col-3 text-center text-light">IMPORTACIONES</div>
+          <div class="col-3 text-center text-light">CONTABILIDAD</div>
+          <div class="col-3 text-center text-light">AUDITORIA</div>
+          <div class="col-3 text-center text-light">REPORTES</div>
+        </div>
+        <div class="row">
+          <div class="col-3">
+            <ul class="list-group">
+              <li class="list-group-item list-group-item-action"><i class="fas fa-list text-success"></i> <a href="/pedidos/listar/" class="text-dark">LISTA PEDIDOS</a></li>
+              <li class="list-group-item list-group-item-action"><i class="fas fa-user-friends text-success"></i> <a href="/admin/suppliers/supplier/" class="text-dark">LISTA PROVEEDORES</a></li>
+              <li class="list-group-item list-group-item-action"><i class="fas fa-boxes text-success"></i> <a href="/admin/products/product/" class="text-dark">LISTA PRODUCTOS</a></li>
+              <li class="list-group-item list-group-item-action"><i class="fas fa-file-invoice text-success"></i> <a href="/admin/paids/paidinvoice/" class="text-dark">JUSTIFICACIONES</a></li>
+              <li class="list-group-item list-group-item-action"><i class="fas fa-database text-success"></i> <a href="" class="text-dark">IMPORTAR DESDE SAP</a></li>
+            </ul>
+          </div>
+          <div class="col-3">
+            <ul class="list-group">
+              <li class="list-group-item list-group-item-action"> <i class="fas fa-list text-primary"></i> <a href="/pedidos/listar/" class="text-dark">LISTA PEDIDOS</a></li>
+              <li class="list-group-item list-group-item-action"> <i class="fas fa-list text-primary"></i> <a href="/costos/mayor/" class="text-dark">SALDO MAYOR</a></li>
+              <li class="list-group-item list-group-item-action"> <i class="fas fa-list text-primary"></i> <a href="/costos/saldo-mayor-general/" class="text-dark">SALDO MAYOR GENERAL</a></li>
+            </ul>
+          </div>
+          <div class="col-3">
+            <ul class="list-group">
+              <li class="list-group-item list-group-item-action"><i class="fas fa-file text-info"></i> <a href="/auditoria/" class="text-dark">REVISION DE FACTURAS</a></li>
+            </ul>
+          </div>
+          <div class="col-3">
+              <li class="list-group-item list-group-item-action"><i class="fas fa-chart-line text-secondary"></i> <a href="/reportes/general-status/" class="text-dark">PEDIDOS ACTIVOS</a></li>
+              <li class="list-group-item list-group-item-action"><i class="fas fa-chart-line text-secondary"></i> <a href="/reportes/ice/2020/12/" class="text-dark">REPORTE ICE</a></li>
+              <li class="list-group-item list-group-item-action"><i class="fas fa-chart-line text-secondary"></i> <a href="/reportes/anexo-ice/2020/12/" class="text-dark">ANEXO ICE</a></li>
+              <li class="list-group-item list-group-item-action"><i class="fas fa-chart-line text-secondary"></i> <a href="/reportes/llegadas/bodega/local/" class="text-dark">LLEGADAS A BODEGA</a></li>
+              <li class="list-group-item list-group-item-action"><i class="fas fa-chart-line text-secondary"></i> <a href="/reportes/provisiones/" class="text-dark">REPORTE DE PROVISIONES</a></li>
           </div>
         </div>
       </div>
     </section>
-    <!-- end of cards -->
-    <!-- tebles -->
-    <section>
-      <div class="container-fluid">
-        <div class="row mb-5">
-          <div class="col-xl-12 col-lg-9 col-md-8 ml-auto">
-            <div class="row align-items-center">
-              <div class="col-xl-6 col-12 mb-4 mb-xl-0">
-                <h6 class="text-center mb-3 border">Pedidos LLegados a Bodega</h6>
-                <table class="table table-striped bg-light text-center">
-                  <thead>
-                    <tr class="text-muted">
-                      <th>#</th>
-                      <th>Fecha</th>
-                      <th>Pedido</th>
-                      <th>Proveedor</th>
-                      <th>Producto</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  
-                  </tbody>
-                </table>
-              </div>
-              <div class="col-xl-6 col-12">
-                <h6 class="text-center mb-3 border">Pedidos Para Costeo</h6>
-                <table class="table table-striped bg-light text-center">
-                    <thead>
-                      <tr class="text-muted">
-                        <th>#</th>
-                        <th>Matricula</th>
-                        <th>Pedido</th>
-                        <th>Proveedor</th>
-                        <th>Producto</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                  </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- end of tebles -->   
+    <!-- end of tebles -->
+    <hr>   
   </body>
 </html>
 {% endblock %}
