@@ -1,0 +1,31 @@
+{% extends 'base/base.html' %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4">Reporte de pedidos Activos</div>
+        <div class="col-4"></div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <table class="table table table-bordered table-striped table-hover">
+                {% for det in data.data %}
+                {% for sale in det.sale.sale %}
+                <tr>    
+                    <td>{{ det.order.nro_pedido }}</td>
+                    <td>{{ det.order.proveedor }}</td>
+                    <td>{{ det.order.nro_matricula }}</td>
+                    <td>{{ sale.product.cod_contable }}</td>
+                    <td>{{ sale.product.cod_contable.capacidad_ml }}</td>
+                    <td>{{ sale.nro_cajas }}</td>
+                    <td>{{ sale.product.cod_contable.cantidad_x_caja }}</td>
+                    <td>{{ sale.costo_caja }}</td>
+                    <td>5</td>
+                </tr>
+                {% endfor %}
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock content %}

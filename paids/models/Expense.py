@@ -93,3 +93,13 @@ class Expense(models.Model):
             expenses.extend(list(self.get_by_parcial(p.id_parcial)))
 
         return expenses
+
+    @classmethod
+    def get_by_name(self, name_expense):
+        #TODO obtener todos los gastos que coincidan con un nomber
+        pass
+
+    @classmethod
+    def get_by_order_and_name(self, nro_order, name_expense):
+        #todo obtener todos los gastos de un tipo para un pedido
+        pass

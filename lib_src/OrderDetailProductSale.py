@@ -109,6 +109,7 @@ class OrderDetailProductSale():
                 'cod_contable': itm['cod_contable'],
                 'nro_cajas': itm['nro_cajas'],
                 'costo_caja': itm['costo_caja'],
+                'product': OrderInvoiceDetail.get_by_id(itm['detalle_pedido_factura'])
             })
         for item in sale:
             for nat in nationalized:

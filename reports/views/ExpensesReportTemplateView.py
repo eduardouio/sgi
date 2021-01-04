@@ -1,4 +1,5 @@
 from django.views.generic import TemplateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from lib_src import ExpensesWithSale
 from paids.models import PaidInvoice, PaidInvoiceDetail, Expense
 from random import randint
@@ -8,7 +9,7 @@ from suppliers.models import Supplier
 
 
 #/reportes/provisiones/
-class ExpensesReportTemplateView(TemplateView):
+class ExpensesReportTemplateView(LoginRequiredMixin, TemplateView):
     template_name = 'reports/report-expenses.html'
 
     def get(self, request, *args, **kwargs):
