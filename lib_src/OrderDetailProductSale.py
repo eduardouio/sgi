@@ -73,7 +73,10 @@ class OrderDetailProductSale():
         Returns:
             {array} -- Listado de items nacionalizados
             ||
-            {boolean} -- Retorna verdadero si todo esta nacionalizado
+            {boolean} -- si es verdadero solo toma en cuenta los productos de 
+                        los parciales cerrados, sino toma en cunenta los 
+                        productos de los parciales con liquidacion de aduana 
+                        ingresada
         """
         if order.bg_isliquidated and order.regimen == '10':
             loggin('i', 'Retornamos el saldo inial del pedido')
