@@ -95,7 +95,7 @@
             <td class="text-right"> {{ "%.2f" | format(item.ice_especifico_unitario) if item.ice_especifico_unitario else '0.00'  }}</td>
             <td class="text-right"> {{ "%.2f" | format(item.ice_advalorem_unitario )if  item.ice_advalorem_unitario  else '0.00'  }}</td>
             <td class="text-right"> {{ "%.2f" | format(item.ice_especifico) if item.ice_especifico else '0.00'  }}</td> 
-            <td class="text-right"> {{ "%.2f" | format(item.ice_advalorem_reliquidado) if item.ice_advalorem_reliquidado else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.ice_advalorem_pagado) if item.ice_advalorem_reliquidado else '0.00'  }}</td>
             <td class="text-right"> {{ "%.2f" | format(item.total_ice) if item.total_ice else '0.00'  }}</td>
             <td class="text-right"> {{ "%.2f" | format(item.indirectos) if item.total_ice else '0.00'  }}</td>
             <td class="text-right"> {{ "%.2f" | format(item.prorrateo_pedido) if item.prorrateo_pedido else '0.00'  }}</td>
@@ -113,9 +113,9 @@
         <th nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.seguro_aduana) if data.costings.sums.seguro_aduana else '0.00' }} </th>
         <th nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.flete_aduana) if data.costings.sums.flete_aduana else '0.00' }} </th>
         <th nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.cif) if data.costings.sums.cif else '0.00' }} </th>
-        <th nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.fodinfa) if data.costings.sums.fodinfa else '0.00' }} </th>
-        <th nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.arancel_advalorem_pagar) if data.costings.sums.arancel_advalorem_pagar else '0.00' }} </th>
-        <th nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.arancel_especifico_pagar) if data.costings.sums.arancel_especifico_pagar else '0.00' }} </th>
+        <th nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.fodinfa_pagado) if data.costings.sums.fodinfa else '0.00' }} </th>
+        <th nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.arancel_advalorem_pagar_pagado) if data.costings.sums.arancel_advalorem_pagar else '0.00' }} </th>
+        <th nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.arancel_especifico_pagar_pagado) if data.costings.sums.arancel_especifico_pagar else '0.00' }} </th>
         <th nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.etiquetas_fiscales) if data.costings.sums.etiquetas_fiscales else '0.00' }} </th>
         <th nowrap class="text-center">--</th>
         <th nowrap class="text-center">--</th>
@@ -123,7 +123,7 @@
         <th nowrap class="text-center">--</th>
         <th nowrap class="text-center">--</th>
         <th nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.ice_especifico)  if data.costings.sums.ice_especifico else '0.00'}} </th>
-        <th nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.ice_advalorem_reliquidado)  if data.costings.sums.ice_advalorem_reliquidado else '0.00'}} </th>
+        <th nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.ice_advalorem_pagado)  if data.costings.sums.ice_advalorem_reliquidado else '0.00'}} </th>
         <th nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.total_ice)  if data.costings.sums.total_ice else '0.00'}} </th>
         <th nowrap class="text-right text-info">$  {{ "%.2f" | format(data.costings.sums.indirectos)  if data.costings.sums.indirectos else '0.00'}} </th>
         <th nowrap class="text-right text-primary">$  {{ "%.2f" | format(data.costings.sums.prorrateo_pedido)  if data.costings.sums.prorrateo_pedido else '0.00'}} </th>
