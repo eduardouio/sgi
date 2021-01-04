@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+from .datos_empresas import EMPRESA
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -116,37 +117,14 @@ WSGI_APPLICATION = 'sgi.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-
-DATOS_EMPRESAS = {
-    'test_local': {
-        'nombre': 'AMBIENTE DE PRUEBAS TEST',
-        'empresa': 'test',
-        'ruc': '1722919725001',
-        'direccion': 'AV COLO 1133 Y AMAZONAS EDF ARISTA OF 500 ',
-        'telefono': '022405911',
-        'email': 'sgi@cordovez.com.ec',
-        'url_logo': 'http://179.49.60.158:8888/img/logo_test.png',
-        'url_app': 'http://localhost:8000/',
-        'url_app_local': 'http://localhost:8000/',
-        'admin_title': 'TEST',
-        'database': 'cordovezApp',
-        #'database': 'imnacApp',
-        #'database': 'vidApp',
-        'db_host': 'localhost',
-        'db_port': '3306',
-        'db_passwd': 'elian.2011',
-    },
-}
-
 # Seleccionamos la empresa
-EMPRESA = DATOS_EMPRESAS['test_local']
 GRAPPELLI_ADMIN_TITE = EMPRESA['admin_title']
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': EMPRESA['database'],
-        'USER': 'root',
+        'USER': EMPRESA['db_user'],
         'PASSWORD': EMPRESA['db_passwd'],
         'HOST': EMPRESA['db_host'],
         'PORT': EMPRESA['db_port'],
