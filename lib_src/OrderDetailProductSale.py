@@ -11,7 +11,6 @@ class OrderDetailProductSale():
         """Obtiene el detalle de productos del pedido
         el detalle contiene saldo y nacionalizaciones
 
-
         return   {
             init_sale = {
                 {cod_contable, nro_cajas, costo_caja, tipo_cambio},

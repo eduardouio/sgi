@@ -1,29 +1,107 @@
 {% extends 'base/base.html' %}
 {% block content %}
 <div class="container-fluid">
+    <br>
     <div class="row">
-        <div class="col-4"></div>
-        <div class="col-4">Reporte de pedidos Activos</div>
-        <div class="col-4"></div>
+        <div class="col-4">
+            <form class="form-inline" method="get">
+                <div class="form-check mb-2 mr-sm-2">
+                    <input class="form-check-input" type="checkbox" id="inlineFormCheck" name="ignore_liquidated" {% if request.GET.ignore_liquidated  == 'on'%} checked {%endif%} >
+                    <label class="form-check-label" for="inlineFormCheck">
+                        <strong>
+                            Tomar en cuenta parciales con liquidaci&oacute;n
+                        </strong> 
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-outline-primary btn-sm">Actualizar</button>
+            </form>
+        </div>
+        <div class="col-4 text-center text-secondary"> <h6>REPORTE DE PEDIDOS QUE MANTIENEN SALDO</h6></div>
+        <div class="col-4 text-right">
+            <a href="?check_all_orders=on" class="btn btn-outline-info"> <i class="fas fa-broom"></i> Depurar Pedidos</a>
+            <br>
+            <small class="text-secondary">Escanea de todos los pedidos y comprueba el saldo.</small>
+        </div>
     </div>
     <div class="row">
         <div class="col-12">
-            <table class="table table table-bordered table-striped table-hover">
-                {% for det in data.data %}
-                {% for sale in det.sale.sale %}
-                <tr>    
-                    <td>{{ det.order.nro_pedido }}</td>
-                    <td>{{ det.order.proveedor }}</td>
-                    <td>{{ det.order.nro_matricula }}</td>
-                    <td>{{ sale.product.cod_contable }}</td>
-                    <td>{{ sale.product.cod_contable.capacidad_ml }}</td>
-                    <td>{{ sale.nro_cajas }}</td>
-                    <td>{{ sale.product.cod_contable.cantidad_x_caja }}</td>
-                    <td>{{ sale.costo_caja }}</td>
-                    <td>5</td>
-                </tr>
-                {% endfor %}
-                {% endfor %}
+            <table class="table table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Pedido</th>
+                        <th>Reg</th>
+                        <th>Proveedor</th>
+                        <th>Matrícula</th>
+                        <th>Producto</th>
+                        <th>Cap Ml</th>
+                        <th>Cajas</th>
+                        <th>CxC</th>
+                        <th>Unds</th>
+                        <th>Costo Caja</th>
+                        <th>F Arribo</th>
+                        <th>F Almacenera</th>
+                        <th>T Almacenera</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for det in data.data %}
+                    {% set outer_loop = loop %}
+                    {% for sale in det.sale.sale %}
+                    <tr 
+                        {% if outer_loop.index %2 == 0 %}
+                            class="bg_sap"
+                        {% endif %}
+                    > 
+                        <td>{{ outer_loop.index }}</td>   
+                        <td> <a href="{{ request.enterprise.url_app_importaciones }}index.php/pedido/presentar/{{det.order.nro_pedido}}" target="_blank">{{ det.order.nro_pedido }}</a></td>
+                        <td>{{ det.order.regimen }}</td>
+                        <td>{{ det.order.proveedor }}</td>
+                        <td>
+                            {% if det.order.regimen == '10' %}
+                                ---
+                            {% else %}
+                                {{ det.order.nro_matricula }}
+                            {% endif %}
+                        </td>
+                        <td>{{ sale.product.cod_contable }}</td>
+                        <td class="text-right">{{ sale.product.cod_contable.capacidad_ml }}</td>
+                        <td class="text-right">{{ sale.nro_cajas }}</td>
+                        <td class="text-right">{{ sale.product.cod_contable.cantidad_x_caja }}</td>
+                        <td class="text-right">{{ sale.product.cod_contable.cantidad_x_caja *  sale.nro_cajas }}</td>
+                        <td class="text-right">{{ sale.costo_caja }}</td>
+                        <td class="text-right">
+                            {% if det.order.fecha_arribo %}
+                                {{ det.order.fecha_arribo }}                                
+                            {% else %}
+                                ---
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if det.order.fecha_ingreso_almacenera %}
+                                {{ det.order.fecha_ingreso_almacenera }}
+                                {% else %}
+                                ---
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if det.order.regimen == '70' %}
+                            9 MESES
+                            {% else %}
+                            ---
+                            {% endif %}
+                        </td>
+                        
+                        {% if det.order.fecha_ingreso_almacenera %}
+                        <td>
+                            DISPONIBLE
+                        </td>
+                        {% endif %}
+                         </tr>
+                    {% endfor %}
+                    {% endfor %}
+                </tbody>
             </table>
         </div>
     </div>
