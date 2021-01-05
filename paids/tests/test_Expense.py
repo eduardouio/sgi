@@ -1,11 +1,12 @@
 from django.test import TestCase
 from paids.models import Expense
 
+
 class ExpenseTEST(TestCase):
-    
+
     def setUp(self):
         return super().setUp()
-    
+
     def test_get_by_id_expense(self):
         spected_data = [
             {'id_gastos_nacionalizacion' : 16 , 'concepto' : 'FLETE', 'valor_provisionado': 1620.00},
@@ -13,21 +14,20 @@ class ExpenseTEST(TestCase):
             {'id_gastos_nacionalizacion' : 26 , 'concepto' : 'TRANSPORTE INTERNO NORMALUIO-GYE', 'valor_provisionado': 660.00},
             {'id_gastos_nacionalizacion' : 34 , 'concepto' : 'ETIQUETAS FISCALES', 'valor_provisionado': 2691.00},
         ]
-    
+
         for item in spected_data:
             data = Expense.get_by_id_expense(item['id_gastos_nacionalizacion'])
             self.assertEqual(data.id_gastos_nacionalizacion, 
                                             item['id_gastos_nacionalizacion'])
             self.assertEqual(data.concepto, item['concepto'])
             self.assertEqual(float(data.valor_provisionado), item['valor_provisionado'])
-        
-        #gasto no existente
+
+        # gasto no existente
         data = Expense.get_by_id_expense(0)
         self.assertIsNone(data)
-    
 
     def test_get_all_by_order(self):
-        #gastos del pedido 125-19
+        # gastos del pedido 125-19
         spected_data = [
             {'id_gastos_nacionalizacion' : 10489,'id_parcial' : 0 ,'nro_pedido' : '125-19','concepto' : 'ISD','valor_provisionado' : 1676.80},
             {'id_gastos_nacionalizacion' : 10491,'id_parcial' : 0 ,'nro_pedido' : '125-19','concepto' : 'POLIZA SEGURO','valor_provisionado' : 147.90},
@@ -59,7 +59,6 @@ class ExpenseTEST(TestCase):
         data = Expense.get_all_by_order('dont-exist')
         self.assertEqual(data, [])
 
-
     def test_get_by_partial(self):
         spected_data = [
             {'id_gastos_nacionalizacion' : 11594,'id_parcial' : 442,'nro_pedido': '000-00', 'concepto': 'DEPOSITO 2019Jun-2019Jul', 'valor_provisionado':173.00},
@@ -82,10 +81,9 @@ class ExpenseTEST(TestCase):
                     self.assertEqual(spected['valor_provisionado'], float(exp.valor_provisionado))
                     break
         
-        #parcial no existe
+        # parcial no existe
         data = Expense.get_by_parcial(999999)
         self.assertEqual([],data)
-
 
     def test_get_complete_expenses(self):
         spected_data = [
@@ -130,6 +128,16 @@ class ExpenseTEST(TestCase):
                     self.assertEqual(spected['valor_provisionado'], float(exp.valor_provisionado))
                     break
 
-        #pedido no existe
+        # pedido no existe
         data = Expense.get_all_by_order('dont-exist')
         self.assertEqual(data, [])
+    
+    def test_get_months_storage(self):
+        self.assertEqual(0, Expense.get_months_storage('no-exist'))
+        self.assertEqual(1, Expense.get_months_storage('190-20'))
+        self.assertEqual(17, Expense.get_months_storage('147-19'))
+        self.assertEqual(3, Expense.get_months_storage('125-19'))
+        self.assertEqual(13, Expense.get_months_storage('310-19'))
+        self.assertEqual(13, Expense.get_months_storage('352-19'))
+        
+        
