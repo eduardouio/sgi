@@ -20,12 +20,18 @@ class ExpensesReportTemplateView(LoginRequiredMixin, TemplateView):
             'title_page': 'Reporte de Provisiones Pendientes',
             'expenses': expenses
         }
-        #codigo usado para cerrar las provisiones pendientes
-        self.closed_expenses(expenses)
+        # codigo usado para cerrar las provisiones pendientes
+        # self.closed_expenses(expenses)
         return self.render_to_response(context=context)
-    
+
     def closed_expenses(self, expenses):
-         for exp in expenses:
+        """Genera una factura y cierra todos los gastos de nacionalizacion 
+        pendientes, se usa solo luego de ajustes
+
+        Args:
+            expenses (lisy): listado de gastos
+        """
+        for exp in expenses:
             expense = Expense.get_by_id_expense(exp['id_gastos_nacionalizacion'])
             supplier = Supplier.get_by_ruc('1790023516001')
             invoice = PaidInvoice(
