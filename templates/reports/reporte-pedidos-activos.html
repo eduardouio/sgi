@@ -41,7 +41,7 @@
                         <th>Costo Caja</th>
                         <th>F Arribo</th>
                         <th>F Almacenera</th>
-                        <th>T Almacenera</th>
+                        <th>Almacenaje</th>
                         <th>Estado</th>
                     </tr>
                 </thead>
@@ -87,7 +87,7 @@
                         </td>
                         <td>
                             {% if det.order.regimen == '70' %}
-                            9 MESES
+                                {{ det.monts }} MESES
                             {% else %}
                             ---
                             {% endif %}

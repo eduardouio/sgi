@@ -139,5 +139,3 @@ class ExpenseTEST(TestCase):
         self.assertEqual(3, Expense.get_months_storage('125-19'))
         self.assertEqual(13, Expense.get_months_storage('310-19'))
         self.assertEqual(13, Expense.get_months_storage('352-19'))
-        
-        

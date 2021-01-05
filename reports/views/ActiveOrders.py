@@ -4,9 +4,10 @@ from django.views.generic import TemplateView
 from lib_src import OrderDetailProductSale
 from orders.models import Order
 from logs.app_log import loggin
+from paids.models import Expense
 
 
-#reportes/activos/
+# reportes/activos/
 class ActiveOrdersTemplateView(LoginRequiredMixin, TemplateView):
     template_name = 'reports/reporte-pedidos-activos.html'
 
@@ -36,7 +37,8 @@ class ActiveOrdersTemplateView(LoginRequiredMixin, TemplateView):
             if my_order_sale['total_sale']:
                 data.append({
                     'order': my_ord,
-                    'sale': my_order_sale
+                    'sale': my_order_sale,
+                    'monts': Expense.get_months_storage(my_ord.nro_pedido)
                 })
 
         context['data'] = {
@@ -65,4 +67,3 @@ class ActiveOrdersTemplateView(LoginRequiredMixin, TemplateView):
                 order.bg_isclosed = 0
 
             order.save()
-
