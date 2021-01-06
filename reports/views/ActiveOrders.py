@@ -64,7 +64,9 @@ class ActiveOrdersTemplateView(LoginRequiredMixin, TemplateView):
             if order_sale['total_sale'] == 0 and order_sale['init_sale']:
                 if order.regimen == '70':
                     order.bg_isclosed = 1
+                    order.save()
             else:
-                order.bg_isclosed = 0
+                if order.regimen == '70':
+                    order.bg_isclosed = 0
+                    order.save()
 
-            order.save()
