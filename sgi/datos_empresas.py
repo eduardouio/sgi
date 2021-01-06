@@ -75,9 +75,9 @@ DATOS_EMPRESAS = {
 
 }
 
-DEBUG = True
+CMT_DEBUG = True
 #seleciona la empresa
 EMPRESA = DATOS_EMPRESAS['test']
 
 if EMPRESA['empresa'] != 'test':
-    DEBUG = False
+    CMT_DEBUG = False
