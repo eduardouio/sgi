@@ -84,14 +84,24 @@ class OrderDetailProductSale():
                         productos de los parciales con liquidacion de aduana 
                         ingresada
         """
-        if order.bg_isliquidated and order.regimen == '10':
-            loggin('i', 'Retornamos el saldo inial del pedido')
-            return self.get_init_sale(order.nro_pedido)
+        if order.regimen == '10':
+            init_sale = self.get_init_sale(order.nro_pedido) 
+            if not ignore_liquidated and order.bg_isliquidated:
+                detail = []
+                for item in init_sale:
+                    detail.append({
+                        'detalle_pedido_factura': item['detalle_pedido_factura'],
+                        'cod_contable': item['cod_contable'],
+                        'nro_cajas': 0,
+                        'costo_caja': item['costo_caja'],
+                    })
+            else:
+                return init_sale
 
         nationalized = []
         partials = Partial().get_by_order(order.nro_pedido)
         for p in partials:
-            if ignore_liquidated:
+            if not ignore_liquidated:
                 if p.bg_isclosed:
                     nationalized += list(InfoInvoiceDetail().get_by_partial(p.id_parcial))
             else:

@@ -61,8 +61,9 @@ class ActiveOrdersTemplateView(LoginRequiredMixin, TemplateView):
             for itm_sale in order_sale['sale']:
                 order_sale['total_sale'] += itm_sale['nro_cajas']
 
-            if order_sale['total_sale'] == 0:
-                order.bg_isclosed = 1
+            if order_sale['total_sale'] == 0 and order_sale['init_sale']:
+                if order.regimen == '70':
+                    order.bg_isclosed = 1
             else:
                 order.bg_isclosed = 0
 
