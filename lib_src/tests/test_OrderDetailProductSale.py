@@ -1,8 +1,6 @@
-from decimal import Decimal
-
 from django.test import TestCase
 from lib_src import OrderDetailProductSale
-from logs.app_log import loggin
+from orders.models import OrderInvoiceDetail
 
 
 class TestGeneralStatusOrders(TestCase):
@@ -15,21 +13,23 @@ class TestGeneralStatusOrders(TestCase):
                 'detalle_pedido_factura': 1164,
                 'cod_contable': '01011080050317010750',
                 'nro_cajas': 1176,
-                'costo_caja': 18.50
+                'costo_caja': 18.50,
             }],
             'nationalized': [{
                 'detalle_pedido_factura': 1164,
                 'cod_contable': '01011080050317010750',
                 'nro_cajas': 1176,
-                'costo_caja': 18.50
+                'costo_caja': 18.50,
             }],
             'sale': [{
                 'detalle_pedido_factura': 1164,
                 'cod_contable': '01011080050317010750',
                 'nro_cajas': 0,
-                'costo_caja': 18.50
+                'costo_caja': 18.50,
+                'product': OrderInvoiceDetail.get_by_id(1164)
             }]
         }
+
         self.match(spected['init_sale'], sale['init_sale'])
         self.match(spected['nationalized'], sale['nationalized'])
         self.match(spected['sale'], sale['sale'])
@@ -94,27 +94,32 @@ class TestGeneralStatusOrders(TestCase):
                 'detalle_pedido_factura': 936,
                 'cod_contable': '01012090550411010375',
                 'nro_cajas': 0,
-                'costo_caja': 29.41
+                'costo_caja': 29.41,
+                'product': OrderInvoiceDetail.get_by_id(936)
             }, {
                 'detalle_pedido_factura': 794,
                 'cod_contable': '01012090550702010750',
                 'nro_cajas': 0,
-                'costo_caja': 25.21
+                'costo_caja': 25.21,
+                'product': OrderInvoiceDetail.get_by_id(794)
             }, {
                 'detalle_pedido_factura': 791,
                 'cod_contable': '01042091050602010750',
                 'nro_cajas': 0,
-                'costo_caja': 29.66
+                'costo_caja': 29.66,
+                'product': OrderInvoiceDetail.get_by_id(791)
             }, {
                 'detalle_pedido_factura': 790,
                 'cod_contable': '01042091050702010750',
                 'nro_cajas': 0,
-                'costo_caja': 32.40
+                'costo_caja': 32.40,
+                'product': OrderInvoiceDetail.get_by_id(790)
             }, {
                 'detalle_pedido_factura': 792,
                 'cod_contable': '01042091050802010750',
                 'nro_cajas': 0,
-                'costo_caja': 36.40
+                'costo_caja': 36.40,
+                'product': OrderInvoiceDetail.get_by_id(792)
             }]
         }
         self.match(spected['init_sale'], sale['init_sale'])
@@ -141,7 +146,8 @@ class TestGeneralStatusOrders(TestCase):
                 'detalle_pedido_factura': 1457,
                 'cod_contable': '01011080010407011000',
                 'nro_cajas': 1725,
-                'costo_caja': 16.60
+                'costo_caja': 16.60,
+                'product': OrderInvoiceDetail.get_by_id(1457)
             }]
         }
         self.match(spected['init_sale'], sale['init_sale'])
@@ -204,25 +210,29 @@ class TestGeneralStatusOrders(TestCase):
                 'detalle_pedido_factura': 782,
                 'cod_contable': '01022093100501010750',
                 'nro_cajas': 0,
-                'costo_caja': 138.68
+                'costo_caja': 138.68,
+                'product': OrderInvoiceDetail.get_by_id(782)
             },
             {
                 'detalle_pedido_factura': 783,
                 'cod_contable': '01022093100303010750',
                 'nro_cajas': 0,
-                'costo_caja': 19.89
+                'costo_caja': 19.89,
+                'product': OrderInvoiceDetail.get_by_id(783)
             },
             {
                 'detalle_pedido_factura': 784,
                 'cod_contable': '01022093100407010750',
                 'nro_cajas': 0,
-                'costo_caja': 26.25
+                'costo_caja': 26.25,
+                'product': OrderInvoiceDetail.get_by_id(784)
             },
             {
                 'detalle_pedido_factura': 785,
                 'cod_contable': '01022093120102010750',
                 'nro_cajas': 0,
-                'costo_caja': 13.77
+                'costo_caja': 13.77,
+                'product': OrderInvoiceDetail.get_by_id(785)
             }]
         }
         self.match(spected['init_sale'], sale['init_sale'])
@@ -249,7 +259,8 @@ class TestGeneralStatusOrders(TestCase):
                 'detalle_pedido_factura': 1336,
                 'cod_contable': '02012130020104080750',
                 'nro_cajas': 422,
-                'costo_caja': 123.00
+                'costo_caja': 123.00,
+                'product': OrderInvoiceDetail.get_by_id(1336)
             }]
         }
         self.match(spected['init_sale'], sale['init_sale'])
@@ -286,13 +297,27 @@ class TestGeneralStatusOrders(TestCase):
                 'detalle_pedido_factura': 840,
                 'cod_contable': '01011080010503010750',
                 'nro_cajas': 882,
-                'costo_caja': 24.00
+                'costo_caja': 24.00,
+                'product': OrderInvoiceDetail.get_by_id(840)
             },{
                 'detalle_pedido_factura': 841,
                 'cod_contable': '01011080010508010750',
                 'nro_cajas': 98,
-                'costo_caja': 24.00
+                'costo_caja': 24.00,
+                'product': OrderInvoiceDetail.get_by_id(841)
             }]
+        }
+        self.match(spected['init_sale'], sale['init_sale'])
+        self.match(spected['nationalized'], sale['nationalized'])
+        self.match(spected['sale'], sale['sale'])
+
+    def test_order_without_ptoduct(self):
+        OrderDetSale = OrderDetailProductSale()
+        sale = OrderDetSale.get('555-16', ignore_liquidated=True)
+        spected = {
+            'init_sale': [],
+            'nationalized': [],
+            'sale': []
         }
         self.match(spected['init_sale'], sale['init_sale'])
         self.match(spected['nationalized'], sale['nationalized'])

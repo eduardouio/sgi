@@ -28,7 +28,9 @@ class OrderDetailProductSale():
             ignore_liquidated {bool} -- no se concideran parciales sin 
                                         con liqudiacion y sin cerrar
         """
-        loggin('w', 'Iniciando verificacion de saldos {}'.format(__name__))
+        loggin('w', 'Iniciando verificacion de saldos {} pedido {}'.format(
+            __name__, nro_order
+        ))
         order = Order().get_by_order(nro_order)
         if order is None:
             loggin('w', 'No es posible obtener el saldo del pedido {}'.format(
@@ -38,7 +40,9 @@ class OrderDetailProductSale():
 
         init_sale = self.get_init_sale(nro_order)
 
-        #TODO validar un pedido sin salfo inicial
+        if not init_sale:
+            loggin('e', 'Pedido sin saldo inicial {}'.format(nro_order))
+            return ({'init_sale': [], 'nationalized': [], 'sale': []})
 
         nationalized = self.get_nationalized(order, ignore_liquidated)
 
