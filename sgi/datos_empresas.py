@@ -12,7 +12,7 @@ DATOS_EMPRESAS = {
         'url_app_importaciones': 'http://179.49.60.158:8888/cordovez/',
         #'url_app_importaciones': 'http://localhost/cordovezapp/app/',
         'admin_title': 'TEST',
-        'database': 'test_cordovezApp',
+        'database': 'cordovezApp',
         'db_host': 'localhost',
         'db_port': '3306',
         'db_user': 'root',
