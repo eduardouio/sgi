@@ -40,15 +40,15 @@
                     {% for exp in data.expenses %}
                         <tr>
                             <td>{{ loop.index }}</td>
-                            <td> <a target="_blank" href="{{request.enterprise.url_app_importaciones}}index.php/gstnacionalizacion/presentar/{{exp.id_gastos_nacionalizacion}}"> <i class="fas fa-eye"></i> {{exp.id_gastos_nacionalizacion}}</a></td>
+                            <td> <a target="_blank" href="{{request.enterprise.url_app_importaciones}}index.php/gstnacionalizacion/presentar/{{exp.id_gastos_nacionalizacion}}">{{exp.id_gastos_nacionalizacion}}</a></td>
                             <td>
                                 {% if exp.id_parcial %}
-                                <a href="{{request.enterprise.url_app_importaciones}}index.php/gstnacionalizacion/parcial/{{exp.id_parcial}}"><i class="fas fa-eye"></i>{{exp.id_parcial}}</a>
+                                <a target="_blank" href="{{request.enterprise.url_app_importaciones}}index.php/gstnacionalizacion/parcial/{{exp.id_parcial}}">{{exp.id_parcial}}</a>
                                 {% else %}
                                     --
                                 {% endif %}
                             </td>
-                            <td> <a href="{{request.enterprise.url_app_importaciones}}index.php/pedido/presentar/{{exp.pedido}}"> {{exp.pedido}}</a></td>
+                            <td> <a target="_blank" href="{{request.enterprise.url_app_importaciones}}index.php/pedido/presentar/{{exp.pedido}}"> {{exp.pedido}}</a></td>
                             <td>R{{exp.regimen}}</td>
                             <td>{{exp.fecha}}</td>
                             <td>{{exp.concepto}}</td>

@@ -37,6 +37,9 @@ class OrderDetailProductSale():
             return None
 
         init_sale = self.get_init_sale(nro_order)
+
+        #TODO validar un pedido sin salfo inicial
+
         nationalized = self.get_nationalized(order, ignore_liquidated)
 
         data = {
