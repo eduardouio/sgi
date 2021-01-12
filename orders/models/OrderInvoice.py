@@ -77,12 +77,25 @@ class OrderInvoice(models.Model):
             return None
 
     @classmethod
+    def get_paid_data(self, id_factura_proveedor):
+        """Obtiene los datos para el pago a partir del numero de factura
+        """
+        order_invoice = self.objects.filter(
+            id_factura_proveedor=id_factura_proveedor
+        )
+        if order_invoice.count != 1:
+            loggin('e', f'Se devuelve mas de una factura para un pedido order_invoice')
+            return None
+
+        return order_invoice.firts()
+
+    @classmethod
     def get_by_order(self, nro_order):
         order_invoice = self.objects.filter(nro_pedido = nro_order)
         if order_invoice.count() == 0:
             loggin('w', 'No existe facturas para el pedido {nro_order}'.format(nro_order=nro_order))
             return None
-        
+
         if order_invoice.count() > 1:
             loggin('e', 'Existe mas de una factura para el pedido {nro_order}'.format(nro_order=nro_order))
 

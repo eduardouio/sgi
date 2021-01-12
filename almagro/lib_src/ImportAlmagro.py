@@ -5,11 +5,7 @@ de importaciones con, la importacion lo realiza desde una archivo CVS
     BL
 este fichero recibe el contendido del archivo, no el archivo
 """
-
-import csv
-
 from logs.app_log import loggin
-from orders.models import Order
 from datetime import date
 import re
 
@@ -18,13 +14,13 @@ class ImportAlmagro():
 
     def set_data(self, data):
         # TODO leer el archivo con la informacion de ala
-        loggin('i','importando desde archivo de almagro {}'.format(__name__))
+        loggin('i', 'importando desde archivo de almagro {}'.format(__name__))
         tmp_res = []
         orders = []
 
         for row in data:
             tmp_res.append({
-                'nro_pedido': row[13].replace('/','-'),
+                'nro_pedido': row[13].replace('/', '-'),
                 'nro_matricula': row[11],
                 'nro_bl': row[14],
                 'fecha_ingreso_almacenera': self.__convert_date(row[16]),
@@ -48,7 +44,7 @@ class ImportAlmagro():
     def __convert_date(self, date_string):
         """Recinde fechas en formato 18/oct/2019
 
-            date_string ([type]): [description]
+            date_string (str): fecha de reporte SAP
         """
         sections = date_string.split('/')
         base = [

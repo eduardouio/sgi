@@ -15,6 +15,9 @@ class ExpensesReportTemplateView(LoginRequiredMixin, TemplateView):
     def get(self, request, *args, **kwargs):
         loggin('i', 'Recuperando provisiones pendientes')
         expenses = ExpensesWithSale().get_all_expeneses_with_sale()
+        # quitamos el isd de la lista de provisiones 
+        # solamente lo ponemos si 
+        expenses = [exp for exp in expenses if exp['concepto'] != 'ISD']
         context = self.get_context_data(**kwargs)
         context['data'] = {
             'title_page': 'Reporte de Provisiones Pendientes',
