@@ -1,0 +1,19 @@
+{% extends 'base/base.html' %}
+{% block title_content %}
+<div class="row border">
+  <div class="col-8">
+    <i class="fa fa-list"></i>
+    Resultado de importación de información desde Almagro (Almanet)
+  </div>
+  <div class="col-4 text-right">
+    SGI <small>[Sistema Gestón de Importaciones] ASISTENTE ALMAGRO</small>
+  </div>
+</div>
+{% endblock title_content %} 
+{% block content %}
+    <main role="main" class="container">
+        <h1 class="mt-5" class="text-success">¡Acción Realizada con Éxito!</h1>
+        <p class="lead">Toda la información seleccionada fue ingresada correctamente</p>
+        <p><a href="/">Volver al inicio </a></p>
+      </main>
+{%  endblock %}

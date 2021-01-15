@@ -9,6 +9,8 @@ DATOS_EMPRESAS = {
         'url_logo': 'http://179.49.60.158:8888/img/logo_test.png',
         'url_app': 'http://localhost:8000/',
         'url_app_local': 'http://localhost:8000/',
+        'url_app_importaciones': 'http://179.49.60.158:8888/cordovez/',
+        #'url_app_importaciones': 'http://localhost/cordovezapp/app/',
         'admin_title': 'TEST',
         'database': 'cordovezApp',
         'db_host': 'localhost',
@@ -24,8 +26,9 @@ DATOS_EMPRESAS = {
         'telefono': '022405911',
         'email': 'sgi@cordovez.com.ec',
         'url_logo': 'http://179.49.60.158:8888/img/logo_cordovez.jpg',
-        'url_app': 'http://http://179.49.60.158:5001/',
+        'url_app': 'http://179.49.60.158:5001/',
         'url_app_local': 'http://localhost:5001/',
+        'url_app_importaciones': 'http://179.49.60.158:8888/cordovez/',
         'admin_title': 'CORDOVEZ',
         'database': 'cordovezApp',
         'db_host': 'localhost',
@@ -41,8 +44,9 @@ DATOS_EMPRESAS = {
         'telefono': '022405911',
         'email': 'sgi@imnac.com.ec',
         'url_logo': 'http://179.49.60.158:8888/img/logo_imnac.jpg',
-        'url_app': 'http://http://179.49.60.158:5002/',
+        'url_app': 'http://179.49.60.158:5002/',
         'url_app_local': 'http://localhost:5002/',
+        'url_app_importaciones': 'http://179.49.60.158:8888/imnac/',
         'admin_title': 'IMNAC',
         'database': 'imnacApp',
         'db_host': 'localhost',
@@ -58,8 +62,9 @@ DATOS_EMPRESAS = {
         'telefono': '022405911',
         'email': 'sgi@vidinternacional.com.ec',
         'url_logo': 'http://179.49.60.158:8888/img/logo_vid.png',
-        'url_app': 'http://http://179.49.60.158:5003/',
+        'url_app': 'http://179.49.60.158:5003/',
         'url_app_local': 'http://localhost:5003/',
+        'url_app_importaciones': 'http://179.49.60.158:8888/vid/',
         'admin_title': 'VIDINTERNACIONAL',
         'database': 'vidApp',
         'db_host': 'localhost',
@@ -70,5 +75,9 @@ DATOS_EMPRESAS = {
 
 }
 
+CMT_DEBUG = True
 #seleciona la empresa
 EMPRESA = DATOS_EMPRESAS['test']
+
+if EMPRESA['empresa'] != 'test':
+    CMT_DEBUG = False

@@ -18,4 +18,5 @@ urlpatterns = [
     path('archivos/', include('filemanager.urls', namespace='filemanager_urls')),
     path('auditoria/', include('audit.urls', namespace='audit_urls')),
     path('reportes/', include('reports.urls', namespace='reports_urls')),
+    path('almagro/', include('almagro.urls', namespace='almagro_urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

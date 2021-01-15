@@ -11,7 +11,6 @@ class OrderDetailProductSale():
         """Obtiene el detalle de productos del pedido
         el detalle contiene saldo y nacionalizaciones
 
-
         return   {
             init_sale = {
                 {cod_contable, nro_cajas, costo_caja, tipo_cambio},
@@ -29,7 +28,9 @@ class OrderDetailProductSale():
             ignore_liquidated {bool} -- no se concideran parciales sin 
                                         con liqudiacion y sin cerrar
         """
-        loggin('w', 'Iniciando verificacion de saldos {}'.format(__name__))
+        loggin('w', 'Iniciando verificacion de saldos {} pedido {}'.format(
+            __name__, nro_order
+        ))
         order = Order().get_by_order(nro_order)
         if order is None:
             loggin('w', 'No es posible obtener el saldo del pedido {}'.format(
@@ -38,6 +39,11 @@ class OrderDetailProductSale():
             return None
 
         init_sale = self.get_init_sale(nro_order)
+
+        if not init_sale:
+            loggin('e', 'Pedido sin saldo inicial {}'.format(nro_order))
+            return ({'init_sale': [], 'nationalized': [], 'sale': []})
+
         nationalized = self.get_nationalized(order, ignore_liquidated)
 
         data = {
@@ -73,16 +79,29 @@ class OrderDetailProductSale():
         Returns:
             {array} -- Listado de items nacionalizados
             ||
-            {boolean} -- Retorna verdadero si todo esta nacionalizado
+            {boolean} -- si es verdadero solo toma en cuenta los productos de 
+                        los parciales cerrados, sino toma en cunenta los 
+                        productos de los parciales con liquidacion de aduana 
+                        ingresada
         """
-        if order.bg_isliquidated and order.regimen == '10':
-            loggin('i', 'Retornamos el saldo inial del pedido')
-            return self.get_init_sale(order.nro_pedido)
+        if order.regimen == '10':
+            init_sale = self.get_init_sale(order.nro_pedido) 
+            if not ignore_liquidated and order.bg_isliquidated:
+                detail = []
+                for item in init_sale:
+                    detail.append({
+                        'detalle_pedido_factura': item['detalle_pedido_factura'],
+                        'cod_contable': item['cod_contable'],
+                        'nro_cajas': 0,
+                        'costo_caja': item['costo_caja'],
+                    })
+            else:
+                return init_sale
 
         nationalized = []
         partials = Partial().get_by_order(order.nro_pedido)
         for p in partials:
-            if ignore_liquidated:
+            if not ignore_liquidated:
                 if p.bg_isclosed:
                     nationalized += list(InfoInvoiceDetail().get_by_partial(p.id_parcial))
             else:
@@ -106,6 +125,7 @@ class OrderDetailProductSale():
                 'cod_contable': itm['cod_contable'],
                 'nro_cajas': itm['nro_cajas'],
                 'costo_caja': itm['costo_caja'],
+                'product': OrderInvoiceDetail.get_by_id(itm['detalle_pedido_factura'])
             })
         for item in sale:
             for nat in nationalized:

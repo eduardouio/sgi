@@ -1,17 +1,23 @@
 {% extends 'base/base.html' %}
+{% block header %}
+<!--cARGAMOS LIBRERIAS ADICIONALES PARA MOSTRAR LA TABLA-->
+<link rel="stylesheet" href="{{ static('css/jquery.dataTables.min.css') }}">
+<script src="{{ static('js/jquery.dataTables.min.js') }}"></script>
+{% endblock %}
+{% block title_content %}
+<div class="row border">
+<div class="col-8">
+  <i class="fa fa-list"></i>
+  Reporte De Provisiones Pendientes Se encontraron {{ data.expenses.__len__() }} registros
+</div>
+<div class="col-4 text-right">SGI <small>[Sistema Gestón de Importaciones]</small></div>
+</div>
+{% endblock title_content %}
 {% block content %}
 <div class="container-fluid">
-    <div class="row border">
-        <div class="col-8">
-            <h5 class="text-primary">Reporte De Provisiones Pendientes</h5>
-        </div>
-            <div class="col-4 text-right">
-                <span class="text-muted"> Se encontraron {{ data.expenses.__len__() }} registros</span>
-            </div>
-    </div>
     <div class="row">
         <div class="col-12">
-            <table class="table table-bordered table-condensed table-hover table-striped">
+            <table class="table table-bordered table-condensed table-hover table-striped" id="reporte">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -34,21 +40,43 @@
                 <tbody>
                     {% for exp in data.expenses %}
                         <tr>
-                            <td nowrap>{{ loop.index }}</td>
-                            <td nowrap> <a target="_blank" href="http://179.49.60.158:8888/cordovez/index.php/gstnacionalizacion/presentar/{{exp.id_gastos_nacionalizacion}}">{{exp.id_gastos_nacionalizacion}}</a></td>
-                            <td nowrap>{{exp.id_parcial}}</td>
-                            <td nowrap>{{exp.pedido}}</td>
-                            <td nowrap>{{exp.regimen}}</td>
-                            <td nowrap>{{exp.fecha}}</td>
-                            <td nowrap>{{exp.concepto}}</td>
-                            <td nowrap>{{exp.tipo}}</td>
-                            <td nowrap>{{exp.fecha_ingreso_almacenera}}</td>
-                            <td nowrap>{{exp.fecha_llegada_cliente}}</td>
-                            <td>{{exp.comentarios}}</td>
-                            <td nowrap>{{exp.date_create}}</td>
-                            <td nowrap class="text-right">{{exp.valor_provisionado}}</td>
-                            <td nowrap class="text-right">{{exp.pago}}</td>
-                            <td nowrap class="text-right">{{exp.saldo}}</td>
+                            <td>{{ loop.index }}</td>
+                            <td> <a target="_blank" href="{{request.enterprise.url_app_importaciones}}index.php/gstnacionalizacion/presentar/{{exp.id_gastos_nacionalizacion}}">{{exp.id_gastos_nacionalizacion}}</a></td>
+                            <td>
+                                {% if exp.id_parcial %}
+                                <a target="_blank" href="{{request.enterprise.url_app_importaciones}}index.php/gstnacionalizacion/parcial/{{exp.id_parcial}}">{{exp.id_parcial}}</a>
+                                {% else %}
+                                    --
+                                {% endif %}
+                            </td>
+                            <td> <a target="_blank" href="{{request.enterprise.url_app_importaciones}}index.php/pedido/presentar/{{exp.pedido}}"> {{exp.pedido}}</a></td>
+                            <td>R{{exp.regimen}}</td>
+                            <td>{{exp.fecha}}</td>
+                            <td>{{exp.concepto}}</td>
+                            <td>{{exp.tipo}}</td>
+                            <td>
+                                {% if exp.fecha_ingreso_almacenera %}
+                                    {{exp.fecha_ingreso_almacenera}}
+                                {%else%}
+                                    ---
+                                {%endif%}
+                            </td>
+                            <td>
+                                {% if exp.fecha_llegada_cliente %}
+                                    {{exp.fecha_llegada_cliente}}
+                                {%else%}
+                                    ---
+                                {%endif%}
+                            </td>
+                            <td>
+                                {% if exp.comentarios %}
+                                    {{exp.comentarios}}
+                                {%endif%}
+                            </td>
+                            <td>{{exp.date_create}}</td>
+                            <td class="text-right">{{exp.valor_provisionado}}</td>
+                            <td class="text-right">{{exp.pago}}</td>
+                            <td class="text-right">{{exp.saldo}}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -56,4 +84,11 @@
         </div>
     </div>
 </div>
+{% block footer %}
+<script>
+    $(document).ready( function () {
+    $('#reporte').dataTable();
+} );
+</script>
+{% endblock %}
 {% endblock content %}

@@ -1,0 +1,49 @@
+{% extends 'base/base.html' %} {% block title_content %}
+<div class="row border">
+  <div class="col-8">
+    <i class="fa fa-list"></i>
+    Importar información desde Almagro, trae información desde un archivo
+    <strong class="text-primary">.csv</strong>
+  </div>
+  <div class="col-4 text-right">
+    SGI <small>[Sistema Gestón de Importaciones] ASISTENTE ALMAGRO</small>
+  </div>
+</div>
+{% endblock title_content %} {% block content %}
+<div class="container-fuild">
+  <div class="row">
+      <div class="col-4">
+    <form method="POST" enctype="multipart/form-data">
+        {{ csrf_input }}
+        <div class="form-group">
+          <label for="Report">Seleccione el archivo a subir</label>
+          <input
+            class="form-control"
+            type="file"
+            name="reporte"
+            accept=".csv"
+            required
+          />
+        </div>
+      </div>
+      <div class="col-8">
+        <div class="form-group">
+          <button class="btn btn-outline-primary">
+            <i class="fa fa-upload"></i> Enviar Archivo
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+  {% if data.invalid %}
+  <div class="row">
+    <div class="col-12 border bg-danger">
+      <div class="strong text-light">
+        El archivo enviado no tiene información v&aacute;lida por favor intente
+        nuevamente
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock content %}

@@ -41,12 +41,10 @@ class Expense(models.Model):
         unique_together = (('nro_pedido', 'id_parcial', 'concepto'),)
         ordering = ['concepto','nro_pedido','id_parcial','tipo']
         verbose_name_plural = 'Gastos Nacionalizacion'
-    
 
     @property
     def ordinal_parcial(self):
         return Partial.get_ordinal_number(self.id_parcial)
-
 
     @classmethod
     def get_by_id_expense(self, id_expense):
@@ -55,7 +53,6 @@ class Expense(models.Model):
         except ObjectDoesNotExist:
             loggin('w', 'La provision {id_expense} no existe'.format(id_expense=id_expense))
             return None
-
 
     @classmethod
     def get_all_by_order(self, nro_order):
@@ -67,7 +64,6 @@ class Expense(models.Model):
             loggin('w', 'No existen gastos para el pedido {}'.format(nro_order))
             return []
         return expenses
-    
 
     @classmethod
     def get_by_parcial(self, id_partial):
@@ -80,10 +76,9 @@ class Expense(models.Model):
                 .format(id_partial)
                 )
             return []
-        
+
         return provisions
-    
-    
+
     @classmethod
     def get_complete_expenses(self, nro_order)->list:
         '''Lista completa de gastos de un pedido'''
@@ -93,3 +88,28 @@ class Expense(models.Model):
             expenses.extend(list(self.get_by_parcial(p.id_parcial)))
 
         return expenses
+
+    @classmethod
+    def get_months_storage(self,  nro_order):
+        """Retorna el analisis de almacenajes de un pedido 
+        regimen 70, los datos los toma a partir de facturas de almacenaje
+        ingresadas en el sistema
+
+        Args:
+            nro_order (string): numero de pedido a consultar
+        """
+        order = Order.get_by_order(nro_order)
+        months = 0
+
+        if order is None:
+            return months
+
+        if order.regimen == '10':
+            return months
+
+        expenses = Expense.get_complete_expenses(nro_order)
+        for expense in expenses:
+            if expense.concepto.startswith('DEPOSITO 20'):
+                months += 1
+
+        return months

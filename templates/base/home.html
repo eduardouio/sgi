@@ -5,14 +5,14 @@
       <div class="container">
         <div class="row">
           <div class="col-3"></div>
-          <div class="col-6 text-center text-dark border bg-light">SGI {{ request.enterprise['nombre']}} </div>
+          <div class="col-6 text-center text-light border bg-secondary">SGI {{ request.enterprise['nombre']}} </div>
           <div class="col-3"></div>
         </div>
         <div class="row border bg-light">
           <div class="col-3 text-center text-dark"> <i class="fas fa-puzzle-piece text-success"></i> IMPORTACIONES</div>
-          <div class="col-3 text-center text-dark">CONTABILIDAD</div>
-          <div class="col-3 text-center text-dark">AUDITORIA</div>
-          <div class="col-3 text-center text-dark">REPORTES</div>
+          <div class="col-3 text-center text-dark"><i class="fas fa-puzzle-piece text-primary"></i> CONTABILIDAD</div>
+          <div class="col-3 text-center text-dark"><i class="fas fa-puzzle-piece text-info"></i> AUDITORIA</div>
+          <div class="col-3 text-center text-dark"><i class="fas fa-puzzle-piece text-secondary"></i> REPORTES</div>
         </div>
         <div class="row">
           <div class="col-3">
@@ -22,13 +22,14 @@
               <li class="list-group-item list-group-item-action"><i class="fas fa-boxes text-success"></i> <a href="/admin/products/product/" class="text-dark">LISTA PRODUCTOS</a></li>
               <li class="list-group-item list-group-item-action"><i class="fas fa-file-invoice text-success"></i> <a href="/admin/paids/paidinvoice/" class="text-dark">JUSTIFICACIONES</a></li>
               <li class="list-group-item list-group-item-action"><i class="fas fa-database text-success"></i> <a href="" class="text-dark">IMPORTAR DESDE SAP</a></li>
+              <li class="list-group-item list-group-item-action"><i class="fas fa-warehouse text-success"></i> <a href="/almagro/importar/" class="text-dark">IMPORTAR DESDE ALMAGRO</a></li>
             </ul>
           </div>
           <div class="col-3">
             <ul class="list-group">
               <li class="list-group-item list-group-item-action"> <i class="fas fa-list text-primary"></i> <a href="/pedidos/listar/" class="text-dark">COSTEO DE PEDIDOS</a></li>
-              <li class="list-group-item list-group-item-action"> <i class="fas fa-book text-primary"></i> <a href="/costos/mayor/" class="text-dark">SALDO MAYOR</a></li>
-              <li class="list-group-item list-group-item-action"> <i class="fas fa-book-open text-primary"></i> <a href="/costos/saldo-mayor-general/" class="text-dark">SALDO MAYOR GENERAL</a></li>
+              <li class="list-group-item list-group-item-action"> <i class="fas fa-book-open text-primary"></i> <a href="/costos/mayor/" class="text-dark">SALDO MAYOR</a></li>
+              <li class="list-group-item list-group-item-action"> <i class="fas fa-book text-primary"></i> <a href="/costos/saldo-mayor-general/" class="text-dark">SALDO MAYOR GENERAL</a></li>
             </ul>
           </div>
           <div class="col-3">
@@ -37,7 +38,7 @@
             </ul>
           </div>
           <div class="col-3">
-              <li class="list-group-item list-group-item-action"><i class="fas fa-chart-line text-secondary"></i> <a href="/reportes/general-status/" class="text-dark">PEDIDOS ACTIVOS</a></li>
+              <li class="list-group-item list-group-item-action"><i class="fas fa-chart-line text-secondary"></i> <a href="/reportes/activos/" class="text-dark">PEDIDOS ACTIVOS</a></li>
               <li class="list-group-item list-group-item-action"><i class="fas fa-chart-line text-secondary"></i> <a href="/reportes/ice/2020/12/" class="text-dark">REPORTE ICE</a></li>
               <li class="list-group-item list-group-item-action"><i class="fas fa-chart-line text-secondary"></i> <a href="/reportes/anexo-ice/2020/12/" class="text-dark">ANEXO ICE</a></li>
               <li class="list-group-item list-group-item-action"><i class="fas fa-chart-line text-secondary"></i> <a href="/reportes/llegadas/bodega/local/" class="text-dark">LLEGADAS A BODEGA</a></li>
