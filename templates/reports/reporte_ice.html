@@ -9,7 +9,11 @@
 </div>
 {% endblock title_content %}
 {% block content %}
-<table class="table table-bordered table-condensed table-striped">
+<div class="container-fluid">
+    
+    <div class="row">
+    <div class="col-12">
+<table class="table table-bordered table-condensed table-responsive">
 <thead>
   <tr>
     <th class="text-center">NUMERO PEDIDO</th>
@@ -91,30 +95,33 @@
 {% endfor %}
 {% for item in data.report['parciales'] %}
     <tr> 
-        <td nowrap="">{{ item.id_factura_informativa.id_parcial.nro_pedido_id.replace('-','/') }}</td>
-        <td nowrap="">{{ item.product }}</td>
-        <td nowrap="">{{ item.detalle_pedido_factura.cod_contable.cod_ice }}</td>
-        <td nowrap="" class="text-right">{{ item.id_factura_informativa.id_parcial.fecha_llegada_cliente.strftime('%d/%m/%Y') }}</td>
-        <td nowrap="">{% if item.detalle_pedido_factura.id_pedido_factura.nro_pedido.pais_origen == 'ESCOCIA' %}REINO UNIDO{% else %}{{ item.detalle_pedido_factura.id_pedido_factura.nro_pedido.pais_origen }}{% endif %}</td>
-        <td nowrap="" class="text-right">{{ item.nro_cajas | round(0) }}</td>
-        <td nowrap="" class="text-right">{{ item.unidades | round(0) }}</td>
-        <td nowrap="" class="text-right">{{ (item.nro_cajas  * item.costo_caja * item.detalle_pedido_factura.id_pedido_factura.tipo_cambio ) | round(2)}}</td>
-        <td nowrap="" class="text-right">{{ item.costo_total - item.ice_advalorem_pagado -  item.ice_especifico }}</td>
-        <td nowrap="" class="text-right">{{ item.capacidad_ml | round(0) }}</td>
-        <td nowrap="" class="text-right">{{ item.grado_alcoholico | round(2) }}</td>
-        <td nowrap="" class="text-right">{{ item.ex_aduana_unitario }}</td>
-        <td nowrap="" class="text-right">{{ item.ice_especifico / item.unidades }}</td>
-        <td nowrap="" class="text-right">{{ item.ice_advalorem_pagado / item.unidades }}</td>
-        <td nowrap="" class="text-right">{{ item.ice_unitario }}</td>
-        <td nowrap="" class="text-right">{{ (item.ice_advalorem_pagado +  item.ice_especifico) | round(3)}}</td>
-        <td nowrap="" class="text-right">{{ item.costo_total }}</td>
-        <td nowrap="" class="text-right">{{ item.costo_total / item.unidades }}</td>
-        <td nowrap="" class="text-right">{{ item.id_factura_informativa.nro_refrendo[:3] }}</td>
-        <td nowrap="" class="text-right">{{ item.id_factura_informativa.nro_refrendo[4:8] }}</td>
-        <td nowrap="" class="text-right">{{ item.id_factura_informativa.nro_refrendo[9:11] }}</td>
-        <td nowrap="" class="text-right">{{ item.id_factura_informativa.nro_refrendo[12:] }}</td>
+        <td>{{ item.id_factura_informativa.id_parcial.nro_pedido_id.replace('-','/') }}</td>
+        <td>{{ item.product }}</td>
+        <td>{{ item.detalle_pedido_factura.cod_contable.cod_ice }}</td>
+        <td class="text-right">{{ item.id_factura_informativa.id_parcial.fecha_llegada_cliente.strftime('%d/%m/%Y') }}</td>
+        <td>{% if item.detalle_pedido_factura.id_pedido_factura.nro_pedido.pais_origen == 'ESCOCIA' %}REINO UNIDO{% else %}{{ item.detalle_pedido_factura.id_pedido_factura.nro_pedido.pais_origen }}{% endif %}</td>
+        <td class="text-right">{{ item.nro_cajas | round(0) }}</td>
+        <td class="text-right">{{ item.unidades | round(0) }}</td>
+        <td class="text-right">{{ (item.nro_cajas  * item.costo_caja * item.detalle_pedido_factura.id_pedido_factura.tipo_cambio ) | round(2)}}</td>
+        <td class="text-right">{{ item.costo_total - item.ice_advalorem_pagado -  item.ice_especifico }}</td>
+        <td class="text-right">{{ item.capacidad_ml | round(0) }}</td>
+        <td class="text-right">{{ item.grado_alcoholico | round(2) }}</td>
+        <td class="text-right">{{ item.ex_aduana_unitario }}</td>
+        <td class="text-right">{{ item.ice_especifico / item.unidades }}</td>
+        <td class="text-right">{{ item.ice_advalorem_pagado / item.unidades }}</td>
+        <td class="text-right">{{ item.ice_unitario }}</td>
+        <td class="text-right">{{ (item.ice_advalorem_pagado +  item.ice_especifico) | round(3)}}</td>
+        <td class="text-right">{{ item.costo_total }}</td>
+        <td class="text-right">{{ item.costo_total / item.unidades }}</td>
+        <td class="text-right">{{ item.id_factura_informativa.nro_refrendo[:3] }}</td>
+        <td class="text-right">{{ item.id_factura_informativa.nro_refrendo[4:8] }}</td>
+        <td class="text-right">{{ item.id_factura_informativa.nro_refrendo[9:11] }}</td>
+        <td class="text-right">{{ item.id_factura_informativa.nro_refrendo[12:] }}</td>
     </tr>
 {% endfor %}
 </tbody>
 </table>
+</div>
+</div>
+</div>
 {% endblock content %}

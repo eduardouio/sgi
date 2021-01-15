@@ -4,16 +4,17 @@
 <link rel="stylesheet" href="{{ static('css/jquery.dataTables.min.css') }}">
 <script src="{{ static('js/jquery.dataTables.min.js') }}"></script>
 {% endblock %}
+{% block title_content %}
+<div class="row border">
+<div class="col-8">
+  <i class="fa fa-list"></i>
+  Reporte De Provisiones Pendientes Se encontraron {{ data.expenses.__len__() }} registros
+</div>
+<div class="col-4 text-right">SGI <small>[Sistema Gestón de Importaciones]</small></div>
+</div>
+{% endblock title_content %}
 {% block content %}
 <div class="container-fluid">
-    <div class="row border">
-        <div class="col-8">
-            <h5 class="text-primary">Reporte De Provisiones Pendientes</h5>
-        </div>
-            <div class="col-4 text-right">
-                <span class="text-muted"> Se encontraron {{ data.expenses.__len__() }} registros</span>
-            </div>
-    </div>
     <div class="row">
         <div class="col-12">
             <table class="table table-bordered table-condensed table-hover table-striped" id="reporte">

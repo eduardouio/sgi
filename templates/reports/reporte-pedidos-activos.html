@@ -4,6 +4,15 @@
 <link rel="stylesheet" href="{{ static('css/jquery.dataTables.min.css') }}">
 <script src="{{ static('js/jquery.dataTables.min.js') }}"></script>
 {% endblock %}
+{% block title_content %}
+    <div class="row border">
+   <div class="col-8">
+      <i class="fa fa-list"></i>
+      Reporte de pedidos Activos Pedidos disponibles {% if data.data %}  {{ data.data.__len__() }} {% endif %}
+   </div>
+   <div class="col-4 text-right">SGI <small>[Sistema Gestón de Importaciones] Reportes</small></div>
+</div>
+{% endblock title_content %}
 {% block content %}
 <div class="container-fluid">
     <br>
