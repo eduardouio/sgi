@@ -123,7 +123,7 @@
         <th nowrap class="text-center">--</th>
         <th nowrap class="text-center">--</th>
         <th nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.ice_especifico)  if data.costings.sums.ice_especifico else '0.00'}} </th>
-        <th nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.ice_advalorem_pagado)  if data.costings.sums.ice_advalorem_reliquidado else '0.00'}} </th>
+        <th nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.ice_advalorem_pagado)  if data.costings.sums.ice_advalorem_pagado else '0.00'}} </th>
         <th nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.total_ice)  if data.costings.sums.total_ice else '0.00'}} </th>
         <th nowrap class="text-right text-info">$  {{ "%.2f" | format(data.costings.sums.indirectos)  if data.costings.sums.indirectos else '0.00'}} </th>
         <th nowrap class="text-right text-primary">$  {{ "%.2f" | format(data.costings.sums.prorrateo_pedido)  if data.costings.sums.prorrateo_pedido else '0.00'}} </th>
