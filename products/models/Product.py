@@ -3,6 +3,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from suppliers.models.Supplier import Supplier
 from simple_history.models import HistoricalRecords
 
+
 class Product(models.Model):
     cod_contable = models.CharField(primary_key=True, max_length=20)
     identificacion_proveedor = models.ForeignKey(Supplier, models.PROTECT, db_column='identificacion_proveedor')
