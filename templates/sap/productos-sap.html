@@ -1,0 +1,58 @@
+{% extends 'base/base.html' %}
+{% block header %}
+<!--cARGAMOS LIBRERIAS ADICIONALES PARA MOSTRAR LA TABLA-->
+<link rel="stylesheet" href="{{ static('css/jquery.dataTables.min.css') }}">
+<script src="{{ static('js/jquery.dataTables.min.js') }}"></script>
+{% endblock %}
+{% block title_content %}
+    <div class="row border">
+   <div class="col-8">
+      <i class="fa fa-list"></i>
+      Reporte de productos SAP total de productos encontrados {% if data.products.data %}  {{ data.products.data.__len__() }} {% endif %}
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <small class="text-primary">
+          Estos productos solo se encuentran en SAP, no constan en el sistema de Importaciones, este reporte es solo informativo
+      </small>
+   </div>
+   <div class="col-4 text-right">SGI <small>[Sistema Gestón de Importaciones] Reportes</small></div>
+</div>
+{% endblock title_content %}
+{% block content %}
+<div class="container-fluid">
+    <table id="reporte" class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <td>Cod Contable</td>
+                <td>Nombre</td>
+                <td>Nombre Extranjero</td>
+                <td>Código ICE</td>
+                <td>Reg SAN</td>
+                <td>Caja</td>
+                <td>Cant x Caja</td>
+                <td>Vol</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in data.products.data %}
+            <tr>
+                <td>{{ item['cod_contable'] }}</td>
+                <td>{{ item['nombre'] }}</td>
+                <td>{{ item['nombre_extrangero'] }}</td>
+                <td>{{ item['cod_ice'] }}</td>
+                <td>{{ item['nro_registro_sanitario'] }}</td>
+                <td>{{ item['unidad'] }}</td>
+                <td>{{ item['unidad_compra'] }}</td>
+                <td>{{ item['volumen'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% block footer %}
+<script>
+    $(document).ready( function () {
+        $('#reporte').dataTable();
+    } );
+</script>
+{% endblock %}
+{% endblock %}
