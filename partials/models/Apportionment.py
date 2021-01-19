@@ -1,38 +1,129 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.utils import timezone
-from simple_history.models import HistoricalRecords
-
 from logs.app_log import loggin
 from partials.models.Partial import Partial
+from simple_history.models import HistoricalRecords
 
 
 class Apportionment(models.Model):
     id_prorrateo = models.AutoField(primary_key=True)
-    id_parcial = models.ForeignKey(Partial, models.PROTECT, db_column='id_parcial')
-    porcentaje_parcial = models.DecimalField(max_digits=20, decimal_places=13,default=0)
-    fob_parcial_razon_inicial = models.DecimalField(max_digits=20, decimal_places=13,default=0)
-    fob_parcial_razon_saldo = models.DecimalField(max_digits=20, decimal_places=13,default=0)
-    fob_proximo_parcial = models.DecimalField(max_digits=20, decimal_places=13,default=0)
-    fob_inicial = models.DecimalField(max_digits=20, decimal_places=13,default=0)
-    fob_saldo = models.DecimalField(max_digits=20, decimal_places=13,default=0)
-    fob_parcial = models.DecimalField(max_digits=20, decimal_places=13,default=0)
-    almacenaje_parcial = models.DecimalField(max_digits=20, decimal_places=13,default=0)
-    almacenaje_anterior = models.DecimalField(max_digits=20, decimal_places=13,default=0)
-    almacenaje_aplicado = models.DecimalField(max_digits=20, decimal_places=13,default=0)
-    almacenaje_proximo_parcial = models.DecimalField(max_digits=20, decimal_places=13,default=0)
-    prorrateo_flete_aduana = models.DecimalField(max_digits=20, decimal_places=13,default=0)
-    prorrateo_seguro_aduana = models.DecimalField(max_digits=20, decimal_places=13,default=0)
-    gastos_drop_parcial = models.DecimalField(max_digits=20, decimal_places=13,default=0)
-    gastos_drop_parcial_anterior = models.DecimalField(max_digits=20, decimal_places=13,default=0)
-    gastos_drop_parcial_aplicado = models.DecimalField(max_digits=20, decimal_places=13,default=0)
-    gastos_drop_parcial_proximo_parcial = models.DecimalField(max_digits=20, decimal_places=13,default=0)
-    gastos_origen_incial = models.DecimalField(max_digits=20, decimal_places=13,default=0)
-    gastos_origen_anterior_parcial = models.DecimalField(max_digits=20, decimal_places=13,default=0)
-    gastos_origen_aplicado = models.DecimalField(max_digits=20, decimal_places=13,default=0)
-    gastos_origen_proximo_parcial = models.DecimalField(max_digits=20, decimal_places=13,default=0)
+    id_parcial = models.ForeignKey(
+        Partial,
+        models.PROTECT,
+        db_column='id_parcial'
+    )
+    porcentaje_parcial = models.DecimalField(
+        max_digits=20,
+        decimal_places=13,
+        default=0
+    )
+    fob_parcial_razon_inicial = models.DecimalField(
+        max_digits=20,
+        decimal_places=13,
+        default=0
+    )
+    fob_parcial_razon_saldo = models.DecimalField(
+        max_digits=20,
+        decimal_places=13,
+        default=0
+    )
+    fob_proximo_parcial = models.DecimalField(
+        max_digits=20,
+        decimal_places=13,
+        default=0
+    )
+    fob_inicial = models.DecimalField(
+        max_digits=20,
+        decimal_places=13,
+        default=0
+    )
+    fob_saldo = models.DecimalField(
+        max_digits=20,
+        decimal_places=13,
+        default=0
+    )
+    fob_parcial = models.DecimalField(
+        max_digits=20,
+        decimal_places=13,
+        default=0
+    )
+    almacenaje_parcial = models.DecimalField(
+        max_digits=20,
+        decimal_places=13,
+        default=0
+    )
+    almacenaje_anterior = models.DecimalField(
+        max_digits=20,
+        decimal_places=13,
+        default=0
+    )
+    almacenaje_aplicado = models.DecimalField(
+        max_digits=20,
+        decimal_places=13,
+        default=0
+    )
+    almacenaje_proximo_parcial = models.DecimalField(
+        max_digits=20,
+        decimal_places=13,
+        default=0
+    )
+    prorrateo_flete_aduana = models.DecimalField(
+        max_digits=20,
+        decimal_places=13,
+        default=0
+    )
+    prorrateo_seguro_aduana = models.DecimalField(
+        max_digits=20,
+        decimal_places=13,
+        default=0
+    )
+    gastos_drop_parcial = models.DecimalField(
+        max_digits=20,
+        decimal_places=13,
+        default=0
+    )
+    gastos_drop_parcial_anterior = models.DecimalField(
+        max_digits=20,
+        decimal_places=13,
+        default=0
+    )
+    gastos_drop_parcial_aplicado = models.DecimalField(
+        max_digits=20,
+        decimal_places=13,
+        default=0
+    )
+    gastos_drop_parcial_proximo_parcial = models.DecimalField(
+        max_digits=20,
+        decimal_places=13,
+        default=0
+    )
+    gastos_origen_incial = models.DecimalField(
+        max_digits=20,
+        decimal_places=13,
+        default=0
+    )
+    gastos_origen_anterior_parcial = models.DecimalField(
+        max_digits=20,
+        decimal_places=13,
+        default=0
+    )
+    gastos_origen_aplicado = models.DecimalField(
+        max_digits=20,
+        decimal_places=13,
+        default=0
+    )
+    gastos_origen_proximo_parcial = models.DecimalField(
+        max_digits=20,
+        decimal_places=13,
+        default=0
+    )
     id_user = models.SmallIntegerField(default=0)
-    date_create = models.DateTimeField(blank=True, null=True, default=timezone.now)
+    date_create = models.DateTimeField(
+        blank=True,
+        null=True,
+        default=timezone.now
+    )
     last_update = models.DateTimeField(blank=True, null=True)
     history = HistoricalRecords()
 
