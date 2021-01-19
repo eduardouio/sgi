@@ -64,5 +64,4 @@ class SapProductsTV(LoginRequiredMixin, TemplateView):
                     if bool(reg_san):
                         sgi_p.nro_registro_sanitario = reg_san
 
-                    #sgi_p.save()
-
+                    #sgi_p.save() 
