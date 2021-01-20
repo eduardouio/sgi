@@ -1,1 +1,91 @@
-{{ object  }}
+{% extends 'base/base.html' %}
+    {% block title_content %}
+    <div class="row border">
+   <div class="col-8">
+      <i class="fa fa-list"></i>
+      Detalle de producto <strong> {{ object }} </strong>
+   </div>
+   <div class="col-4 text-right">SGI <small>[Sistema Gestón de Importaciones] | Módulo Productos</small></div>
+</div>
+{% endblock title_content %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th colspan="4" class="text-center">{{ object }} </th>
+                    </tr>
+                </thead>
+                    <tr>
+                        <td class="text-right bg-light">Codigo Contable: </td>
+                        <td> {{ object.pk }} </td>
+                        <td class="text-right bg-light">Nombre Producto SAP:</td>
+                        <td> {{ object.nombre }} </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right bg-light">Capacidad ML: </td>
+                        <td> {{ object.capacidad_ml }} </td>
+                        <td class="text-right bg-light">Cantidad Por Caja:</td>
+                        <td> {{ object.cantidad_x_caja }} </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right bg-light">Costo Caja: </td>
+                        <td> {{ object.costo_caja }} </td>
+                        <td class="text-right bg-light">Grado Alch&oacute;lico:</td>
+                        <td> {{ object.grado_alcoholico }} </td>
+                    </tr>
+                     <tr>
+                        <td class="text-right bg-light">Proveedor: </td>
+                        <td> {{ object.identificacion_proveedor }} </td>
+                        <td class="text-right bg-light">Nombre Extrangero:</td>
+                        <td> {{ object.nombre_extrangero }} </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right bg-light">Registro Sanitario: </td>
+                        <td> {{ object.nro_registro_sanitario }} </td>
+                        <td class="text-right bg-light">Vencimiento Registro:</td>
+                        <td> {{ object.fecha_vencimiento_registro }} </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right bg-light">Emision Registro: </td>
+                        <td> {{ object.fecha_emision_registro }} </td>
+                        <td class="text-right bg-light">Estado Registro:</td>
+                        <td> {{ object.estado_registro }} </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right bg-light">Partida Arancelaria: </td>
+                        <td> {{ object.partida_arancelaria }} </td>
+                        <td class="text-right bg-light">Subpartida:</td>
+                        <td> {{ object.subpartida_arancelaria }} </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right bg-light">C&oacute;digo ICE: </td>
+                        <td> {{ object.cod_ice }} </td>
+                        <td class="text-right bg-light">Fecha Registro:</td>
+                        <td> {{ object.date_create }} </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right bg-light">Estado: </td>
+                        <td> 
+                            {% if object.estado %}
+                                <span class="badge badge-success">Activo</span>
+                                {% else %}
+                                <span class="badge badge-danger">Inactivo</span>
+                            {%endif%}
+                        </td>
+                        <td class="text-right bg-light">Peso:</td>
+                        <td> {{ object.peso }} </td>
+                    </tr>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 text-right">
+            <a href="/productos/editar/{{ object.pk}}/" class="btn btn-outline-primary"><i class="fas fa-pen"></i> Modificar </a>
+            <a href="/productos/" class="btn btn-outline-primary"><i class="fas fa-list"></i> Volver a Lista </a>
+        </div>
+    </div>
+</div>
+{% endblock content %}
