@@ -6,6 +6,9 @@ from django.urls import include, path
 admin.site.site_title = 'SGI'
 admin.site.site_header = settings.EMPRESA['nombre']
 
+handler404 = 'authentication.views.errors.error_404'
+handler500 = 'authentication.views.errors.error_500'
+
 urlpatterns = [
     path('grappelli/', include('grappelli.urls')),
     path('admin/', admin.site.urls),
@@ -21,3 +24,4 @@ urlpatterns = [
     path('almagro/', include('almagro.urls', namespace='almagro_urls')),
     path('sap/', include('sap.urls', namespace='sap_urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

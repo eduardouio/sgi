@@ -1,12 +1,10 @@
 """Completa la información del perfil de la empresa"""
-from django.shortcuts import redirect
-from django.urls import reverse
 from sgi.settings import EMPRESA
 
 
 class DataCompletionMiddleware(object):
     """
-    Insert into http resquest data from current company 
+    Insert into http resquest data from current company
     """
 
     def __init__(self, get_reponse):
@@ -20,4 +18,5 @@ class DataCompletionMiddleware(object):
             request.enterprise = EMPRESA
 
         response = self.get_response(request)
+
         return response
