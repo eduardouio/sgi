@@ -22,6 +22,6 @@ urlpatterns = [
     path('auditoria/', include('audit.urls', namespace='audit_urls')),
     path('reportes/', include('reports.urls', namespace='reports_urls')),
     path('almagro/', include('almagro.urls', namespace='almagro_urls')),
-    path('sap/', include('sap.urls', namespace='sap_urls')),
+    path('sap/', include('migrationSAP.urls', namespace='sap_urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
