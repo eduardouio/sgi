@@ -1,0 +1,34 @@
+{% extends 'base/base.html' %}
+{% block title_content %}
+    <div class="row border">
+   <div class="col-8">
+      <i class="fa fa-list"></i>
+      Reporte de Pedidos importados desde SAP {% if data.imported %}  {{ data.imported.__len__() }} {% endif %}
+   </div>
+   <div class="col-4 text-right">SGI <small>[Sistema Gestón de Importaciones] Importar SAP</small></div>
+</div>
+{% endblock  %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Pedido</th>
+                        <th>Observaciones</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock  %}
