@@ -6,7 +6,7 @@ from products.models import Product
 # /productos/ver/{id_producto}
 class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
-    template_name = 'products/ver_producto.html'
+    template_name = 'products/ver-producto.html'
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()

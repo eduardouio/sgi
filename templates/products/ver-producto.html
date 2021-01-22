@@ -32,37 +32,90 @@
                     </tr>
                     <tr>
                         <td class="text-right bg-light">Costo Caja: </td>
-                        <td> {{ object.costo_caja }} </td>
+                        <td> {{ object.costo_caja | round(2) }} </td>
                         <td class="text-right bg-light">Grado Alch&oacute;lico:</td>
-                        <td> {{ object.grado_alcoholico }} </td>
+                        <td> {{ object.grado_alcoholico | round(2)}} </td>
                     </tr>
                      <tr>
                         <td class="text-right bg-light">Proveedor: </td>
-                        <td> {{ object.identificacion_proveedor }} </td>
+                        <td> <a href="/admin/suppliers/supplier/{{object.identificacion_proveedor_id}}/change/"><i class="fas fa-user"></i></a>  {{ object.identificacion_proveedor }}</td>
                         <td class="text-right bg-light">Nombre Extrangero:</td>
-                        <td> {{ object.nombre_extrangero }} </td>
+                        <td> 
+                            {% if object.nombre_extrangero  %}
+                                {{ object.nombre_extrangero }} 
+                            {% else %}
+                                --
+                            {%endif%}
+                        </td>
                     </tr>
                     <tr>
                         <td class="text-right bg-light">Registro Sanitario: </td>
-                        <td> {{ object.nro_registro_sanitario }} </td>
+                        <td>
+                            {% if  object.nro_registro_sanitario  %}
+                                {{ object.nro_registro_sanitario }}
+                                {% if object.registro_sanitario %}
+                                    <a href="/media/{{ object.registro_sanitario }}">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </a>
+                                {%endif%}
+                            {% else %}
+                                --
+                            {%endif%} 
+                         </td>
                         <td class="text-right bg-light">Vencimiento Registro:</td>
-                        <td> {{ object.fecha_vencimiento_registro }} </td>
+                        <td> 
+                            {% if  object.fecha_vencimiento_registro  %}
+                                {{ object.fecha_vencimiento_registro }} 
+                            {% else %}
+                                --
+                            {%endif%} 
+                        </td>
                     </tr>
                     <tr>
                         <td class="text-right bg-light">Emision Registro: </td>
-                        <td> {{ object.fecha_emision_registro }} </td>
+                        <td> 
+                            {% if  object.fecha_emision_registro  %}
+                                {{ object.fecha_emision_registro }} 
+                            {% else %}
+                                --
+                            {%endif%} 
+                        </td>
                         <td class="text-right bg-light">Estado Registro:</td>
-                        <td> {{ object.estado_registro }} </td>
+                        <td> 
+                            {% if  object.estado_registro  %}
+                                {{ object.estado_registro }} 
+                            {% else %}
+                                --
+                            {%endif%} 
+                        </td>
                     </tr>
                     <tr>
                         <td class="text-right bg-light">Partida Arancelaria: </td>
-                        <td> {{ object.partida_arancelaria }} </td>
+                        <td> 
+                            {% if  object.partida_arancelaria  %}
+                                {{ object.partida_arancelaria }} 
+                            {% else %}
+                                --
+                            {%endif%} 
+                        </td>
                         <td class="text-right bg-light">Subpartida:</td>
-                        <td> {{ object.subpartida_arancelaria }} </td>
+                        <td> 
+                            {% if  object.subpartida_arancela  %}
+                                {{ object.subpartida_arancelaria }} 
+                            {% else %}
+                                --
+                            {%endif%} 
+                        </td>
                     </tr>
                     <tr>
                         <td class="text-right bg-light">C&oacute;digo ICE: </td>
-                        <td> {{ object.cod_ice }} </td>
+                        <td> 
+                            {% if  object.cod_ice  %}
+                                {{ object.cod_ice }} 
+                            {% else %}
+                                <strong class="text-danger">PRODUCTO SIN COD ICE</strong>
+                            {%endif%} 
+                        </td>
                         <td class="text-right bg-light">Fecha Registro:</td>
                         <td> {{ object.date_create }} </td>
                     </tr>

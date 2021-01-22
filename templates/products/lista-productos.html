@@ -1,0 +1,78 @@
+{% extends 'base/base.html' %}
+{% block header %}
+<!--cARGAMOS LIBRERIAS ADICIONALES PARA MOSTRAR LA TABLA-->
+<link rel="stylesheet" href="{{ static('css/jquery.dataTables.min.css') }}">
+<script src="{{ static('js/jquery.dataTables.min.js') }}"></script>
+{% endblock %}
+    {% block title_content %}
+    <div class="row border">
+   <div class="col-8">
+      <i class="fa fa-list"></i>
+      Lista general de productos  <strong> {{ object_list.__len__() }} Productos Encontrados </strong>
+   </div>
+   <div class="col-4 text-right">SGI <small>[Sistema Gestón de Importaciones] | Módulo Productos</small></div>
+</div>
+{% endblock title_content %}
+{% block content %}
+<div class="container-fluid">
+    <table class="table table-bordered table-striped" id="reporte">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Producto</th>
+                <th>Proveedor</th>
+                <th>Grado A</th>
+                <th>Capacidad</th>
+                <th>Costo Caja</th>
+                <th>Cnt Caja</th>
+                <th>Partida</th>
+                <th>Reg San</th>
+                <th>File</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in object_list  %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td><a class="text-info" href="/productos/ver/{{item.cod_contable}}/"><i class="fas fa-file-alt"></i></a> {{ item }}</td>
+                <td><a class='text-info' href="/admin/suppliers/supplier/{{item.identificacion_proveedor_id}}/change/"><i class="fas fa-user"></i></a> {{ item.identificacion_proveedor }}</td>
+                <td class="text-right">{{ item.grado_alcoholico | round(1) }}</td>
+                <td class="text-right">{{ item.capacidad_ml }} Ml</td>
+                <td class="text-right">{{ item.costo_caja | round(2) }}</td>
+                <td class="text-right">{{ item.cantidad_x_caja }} Unds</td>
+                <td class="text-right">
+                    {% if item.partida_arancelaria  %}
+                        {{ item.partida_arancelaria }}
+                    {% else %}
+                            --
+                    {% endif %}
+                </td>
+                <td class="text-right">
+                    {% if  item.nro_registro_sanitario  %}
+                        {{ item.nro_registro_sanitario }}
+                    {% else %}
+                        --
+                    {% endif %}
+                </td>
+                <td class="text-center">
+                    {% if  item.registro_sanitario  %}
+                    <a href="/media/{{ item.registro_sanitario }}">
+                        <i class="fas fa-file-pdf"></i>
+                    </a>  
+                    {% else %}
+                        --
+                    {% endif %}                    
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% block footer %}
+<script>
+    $(document).ready( function () {
+    $('#reporte').dataTable();
+} );
+</script>
+{% endblock %}
+{% endblock %}
