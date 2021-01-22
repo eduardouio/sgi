@@ -3,7 +3,6 @@ Archivo encargado de realizar el analisis de los pedidos a importar desde
 SAP importa de forma automatica los pedido que no estan en el sistema
 """
 import json
-from datetime import datetime
 from decimal import Decimal
 from random import randint
 from urllib.error import HTTPError
@@ -40,6 +39,7 @@ class SAPImporter(object):
             return []
 
         orders_verified = self.verify_orders(data['data'])
+
         return orders_verified
 
     def verify_orders(self, orders):
@@ -50,18 +50,19 @@ class SAPImporter(object):
             ordes (list): Listado de pedidos retornados por SAP
         """
         created_orders = []
-
         for order in orders:
-            order_sgi = Order.get_by_order(order['nro_pedido'].replace('/', '-'))
+            order_sgi = Order.get_by_order(
+                order['nro_pedido'].replace('/', '-')
+            )
             if not order_sgi:
                 origen = order['ciudad_origen']
                 origin_country = ''
                 origin_city = ''
                 pos = ([p for p, char in enumerate(origen) if char == '/'])
-
+                pos = pos[0]
                 if pos:
-                    origin_country = origen[:pos[0]]
-                    origin_city = origen[pos[0]:]
+                    origin_country = origen[:pos]
+                    origin_city = origen[pos+1:]
                     origin_city.strip()
                     origin_country.strip()
 
@@ -70,10 +71,12 @@ class SAPImporter(object):
                     regimen=order['nro_refrendo'],
                     flete_aduana=Decimal(order['flete_aduana']),
                     seguro_aduana=Decimal(order['seguro_aduana']),
-                    incoterm=order['incoterm'],
+                    incoterm=order['incoterm'].upper(),
                     pais_origen=origin_country,
                     ciudad_origen=origin_city,
-                    comentarios=order['observaciones']
+                    comentarios=order['observaciones'],
+                    observaciones=order['observaciones'],
+                    id_user=1
                 )
                 try:
                     order_sgi.save()
@@ -81,10 +84,13 @@ class SAPImporter(object):
                     status, message = self.create_invoice(order_sgi, order)
 
                     if status is False:
-                        self.clean_data(order_sgi)
+                        loggin('i', 'Se elimina el pedido {}'.format(
+                            order_sgi.nro_pedido
+                        ))
+                        order_sgi.delete()
 
                     created_orders.append({
-                        'order': order_sgi,
+                        'order': order,
                         'status': status,
                         'message': message
                     })
@@ -108,28 +114,42 @@ class SAPImporter(object):
         supplier = Supplier().get_by_ruc(order['identificacion_proveedor'])
 
         if supplier is None:
-            return (False, 'Proveedor no existe')
+            return (False, 'Proveedor {} no existe'.format(
+                order['identificacion_proveedor']
+            ))
 
         invoice_number = (
             'SF-' +
             supplier.nombre[:5] +
-            str(randint(11111, 99999))
+            str(randint(111111, 999999))
         )
-
-        type_change = Decimal(1) if supplier.moneda_transaccion is 'DOLARES' else Decimal(1.25)
+        money = supplier.moneda_transaccion
+        type_change = Decimal(1) if money == 'DOLARES' else Decimal(1.25)
 
         order_invoice = OrderInvoice(
             identificacion_proveedor=supplier,
-            nro_pedido=order_sgi.nro_pedido,
+            proveedor=supplier.nombre,
+            nro_pedido=order_sgi,
             id_factura_proveedor=invoice_number,
-            fob_tasa_trimestral=Decimal(order['total_pedido']) / type_change,
-            tipo_cambio=type_change
+            valor=Decimal(order['total_pedido']) / type_change,
+            moneda=money,
+            tipo_cambio=type_change,
+            id_user=1
         )
 
         try:
             order_invoice.save()
             loggin('i', 'Factura correctamente guardada')
-            return self.create_order_items(order_invoice, order)
+            status, message = self.create_order_items(order_invoice, order)
+
+            if status is False:
+                OrderInvoiceDetail.delete_by_order_invoice(
+                    order_invoice.id_factura_proveedor
+                )
+                order_invoice.delete()
+                loggin('i', 'Se elimina la factura creada con sus items')
+
+            return(status, message)
 
         except IntegrityError as e:
             loggin('e', 'informacion incompleta {}'.format(e))
@@ -139,7 +159,7 @@ class SAPImporter(object):
 
         return (False, 'Problemas con la factura del proveedor')
 
-    def create_order_items(order_invoice, order):
+    def create_order_items(self, order_invoice, order):
         """Registramos los items de la factura en el sistema
 
         Args:
@@ -159,13 +179,18 @@ class SAPImporter(object):
             invoice_item = OrderInvoiceDetail(
                 id_pedido_factura=order_invoice,
                 cod_contable=product,
+                product=product.nombre,
                 costo_caja=Decimal(item['costo_caja']),
-                nro_cajas=int(item['nro_cajas']),
+                nro_cajas=int(float(item['nro_cajas'])),
                 cajas_importadas=Decimal(item['nro_cajas']),
                 cantidad_x_caja=Decimal(item['cantidad_x_caja']),
                 capacidad_ml=product.capacidad_ml,
-                costo_botella=Decimal(item['costo_caja'])/Decimal(item['cantidad_x_caja']),
-                date_create=datetime.today()
+                grado_alcoholico=product.grado_alcoholico,
+                costo_botella=(
+                    Decimal(item['costo_caja']) /
+                    Decimal(item['cantidad_x_caja'])
+                ),
+                id_user=1
             )
 
         try:
@@ -185,23 +210,3 @@ class SAPImporter(object):
             ))
 
         return(True, 'Productos importados correctamente')
-
-    def clean_data(self, order_sgi):
-        """Realiza una limpieza de los datos que no fueron importados
-        correctamente
-
-        Args:
-            nro_order ([type]): [description]
-        """
-        order_ionvoice = OrderInvoice.get_by_order(order_sgi.nro_pedido)
-        if order_ionvoice:
-            order_items = OrderInvoiceDetail.get_by_id_order_invoice(
-                order_ionvoice.id_pedido_factura
-            )
-
-            for item in order_items:
-                item.delete()
-
-        order_ionvoice.delete()
-        order_sgi.delete()
-        loggin('i', 'Informacion del pedido {} eliminada correctamente')

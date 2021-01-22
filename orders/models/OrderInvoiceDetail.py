@@ -153,3 +153,9 @@ class OrderInvoiceDetail(models.Model):
         return self.get_by_id_order_invoice(order_invoice.id_pedido_factura)
 
 
+
+    @classmethod
+    def delete_by_order_invoice(cls, id_order_invoice):
+        order_items = cls.get_by_id_order_invoice(id_order_invoice)
+        for item in order_items:
+            item.delete()
