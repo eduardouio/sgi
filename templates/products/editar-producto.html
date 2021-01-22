@@ -1,0 +1,41 @@
+{% extends 'base/base.html' %}
+    {% block title_content %}
+    <div class="row border">
+   <div class="col-8">
+      <i class="fa fa-list"></i>
+      Editar Producto  <strong> {{ object.nombre }} </strong>
+   </div>
+   <div class="col-4 text-right">SGI <small>[Sistema Gestón de Importaciones] | Módulo Productos</small></div>
+</div>
+{% endblock title_content %}
+{% block content %}
+<br>
+<div class="container bordered">
+    <br>
+    <form method="post">
+        {{ csrf_input }}
+        {{ form }}
+        <div class="row">
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="">Cod Contable</label>
+                    {{ form.cod_contable }}
+                  </div>
+            </div>
+            <div class="col-4">
+
+            </div>
+            <div class="col-4">
+
+            </div>
+        </div>
+        <div class="row text-right">
+            <div class="col-12">
+                <a href="/productos/ver/{{ object.cod_contable }}/" class="btn btn-outline-primary"> <i class="fas fa-ban"></i> Cancelar</a>
+                <button  class="btn btn-outline-primary"> <i class="fas fa-save"></i> Guardar</button>
+            </div>
+        </div>
+    </form>
+    <br>
+</div>
+{% endblock %}

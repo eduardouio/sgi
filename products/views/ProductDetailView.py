@@ -15,6 +15,3 @@ class ProductDetailView(LoginRequiredMixin, DetailView):
             'title_page': 'Producto | {}'.format(self.object),
         }
         return self.render_to_response(context)
-
-# TODO agregar enlace al registro sanitario
-# TODO Validar los campos sin Valor para que salga otra cosa != None
