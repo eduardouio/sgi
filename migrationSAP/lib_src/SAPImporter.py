@@ -69,6 +69,7 @@ class SAPImporter(object):
                 order_sgi = Order(
                     nro_pedido=order['nro_pedido'].replace('/', '-'),
                     regimen=order['nro_refrendo'],
+                    proveedor=order['supplier']['nombre'],
                     flete_aduana=Decimal(order['flete_aduana']),
                     seguro_aduana=Decimal(order['seguro_aduana']),
                     incoterm=order['incoterm'].upper(),
