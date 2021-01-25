@@ -3,6 +3,23 @@ from django.db import models
 from simple_history.models import HistoricalRecords
 from suppliers.models.Supplier import Supplier
 
+STATUS_CHOICES = (
+    ('Activo', 'Activo'),
+    ('Cancelado', 'Cancelado'),
+    ('Vencido', 'Vencido'),
+    ('No Renovar', 'No Renovar'),
+)
+
+STATUS_PRODUCT = (
+    (1, 'ACTIVO'),
+    (0, 'INACTIVO'),
+)
+
+ARMY_CUSTODY = (
+    (1, '1 CUSTODIA'),
+    (2, '2 CUSTODIAS'),
+)
+
 
 class Product(models.Model):
     cod_contable = models.CharField(primary_key=True, max_length=20)
@@ -10,6 +27,7 @@ class Product(models.Model):
         Supplier, models.PROTECT,
         db_column='identificacion_proveedor'
     )
+    id_producto = models.PositiveIntegerField(unique=True)
     nro_registro_sanitario = models.CharField(max_length=25, default=None)
     fecha_emision_registro = models.DateField(
         blank=True,
@@ -21,11 +39,16 @@ class Product(models.Model):
         null=True,
         default=None
     )
-    estado_registro = models.CharField(max_length=70, blank=True, null=True)
+    estado_registro = models.CharField(
+        max_length=70,
+        default='Activo',
+        null=True,
+        choices=STATUS_CHOICES
+        )
     grado_alcoholico = models.DecimalField(
         max_digits=12,
         decimal_places=3,
-        default=0.00
+        default=0
     )
     nombre = models.CharField(unique=True, max_length=70)
     nombre_extrangero = models.CharField(
@@ -60,8 +83,8 @@ class Product(models.Model):
         decimal_places=10,
         default=0.00
     )
-    estado = models.IntegerField(default=1)
-    custodia_doble = models.IntegerField(default=0)
+    estado = models.IntegerField(default=1, choices=STATUS_PRODUCT)
+    custodia_doble = models.IntegerField(default=0, choices=ARMY_CUSTODY)
     peso = models.DecimalField(
         max_digits=10,
         decimal_places=3,
@@ -108,5 +131,12 @@ class Product(models.Model):
         pass
 
     @classmethod
-    def search(self, query):
-        pass
+    def get_new_id_producto(cls):
+        """Retorna el id autoincremental que le corresponde al producto nuevo
+        """
+        las_product = cls.objects.raw(
+            'SELECT * FROM producto order by id_producto desc'
+        )
+
+        for product in las_product:
+            return product.id_producto + 1

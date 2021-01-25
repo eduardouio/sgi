@@ -3,7 +3,7 @@
     <div class="row border">
    <div class="col-8">
       <i class="fa fa-list"></i>
-      Detalle de producto <strong> {{ object }} </strong>
+      Ficha individual de Producto
    </div>
    <div class="col-4 text-right">SGI <small>[Sistema Gestón de Importaciones] | Módulo Productos</small></div>
 </div>
@@ -11,7 +11,22 @@
 {% block content %}
 <div class="container">
     <div class="row">
+        <div class="col-12 text-right">
+            <a href="/productos/crear/" class="btn btn-outline-primary"> <i class="fas fa-plus"></i> Nuevo Producto</a>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-12">
+            {% if data.updated %}
+                <div class="alert alert-success">
+                    Producto Actualizado Correctamente!
+                </div>
+            {%endif%}
+            {% if data.created %}
+                <div class="alert alert-primary">
+                    Producto Creado Correctamente!
+                </div>
+            {%endif%}
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -108,6 +123,18 @@
                         </td>
                     </tr>
                     <tr>
+                        <td class="text-right bg-light">Codigo TNAN: </td>
+                        <td> 
+                            {% if  object.tnan_codigo  %}
+                                {{ object.tnan_codigo }} 
+                            {% else %}
+                                --
+                            {%endif%} 
+                        </td>
+                        <td class="text-right bg-light">Peso:</td>
+                            <td> {{ object.peso }} </td>
+                    </tr>
+                    <tr>
                         <td class="text-right bg-light">C&oacute;digo ICE: </td>
                         <td> 
                             {% if  object.cod_ice  %}
@@ -116,8 +143,8 @@
                                 <strong class="text-danger">PRODUCTO SIN COD ICE</strong>
                             {%endif%} 
                         </td>
-                        <td class="text-right bg-light">Fecha Registro:</td>
-                        <td> {{ object.date_create }} </td>
+                        <td class="text-right bg-light">Pais Origen:</td>
+                        <td> {{ object.pais_origen }} </td>
                     </tr>
                     <tr>
                         <td class="text-right bg-light">Estado: </td>
@@ -128,8 +155,22 @@
                                 <span class="badge badge-danger">Inactivo</span>
                             {%endif%}
                         </td>
-                        <td class="text-right bg-light">Peso:</td>
-                        <td> {{ object.peso }} </td>
+                        <td class="text-right bg-light">Comentarios:</td>
+                        <td> 
+                            {% if object.comentarios %}
+                                {{ object.comentarios }} 
+                            {% else %}
+                            --
+                            {%endif%}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right bg-light">Actualizacion: </td>
+                        <td> 
+                            {{ object.last_update }}
+                        </td>
+                        <td class="text-right bg-light">Fecha Registro:</td>
+                        <td> {{ object.date_create }} </td>
                     </tr>
             </table>
         </div>

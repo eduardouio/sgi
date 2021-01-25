@@ -11,7 +11,18 @@ class ProductDetailView(LoginRequiredMixin, DetailView):
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         context = self.get_context_data(object=self.object)
+        updated = False
+        created = False
+
+        if request.GET.get('edit') == 'true':
+            updated = True
+
+        if request.GET.get('created') == 'true':
+            created = True
+
         context['data'] = {
             'title_page': 'Producto | {}'.format(self.object),
+            'updated': updated,
+            'created' : created
         }
         return self.render_to_response(context)
