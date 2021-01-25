@@ -1,4 +1,4 @@
-from django.contrib.auth.models import Group, User
+from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
@@ -11,20 +11,24 @@ from logs.app_log import loggin
 # /login/
 class LoginTemplateView(TemplateView):
     template_name = 'base/login-form.html'
-    success_url = 'pedidos/listar/'
-    login_url = '/?error=true'
+    success_url = '/'
+    login_url = '/'
+    error_url = '?error=true'
 
     def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        context['have_next'] = False
         if request.GET:
-            self.success_url = request.GET['next']
+            if request.GET.get('next'):
+                self.success_url = request.GET['next']
+                context['have_next'] = True
 
+        # Si el usuario tiene sesion va al home
         if request.user.is_authenticated:            
             return HttpResponseRedirect(self.success_url)
 
         loggin('i', 'intentando inciar sesion')
-        context = self.get_context_data(**kwargs)
-        context['have_next'] = True if request.GET else False
-        context['next'] = '' if not request.GET else request.GET['next']
+        context['next'] = self.success_url
         context['enterprise'] = EMPRESA
         return self.render_to_response(context)
 
@@ -37,7 +41,7 @@ class LoginTemplateView(TemplateView):
         except ObjectDoesNotExist:
             loggin('w', 'Usuario incorrecto {}'.format(data['username']))
             return HttpResponseRedirect(self.error_url)
-        if user_db.check_password(data['password']) == False:
+        if user_db.check_password(data['password']) is False:
             loggin('w', 'Password incorrecto {}'.format(data['password']))
             return HttpResponseRedirect(self.error_url)
         if user_is_valid:
@@ -50,12 +54,6 @@ class LoginTemplateView(TemplateView):
                 user=user,
                 backend='django.contrib.auth.backends.ModelBackend'
                 )
-
-            # colocar aqui la redireccion para los otros perfiles
-            if data.get('next'):
-                self.success_url = data['next']
-            elif user.groups.filter(name='auditoria').exists():
-                self.success_url = 'auditoria/'
 
             return HttpResponseRedirect(self.success_url)
         return HttpResponseRedirect(self.error_url)

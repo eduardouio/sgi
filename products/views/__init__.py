@@ -1,1 +1,4 @@
-from products.views.ProductDetailView import ProductDetailView
+from .ProductDetailView import ProductDetailView
+from .ProductsListView import ProductListView
+from .ProductUpdateView import ProductUpdateView
+from .ProductCreateView import ProductCreateView

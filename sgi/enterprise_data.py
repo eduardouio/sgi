@@ -1,3 +1,7 @@
+"""
+    Archivo de confirguracion de sistema
+"""
+
 DATOS_EMPRESAS = {
     'test': {
         'nombre': 'AMBIENTE DE PRUEBAS TEST',
@@ -10,7 +14,7 @@ DATOS_EMPRESAS = {
         'url_app': 'http://localhost:8000/',
         'url_app_local': 'http://localhost:8000/',
         'url_app_importaciones': 'http://179.49.60.158:8888/cordovez/',
-        #'url_app_importaciones': 'http://localhost/cordovezapp/app/',
+        'url_bottle_sap': 'http://192.168.0.198:8000/cordovez/',
         'admin_title': 'TEST',
         'database': 'cordovezApp',
         'db_host': 'localhost',
@@ -29,6 +33,7 @@ DATOS_EMPRESAS = {
         'url_app': 'http://179.49.60.158:5001/',
         'url_app_local': 'http://localhost:5001/',
         'url_app_importaciones': 'http://179.49.60.158:8888/cordovez/',
+        'url_bottle_sap': 'http://127.0.0.1:8000/cordovez/',
         'admin_title': 'CORDOVEZ',
         'database': 'cordovezApp',
         'db_host': 'localhost',
@@ -47,6 +52,7 @@ DATOS_EMPRESAS = {
         'url_app': 'http://179.49.60.158:5002/',
         'url_app_local': 'http://localhost:5002/',
         'url_app_importaciones': 'http://179.49.60.158:8888/imnac/',
+        'url_bottle_sap': 'http://127.0.0.1:8000/imnac/',
         'admin_title': 'IMNAC',
         'database': 'imnacApp',
         'db_host': 'localhost',
@@ -65,6 +71,7 @@ DATOS_EMPRESAS = {
         'url_app': 'http://179.49.60.158:5003/',
         'url_app_local': 'http://localhost:5003/',
         'url_app_importaciones': 'http://179.49.60.158:8888/vid/',
+        'url_bottle_sap': 'http://127.0.0.1:8000/vid/',
         'admin_title': 'VIDINTERNACIONAL',
         'database': 'vidApp',
         'db_host': 'localhost',
@@ -76,7 +83,7 @@ DATOS_EMPRESAS = {
 }
 
 CMT_DEBUG = True
-#seleciona la empresa
+# seleciona la empresa
 EMPRESA = DATOS_EMPRESAS['test']
 
 if EMPRESA['empresa'] != 'test':

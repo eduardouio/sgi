@@ -1,0 +1,48 @@
+{% extends 'base/base.html' %}
+{% block title_content %}
+    <div class="row border">
+   <div class="col-8">
+      <i class="fa fa-list"></i>
+      Reporte de Pedidos importados desde SAP {% if data.imported  %}  {{ data.imported.__len__() }} {% endif %}
+   </div>
+   <div class="col-4 text-right">SGI <small>[Sistema Gestón de Importaciones] Importar SAP</small></div>
+</div>
+{% endblock  %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            {% if data.imported  %}
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Pedido</th>
+                        <th>Observaciones</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in data.imported %}
+                    <tr>
+                        <td class="text-center">{{ loop.index }}</td>
+                        <td class="text-center"><strong>{{ item.order.nro_pedido }}</strong></td>
+                        <td>{{ item.message }}</td>
+                        <td>
+                            {% if item.status %}
+                                <span class="text-center" class="badge badge-success">{{ item.status }}</span>
+                            {% else  %}
+                            <span class="badge badge-danger">{{ item.status }}</span>
+                            {% endif  %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+        <h1 class="text-info">No hay pedidos para importar </h1>
+        {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock  %}
