@@ -48,24 +48,29 @@ class ImportAlmagro():
         """
         sections = date_string.split('/')
         base = [
-            {'mont': 'Jan', 'val':  1},
-            {'mont': 'Feb', 'val':  2},
-            {'mont': 'Mar', 'val':  3},
-            {'mont': 'Apr', 'val':  4},
-            {'mont': 'May', 'val':  5},
-            {'mont': 'Jun', 'val':  6},
-            {'mont': 'Jul', 'val':  7},
-            {'mont': 'Aug', 'val':  8},
-            {'mont': 'Sep', 'val':  9},
-            {'mont': 'Oct', 'val':  10},
-            {'mont': 'Nov', 'val':  11},
-            {'mont': 'Dec', 'val':  12},
-            {'mont': 'Ene', 'val':  1},
-            {'mont': 'Abr', 'val':  4},
-            {'mont': 'Ago', 'val':  8},
-            {'mont': 'Dic', 'val':  12},
+            {'mont': 'jan', 'val':  1},
+            {'mont': 'feb', 'val':  2},
+            {'mont': 'mar', 'val':  3},
+            {'mont': 'apr', 'val':  4},
+            {'mont': 'may', 'val':  5},
+            {'mont': 'jun', 'val':  6},
+            {'mont': 'jul', 'val':  7},
+            {'mont': 'aug', 'val':  8},
+            {'mont': 'sep', 'val':  9},
+            {'mont': 'oct', 'val':  10},
+            {'mont': 'nov', 'val':  11},
+            {'mont': 'dec', 'val':  12},
+            {'mont': 'ene', 'val':  1},
+            {'mont': 'abr', 'val':  4},
+            {'mont': 'ago', 'val':  8},
+            {'mont': 'dic', 'val':  12},
         ]
         for item in base:
             if item['mont'].lower() == sections[1].lower():
                 sections[1] = item['val']
-                return date(int(sections[2]), sections[1], int(sections[0]))
+                my_date = date(int(sections[2]), sections[1], int(sections[0]))
+                if date is None:
+                    loggin('e', 'La fecha no es valida {} {}'.format(
+                        item['mont'], sections[1]
+                    ))
+                return my_date
