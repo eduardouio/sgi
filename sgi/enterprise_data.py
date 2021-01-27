@@ -1,6 +1,12 @@
 """
     Archivo de confirguracion de sistema
+    Cambiar el valor de la variable para confirgurar el server
+    valores posibles -> cordovez | imnac | vid | test
+    ENTERPRISE_CONF = [cordovez | imnac | vid | test]
 """
+
+
+ENTERPRISE_CONF = 'test'
 
 DATOS_EMPRESAS = {
     'test': {
@@ -83,8 +89,7 @@ DATOS_EMPRESAS = {
 }
 
 CMT_DEBUG = True
-# seleciona la empresa
-EMPRESA = DATOS_EMPRESAS['test']
+EMPRESA = DATOS_EMPRESAS[ENTERPRISE_CONF]
 
 if EMPRESA['empresa'] != 'test':
     CMT_DEBUG = False
