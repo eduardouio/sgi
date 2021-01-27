@@ -9,3 +9,4 @@ db.sqlite3
 sgi/settings.py
 *.pdf
 /media/
+/sgi/enterprise_data.py
