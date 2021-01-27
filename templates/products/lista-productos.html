@@ -27,6 +27,7 @@
             <tr>
                 <th>#</th>
                 <th>Producto</th>
+                <th>Cod Contable</th>
                 <th>Proveedor</th>
                 <th>Grado A</th>
                 <th>Capacidad</th>
@@ -42,6 +43,7 @@
             <tr>
                 <td><a class="text-info" href="/productos/editar/{{item.cod_contable}}/"><i class="fas fa-pen"></i></a> {{ loop.index }}</td>
                 <td><a class="text-info" href="/productos/ver/{{item.cod_contable}}/"><i class="fas fa-file-alt"></i></a> {{ item }}</td>
+                <td>{{item.cod_contable}}</td>
                 <td><a class='text-info' href="/admin/suppliers/supplier/{{item.identificacion_proveedor_id}}/change/"><i class="fas fa-user"></i></a> {{ item.identificacion_proveedor }}</td>
                 <td class="text-right">{{ item.grado_alcoholico | round(1) }}</td>
                 <td class="text-right">{{ item.capacidad_ml }} Ml</td>
