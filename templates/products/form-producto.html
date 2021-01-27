@@ -17,7 +17,7 @@
 <div class="container bordered">
     <br>
     {{ form.errors }}
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         {% if data.new_id %}
         <input type="hidden" name="id_producto" id="id_id_producto" value="{{ data.new_id }}">
             {%else%}
