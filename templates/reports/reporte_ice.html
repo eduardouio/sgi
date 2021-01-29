@@ -10,7 +10,97 @@
 {% endblock title_content %}
 {% block content %}
 <div class="container-fluid">
-    
+    <form action="" class="form" method="get">
+    <div class="row">
+        <div class="col-2">
+                <div class="form-group" >
+                    <label for="month">MES</label>
+                    <select name="month" id="month" class="form-control">
+                        <option value="1" {%if data.current_month == 1 %} selected {%endif %}>Enero</option>
+                        <option value="2" {%if data.current_month == 2 %} selected {%endif %}>Febrero</option>
+                        <option value="3" {%if data.current_month == 3 %} selected {%endif %}>Marzo</option>
+                        <option value="4" {%if data.current_month == 4 %} selected {%endif %}>Abril</option>
+                        <option value="5" {%if data.current_month == 5 %} selected {%endif %}>Mayo</option>
+                        <option value="6" {%if data.current_month == 6 %} selected {%endif %}>Junio</option>
+                        <option value="7" {%if data.current_month == 7 %} selected {%endif %}>Julio</option>
+                        <option value="8" {%if data.current_month == 8 %} selected {%endif %}>Agosto</option>
+                        <option value="9" {%if data.current_month == 9 %} selected {%endif %}>Septiembre</option>
+                        <option value="10" {%if data.curretn_month == 10 %} selected {%endif %}>Octubre</option>
+                        <option value="11" {%if data.curretn_month == 11 %} selected {%endif %}>Noviembre</option>
+                        <option value="12" {%if data.curretn_month == 12 %} selected {%endif %}>Diciembre</option>
+                    </select>
+                </div>
+                
+            </div>
+            <div class="col-2">
+                <div class="form-group">
+                    <label for="year">Ingrese el Año</label>
+                    <input type="number" name="year" id="year" class="form-control" value="{{ data.current_year }}">
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="form-group">
+                    <br>
+                    <br>
+                    <button class="btn btn-outline-primary"> <i class="fas fa-table"></i> Generar Reporte</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    {% if data.show_error %}
+    <div class="row">
+        <div class="col-12">
+            <span class="badge badge-danger">
+                Uno de los pedidos o parciales se encuentra abierto, por favor solicite el cierre de los mismos antes de continuar
+            </span>
+            <BR></BR>
+            PEDIDOS DESDE ALMAGRO SIN CERRAR
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Pedido</th>
+                            <th>Parcial</th>
+                            <th>Fecha LLegada</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for p in data.partials_open %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ p.nro_pedido }}</td>
+                            <td>{{ p.ordinal_parcial }}</td>
+                            <td>{{ p.fecha_llegada_cliente }}</td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+                PEDIDOS CONSUMO SIN CERRAR
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Pedido</th>
+                            <th>Parcial</th>
+                            <th>Fecha LLegada</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for O in data.orders_open %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ p.nro_pedido }}</td>
+                            <td>{{ p.ordinal_parcial }}</td>
+                            <td>{{ p.fecha_llegada_cliente }}</td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+        </div>
+    </div>
+    {% else  %}
     <div class="row">
     <div class="col-12">
 <table class="table table-bordered table-condensed table-responsive">
@@ -78,7 +168,7 @@
         <td nowrap="" class="text-right">{{ item.unidades | round(0) }}</td>
         <td nowrap="" class="text-right">{{ (item.nro_cajas  * item.costo_caja * item.id_pedido_factura.tipo_cambio ) | round(2)}}</td>
         <td nowrap="" class="text-right">{{ item.costo_total - item.ice_advalorem_pagado -  item.ice_especifico }}</td>
-        <td nowrap="" class="text-right">{{ item.capacidad_ml | round(0) }}</td>
+        <td nowrap="" class="text-right">{{ item.cod_contable.capacidad_ml | round(0) }}</td>
         <td nowrap="" class="text-right">{{ item.grado_alcoholico | round(2) }}</td>
         <td nowrap="" class="text-right">{{ item.ex_aduana_unitario }}</td>
         <td nowrap="" class="text-right">{{ item.ice_especifico / item.unidades }}</td>
@@ -123,5 +213,6 @@
 </table>
 </div>
 </div>
+{% endif %}
 </div>
 {% endblock content %}
