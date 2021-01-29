@@ -75,7 +75,7 @@ class OrderAdmin(SimpleHistoryAdmin):
 #             )
 #        }),
 #    )    
-    
+
     readonly_fields = [
         'nro_liquidacion', 'exoneracion_arancel',
         'fodinfa', 'fodinfa_pagado',
@@ -90,7 +90,6 @@ class OrderAdmin(SimpleHistoryAdmin):
                 '<a href="/pedidos/ficha/{name_link}/" class="grp-button grp-default">📁 <small>Ficha</small></a>'
                 .format(name_link=obj.nro_pedido)
                 )
-        
 
     search_fields = [
         'nro_pedido',
@@ -112,14 +111,8 @@ class OrderAdmin(SimpleHistoryAdmin):
 
 
 class OrderInvoiceDetailInline(admin.TabularInline):
-    #fields = (
-    #    'id_pedido_factura',
-    #    'cod_contable',
-    #    'nro_cajas',
-    #    'costo_caja',
-    #    'peso',
-    #)
     model = OrderInvoiceDetail
+
 
 class OrderInvoiceAdmin(SimpleHistoryAdmin):
     list_display = (
@@ -143,9 +136,10 @@ class OrderInvoiceAdmin(SimpleHistoryAdmin):
     list_filter = (
         'identificacion_proveedor',
         'moneda',
+        'nro_pedido__nro_refrendo',
     )
 
-    inlines = [ OrderInvoiceDetailInline ]
+    inlines = [OrderInvoiceDetailInline]
 
 
 admin.site.register(Order, OrderAdmin)

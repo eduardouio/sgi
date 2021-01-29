@@ -33,3 +33,5 @@ Tener una lista de los prorrateos aplicados al costeo en cada uno de los parcial
 
 
 ALTER TABLE `gastos_nacionalizacion` CHANGE `date_create` `date_create` TIMESTAMP(6) NULL DEFAULT CURRENT_TIMESTAMP(6);
+ALTER TABLE `producto` CHANGE `nro_registro_sanitario` `nro_registro_sanitario` VARCHAR(250) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+
