@@ -38,7 +38,7 @@ class ReportICE(object):
 
         return self.get_orders_items(raw_query)
 
-    def get_consumo(self):
+    def get_consumo(self, query=False):
         """ Lista de productos de consumo llegados a bodega """
         raw_query = ('SELECT * from pedido where fecha_llegada_cliente'
                      ' BETWEEN "{year}-{month}-{day_b}" AND "{year}-{month}-{day_e}"'
@@ -46,10 +46,12 @@ class ReportICE(object):
                      format(year=str(self.year), month=str(self.month),
                             day_b='01', day_e=self.day_e
                             ))
+        if query:
+            return raw_query
+        else:
+            return self.get_orders_items(raw_query)
 
-        return self.get_orders_items(raw_query)
-
-    def get_partials(self):
+    def get_partials(self, query=False):
         '''Productos de parciales llegados a bodega'''
         partials = []
         details = []
@@ -73,7 +75,10 @@ class ReportICE(object):
             for det in details:
                 products_arrived.append(det)
 
-        return products_arrived
+        if query:
+            return raw_query
+        else:
+            return products_arrived
 
     def get_orders_items(self, raw_query):
         """Funcion auxiliar. obtiene los productos de un pedido"""
