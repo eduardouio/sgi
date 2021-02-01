@@ -39,18 +39,25 @@ class OrderDetailProductSale():
             return None
 
         init_sale = self.get_init_sale(nro_order)
-
         if not init_sale:
             loggin('e', 'Pedido sin saldo inicial {}'.format(nro_order))
             return ({'init_sale': [], 'nationalized': [], 'sale': []})
 
         nationalized = self.get_nationalized(order, ignore_liquidated)
+        sale = self.calculate_sale(init_sale, nationalized)
+
+        # Comprobamos si no hay cajas, cerramos el pedido
+        sale_boxes = sum([s['nro_cajas'] for s in sale])
+        if not sale_boxes:
+            order.bg_closed = 1
+            order.save()
 
         data = {
             'init_sale': init_sale,
             'nationalized': nationalized,
-            'sale': self.calculate_sale(init_sale, nationalized)
+            'sale': sale
         }
+
         return data
 
     def get_init_sale(self, nro_order):
