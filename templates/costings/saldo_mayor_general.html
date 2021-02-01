@@ -3,39 +3,59 @@
 <div class="row border">
    <div class="col-4">
       <i class="fa fa-cog"></i>
-      Consulta General de Saldo de Mayor {{ request.enterprise.empresa }}
+         Consulta General de Saldo de Mayor {{ request.enterprise.empresa }}
    </div>
    <div class="col-8 text-right">
-      <span>Contabilidad</span>
+      <span>Costeo de Productos</span>
    </div>
 </div>
 {% endblock title_content %}
 {% block content %}
 <div class="container">
+   <div class="row">
+      <div class="col-12 text-right">
+         <a href="?show_form=true" class="btn btn-outline-primary"> <i class="fas fa-eye"></i> Mostrar Formulario</a>
+      </div>
+   </div>
+   {% if data.show_form %}
+   <div class="row">
+      <div class="col-12 bordered">
+         <form action="" method="POST">
+            {{ csrf_input }}
+            <div class="form-group">
+               <label for="pedidos">Ingrese los numeros de pedido, el numero de pedido debe estar en formato 000-00 un pedido por cada línea</label>
+               <textarea class="form-control" name="pedidos" id="pedidos" rows="5"></textarea>
+            </div>
+            <button class="btn btn-outline-primary float-right" > <i class="fas fa-table"></i> Genrar Reporte</button>
+            <br>
+            <br>
+         </form>
+      </div>
+   </div>
+   {% else  %}
     <div class="row">
       <table class="table table-bordered table-striped">
       <tr>
       <th colspan="7" class="text-center">SALDO FOB  PROCUTO TCT</th>
       </tr>
       <tr>
+      <th>#</th>
       <th>Pedido</th>
       <th>Fob Pendiente</th>
-      <th>Gastos Iniciales</th>
-      <th>Almacenaje Pendiente</th>
-      <th>Go Pendiente</th>
-      <th>Saldo Mayor</th>
+      <th>Gastos Pendientes</th>
+      <th>Saldo</th>
       </tr>
-      {% for item in data.mayor %}
+      {% for item in data.report %}
          <tr>
+         <td class="text-center">{{ loop.index }}</td>
          <td class="text-right">{{ item.nro_order }}</td>
-         <td class="text-right">{{ item.sums.fob_tct_saldo }}</td>
-         <td class="text-right">{{ item.por_prorratear_gi  + item.saldo_inicial_lp }}</td>
-         <td class="text-right">{{ item.almacenjae_pendiente }}</td>
-         <td class="text-right">{{ item.gasto_origen_prox_parcial }}</td>
-         <td class="text-right">{{ item.saldo_mayor }}</td>
+         <td class="text-right">{{ item.fob_tct }}</td>
+         <td class="text-right">{{ item.expenses }}</td>
+         <td class="text-right">{{ item.sale }}</td>
          </tr>   
       {% endfor %}
       </table>
     </div>
+    {% endif %}
 </div>
 {% endblock content %}

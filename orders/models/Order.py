@@ -158,60 +158,60 @@ class Order(models.Model):
     base_arancel_advalorem = models.DecimalField(
         max_digits=16,
         decimal_places=3,
-        lank=True,
+        blank=True,
         null=True,
         default=0
     )
     base_arancel_especifico = models.DecimalField(
         max_digits=16,
         decimal_places=3,
-        lank=True,
+        blank=True,
         null=True,
         default=0)
     base_ice_especifico = models.DecimalField(
         max_digits=16,
         decimal_places=3,
-        lank=True,
+        blank=True,
         null=True,
         default=0
     )
     base_ice_advalorem = models.DecimalField(
         max_digits=16,
         decimal_places=3,
-        lank=True,
+        blank=True,
         null=True,
         default=0
     )
     porcentaje_ice_advalorem = models.DecimalField(
         max_digits=16,
         decimal_places=3,
-        lank=True,
+        blank=True,
         null=True,
         default=0)
     base_iva = models.DecimalField(
         max_digits=16,
         decimal_places=3,
-        lank=True,
+        blank=True,
         null=True,
         default=0)
     base_fodinfa = models.DecimalField(
         max_digits=16,
         decimal_places=3,
-        lank=True,
+        blank=True,
         null=True,
         default=0
     )
     base_etiquetas = models.DecimalField(
         max_digits=16,
         decimal_places=3,
-        lank=True,
+        blank=True,
         null=True,
         default=0
     )
     tipo_cambio_go = models.DecimalField(
         max_digits=12,
         decimal_places=2,
-        lank=True,
+        blank=True,
         null=True,
         default=1
     )
@@ -338,10 +338,10 @@ class Order(models.Model):
             ))
             return None
 
-        if order.proveedor is None or order.proveedor is '':
+        if order.proveedor == None or order.proveedor == '':
             order.proveedor = 'No Definido'
 
-        if order.nro_refrendo is None or order.nro_refrendo is '':
+        if order.nro_refrendo == None or order.nro_refrendo == '':
             order.nro_refrendo = 'Pendiente'
 
         return order
@@ -349,13 +349,6 @@ class Order(models.Model):
     @property
     def diferencia_ice_senae(self):
         return 0
-        diferencia = (
-            self.ice_advalorem +
-            self.ice_especifico -
-            self.ice_advalorem_pagado -
-            self.ice_especifico_pagado
-        )
-        return diferencia if diferencia else 0
 
     @property
     def reliquidacion_ice(self):
@@ -401,17 +394,15 @@ class Order(models.Model):
 
         order = self.get_by_order(nro_order)
 
-        if order is None
-        or order.regimen == '70'
-        or order.bg_isliquidated == 0
-        or order.bg_isliquidated is None:
+        if order is None or order.regimen == '70' or order.bg_isliquidated == 0 or order.bg_isliquidated is None:
             loggin(
             'w',
             ('No se obtener los tributos del pedido {nro_order} pedido '
              'inexistente o regimen = 70'.format(
                 nro_order=nro_order
-            ))
+            )))
             return taxes
+
         return {
             'total_pagado' : (
                       order.arancel_advalorem_pagar_pagado

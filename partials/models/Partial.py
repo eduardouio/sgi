@@ -374,10 +374,10 @@ class Partial(models.Model):
 
     @classmethod
     def get_paid_taxes(self, id_partial):
-        taxes =  {
-            'total_pagado' : 0,
-            'total_pagado_sin_iva' : 0,
-            'total_provisionado' : 0
+        taxes = {
+            'total_pagado': 0,
+            'total_pagado_sin_iva': 0,
+            'total_provisionado': 0
             }
 
         partial = self.get_by_id(id_partial)
