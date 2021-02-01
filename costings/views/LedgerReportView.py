@@ -29,11 +29,15 @@ class LedgerReportView(LoginRequiredMixin, TemplateView):
         orders = request.POST['pedidos'].split('\n')
         orders = [o.replace('/', '-') for o in orders]
         orders = [o.replace('\r', '') for o in orders]
-        orders = list(
-            set([o for o in orders if len(o) == 6 and o != '000-00'])
-        )
-        report = []
+        orders_list = []
         for order in orders:
+            if len(orders) > 6:
+                orders_list.append(order[:6])
+            elif len(orders) == 6:
+                orders_list.append(order)
+
+        report = []
+        for order in orders_list:
             order_sale = LedgerOrder().get_sale(order)
             if order_sale is not None:
                 report.append(order_sale)
