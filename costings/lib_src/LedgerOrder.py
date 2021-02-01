@@ -3,7 +3,8 @@ Obtiene el saldo mayor de un pedido para productos
 """
 from orders.models import Order, OrderInvoice
 from partials.models import Partial
-from paids.models import Expense
+from paids.models import Expense, PaidInvoiceDetail
+from decimal import Decimal
 from costings.models import Ledger
 from lib_src import OrderDetailProductSale
 from logs.app_log import loggin
@@ -25,6 +26,7 @@ class LedgerOrder():
 
         fob_tct = self.get_fob_sale()
         expenses = self.get_expenses_sale()
+                    
         return {
             'nro_order': nro_order,
             'fob_tct': fob_tct,
@@ -54,7 +56,18 @@ class LedgerOrder():
 
     def get_expenses_sale(self):
         expenses = Expense.get_complete_expenses(self.order.nro_pedido)
-        total_expenses = sum([e.valor_provisionado for e in expenses])
+        total_expenses = Decimal(0)
+
+        for exp in expenses:
+            if exp.concepto == 'ISD':
+                nro_invoice = self.order_invoice.id_factura_proveedor.upper()
+                if not nro_invoice.startswith('SF-'):
+                    total_expenses += exp.valor_provisionado
+            elif exp.concepto == 'FLETE' and self.order.incoterm == 'CFR':
+                total_expenses += exp.valor_provisionado
+            else:
+                paids = PaidInvoiceDetail.get_by_expense(exp)
+                total_expenses += sum([p.valor for p in paids])
 
         partials = Partial.get_by_order(self.order.nro_pedido)
         taxes_partials = [p.get_paid_taxes(p.id_parcial) for p in partials]

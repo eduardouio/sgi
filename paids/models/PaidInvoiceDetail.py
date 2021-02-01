@@ -1,5 +1,4 @@
 from django.core.exceptions import ObjectDoesNotExist
-import pdb
 from django.db import models
 from django.utils import timezone
 from simple_history.models import HistoricalRecords
@@ -43,7 +42,7 @@ class PaidInvoiceDetail(models.Model):
 
 
     @classmethod
-    def get_by_expense(self, expense, id_expense = 0):
+    def get_by_expense(self, expense, id_expense=0):
         '''Justificaciones de una provision'''
         if expense:
             paids_detail = self.objects.filter(id_gastos_nacionalizacion = expense.id_gastos_nacionalizacion)
