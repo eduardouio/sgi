@@ -50,6 +50,7 @@ class SAPImporter(object):
             ordes (list): Listado de pedidos retornados por SAP
         """
         created_orders = []
+        orders = [o for o in orders if o['nro_pedido'] is not None]
         for order in orders:
             order_sgi = Order.get_by_order(
                 order['nro_pedido'].replace('/', '-')
