@@ -42,16 +42,25 @@ class LedgerOrder():
         """
         self.order_invoice = OrderInvoice.get_by_order(self.order.nro_pedido)
         if self.order_invoice is None:
+            loggin('e', 'el pedido {} no tiene factura'.format(
+                self.order.nro_pedido
+            ))
             return 0.0
 
         nro_invoice = self.order_invoice.id_factura_proveedor.upper()
         if nro_invoice.startswith('SF-'):
+            loggin('e', 'el pedido {} factura sin numero SF-'.format(
+                self.order.nro_pedido
+            ))
             return 0.0
 
         product_sale = OrderDetailProductSale().get(self.order.nro_pedido)
         sale = sum(
             [p['nro_cajas'] * p['costo_caja'] for p in product_sale['sale']]
         )
+        loggin('i', 'Se entrega el saldo correcto {}'.format(
+            self.order.nro_pedido
+        ))
         return (sale * float(self.order_invoice.tipo_cambio)).__round__(2)
 
     def get_expenses_sale(self):
