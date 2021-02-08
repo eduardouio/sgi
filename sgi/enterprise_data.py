@@ -29,7 +29,7 @@ DATOS_EMPRESAS = {
         'db_passwd': 'elian.2011',
     },
     'cordovez': {
-        'nombre': 'AGENCIAS Y REPRESENTACIONES CORDOVEZ S.A.',
+        'nombre': 'AGENCIAS Y REPRESENTACIONES CORDOVEZ S A',
         'empresa': 'cordovez',
         'ruc': '1790023516001',
         'direccion': 'AV 10 DE AGOSTO Y LEONARDO MURIALDO ',
@@ -67,7 +67,7 @@ DATOS_EMPRESAS = {
         'db_passwd': '\DBGfW<7;vBa5(LB',
     },
     'vid': {
-        'nombre': 'VIDINTERNACIONAL S.A.',
+        'nombre': 'VIDINTERNACIONAL S A',
         'empresa': 'vid',
         'ruc': '1791771907',
         'direccion': 'AV 10 DE AGOSTO Y LEONARDO MURIALDO ',
