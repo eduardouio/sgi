@@ -1,0 +1,57 @@
+{% extends  'base/base.html' %}
+{% block title_content %}
+<div class="row border">
+   <div class="col-4">
+      <i class="fa fa-cog"></i>
+         Generar Reporte ICE para {{ request.enterprise.empresa }}
+   </div>
+   <div class="col-8 text-right">
+      <span>Costeo de Productos</span>
+   </div>
+</div>
+{% endblock title_content %}
+{% block content %}
+<div class="container">
+    <form action="" method="post">
+    {{ csrf_input }}    
+    <div class="row">
+        <div class="col-4">
+        <div class="form-group">
+            <label for="ventas">Copie las Ventas de Excel, incluya totales</label>
+            <textarea class="form-control" name="ventas" rows="10"></textarea>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="form-group">
+            <label for="devoluciones">Copie las Devoluciones de Excell, incluya totales</label>
+            <textarea class="form-control" name="devoluciones" rows="10"></textarea>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="form-group">
+            <label for="importaciones">Copie las columnas Codigo Ice, Fecha, Pais, Unidades, Refrendo (4 columnas)</label>
+            <textarea class="form-control" name="importaciones" rows="10"></textarea>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-4">
+        <div class="form-group">
+            <label for="">Año</label>
+            <input type="text"  class="form-control" name="year" placeholder="YYYY">
+    </div>
+    </div>
+    <div class="col-4">
+        <div class="form-group">
+            <label for="">mes</label>
+            <input type="text" class="form-control" name="month" placeholder="YY">
+    </div>
+    </div>
+    <div class="col-4 text-right">
+        <br><br>
+        <button class="btn btn-outline-primary"> <i class="fas fa-code"></i> Generar Reporte </button>
+    </div>
+</div>
+</form>
+</div>
+{% endblock %}

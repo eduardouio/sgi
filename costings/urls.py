@@ -2,7 +2,7 @@ from django.urls import include, path
 
 from costings.views import (ErrorTemplateView, GeneralLedgerTemplateView,
                             LedgerReportView, LiquidateOrderTemplateView,
-                            LiquidatePartialTemplateView)
+                            LiquidatePartialTemplateView, ICEXmlTemplateView)
 
 app_name = 'costings'
 
@@ -12,4 +12,5 @@ urlpatterns = [
     path('error/<nro_order>/<ordinal_parcial>/', ErrorTemplateView.as_view(), name ="error_last_open"),
     path('saldo-mayor-general/', LedgerReportView.as_view(), name="reporte_mayor"),
     path('mayor/', GeneralLedgerTemplateView.as_view(), name="listado_mayor"),
+    path('ice-xml/', ICEXmlTemplateView.as_view(), name="anexo_ice"),
 ]
