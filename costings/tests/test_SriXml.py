@@ -56,7 +56,7 @@ class TestIceSriXml(TestCase):
             month_sales_f.read(),
             month_returns_f.read(),
             month_imports.read(),
-            '2019',
+            '2020',
             '02'
         )
 
@@ -99,8 +99,8 @@ class TestIceSriXml(TestCase):
             month_sales_f.read(),
             month_returns_f.read(),
             month_imports.read(),
-            '2019',
+            '2020',
             '02'
         )
         iceSRIXml.gerate_report()
-        iceSRIXml.get_xml()
+        report = iceSRIXml.get_xml()

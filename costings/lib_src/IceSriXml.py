@@ -3,6 +3,7 @@ Genera el anexo xml del ICe a partir de los valores de reportados desde excell
 """
 from django.conf import settings
 from logs.app_log import loggin
+import xml.etree.ElementTree as ET
 
 
 class IceSriXml(object):
@@ -121,8 +122,8 @@ class IceSriXml(object):
                         for x, y in zip(self.sales['headers'][1:], row[1:])],
                 'devoluciones': self.__get_devs(row[0])
             }
-
             xml_report['ventas'].append(arr)
+
         xml_report['importaciones'] = self.__get_imports()
 
         final_report = []
@@ -131,55 +132,65 @@ class IceSriXml(object):
                 for line in vta['ventas']:
                     final_report.append({
                         'codProdICE': vta['cod_ice'],
-                        'gramoAzucar': 0,
+                        'gramoAzucar': '0.00',
                         'tipoIdCliente': 'R' if len(line['id']) == 13 else 'C',
                         'idCliente': line['id'],
                         'tipoVentaICE': 1,
                         'ventaICE': line['cant'],
-                        'devICE': 0,
+                        'devICE': self.__consolidate_devs(vta, line),
                         'cantProdBajaICE': 0
                     })
-
-        # devoluciones de ventas
-        for vta in xml_report['ventas']:
-            if vta['devoluciones']:
+            else:
                 for line in vta['devoluciones']:
-                    if line['cant'] > 0:
-                        for venta_fr in final_report:
-                            if vta['cod_ice'] == venta_fr['codProdICE']:
-                                if line['id'] == venta_fr['idCliente']:
-                                    venta_fr['devICE'] = line['cant']
-                                else:
-                                    final_report.append({
-                                        'codProdICE': vta['cod_ice'],
-                                        'gramoAzucar': 0,
-                                        'tipoIdCliente': 'R' if len(line['id']) == 13 else 'C',
-                                        'idCliente': line['id'],
-                                        'tipoVentaICE': 1,
-                                        'ventaICE': 0,
-                                        'devICE': line['cant'],
-                                        'cantProdBajaICE': 0
-                                    })
-                            
-                            keys = [v['codProdICE'] for v in final_report]
-                            if vta['cod_ice'] not in keys:
-                                final_report.append({
-                                        'codProdICE': vta['cod_ice'],
-                                        'gramoAzucar': 0,
-                                        'tipoIdCliente': 'R' if len(line['id']) == 13 else 'C',
-                                        'idCliente': line['id'],
-                                        'tipoVentaICE': 1,
-                                        'ventaICE': 0,
-                                        'devICE': line['cant'],
-                                        'cantProdBajaICE': 0
-                                    })
+                    final_report.append({
+                        'codProdICE': vta['cod_ice'],
+                        'gramoAzucar': '0.00',
+                        'tipoIdCliente': 'R' if len(line['id']) == 13 else 'C',
+                        'idCliente': line['id'],
+                        'tipoVentaICE': 1,
+                        'ventaICE': 0,
+                        'devICE': line['cant'],
+                        'cantProdBajaICE': 0
+                    })
 
         xml_report['ventas'] = final_report
         self.xml_report = xml_report
 
+    def __consolidate_devs(self, ventas, line):
+        if ventas['devoluciones'] is None:
+            return 0
+
+        for item in ventas['devoluciones']:
+            if item['id'] == line['id']:
+                return item['cant']
+
+        return 0
+
     def get_xml(self):
-        # TODO mauqetar el reporte usando la herramienta mas conveniente
-        loggin('i', self.xml_report)
+        # cargamos la cabecera del report
+        root = ET.Element('ice')
+        for k, v in self.xml_report['headers'].items():
+            header = ET.SubElement(root, k)
+            header.text = v
+
+        # cargamos las ventas en el reporte
+        ventas = ET.SubElement(root, 'ventas')
+        for line in self.xml_report['ventas']:
+            vta = ET.SubElement(ventas, 'vta')
+            for k, v in line.items():
+                el = ET.SubElement(vta, k)
+                el.text = str(v)
+
+        # cargamos las importaciones
+        importaciones = ET.SubElement(root, 'importaciones')
+
+        for line in self.xml_report['importaciones']:
+            imp = ET.SubElement(importaciones, 'imp')
+            for k, v in line.items():
+                el = ET.SubElement(imp, k)
+                el.text = v
+
+        return ET.tostring(root).decode()
 
     def __get_devs(self, cod_ice):
         for row in self.returns['data']:
@@ -194,11 +205,25 @@ class IceSriXml(object):
             item = {
                 'impCodProdICE': row[0],
                 'refICE': '-'.join([row[-4], row[-3], row[-2], row[-1]]),
-                'impFDesadICE': row[1].replace('/', '-'),
+                'impFDesadICE': row[1].replace('-', '/'),
                 'paisICE': row[0][29:32],
                 'impCantICE': row[3]
             }
 
-            importations.append(item)
+            cods = [i['impCodProdICE'] for i in importations]
+            # es un codigo ice duplicado, verificamos si es de la misma dai
+            if item['impCodProdICE'] in cods:
+                for i in importations:
+                    old = i.copy()
+                    new = item.copy()
+                    del(old['impCantICE'])
+                    del(new['impCantICE'])
+
+                    if old == new:
+                        i['impCantICE'] = str(
+                            int(i['impCantICE']) + int(item['impCantICE'])
+                        )
+            else:
+                importations.append(item)
 
         return importations
