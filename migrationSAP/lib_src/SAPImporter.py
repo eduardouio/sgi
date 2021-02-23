@@ -195,20 +195,20 @@ class SAPImporter(object):
                 id_user=1
             )
 
-        try:
-            invoice_item.save()
-            loggin('i', 'Item Correctamente salvado')
+            try:
+                invoice_item.save()
+                loggin('i', 'Item Correctamente salvado')
 
-        except IntegrityError as e:
-            loggin('e', 'informacion incompleta {}'.format(e))
-            return (False, 'La informacion producto incompleta {}'.format(
-                product
-            ))
+            except IntegrityError as e:
+                loggin('e', 'informacion incompleta {}'.format(e))
+                return (False, 'La informacion producto incompleta {}'.format(
+                    product
+                ))
 
-        except DataError as e:
-            loggin('e', 'Error en datos {}'.format(e))
-            return (False, 'Error en datos producto {}'.format(
-                product
-            ))
+            except DataError as e:
+                loggin('e', 'Error en datos {}'.format(e))
+                return (False, 'Error en datos producto {}'.format(
+                    product
+                ))
 
         return(True, 'Productos importados correctamente')

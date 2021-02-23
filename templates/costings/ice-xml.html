@@ -1,0 +1,73 @@
+{% extends 'base/base.html' %} {% block title_content %}
+<div class="row border">
+  <div class="col-4">
+    <i class="fa fa-cog"></i>
+    Generar Reporte ICE para {{ request.enterprise.empresa }}
+  </div>
+  <div class="col-8 text-right">
+    <span>Costeo de Productos</span>
+  </div>
+</div>
+{% endblock title_content %} {% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h4 class="text-info">Instrucciones:</h4>
+      <p class="text-dark text-justify">
+        Debe subir un archivo de Excell con tres hojas, las hojas deben llamarse
+        <strong>ventas,</strong> <strong>devoluciones,</strong>
+        <strong>importaciones</strong>, los campos de n&uacute;meros deben estar
+        sin coma y usar punto en caso de decimales, los numeros enteros, deben
+        estar como enteros sin punto decimal puede obtener un archivo de ejemplo
+        dando click  
+        <a href="/media/docs/ejemplo_reporte.xls">
+            aqui
+        </a>
+        el formato de las fechas debe estar de la siguiente manera 
+        <strong>
+            DD/MM/YYY
+        </strong>
+        en n&uacute;meros
+      </p>
+    </div>
+  </div>
+  <form action="" method="post" enctype="multipart/form-data">
+    {{ csrf_input }}
+    <div class="row">
+      <div class="col-3">
+        <div class="form-group">
+          <label for="">Año</label>
+          <input
+            type="text"
+            class="form-control"
+            name="year"
+            placeholder="YYYY"
+          />
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="form-group">
+          <label for="">mes</label>
+          <input
+            type="text"
+            class="form-control"
+            name="month"
+            placeholder="MM"
+          />
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="form-group">
+          <label for="">Seleccione Archivo</label>
+          <input type="file" name="file" accept=".xls" />
+        </div>
+      </div>
+      <div class="col-3 text-right">
+        <button class="btn btn-lg  btn-outline-primary">
+          <i class="fas fa-code"></i> Generar Reporte
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}

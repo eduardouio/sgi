@@ -7,3 +7,4 @@ from costings.views.LiquidatePartialTemplateView import \
 
 from .LedgerReportView import LedgerReportView
 from .GeneralLedgerTemplateView import GeneralLedgerTemplateView
+from .ICEXmlFormView import ICEXmlFormView
