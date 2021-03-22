@@ -67,7 +67,10 @@ class ReportICE(object):
 
         if partials.__len__() == 0:
             loggin('i', 'Listado de parciales vacio, retorna []')
-            return []
+            if query:
+                return None
+            else:
+                return ''
 
         for p in partials:
             details = InfoInvoiceDetail().get_by_partial(p.id_parcial)
