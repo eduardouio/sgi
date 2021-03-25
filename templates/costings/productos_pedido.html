@@ -55,7 +55,7 @@
                <th>CIF</th>
                <th>Fodinfa</th>
                <th>Ar Advalorem</th>
-               <th>Ar Expecifico</th>
+               <th>Ar Espec&iacute;fico</th>
                <th>Etiquetas F</th>
                 <th>Exaduana U</th>
                <th>Cap.</th>
@@ -95,7 +95,7 @@
             <td class="text-right"> {{ "%.2f" | format(item.ice_especifico_unitario) if item.ice_especifico_unitario else '0.00'  }}</td>
             <td class="text-right"> {{ "%.2f" | format(item.ice_advalorem_unitario )if  item.ice_advalorem_unitario  else '0.00'  }}</td>
             <td class="text-right"> {{ "%.2f" | format(item.ice_especifico) if item.ice_especifico else '0.00'  }}</td> 
-            <td class="text-right"> {{ "%.2f" | format(item.ice_advalorem_pagado) if item.ice_advalorem_reliquidado else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.ice_advalorem) if item.ice_advalorem else '0.00'  }}</td>
             <td class="text-right"> {{ "%.2f" | format(item.total_ice) if item.total_ice else '0.00'  }}</td>
             <td class="text-right"> {{ "%.2f" | format(item.indirectos) if item.total_ice else '0.00'  }}</td>
             <td class="text-right"> {{ "%.2f" | format(item.prorrateo_pedido) if item.prorrateo_pedido else '0.00'  }}</td>

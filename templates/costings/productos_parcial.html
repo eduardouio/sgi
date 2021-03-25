@@ -26,10 +26,11 @@
         <td style="width:10%" class="bg-light text-right">Base IVA:</td> <td class="text-right">{{(data.current_partial.partial.base_iva * 100) | round(2)}} %</td>
         </tr>
         <tr>
+            ## TODO el total de ice no se sumaa
         <td style="width:10%" class="bg-light text-right">Mayor SAP:</td> <td class="text-right">${ current_ledger.mayor_sap | money }</td>
         <td style="width:10%" class="bg-light text-right">Mayor SGI: </td> <td class="text-right">${ current_ledger.mayor_sgi | money }</td>
-        <td style="width:10%" class="bg-warning text-right">Precion Entrega:</td> <td class="text-right" style="backgroud-color:#ff9;">$ <strong>{{ data.costings.sums.prorrateos_total | round(2)}}</strong></td>
-        <td style="width:10%" class="bg-warning text-right">Costo Producto:</td> <td class="text-right" style="backgroud-color:#ff9;">$ <strong>{{ data.costings.sums.fob_tasa_trimestral | round(2)}}</strong></td>
+        <td style="width:10%" class="bg-success text-right">Precion Entrega:</td> <td class="text-right" style="backgroud-color:#ff9;">$ <strong>{{ data.costings.sums.prorrateos_total | round(2)}}</strong></td>
+        <td style="width:10%" class="bg-success text-right">Costo Producto:</td> <td class="text-right" style="backgroud-color:#ff9;">$ <strong>{{ data.costings.sums.fob_tasa_trimestral | round(2)}}</strong></td>
         <td style="width:10%" class="bg-light text-right">Factura Inf:</td> <td class="text-right">{{ data.current_partial.info_invoice.info_invoice.nro_factura_informativa }}</td>
         <td style="width:10%" class="bg-light text-right">Diferencia Senae:</td> <td class="text-right text-danger">{{ data.current_partial.partial.ice_advalorem_pagado - data.current_partial.partial.ice_advalorem_pagado  | round(2)}}</td>
         </tr>
@@ -66,7 +67,7 @@
                <th>CIF</th>
                <th>Fodinfa</th>
                <th>Ar Advalorem</th>
-               <th>Ar Expecifico</th>
+               <th>Ar Espec&iacute;fico</th>
                <th>Etiquetas F</th>
                 <th>Exaduana U</th>
                 <th>Base Ad</th>
