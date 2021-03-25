@@ -35,5 +35,5 @@ class ICEXmlFormViewTEST(TestCase):
         )
         self.client.login(username='eduardo', password='elian.2011')
         response  = self.client.post('/costos/ice-xml/', {'file': file_upload})
-        
+
         import ipdb;ipdb.set_trace()
