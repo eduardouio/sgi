@@ -1,6 +1,5 @@
-from decimal import Decimal
-
 from logs.app_log import loggin
+
 
 class CostingsPartial(object):
     '''
@@ -23,7 +22,6 @@ class CostingsPartial(object):
         self.total_items = 0
         self.rates = self.set_rates()
         self.ice_reliquidado = 0
-
 
     def get_costs(self):     
         '''Realiza el costeo del producto en base a los costos indirectos
@@ -53,11 +51,10 @@ class CostingsPartial(object):
                     continue
 
         return {
-            'taxes' : reliquidate_items,
-            'sums' : sums,
-            'ice_reliquidado' : self.ice_reliquidado,
+            'taxes': reliquidate_items,
+            'sums': sums,
+            'ice_reliquidado': self.ice_reliquidado,
         } 
-               
 
     def set_rates(self):
         ''' inicializa las variables de calculo  '''
@@ -73,7 +70,6 @@ class CostingsPartial(object):
             'tipo_cambio_trimestral' : self.complete_order_info['order_invoice']['order_invoice'].tipo_cambio,
         }
 
-
     def get_taxes(self):
         ''' Obtiene la reliquidacion de ice de los items de la factura '''
         taxes_line_items  = []
@@ -87,7 +83,6 @@ class CostingsPartial(object):
     
         return taxes_line_items
 
-
     def get_costs_item(self, line_item):
         ''' Obtiene el costo del item  '''
 
@@ -97,7 +92,6 @@ class CostingsPartial(object):
         line_item.costo_unidad = line_item.costo_total / line_item.unidades
         line_item.save()
         return line_item
-
 
     def get_apportionment_item(self, line_item):
         ''' Obtiene el prorrateo del item NO SE USA INDIRECTOS  '''
@@ -133,9 +127,7 @@ class CostingsPartial(object):
                     * self.rates['porcentaje_ice_advalorem']
                 ) * line_item.unidades
                 
-                ice_reliquidado = (line_item.ice_advalorem_reliquidado - line_item.ice_advalorem_pagado)
-
-        line_item.total_ice = line_item.ice_advalorem_pagado + line_item.ice_especifico + ice_reliquidado
+                ice_reliquidado = (line_item.ice_advalorem_reliquidado - line_item.ice_advalorem_pagado)        
 
         line_item.fob_tasa_trimestral = ( 
                 self.current_partial['info_invoice']['totals']['value'] 
@@ -152,22 +144,26 @@ class CostingsPartial(object):
             + (self.apportionment_expenses['apportionment'].gastos_origen_aplicado)
             ) * line_item.fob_percent
 
-        line_item.prorrateo_pedido = ((
-            self.apportionment_expenses['total_aplicado_sin_tributos'] * line_item.fob_percent) 
+        line_item.prorrateo_pedido = (
+            (
+            self.apportionment_expenses['total_aplicado_sin_tributos'] 
+            * line_item.fob_percent) 
             +  line_item.fodinfa
             +  line_item.etiquetas_fiscales
             + line_item.total_ice
             + line_item.arancel_especifico_pagar
             + line_item.arancel_advalorem_pagar
             )
+
         line_item.indirectos = (
             self.apportionment_expenses['total_aplicado_sin_tributos'] 
-            * line_item.fob_percent) + (self.apportionment_expenses['apportionment'].almacenaje_aplicado * line_item.fob_percent)
+            * line_item.fob_percent
+            ) + (
+                self.apportionment_expenses['apportionment'].almacenaje_aplicado
+                * 
+                line_item.fob_percent
+        )
 
-        for item in self.apportionment_expenses['apportionment_detail']:
-            if (item.concepto == 'POLIZA SEGURO') or (item.concepto == 'FLETE'):
-                line_item.indirectos -= (item.valor_prorrateado * line_item.fob_percent)
-            
         line_item.prorrateos_total = (
             line_item.prorrateo_parcial 
             + line_item.prorrateo_pedido)
