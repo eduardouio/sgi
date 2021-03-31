@@ -180,9 +180,10 @@ class CostingsOrder(object):
             * line_item.nro_cajas
             * self.cmp_order_info['order_invoice']['order_invoice'].tipo_cambio)
         line_item.indirectos = 0
+
+        # TODO verificar que se hace con los indirectos en esta linea
         for item in self.cmp_order_info['expenses']:
-            if (item.concepto != 'POLIZA SEGURO') and (item.concepto != 'FLETE'):
-                line_item.indirectos += (item.valor_provisionado * line_item.fob_percent)
+            line_item.indirectos += (item.valor_provisionado * line_item.fob_percent)
         
         line_item.indirectos -= self.cmp_order_info['etiquetas_fiscales']
 

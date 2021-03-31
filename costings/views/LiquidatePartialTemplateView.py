@@ -12,11 +12,12 @@ from logs.app_log import loggin
 from orders.models.Order import Order
 from partials.models.Partial import Partial
 
-#/costos/parcial/[nro-pedido]/[ornidal_parcial]/
+
+# /costos/parcial/[nro-pedido]/[ornidal_parcial]/
 class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
     template_name = 'costings/liquidar_parcial.html'
 
-    def get(self, request, nro_order , ordinal_parcial , *args, **kwargs):
+    def get(self, request, nro_order, ordinal_parcial, *args, **kwargs):
         """
         Muestra la pagina de liquidacion de gastos Parciales
         Args:
@@ -29,8 +30,8 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
         if not self.check_order_and_partial_exist(nro_order, ordinal_parcial):
             self.template_name = 'errors/404.html'
             context['data'] = {
-                'title_page' : 'Parcial No Econtrado',
-                'msg' : 'El parcial que busca no existe',
+                'title_page': 'Parcial No Econtrado',
+                'msg': 'El parcial que busca no existe',
             }
             return self.render_to_response(context)
 
@@ -38,21 +39,21 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
         all_partials = []
 
         for count, partial in enumerate(complete_order_info['partials']):
-            if count < int(ordinal_parcial) :
+            if count < int(ordinal_parcial):
                 all_partials.append(
                     CompletePartialInfo().get_data(
                                 partial.id_parcial,
                                 False,
                                 complete_order_info['tipo_cambio_trimestral']
                                 ))
-        
+
         last = False
-        for x,partial in enumerate(all_partials):            
+        for x, partial in enumerate(all_partials):
             if x == all_partials.__len__() - 1:
                 last = True
             my_partial = partial['partial']
 
-            if last == False and my_partial.bg_isclosed == 0:
+            if last is False and my_partial.bg_isclosed == 0:
                 loggin('e', 'Existe un parcial anterior abierto')
                 return HttpResponseRedirect(
                     '/costos/error/{}/{}/'.format(
@@ -73,43 +74,43 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
                 ).get_apportionments()
             
             producto_costs = CostingsPartial(
-                    complete_order_info = complete_order_info, 
-                    all_partials = all_partials,
-                    apportionment_expenses = apportiments_expenses,
-                    ordinal_current_partial = all_partials[(int(ordinal_parcial)-1)]
+                    complete_order_info=complete_order_info,
+                    all_partials=all_partials,
+                    apportionment_expenses=apportiments_expenses,
+                    ordinal_current_partial=all_partials[(int(ordinal_parcial)-1)]
                     ).get_costs()
-        
-        
+
         if current_parcial['partial'].bg_isclosed == 0:
             provision = (producto_costs['ice_reliquidado'] 
                         - current_parcial['partial'].ice_advalorem_pagado 
                         -current_parcial['partial'].ice_especifico_pagado)
+
             if provision:
                 have_ice_reliquidated = True
 
-            ice_reliquidado  = {
-                'expense' : 'ICE ADVALOREM RELIQUIDADO',
-                'provision' : float(producto_costs['ice_reliquidado']),
-                'invoiced_value' : 0,
-                'legder' : 0,
+            ice_reliquidado = {
+                'expense': 'ICE ADVALOREM RELIQUIDADO',
+                'provision': float(producto_costs['ice_reliquidado']),
+                'invoiced_value': 0,
+                'legder': 0,
             }
-        
+
         context['data'] = {
-            'title_page' : 'Liquidacion Parcial %s'%ordinal_parcial,
-            'nro_order' : nro_order,
-            'ordinal_partial' : int(ordinal_parcial),
-            'total_parcials' : all_partials.__len__(),
-            'current_partial' : all_partials[(int(ordinal_parcial) - 1)],
-            'current_partial_pos' : int(ordinal_parcial) - 1,
-            'have_ice_reliquidated' : int(have_ice_reliquidated),
-            'ice_reliquidado' : ice_reliquidado,
-            'complete_order_info' : complete_order_info,
-            'all_partials' : all_partials,
-            'apportioments' : apportiments_expenses,
-            'costings' : producto_costs,
-            'request' : request,
+            'title_page': 'Liquidacion Parcial %s'%ordinal_parcial,
+            'nro_order': nro_order,
+            'ordinal_partial': int(ordinal_parcial),
+            'total_parcials': all_partials.__len__(),
+            'current_partial': all_partials[(int(ordinal_parcial) - 1)],
+            'current_partial_pos': int(ordinal_parcial) - 1,
+            'have_ice_reliquidated': int(have_ice_reliquidated),
+            'ice_reliquidado': ice_reliquidado,
+            'complete_order_info': complete_order_info,
+            'all_partials': all_partials,
+            'apportioments': apportiments_expenses,
+            'costings': producto_costs,
+            'request': request,
             'host': get_host(request),
-        } 
+        }
         context['data'].update(self.checkStatusValues(
                     complete_order_info, 
                     all_partials,
@@ -128,8 +129,7 @@ class LiquidatePartialTemplateView(LoginRequiredMixin, TemplateView):
         all_partials = Partial.get_by_order(nro_order)
 
         if all_partials.count() == 0:
-            loggin('e', 'El parcial {}, del pedido {} no existe'
-                .format(ordinal_parcial, nro_order))
+            loggin('e', 'El parcial {}, del pedido {} no existe'.format(ordinal_parcial, nro_order))
             return False
         
         for x, p in enumerate(all_partials):
