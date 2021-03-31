@@ -73,7 +73,7 @@ DATOS_EMPRESAS = {
         'direccion': 'AV 10 DE AGOSTO Y LEONARDO MURIALDO ',
         'telefono': '022405911',
         'email': 'sgi@vidinternacional.com.ec',
-        'url_logo': 'http://179.49.60.158:8888/img/logo_vid.png',
+        'url_logo': 'http://179.49.60.158:8888/img/logo_vid.jpg',
         'url_app': 'http://179.49.60.158:5003/',
         'url_app_local': 'http://localhost:5003/',
         'url_app_importaciones': 'http://179.49.60.158:8888/vid/',

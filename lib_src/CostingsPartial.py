@@ -150,7 +150,8 @@ class CostingsPartial(object):
             * line_item.fob_percent) 
             +  line_item.fodinfa
             +  line_item.etiquetas_fiscales
-            + line_item.total_ice
+            + line_item.ice_advalorem
+            + line_item.ice_especifico
             + line_item.arancel_especifico_pagar
             + line_item.arancel_advalorem_pagar
             )
