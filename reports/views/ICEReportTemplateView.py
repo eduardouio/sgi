@@ -4,8 +4,6 @@ from datetime import date
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 from lib_src import ReportICE
-from orders.models import Order
-from partials.models import Partial
 
 
 # /reportes/ice/?year=[1-9]*4?month=[1-9]*4
@@ -29,7 +27,6 @@ class ICEReportTemplateView(LoginRequiredMixin, TemplateView):
 
         if reporte_ice.opened_orders:
             show_error = True
-
 
         context['data'] = {
             'title_page': 'Rreporte ICE {} {}'.format(

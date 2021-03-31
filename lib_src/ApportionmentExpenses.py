@@ -36,7 +36,6 @@ class ApportionmentExpenses(object):
         self.fob_razon_inicial = Decimal(0),
         self.fob_razon_saldo = Decimal(0),
         self.current_partial_data = self.all_partials[self.ordinal_current_partial -1 ]
-    
 
     def get_apportionments(self):
         self.make_apportionment()
@@ -53,7 +52,6 @@ class ApportionmentExpenses(object):
 
             apportionment.tipo =  apportionment.tipo.replace('_', ' ').title()
         return current_approtionment
-        
 
     def make_apportionment(self):
         '''
@@ -172,7 +170,7 @@ class ApportionmentExpenses(object):
             for expense in self.complete_order_info['expenses']:
                 apportionment_expenses.append({
                     'id_gastos_nacionalizacion': expense.id_gastos_nacionalizacion,
-                    'tipo':'gasto_inicial',
+                    'tipo': 'gasto_inicial',
                     'concepto': expense.concepto,
                     'valor_prorrateado': expense.valor_provisionado * self.fob_razon_inicial,
                     'valor_provisionado': expense.valor_provisionado,
