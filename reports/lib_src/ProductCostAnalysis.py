@@ -30,7 +30,7 @@ class ProductCostAnalysis():
     def get_history(self):
         conn = connection.cursor()
         sql = '''
-            SELECT * from costs_analysis where cod_contable = {}
+            SELECT * from v_costs_analysis where cod_contable = {}
             order by fecha_llegada_cliente desc {}
             '''.format(
             self.product.cod_contable,  self.deep
