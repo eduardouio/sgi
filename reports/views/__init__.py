@@ -3,3 +3,4 @@ from .ICEReportTemplateView import ICEReportTemplateView
 from .WarenhouseArrivalsTemplateView import WarenhouseArrivalsTemplateView
 from .ExpensesReportTemplateView import ExpensesReportTemplateView
 from .ActiveOrders import ActiveOrdersTemplateView
+from .CostAnalysisTemplateView import CostAnalysisTemplateView
