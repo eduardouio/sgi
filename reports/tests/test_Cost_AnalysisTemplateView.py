@@ -3,7 +3,7 @@ from django.test import RequestFactory, TestCase
 
 from reports.views import CostAnalysisTemplateView
 
-# TODO Completar los test para cada caso en el GET 
+
 class TESTCostAnalysisTemplateView(TestCase):
 
     def setUp(self):
@@ -15,8 +15,8 @@ class TESTCostAnalysisTemplateView(TestCase):
         request = self.factory.get(self.path)
         request.user = self.user
         response = CostAnalysisTemplateView.as_view()(request)
-        
-        self.assertEqual(response.context_data.data['product'], None)
+
+        self.assertEqual(response.context_data['data']['product'], None)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed('reports/costs_analysis.html')
 
@@ -27,9 +27,11 @@ class TESTCostAnalysisTemplateView(TestCase):
         request.user = self.user
         response = CostAnalysisTemplateView.as_view()(request)
         self.assertEqual(
-            response.context_data.data.product.nombre,
+            response.context_data['data']['product'].nombre,
             'WHISKY SOMETHING SPECIAL'
         )
+        self.assertTemplateUsed('reports/costs_analysis.html')
+        self.assertIsInstance(response.context_data['data']['report'], list)
 
     def test_user_logged_in(self):
         request = self.factory.get(self.path)

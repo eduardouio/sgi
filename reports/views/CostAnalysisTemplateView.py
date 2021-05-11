@@ -24,12 +24,12 @@ class CostAnalysisTemplateView(LoginRequiredMixin, TemplateView):
             cost_data = cost_analysis.get()
             product = cost_data['product']
             report = cost_data['history']
-       
+
         context['data'] = {
             'title_page': 'Análsis de Costos',
             'form': form,
             'product': product,
             'report': report,
         }
-       
+
         return self.render_to_response(context)
