@@ -9,19 +9,25 @@
 </div>
 {% endblock title_content %}
 {% block content %}
-<div class="container">
-</div>
+<main role="main">
  <div class="container">
       <div class="row">
-        <main role="main" class="col-md-12 ml-sm-auto col-lg-12 pt-3 px-4">
-          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-          <form class="form-inline">
-            <div class="form-group">
-              {{ data.form }}
-            </div>
-            &nbsp;&nbsp;&nbsp;
-          <button type="submit" class="btn btn-primary"><i class="fas fa-chart-line"></i> Reporte</button>
-          </form>
+      <div class="col-8">
+      <form action="" method="get">
+        <div class="row">
+          <div class="col-8">
+            {{data.form.products}}
+          </div>
+          <div class="col-3">
+            {{ data.form.deep }}
+          </div>
+          <div class="col-1">
+            <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+          </div>
+        </div>
+        </form>
+      </div>
+      <div class="col-4">
             <div class="btn-toolbar mb-2 mb-md-0">
               <div class="btn-group mr-2">
                 {% if data.product %}
@@ -30,7 +36,7 @@
                   {% if data.report.__len__() > 0 %}
                     <span class="btn btn-sm btn-outline-dark">{{ data.report[0].grado_alcoholico }} <sup>o</sup></span>
                     <span class="btn btn-sm btn-outline-dark">{{data.report[0].incoterm}}</span>
-                    <span class="btn btn-sm btn-outline-dark">{{ data.report[0].moneda }}</span>
+                    <span class="btn btn-sm btn-success">{{ data.report[0].moneda }}</span>
                     <span class="btn btn-sm btn-outline-dark">{{ data.report[0].pais_origen }}</span>
                   {% else %}
                     <span class="btn btn-sm btn-outline-danger"> <i class="fas fa-ban"></i> No registra Importaciones en SGI</span>
@@ -39,10 +45,15 @@
                   <span class="btn btn-sm btn-outline-danger"> <i class="fas fa-arrow-left"></i> Seleccione un producto de la lista</span>
                 {% endif %}
               </div>
+      </div>
             </div>
-          </div>
-          <canvas class="my-4" id="myChart" width="900" height="380"></canvas>
-        <hr/>
+         </div>
+         </div>
+         <div class="container-fluid">
+         <div class="row">
+           <div class="col-12">
+          <canvas class="my-4" id="myChart" width="950" height="280"></canvas>
+           </div>
          </div>
          </div>
          <div class="container">
@@ -61,8 +72,8 @@
                   <th class="bg-primary text-light">Pedido</th>
                   <th class="bg-primary text-light">Parcial</th>
                   <th class="bg-primary text-light">Regimen</th>
-                  <th class="bg-primary text-light">F Arribo</th>
-                  <th class="bg-primary text-light">F Llegada</th>
+                  <th class="bg-primary text-light">F Arribo Pueto</th>
+                  <th class="bg-primary text-light">Nacionalización</th>
                   <th class="bg-primary text-light">Días</th>
                   <th class="bg-primary text-light">Unds</th>
                   <th class="bg-primary text-light">Costo</th>
@@ -88,26 +99,68 @@
                   <td nowrap class="text-center"> {% if item.id_parcial != '0' %} {{ item.id_parcial }} </a> {% else %} S/N {% endif %}</td>
                   <td nowrap class="text-center">{% if item.regimen == '10' %}Consumo {% else %} Almagro{% endif %}</td>
                   <td nowrap class="text-center">{{ item.fecha_arribo }}</td>
-                  <td nowrap class="text-center">{{ item.fecha_llegada_cliente }}</td>
+                  <td nowrap class="text-center text-primary">{{ item.fecha_llegada_cliente }}</td>
                   <td nowrap class="text-center">{{ item.dias_transito }}</td>
                   <td nowrap class="text-center">{{ item.unidades | round(0)}}</td>
-                  <td nowrap class="text-right">{{ item.costo_unidad | round(3)}}</td>
-                  <td nowrap class="text-right">{{ item.fob | round(3)}}</td>
-                  <td nowrap class="text-right">{{ item.cif | round(3)}}</td>
-                  <td nowrap class="text-right">{{ item.ex_aduana_unitario | round(3) }}</td>
-                  <td nowrap class="text-right">{{ item.total_ice | round(3) }}</td>
+                  <td nowrap class="text-right" style="border-right-color:#17A2B8;">{{ item.costo_unidad | round(3)}}</td>
+                  <td nowrap class="text-right" style="border-color:#17A2B8;">{{ item.fob | round(3)}}</td>
+                  <td nowrap class="text-right" style="border-color:#17A2B8;">{{ item.cif | round(3)}}</td>
+                  <td nowrap class="text-right" style="border-color:#17A2B8;">{{ item.ex_aduana_unitario | round(3) }}</td>
+                  <td nowrap class="text-right" style="border-color:#17A2B8;">{{ item.total_ice | round(3) }}</td>
                   <td nowrap class="text-right">{{ item.tributos | round(3)}}</td>
                   <td nowrap class="text-right">{{ item.costo_sap | round(3)}}</td>
                   <td nowrap class="text-right">{{ item.indirectos | round(3) }}</td>
                   <td nowrap class="text-right">{{ item.costo_botella | round(3)}}</td>
                 </tr>
               {% endfor %}
+              <tr style="color:#F5210A;" class="bg-light">
+                <th style=" border-color: #000;"colspan="6">Máximo</th>
+                <th style=" border-color: #000;"class="text-right">{{ data.stats.dias_transito | max | round(3)}}</th>
+                <th style=" border-color: #000;"class="text-right">{{ data.stats.unidades | max | round(3)}}</th>
+                <th style=" border-color: #000;"class="text-right">{{ data.stats.costo_unidad | max | round(3)}}</th>
+                <th style=" border-color: #000;"class="text-right">{{ data.stats.fob | max | round(3)}}</th>
+                <th style=" border-color: #000;"class="text-right">{{ data.stats.cif | max | round(3)}}</th>
+                <th style=" border-color: #000;"class="text-right">{{ data.stats.ex_aduana_unitario | max | round(3)}}</th>
+                <th style=" border-color: #000;"class="text-right">{{ data.stats.total_ice | max | round(3)}}</th>
+                <th style=" border-color: #000;"class="text-right">{{ data.stats.tributos | max | round(3)}}</th>
+                <th style=" border-color: #000;"class="text-right">{{ data.stats.costo_sap | max | round(3)}}</th>
+                <th style=" border-color: #000;"class="text-right">{{ data.stats.indirectos | max | round(3)}}</th>
+                <th style=" border-color: #000;"class="text-right">{{ data.stats.costo_botella | max | round(3)}}</th>
+              </tr>
+              <tr style="color: #D37F0D;" class="bg-light">
+                <th style=" border-color: #000;" colspan="6">Mínimo</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.stats.dias_transito | min | round(3)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.stats.unidades | min | round(3)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.stats.costo_unidad | min | round(3)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.stats.fob | min | round(3)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.stats.cif | min | round(3)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.stats.ex_aduana_unitario | min | round(3)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.stats.total_ice | min | round(3)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.stats.tributos | min | round(3)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.stats.costo_sap | min | round(3)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.stats.indirectos | min | round(3)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.stats.costo_botella | min | round(3)}}</th>
+              </tr>
+              <tr style="color: #046670;" class="bg-light">
+                <th style=" border-color: #000;" colspan="6">Promedio</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.averages.dias_transito | round(3)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.averages.unidades | round(3)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.averages.costo_unidad | round(3)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.averages.fob | round(3)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.averages.cif | round(3)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.averages.ex_aduana_unitario | round(3)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.averages.total_ice | round(3)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.averages.tributos | round(3)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.averages.costo_sap | round(3)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.averages.indirectos | round(3)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.averages.costo_botella | round(3)}}</th>
+              </tr>
               </tbody>
             </table>
           </div>
-        </main>
       </div>
     </div>
+        </main>
 {% endblock %}
 {% block footer %}
     <!-- Bootstrap core JavaScript
@@ -125,17 +178,52 @@
           drawOnChartArea: false, // only want the grid lines for one axis to show up
         },
         data: {
-          labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-          datasets: [{
-            data: [15339, 21345, 18483, 24003, 23489, 24092, 12034],
-            lineTension: 0,
-            backgroundColor: 'transparent',
-            borderColor: '#007bff',
-            borderWidth: 4,
-            pointBackgroundColor: '#007bff'
-          }]
+          labels: [{% for item in data.report %} "{{ item.nro_pedido }}",{% endfor %}],
+          datasets: [
+          {
+            label: 'COMPRA SAP',
+            data: [{% for item in data.report %} {{ item.costo_sap | round(2) }},{% endfor %} ],
+            lineTension: 0.09,
+            fill:false,
+            borderColor: '#76D7C4',
+            pointBackgroundColor: '#76D7C4'
+          },
+          {
+            label: 'CIF',
+            data: [{% for item in data.report %} {{ item.cif | round(2)}},{% endfor %} ],
+            lineTension: 0.09,
+            fill:false,
+            borderColor: '#76D004',
+            pointBackgroundColor: '#76D004'
+          },
+          {
+            label: 'TRIBUTOS',
+            data: [{% for item in data.report %} {{ item.tributos | round(2)}},{% endfor %} ],
+            lineTension: 0.09,
+            fill:false,
+            borderColor: '#C70039',
+            pointBackgroundColor: '#C70039'
+          },
+          {
+            label: 'INDIRECTOS',
+            data: [{% for item in data.report %} {{ item.indirectos | round(2)}},{% endfor %} ],
+            lineTension: 0.09,
+            fill:false,
+            borderColor: '#CA9600',
+            pointBackgroundColor: '#CA9600'
+          },
+          {
+            label: 'COSTO FINAL',
+            data: [{% for item in data.report %} {{ item.costo_botella | round(3)}},{% endfor %} ],
+            lineTension: 0.09,
+            fill:false,
+            borderColor: '#006350',
+            pointBackgroundColor: '#006350'
+          },
+          ],
         },
         options: {
+          responsive:true,
           scales: {
             yAxes: [{
               ticks: {
@@ -144,8 +232,12 @@
             }]
           },
           legend: {
-            display: false,
-          }
+            display: true,
+          },
+          title: {
+        display: true,
+        text: 'Todos los valores están por unidad (Botella), Valores en USD'
+      }
         }
       });
     </script>

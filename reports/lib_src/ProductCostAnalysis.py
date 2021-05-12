@@ -16,7 +16,7 @@ class ProductCostAnalysis():
             cod_contable (str): cod contable de producto
         """
         self.product = Product.get_by_cod_contable(cod_contable)
-        self.deep = '' if deep == 0 else 'limit ' + str(deep)
+        self.deep = 0 if deep == 0 else deep
 
     def get(self):
         if self.product is None:
@@ -29,12 +29,24 @@ class ProductCostAnalysis():
 
     def get_history(self):
         conn = connection.cursor()
-        sql = '''
-            SELECT * from v_costs_analysis where cod_contable = {}
-            order by fecha_llegada_cliente desc {}
-            '''.format(
-            self.product.cod_contable,  self.deep
-        )
+        if self.deep:
+            sql = '''
+                select * from
+                    (   select * from v_costs_analysis 
+                        WHERE  cod_contable  = '{}' 
+                        order by fecha_llegada_cliente desc, nro_pedido limit {}
+                    ) var1  order by fecha_llegada_cliente asc, nro_pedido
+            '''.format(self.product.cod_contable,  self.deep)
+        else:
+            sql = '''
+                select * from
+                    (   select * from v_costs_analysis 
+                        WHERE  cod_contable  = '{}' 
+                        order by fecha_llegada_cliente desc, nro_pedido
+                    ) var1  order by fecha_llegada_cliente asc, nro_pedido
+                '''.format(
+                self.product.cod_contable
+            )
         conn.execute(sql)
         cols = [col[0] for col in conn.description]
         return [

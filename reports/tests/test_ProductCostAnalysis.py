@@ -9,7 +9,7 @@ class TESTProductCostAnalysis(TestCase):
         pca = ProductCostAnalysis('01011080011917010750')
         product = Product.get_by_cod_contable('01011080011917010750')
         report = pca.get()
-        self.assertEqual(len(report['history']), 8)
+        self.assertEqual(len(report['history']), 11)
         self.assertEqual(report['product'], product)
 
     def test_info_product_does_exist(self):
