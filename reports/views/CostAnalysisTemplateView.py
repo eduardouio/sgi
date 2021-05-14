@@ -16,6 +16,7 @@ class CostAnalysisTemplateView(LoginRequiredMixin, TemplateView):
         context = self.get_context_data(**kwargs)
         form = FormProductSeach()
         product = report = stats = None
+        averages = {}
 
         if request.GET:
             cod_contable = request.GET.get('products')
@@ -27,22 +28,24 @@ class CostAnalysisTemplateView(LoginRequiredMixin, TemplateView):
             product = cost_data['product']
             report = cost_data['history']
             stats = {
-                'dias_transito': [x['dias_transito'] for x in report],
-                'unidades': [x['unidades'] for x in report],
-                'costo_unidad': [x['costo_unidad'] for x in report],
-                'fob': [x['fob'] for x in report],
-                'cif': [x['cif'] for x in report],
-                'ex_aduana_unitario': [x['ex_aduana_unitario'] for x in report],
-                'total_ice': [x['total_ice'] for x in report],
-                'tributos': [x['tributos'] for x in report],
-                'costo_sap': [x['costo_sap'] for x in report],
-                'indirectos': [x['indirectos'] for x in report],
-                'costo_botella': [x['costo_botella'] for x in report]
+              'dias_transito': [x['dias_transito'] for x in report],
+              'unidades': [x['unidades'] for x in report],
+              'costo_unidad': [x['costo_unidad'] for x in report],
+              'fob': [x['fob'] for x in report],
+              'cif': [x['cif'] for x in report],
+              'ex_aduana_unitario': [x['ex_aduana_unitario'] for x in report],
+              'total_ice': [x['total_ice'] for x in report],
+              'tributos': [x['tributos'] for x in report],
+              'costo_sap': [x['costo_sap'] for x in report],
+              'indirectos': [x['indirectos'] for x in report],
+              'costo_botella': [x['costo_botella'] for x in report]
             }
 
-            averages = {}
             for s in stats:
-                averages[s] = sum(stats[s])/len(stats[s])
+                try:
+                    averages[s] = sum(stats[s])/len(stats[s])
+                except ZeroDivisionError:
+                    averages[s] = 0.0
 
         context['data'] = {
             'title_page': 'Análsis de Costos',
