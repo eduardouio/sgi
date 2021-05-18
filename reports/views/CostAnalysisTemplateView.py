@@ -3,6 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from logs.app_log import loggin
 from reports.forms import FormProductSeach
 from reports.lib_src import ProductCostAnalysis
+import json
 
 
 # /costos/analisis/<pk-product>/
@@ -47,11 +48,19 @@ class CostAnalysisTemplateView(LoginRequiredMixin, TemplateView):
                 except ZeroDivisionError:
                     averages[s] = 0.0
 
+        json_report = []
+
+        # TODO hacer una lista mejor ordenada de los valores validanto los tipos de datos
+        for item in report:
+            line_item = dict(zip(item.keys(), [str(item[key]) for key in item.keys()]))
+            json_report.append(line_item)
+
         context['data'] = {
             'title_page': 'Análsis de Costos',
             'form': form,
             'product': product,
             'report': report,
+            'json_report': json_report,
             'stats': stats,
             'averages': averages,
         }

@@ -282,5 +282,6 @@
 {% endif %}
 {% endblock footer %}
 {% block script %}
-  {% include "js/analisis/app_costs_analysis.js" %}
+  let data = JSON.parse('{{ data.json_report | tojson  }}');
+  {% include "js/app_analysis.js" %}
 {% endblock script %}
