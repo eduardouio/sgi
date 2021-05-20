@@ -29,6 +29,7 @@ select
     o.base_iva,
     o.base_ice_advalorem,
     o.base_ice_especifico,
+    o.exoneracion_arancel,
     (ddp.total_ice / (ddp.nro_cajas * p.cantidad_x_caja)) total_ice,
     (ddp.fodinfa / (ddp.nro_cajas * p.cantidad_x_caja)) fodinfa,
     (ddp.arancel_advalorem_pagar / (ddp.nro_cajas * p.cantidad_x_caja)) arancel_advalorem,

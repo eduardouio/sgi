@@ -16,7 +16,8 @@ class CostAnalysisTemplateView(LoginRequiredMixin, TemplateView):
         loggin('i', 'Ingresamos a analisis de costos')
         context = self.get_context_data(**kwargs)
         form = FormProductSeach()
-        product = report = stats = None
+        product = stats = None
+        report = []
         averages = {}
 
         if request.GET:
@@ -39,7 +40,10 @@ class CostAnalysisTemplateView(LoginRequiredMixin, TemplateView):
               'tributos': [x['tributos'] for x in report],
               'costo_sap': [x['costo_sap'] for x in report],
               'indirectos': [x['indirectos'] for x in report],
-              'costo_botella': [x['costo_botella'] for x in report]
+              'costo_botella': [x['costo_botella'] for x in report],
+              'fodinfa': [x['fodinfa'] for x in report],
+              'arancel_advalorem': [x['arancel_advalorem'] for x in report],
+              'arancel_especifico': [x['arancel_especifico'] for x in report],
             }
 
             for s in stats:
@@ -50,9 +54,10 @@ class CostAnalysisTemplateView(LoginRequiredMixin, TemplateView):
 
         json_report = []
 
-        # TODO hacer una lista mejor ordenada de los valores validanto los tipos de datos
         for item in report:
-            line_item = dict(zip(item.keys(), [str(item[key]) for key in item.keys()]))
+            line_item = dict(zip(
+                item.keys(),  [str(item[key]) for key in item.keys()]
+            ))
             json_report.append(line_item)
 
         context['data'] = {
