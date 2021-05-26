@@ -303,6 +303,10 @@ class Order(models.Model):
         null=True,
         default=0
     )
+    # nos indica si el pedido es trackeado por defecto se coloca en SI
+    bg_is_tracked = models.BooleanField(default=1, blank=True, null=True)
+    #indica si el pedido esta definitivamente cerrado para otpimizar el pedidos activos
+    bg_is_closed_checked = models.BooleanField(default=0, blank=True, null=True)
     id_user = models.SmallIntegerField(default=0)
     date_create = models.DateTimeField(
         blank=True,
