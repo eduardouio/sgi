@@ -3,7 +3,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from logs.app_log import loggin
 from reports.forms import FormProductSeach
 from reports.lib_src import ProductCostAnalysis
-import json
 
 
 # /costos/analisis/<pk-product>/
