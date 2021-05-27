@@ -5,8 +5,10 @@
     ENTERPRISE_CONF = [cordovez | imnac | vid | test]
 """
 
+import os
 
-ENTERPRISE_CONF = 'test'
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 DATOS_EMPRESAS = {
     'test': {
@@ -27,6 +29,7 @@ DATOS_EMPRESAS = {
         'db_port': '3306',
         'db_user': 'root',
         'db_passwd': 'elian.2011',
+        'secret_key': 'sj-z02b^$ifmzup+&qb+6!fi4mgbah_n3ddss@9m4=e0u$fdrr',
     },
     'cordovez': {
         'nombre': 'AGENCIAS Y REPRESENTACIONES CORDOVEZ S A',
@@ -46,6 +49,7 @@ DATOS_EMPRESAS = {
         'db_port': '3306',
         'db_user': 'appCordovez',
         'db_passwd': '\DBGfW<7;vBa5(LB',
+        'secret_key': 'sj-z02b^$ifmzup+&qb+6!fi4mgbah_n3ddss@9m4=Cordovez2021',
     },
     'imnac': {
         'nombre': 'IMNAC CIA LTDA',
@@ -65,6 +69,7 @@ DATOS_EMPRESAS = {
         'db_port': '3306',
         'db_user': 'appCordovez',
         'db_passwd': '\DBGfW<7;vBa5(LB',
+        'secret_key': 'sj-z02b^$ifmzup+&qb+6!fi4mgbah_n3ddss@9m4=Imnac2021',
     },
     'vid': {
         'nombre': 'VIDINTERNACIONAL S A',
@@ -84,11 +89,15 @@ DATOS_EMPRESAS = {
         'db_port': '3306',
         'db_user': 'appCordovez',
         'db_passwd': '\DBGfW<7;vBa5(LB',
+        'secret_key': 'sj-z02b^$ifmzup+&qb+6!fi4mgbah_n3ddss@9m4=Vid2021',
     },
 
 }
 
 CMT_DEBUG = True
+NAME_ENTERPRISE = BASE_DIR.split('/')[-1]
+ENTERPRISE_CONF = 'test' if NAME_ENTERPRISE == 'sgi' else NAME_ENTERPRISE
+
 EMPRESA = DATOS_EMPRESAS[ENTERPRISE_CONF]
 
 if EMPRESA['empresa'] != 'test':
