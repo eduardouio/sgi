@@ -8,6 +8,7 @@ class SupplierAdmin(SimpleHistoryAdmin):
     list_display = (
         'nombre',
         'tipo_provedor',
+        'identificacion_proveedor',
         'moneda_transaccion',
         'categoria',
         'comentarios',
@@ -19,6 +20,7 @@ class SupplierAdmin(SimpleHistoryAdmin):
         'nombre',
         'tipo_provedor',
         'moneda_transaccion',
+        'identificacion_proveedor',
         'categoria',
     )
 
@@ -28,5 +30,6 @@ class SupplierAdmin(SimpleHistoryAdmin):
         'moneda_transaccion',
         'categoria',
     )
+
 
 admin.site.register(Supplier, SupplierAdmin)

@@ -4,6 +4,7 @@ from simple_history.models import HistoricalRecords
 from logs.app_log import loggin
 from django.utils import timezone
 
+
 class Supplier(models.Model):
     identificacion_proveedor = models.CharField(primary_key=True, max_length=16)
     nombre = models.CharField(unique=True, max_length=60)

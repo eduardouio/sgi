@@ -7,33 +7,32 @@ from paids.models import (Expense, PaidInvoice, PaidInvoiceDetail, RateExpense,
 
 class ExpensesAdmin(SimpleHistoryAdmin):
     list_display = (
-    'id_gastos_nacionalizacion',
-    'nro_pedido',
-    'id_parcial',
-    'concepto',
-    'tipo',
-    'valor_provisionado',
-    'fecha',
-    'fecha_fin',
-    'bg_closed',
+        'id_gastos_nacionalizacion',
+        'nro_pedido',
+        'id_parcial',
+        'concepto',
+        'tipo',
+        'valor_provisionado',
+        'fecha',
+        'fecha_fin',
+        'bg_closed',
     )
 
     search_fields = (
-    'id_gastos_nacionalizacion',
-    'concepto',
-    'id_parcial',
-    'tipo',
-    'valor_provisionado',
-    'fecha',
+        'id_gastos_nacionalizacion',
+        'concepto',
+        'id_parcial',
+        'tipo',
+        'valor_provisionado',
+        'fecha',
     )
-    
+
     list_filter = (
         'nro_pedido',
         'id_parcial',
         'concepto',
         'tipo',
     )
-    
 
 
 class RateExpenseAdmin(SimpleHistoryAdmin):
@@ -67,9 +66,7 @@ class RateExpenseAdmin(SimpleHistoryAdmin):
         'regimen',
         'tipo_gasto',
         'estado',
-    ) 
-
-
+    )
 
 
 class RateIncotermAdmin(SimpleHistoryAdmin):    
@@ -121,9 +118,9 @@ class PaidInvoiceAdmin(SimpleHistoryAdmin):
     list_filter = (
         'identificacion_proveedor',
         'tipo',
-    )   
+    )
 
-    inlines = [ PaidInvoiceDetailInline, ]
+    inlines = [PaidInvoiceDetailInline, ]
 
 
 admin.site.register(Expense, ExpensesAdmin)

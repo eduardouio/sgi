@@ -1,6 +1,7 @@
 from django.contrib import admin
 from costings.models.Ledger import Ledger
 
+
 class LedgerAdmin(admin.ModelAdmin):
     list_display = (
         'tipo',
@@ -16,8 +17,7 @@ class LedgerAdmin(admin.ModelAdmin):
         'mayor_sgi',
     )
 
-    #si se busca en fk se usa __ par como accesos a las propiedades objeto
-    search_fields  = [
+    search_fields = [
         'tipo',
         'id_parcial',
         'nro_pedido__nro_pedido',
