@@ -8,8 +8,8 @@ from partials.models import (Apportionment, ApportionmentDetail, InfoInvoice,
 class PartialAdmin(SimpleHistoryAdmin):
     list_display = (
         'nro_pedido',
-        'nro_pedido__proveedor',
-        'nro_liquidacion'
+        #'nro_pedido__proveedor',
+        'nro_liquidacion',
         'fecha_llegada_cliente',
         'fecha_salida_autorizada_almagro',
         'bg_isliquidated',
@@ -25,7 +25,7 @@ class PartialAdmin(SimpleHistoryAdmin):
     search_fields = (
         'nro_pedido',
         'fecha_llegada_cliente',
-        'nro_liquidacion'
+        'nro_liquidacion',
         'bg_isliquidated',
         'bg_isclosed',
     )
@@ -47,8 +47,8 @@ class ApportionmentDetailInline(admin.TabularInline):
 class ApportionmentAdmin(SimpleHistoryAdmin):
     list_display = (
         'id_parcial',
-        'id_parcial___nro_pedido',
-        'id_parcual___fecha_llegada_cliente',
+        #'id_parcial___nro_pedido',
+        #'id_parcial___fecha_llegada_cliente',
         'porcentaje_parcial',
         'fob_inicial',
         'fob_parcial',
@@ -70,7 +70,7 @@ class InfoInvoiceDetailInline(admin.TabularInline):
 class InfoInvoiceAdmin(SimpleHistoryAdmin):
     list_display = (
         'id_parcial',
-        'id_parcial__nro_pedido',
+        #'id_parcial__nro_pedido',
         'nro_factura_informativa',
         'nro_refrendo',
         'fecha_emision',
@@ -82,15 +82,16 @@ class InfoInvoiceAdmin(SimpleHistoryAdmin):
     search_fields = (
         'nro_refrendo',
         'nro_factura_informativa',
-        'id_parcial__nro_pedido',
+        #'id_parcial__nro_pedido',
         'id_factura_informativa',
     )
 
     list_filter = (
-        'id_parcial__nro_pedido',
+        #'id_parcial__nro_pedido',
     )
 
     inlines = [InfoInvoiceDetailInline]
+
 
 admin.site.register(Partial, PartialAdmin)
 admin.site.register(Apportionment, ApportionmentAdmin)

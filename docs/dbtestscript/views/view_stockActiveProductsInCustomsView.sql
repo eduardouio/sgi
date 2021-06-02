@@ -1,8 +1,4 @@
-CREATE 
-    ALGORITHM = UNDEFINED 
-    DEFINER = `root`@`localhost` 
-    SQL SECURITY DEFINER
-VIEW `cordovezApp`.`stockActiveProductsInCustomsView` AS
+CREATE VIEW `stockActiveProductsInCustomsView` AS
     SELECT 
         `pf`.`nro_pedido` AS `nro_pedido`,
         `ped`.`regimen` AS `regimen`,
@@ -19,11 +15,11 @@ VIEW `cordovezApp`.`stockActiveProductsInCustomsView` AS
         `pro`.`capacidad_ml` AS `capacidad_ml`,
         `pro`.`cantidad_x_caja` AS `cantidad_x_caja`
     FROM
-        ((((`cordovezApp`.`detalle_pedido_factura` `dpf`
-        LEFT JOIN `cordovezApp`.`producto` `pro` ON ((`dpf`.`cod_contable` = `pro`.`cod_contable`)))
-        LEFT JOIN `cordovezApp`.`pedido_factura` `pf` ON ((`dpf`.`id_pedido_factura` = `pf`.`id_pedido_factura`)))
-        LEFT JOIN `cordovezApp`.`pedido` `ped` ON ((`pf`.`nro_pedido` = `ped`.`nro_pedido`)))
-        LEFT JOIN `cordovezApp`.`proveedor` `prov` ON ((`pf`.`identificacion_proveedor` = `prov`.`identificacion_proveedor`)))
+        ((((`detalle_pedido_factura` `dpf`
+        LEFT JOIN `producto` `pro` ON ((`dpf`.`cod_contable` = `pro`.`cod_contable`)))
+        LEFT JOIN `pedido_factura` `pf` ON ((`dpf`.`id_pedido_factura` = `pf`.`id_pedido_factura`)))
+        LEFT JOIN `pedido` `ped` ON ((`pf`.`nro_pedido` = `ped`.`nro_pedido`)))
+        LEFT JOIN `proveedor` `prov` ON ((`pf`.`identificacion_proveedor` = `prov`.`identificacion_proveedor`)))
     WHERE
         (`dpf`.`nro_cajas` > 0)
     ORDER BY `pf`.`nro_pedido`

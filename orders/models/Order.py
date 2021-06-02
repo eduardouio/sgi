@@ -365,7 +365,7 @@ class Order(models.Model):
     date_create = models.DateTimeField(
         blank=True,
         null=True,
-        default=timezone.now()
+        default=timezone.now
     )
     last_update = models.DateTimeField(blank=True, null=True)
     saldo_mayor = models.DecimalField(

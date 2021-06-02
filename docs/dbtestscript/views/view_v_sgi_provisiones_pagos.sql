@@ -1,8 +1,4 @@
-CREATE 
-    ALGORITHM = UNDEFINED 
-    DEFINER = `root`@`localhost` 
-    SQL SECURITY DEFINER
-VIEW `cordovezApp`.`v_sgi_provisiones_pagos` AS
+CREATE VIEW `v_sgi_provisiones_pagos` AS
     SELECT 
         `gn`.`id_gastos_nacionalizacion` AS `id_gastos_nacionalizacion`,
         `gn`.`id_parcial` AS `id_parcial`,
@@ -26,18 +22,18 @@ VIEW `cordovezApp`.`v_sgi_provisiones_pagos` AS
         (SELECT 
                 IFNULL(SUM(`ddp`.`valor`), 0)
             FROM
-                `cordovezApp`.`detalle_documento_pago` `ddp`
+                `detalle_documento_pago` `ddp`
             WHERE
                 (`ddp`.`id_gastos_nacionalizacion` = `gn`.`id_gastos_nacionalizacion`)) AS `pago`,
         (`gn`.`valor_provisionado` - (SELECT 
                 IFNULL(SUM(`ddp`.`valor`), 0)
             FROM
-                `cordovezApp`.`detalle_documento_pago` `ddp`
+                `detalle_documento_pago` `ddp`
             WHERE
                 (`ddp`.`id_gastos_nacionalizacion` = `gn`.`id_gastos_nacionalizacion`))) AS `saldo`
     FROM
-        ((`cordovezApp`.`gastos_nacionalizacion` `gn`
-        LEFT JOIN `cordovezApp`.`parcial` `p` ON (((`p`.`id_parcial` = `gn`.`id_parcial`)
+        ((`gastos_nacionalizacion` `gn`
+        LEFT JOIN `parcial` `p` ON (((`p`.`id_parcial` = `gn`.`id_parcial`)
             AND (`gn`.`id_parcial` <> 0))))
-        LEFT JOIN `cordovezApp`.`pedido` `o` ON ((IFNULL(`p`.`nro_pedido`, `gn`.`nro_pedido`) = `o`.`nro_pedido`)))
+        LEFT JOIN `pedido` `o` ON ((IFNULL(`p`.`nro_pedido`, `gn`.`nro_pedido`) = `o`.`nro_pedido`)))
     ORDER BY `gn`.`tipo` , `gn`.`fecha` , `gn`.`concepto`

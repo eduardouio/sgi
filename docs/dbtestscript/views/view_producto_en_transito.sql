@@ -1,8 +1,4 @@
-CREATE 
-    ALGORITHM = UNDEFINED 
-    DEFINER = `root`@`localhost` 
-    SQL SECURITY DEFINER
-VIEW `cordovezApp`.`producto_en_transito` AS
+CREATE VIEW `producto_en_transito` AS
     SELECT 
         CAST(SUBSTR(`p`.`nro_pedido`, 1, 3) AS UNSIGNED) AS `consecutivo`,
         CAST(SUBSTR(`p`.`nro_pedido`, 5, 2) AS UNSIGNED) AS `anio`,
@@ -17,11 +13,11 @@ VIEW `cordovezApp`.`producto_en_transito` AS
         `pro`.`cantidad_x_caja` AS `cantidad_x_caja`,
         (`pro`.`cantidad_x_caja` * `fid`.`nro_cajas`) AS `Unidades`
     FROM
-        ((((`cordovezApp`.`factura_informativa_detalle` `fid`
-        JOIN `cordovezApp`.`factura_informativa` `fi` ON ((`fi`.`id_factura_informativa` = `fid`.`id_factura_informativa`)))
-        JOIN `cordovezApp`.`parcial` `p` ON ((`fi`.`id_parcial` = `p`.`id_parcial`)))
-        JOIN `cordovezApp`.`detalle_pedido_factura` `dpf` ON ((`fid`.`detalle_pedido_factura` = `dpf`.`detalle_pedido_factura`)))
-        JOIN `cordovezApp`.`producto` `pro` ON ((`dpf`.`cod_contable` = `pro`.`cod_contable`)))
+        ((((`factura_informativa_detalle` `fid`
+        JOIN `factura_informativa` `fi` ON ((`fi`.`id_factura_informativa` = `fid`.`id_factura_informativa`)))
+        JOIN `parcial` `p` ON ((`fi`.`id_parcial` = `p`.`id_parcial`)))
+        JOIN `detalle_pedido_factura` `dpf` ON ((`fid`.`detalle_pedido_factura` = `dpf`.`detalle_pedido_factura`)))
+        JOIN `producto` `pro` ON ((`dpf`.`cod_contable` = `pro`.`cod_contable`)))
     WHERE
         ((`p`.`bg_isliquidated` = 1)
             AND (`p`.`fecha_llegada_cliente` IS NULL))

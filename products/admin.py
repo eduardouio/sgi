@@ -6,7 +6,7 @@ from products.models import Product
 class ProductAdmin(SimpleHistoryAdmin):
     list_display = (
         'identificacion_proveedor',
-        'identificacion_proveedor__nombre',
+       # 'identificacion_proveedor__nombre',
         'cod_contable',
         'nombre',
         'nro_registro_sanitario',

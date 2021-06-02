@@ -1,8 +1,4 @@
-CREATE 
-    ALGORITHM = UNDEFINED 
-    DEFINER = `root`@`localhost` 
-    SQL SECURITY DEFINER
-VIEW `cordovezApp`.`llegadas_almagro` AS
+CREATE VIEW `llegadas_almagro` AS
     SELECT 
         REPLACE(`o`.`nro_pedido`, '-', '/') AS `nro_pedido`,
         `pr`.`nombre` AS `nombre`,
@@ -27,10 +23,10 @@ VIEW `cordovezApp`.`llegadas_almagro` AS
         SUBSTR(`o`.`nro_refrendo`, 10, 2) AS `reg`,
         SUBSTR(`o`.`nro_refrendo`, 13, 8) AS `cons`
     FROM
-        (((`cordovezApp`.`pedido` `o`
-        LEFT JOIN `cordovezApp`.`pedido_factura` `pf` ON ((`pf`.`nro_pedido` = `o`.`nro_pedido`)))
-        LEFT JOIN `cordovezApp`.`detalle_pedido_factura` `dpf` ON ((`pf`.`id_pedido_factura` = `dpf`.`id_pedido_factura`)))
-        LEFT JOIN `cordovezApp`.`producto` `pr` ON ((`pr`.`cod_contable` = `dpf`.`cod_contable`)))
+        (((`pedido` `o`
+        LEFT JOIN `pedido_factura` `pf` ON ((`pf`.`nro_pedido` = `o`.`nro_pedido`)))
+        LEFT JOIN `detalle_pedido_factura` `dpf` ON ((`pf`.`id_pedido_factura` = `dpf`.`id_pedido_factura`)))
+        LEFT JOIN `producto` `pr` ON ((`pr`.`cod_contable` = `dpf`.`cod_contable`)))
     WHERE
         (`o`.`fecha_ingreso_almacenera` > '2019-10-00')
     ORDER BY `o`.`fecha_ingreso_almacenera` , `o`.`nro_pedido`

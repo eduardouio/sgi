@@ -1,8 +1,4 @@
-CREATE 
-    ALGORITHM = UNDEFINED 
-    DEFINER = `root`@`localhost` 
-    SQL SECURITY DEFINER
-VIEW `cordovezApp`.`producto_parcial_llegado` AS
+CREATE VIEW `producto_parcial_llegado` AS
     SELECT 
         `fid`.`id_factura_informativa` AS `id_factura_informativa`,
         `p`.`nro_pedido` AS `nro_pedido`,
@@ -16,8 +12,8 @@ VIEW `cordovezApp`.`producto_parcial_llegado` AS
         `fid`.`unidades` AS `unidades`,
         `p`.`fecha_llegada_cliente` AS `fecha_llegada_cliente`
     FROM
-        (((`cordovezApp`.`factura_informativa_detalle` `fid`
-        LEFT JOIN `cordovezApp`.`factura_informativa` `fi` ON ((`fi`.`id_factura_informativa` = `fid`.`id_factura_informativa`)))
-        LEFT JOIN `cordovezApp`.`parcial` `p` ON ((`p`.`id_parcial` = `fi`.`id_parcial`)))
-        LEFT JOIN `cordovezApp`.`pedido` `o` ON ((`p`.`nro_pedido` = `o`.`nro_pedido`)))
+        (((`factura_informativa_detalle` `fid`
+        LEFT JOIN `factura_informativa` `fi` ON ((`fi`.`id_factura_informativa` = `fid`.`id_factura_informativa`)))
+        LEFT JOIN `parcial` `p` ON ((`p`.`id_parcial` = `fi`.`id_parcial`)))
+        LEFT JOIN `pedido` `o` ON ((`p`.`nro_pedido` = `o`.`nro_pedido`)))
     ORDER BY `p`.`fecha_llegada_cliente` , `fi`.`id_factura_informativa`

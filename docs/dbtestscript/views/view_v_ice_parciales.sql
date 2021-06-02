@@ -1,8 +1,4 @@
-CREATE 
-    ALGORITHM = UNDEFINED 
-    DEFINER = `root`@`localhost` 
-    SQL SECURITY DEFINER
-VIEW `cordovezApp`.`v_ice_parciales` AS
+CREATE VIEW `v_ice_parciales` AS
     SELECT 
         REPLACE(`p`.`nro_pedido`, '-', '/') AS `nro_pedido`,
         `pr`.`nombre` AS `nombre`,
@@ -27,10 +23,10 @@ VIEW `cordovezApp`.`v_ice_parciales` AS
         SUBSTR(`fi`.`nro_refrendo`, 10, 2) AS `reg`,
         SUBSTR(`fi`.`nro_refrendo`, 13, 8) AS `cons`
     FROM
-        (((((`cordovezApp`.`parcial` `p`
-        LEFT JOIN `cordovezApp`.`pedido` `o` ON ((`o`.`nro_pedido` = `p`.`nro_pedido`)))
-        LEFT JOIN `cordovezApp`.`factura_informativa` `fi` ON ((`fi`.`id_parcial` = `p`.`id_parcial`)))
-        LEFT JOIN `cordovezApp`.`factura_informativa_detalle` `fid` ON ((`fid`.`id_factura_informativa` = `fi`.`id_factura_informativa`)))
-        LEFT JOIN `cordovezApp`.`detalle_pedido_factura` `dpf` ON ((`fid`.`detalle_pedido_factura` = `dpf`.`detalle_pedido_factura`)))
-        LEFT JOIN `cordovezApp`.`producto` `pr` ON ((`pr`.`cod_contable` = `dpf`.`cod_contable`)))
+        (((((`parcial` `p`
+        LEFT JOIN `pedido` `o` ON ((`o`.`nro_pedido` = `p`.`nro_pedido`)))
+        LEFT JOIN `factura_informativa` `fi` ON ((`fi`.`id_parcial` = `p`.`id_parcial`)))
+        LEFT JOIN `factura_informativa_detalle` `fid` ON ((`fid`.`id_factura_informativa` = `fi`.`id_factura_informativa`)))
+        LEFT JOIN `detalle_pedido_factura` `dpf` ON ((`fid`.`detalle_pedido_factura` = `dpf`.`detalle_pedido_factura`)))
+        LEFT JOIN `producto` `pr` ON ((`pr`.`cod_contable` = `dpf`.`cod_contable`)))
     ORDER BY `p`.`fecha_llegada_cliente` , `p`.`nro_pedido`

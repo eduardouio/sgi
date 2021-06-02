@@ -1,10 +1,11 @@
 from django import forms
 from products.models import Product
 
-all_products = (
-    (p.cod_contable,  p.nombre)
-    for p in Product.objects.all().order_by('nombre')
-)
+all_products = ()
+#all_products = (
+#    (p.cod_contable,  p.nombre)
+#    for p in Product.objects.all().order_by('nombre')
+#)
 
 deep_choices = (
     (0, 'Todos'),

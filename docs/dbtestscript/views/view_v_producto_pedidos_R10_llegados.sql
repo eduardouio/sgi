@@ -1,8 +1,4 @@
-CREATE 
-    ALGORITHM = UNDEFINED 
-    DEFINER = `root`@`localhost` 
-    SQL SECURITY DEFINER
-VIEW `cordovezApp`.`v_producto_pedidos_R10_llegados` AS
+CREATE VIEW `v_producto_pedidos_R10_llegados` AS
     SELECT 
         `pf`.`nro_pedido` AS `nro_pedido`,
         `s`.`nombre` AS `nombre`,
@@ -15,20 +11,20 @@ VIEW `cordovezApp`.`v_producto_pedidos_R10_llegados` AS
         `dpf`.`unidades` AS `unidades`,
         `o`.`fecha_llegada_cliente` AS `fecha_llegada_cliente`
     FROM
-        ((((`cordovezApp`.`detalle_pedido_factura` `dpf`
-        LEFT JOIN `cordovezApp`.`pedido_factura` `pf` ON ((`pf`.`id_pedido_factura` = `dpf`.`id_pedido_factura`)))
-        LEFT JOIN `cordovezApp`.`proveedor` `s` ON ((`s`.`identificacion_proveedor` = `pf`.`identificacion_proveedor`)))
-        LEFT JOIN `cordovezApp`.`pedido` `o` ON ((`o`.`nro_pedido` = `pf`.`nro_pedido`)))
-        LEFT JOIN `cordovezApp`.`producto` `p` ON ((`p`.`cod_contable` = `dpf`.`cod_contable`)))
+        ((((`detalle_pedido_factura` `dpf`
+        LEFT JOIN `pedido_factura` `pf` ON ((`pf`.`id_pedido_factura` = `dpf`.`id_pedido_factura`)))
+        LEFT JOIN `proveedor` `s` ON ((`s`.`identificacion_proveedor` = `pf`.`identificacion_proveedor`)))
+        LEFT JOIN `pedido` `o` ON ((`o`.`nro_pedido` = `pf`.`nro_pedido`)))
+        LEFT JOIN `producto` `p` ON ((`p`.`cod_contable` = `dpf`.`cod_contable`)))
     WHERE
         `dpf`.`id_pedido_factura` IN (SELECT 
-                `cordovezApp`.`pedido_factura`.`id_pedido_factura`
+                `pedido_factura`.`id_pedido_factura`
             FROM
-                `cordovezApp`.`pedido_factura`
+                `pedido_factura`
             WHERE
-                `cordovezApp`.`pedido_factura`.`nro_pedido` IN (SELECT 
-                        `cordovezApp`.`pedido`.`nro_pedido`
+                `pedido_factura`.`nro_pedido` IN (SELECT 
+                        `pedido`.`nro_pedido`
                     FROM
-                        `cordovezApp`.`pedido`
+                        `pedido`
                     WHERE
-                        (`cordovezApp`.`pedido`.`regimen` = 10)))
+                        (`pedido`.`regimen` = 10)))
