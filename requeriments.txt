@@ -9,4 +9,6 @@ numpy == 1.19.4
 PyPDF2 == 1.26.0
 jinja2 == 2.11.2
 reportlab == 3.5.13
-mysqlclient == 1.4.1
+pandas
+ipdb
+#mysqlclient == 1.4.1
