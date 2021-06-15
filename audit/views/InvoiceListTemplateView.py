@@ -19,22 +19,10 @@ class InvoiceListTemplateView(LoginRequiredMixin, TemplateView):
         else:
             local_invoices = invoice_utils.get_unapproved_local_invoices()
             foreign_invoices = invoice_utils.get_unapproved_foreign_invoices()
-            
+
         context['data'] = {
             'title_page': 'Facturas Pendientes',
             'local_invoices': local_invoices,
-            'foreign_invoices' : foreign_invoices,
+            'foreign_invoices': foreign_invoices,
         }
         return self.render_to_response(context)
-        
-
-
-class inicio():
-    """[summary]
-
-    Args:
-        Object ([type]): [description]
-    """
-
-    def __init__(self):
-        pass

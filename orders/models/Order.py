@@ -357,6 +357,7 @@ class Order(models.Model):
         default=0
     )
     # nos indica si el pedido es trackeado por defecto se coloca en SI
+    # si es traqueado se lo toma en cuenta para los reportes de movimientos
     bg_is_tracked = models.BooleanField(default=1, blank=True, null=True)
     # indica si el pedido esta definitivamente cerrado para otpimizar
     # la depuracion de pedidos activos
