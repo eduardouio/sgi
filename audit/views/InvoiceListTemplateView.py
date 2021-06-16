@@ -1,6 +1,7 @@
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from lib_src import InvoicesUtils
+from logs.app_log import loggin
 
 
 # /auditoria/
@@ -10,6 +11,7 @@ class InvoiceListTemplateView(LoginRequiredMixin, TemplateView):
 
     # /auditoria/
     def get(self, request, *args, **kwargs):
+        loggin('i', 'Cargando listado facturas audotoria')
         invoice_utils = InvoicesUtils()
         context = self.get_context_data(**kwargs)
 
