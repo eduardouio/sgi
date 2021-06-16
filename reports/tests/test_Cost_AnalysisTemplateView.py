@@ -10,6 +10,7 @@ class TESTCostAnalysisTemplateView(TestCase):
         self.path = '/reportes/analisis-costos/'
         self.factory = RequestFactory()
         self.user = User.objects.get(username='eduardo')
+        return super().setUp()
 
     def test_get(self):
         request = self.factory.get(self.path)
@@ -33,8 +34,9 @@ class TESTCostAnalysisTemplateView(TestCase):
         self.assertTemplateUsed('reports/costs_analysis.html')
         self.assertIsInstance(response.context_data['data']['report'], list)
 
-    def test_user_logged_in(self):
+    def test_user_not_logged(self):
         request = self.factory.get(self.path)
         request.user = AnonymousUser()
         response = CostAnalysisTemplateView.as_view()(request)
         self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, '/login/?next=' + self.path)
