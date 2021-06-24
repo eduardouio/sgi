@@ -30,6 +30,9 @@ DATOS_EMPRESAS = {
         'db_user': 'root',
         'db_passwd': 'elian.2011',
         'secret_key': 'sj-z02b^$ifmzup+&qb+6!fi4mgbah_n3ddss@9m4=e0u$fdrr',
+        'url_almagro_report': 'https://almanet.almagro.com.ec/almCryReport.aspx?Enlace=0021790023516001{}/{}/{}',
+        'almagro_user': 'MSALA',
+        'almagro_paa': 'almagro2018',
     },
     'cordovez': {
         'nombre': 'AGENCIAS Y REPRESENTACIONES CORDOVEZ S A',
@@ -50,6 +53,9 @@ DATOS_EMPRESAS = {
         'db_user': 'appCordovez',
         'db_passwd': '\DBGfW<7;vBa5(LB',
         'secret_key': 'sj-z02b^$ifmzup+&qb+6!fi4mgbah_n3ddss@9m4=Cordovez2021',
+        'url_almagro_report': 'https://almanet.almagro.com.ec/almCryReport.aspx?Enlace=0021790023516001{}/{}/{}',
+        'almagro_user': 'MSALA',
+        'almagro_paa': 'almagro2018',
     },
     'imnac': {
         'nombre': 'IMNAC CIA LTDA',
@@ -70,11 +76,14 @@ DATOS_EMPRESAS = {
         'db_user': 'appCordovez',
         'db_passwd': '\DBGfW<7;vBa5(LB',
         'secret_key': 'sj-z02b^$ifmzup+&qb+6!fi4mgbah_n3ddss@9m4=Imnac2021',
+        'url_almagro_report': 'https://almanet.almagro.com.ec/almCryReport.aspx?Enlace=0021792324289001{}/{}/{}',
+        'almagro_user': 'MSALA_IM',
+        'almagro_paa': 'almagro2018',
     },
     'vid': {
         'nombre': 'VIDINTERNACIONAL S A',
         'empresa': 'vid',
-        'ruc': '1791771907',
+        'ruc': '1791771907001',
         'direccion': 'AV 10 DE AGOSTO Y LEONARDO MURIALDO ',
         'telefono': '022405911',
         'email': 'sgi@vidinternacional.com.ec',
@@ -90,6 +99,9 @@ DATOS_EMPRESAS = {
         'db_user': 'appCordovez',
         'db_passwd': '\DBGfW<7;vBa5(LB',
         'secret_key': 'sj-z02b^$ifmzup+&qb+6!fi4mgbah_n3ddss@9m4=Vid2021',
+        'url_almagro_report': 'https://almanet.almagro.com.ec/almCryReport.aspx?Enlace=0021791771907001{mm}/{dd}/{yyyy}',
+        'almagro_user': 'MSALA_VI',
+        'almagro_paa': 'almagro2018',
     },
 
 }
