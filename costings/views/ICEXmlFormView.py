@@ -34,7 +34,6 @@ class ICEXmlFormView(LoginRequiredMixin, FormView):
             return self.render_to_response(self.get_context_data(form=form))
 
     def check_data(self, sh_importations):
-        import ipdb;ipdb.set_trace()
 
         book = xlrd.open_workbook(
             file_contents=input_file.read(),
@@ -48,7 +47,6 @@ class ICEXmlFormView(LoginRequiredMixin, FormView):
         importations = self.check_importations(
             book.sheet_by_name('importaciones')
         )
-        import ipdb;ipdb.set_trace()
 
         # definimos los ice que necesitamos para el reporte
         idx_import = {
