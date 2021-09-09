@@ -5,7 +5,7 @@ class CostingsPartial(object):
     '''
         Realiza la reliquidacion de un parcial
     '''
-    
+
     def __init__(self, *args, **kwargs):
         '''Retorna los valores de reliquidacion para un pedido
 
@@ -27,7 +27,7 @@ class CostingsPartial(object):
         '''Realiza el costeo del producto en base a los costos indirectos
             y costos adicionales en la liquidacion, de forma adicional 
             realiza el calculo de pago de ice advalorem reliquidado
-        
+
         Returns:
             {dict}      'taxes' : [],
                         'sums' : {'ice_reliquidado; = 564},
@@ -41,7 +41,7 @@ class CostingsPartial(object):
                 for k in line_item.__dict__:
                     sums[k] = 0.0
                 break
-        
+
         for k in sums:
             for line_item in reliquidate_items:
                 try:    
@@ -73,7 +73,7 @@ class CostingsPartial(object):
     def get_taxes(self):
         ''' Obtiene la reliquidacion de ice de los items de la factura '''
         taxes_line_items  = []
-        
+
         if self.current_partial['partial'].bg_isclosed == 1:
             loggin('i', 'No se realiza el costeo se retorna el existente')
             return self.current_partial['info_invoice']['info_invoice_details']
@@ -150,7 +150,8 @@ class CostingsPartial(object):
             * line_item.fob_percent) 
             +  line_item.fodinfa
             +  line_item.etiquetas_fiscales
-            + line_item.total_ice
+            + line_item.ice_advalorem
+            + line_item.ice_especifico
             + line_item.arancel_especifico_pagar
             + line_item.arancel_advalorem_pagar
             )

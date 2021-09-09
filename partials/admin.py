@@ -8,27 +8,29 @@ from partials.models import (Apportionment, ApportionmentDetail, InfoInvoice,
 class PartialAdmin(SimpleHistoryAdmin):
     list_display = (
         'nro_pedido',
-        'nro_refrendo',
+        #'nro_pedido__proveedor',
+        'nro_liquidacion',
         'fecha_llegada_cliente',
+        'fecha_salida_autorizada_almagro',
         'bg_isliquidated',
         'bg_isclosed',
-        'agente_aduana',
     )
 
-    list_filter=(
+    list_filter = (
         'nro_pedido',
         'bg_isliquidated',
         'bg_isclosed',
-        'agente_aduana',
     )
 
     search_fields = (
+        'nro_pedido',
+        'fecha_llegada_cliente',
+        'nro_liquidacion',
         'bg_isliquidated',
         'bg_isclosed',
-        'agente_aduana',
     )
 
-    
+
 class ApportionmentDetailInline(admin.TabularInline):
     model = ApportionmentDetail
 
@@ -41,9 +43,12 @@ class ApportionmentDetailInline(admin.TabularInline):
         'valor_provisionado',
     )
 
+
 class ApportionmentAdmin(SimpleHistoryAdmin):
     list_display = (
         'id_parcial',
+        #'id_parcial___nro_pedido',
+        #'id_parcial___fecha_llegada_cliente',
         'porcentaje_parcial',
         'fob_inicial',
         'fob_parcial',
@@ -57,39 +62,37 @@ class ApportionmentAdmin(SimpleHistoryAdmin):
 
     inlines = [ApportionmentDetailInline]
 
+
 class InfoInvoiceDetailInline(admin.TabularInline):
     model = InfoInvoiceDetail
 
-class InfoInvoiceDetailAdmin(admin.ModelAdmin):
-    pass
 
 class InfoInvoiceAdmin(SimpleHistoryAdmin):
     list_display = (
         'id_parcial',
+        #'id_parcial__nro_pedido',
         'nro_factura_informativa',
-        'identificacion_proveedor',
+        'nro_refrendo',
         'fecha_emision',
         'flete_aduana',
         'seguro_aduana',
         'valor',
-        'gasto_origen',
-        'moneda',
-        'nro_refrendo',
     )
 
     search_fields = (
         'nro_refrendo',
         'nro_factura_informativa',
+        #'id_parcial__nro_pedido',
+        'id_factura_informativa',
     )
 
     list_filter = (
-        'id_parcial',
+        #'id_parcial__nro_pedido',
     )
 
-    inlines = [ InfoInvoiceDetailInline]
+    inlines = [InfoInvoiceDetailInline]
 
 
 admin.site.register(Partial, PartialAdmin)
 admin.site.register(Apportionment, ApportionmentAdmin)
 admin.site.register(InfoInvoice, InfoInvoiceAdmin)
-admin.site.register(InfoInvoiceDetail, InfoInvoiceDetailAdmin)

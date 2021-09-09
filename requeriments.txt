@@ -1,11 +1,15 @@
-django
-django-grappelli
-django-simple_history
-django-guardian
-django-rest_framework
-django-import_export
-django_extensions
-numpy
-PyPDF2
-PyMySQL
-jinja2
+Django == 2.2
+django-grappelli == 2.12.2
+django-simple_history == 2.12.0 
+django-guardian == 1.5.0
+djangorestframework == 3.9.1
+django-import-export==1.2.0
+django_extensions == 3.1.0
+numpy == 1.19.4
+PyPDF2 == 1.26.0
+jinja2 == 2.11.2
+reportlab == 3.5.13
+pandas
+ipdb
+pytest == 6.2.4
+#mysqlclient == 1.4.1

@@ -43,15 +43,7 @@ class LocalWarenhouseArrivalsTEST(TestCase):
             'almagro': json.loads(partials_data),
         }
         data = LocalWarenhouseArrivals(2019, 0).get()
-        self.assertIsInstance(data, dict)
-        self.assertEqual(
-            spected_data['almagro'].__len__(),
-            data['almagro'].__len__(),
-        )
-        self.assertEqual(
-            spected_data['consumo'].__len__(),
-            data['consumo'].__len__(),
-            )
+        self.assertIsInstance(data, list)
 
     def test_get_orders_in_month(self):
         '''comprobamos los pedidos llegados en un mes'''      

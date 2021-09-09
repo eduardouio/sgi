@@ -233,6 +233,32 @@ class Partial(models.Model):
         blank=True,
         null=True
     )
+    # Indica el tipo de aforo asignado por la SENAE
+    TYPE_INSPECTION = (
+        ('Automatico', 'Automatico'),
+        ('Documental', 'Documental'),
+        ('Fisico', 'Fisico'),
+    )
+    tipo_aforo = models.CharField(
+        max_length=50,
+        choices=TYPE_INSPECTION,
+        blank=True,
+        null=True
+    )
+    # Estado en Aduana
+    TYPE_STATUS_SENAE = (
+        ('PENDIENTE', 'PENDIENTE'),
+        ('EN PROCESO SENAE', 'EN PROCESO SENAE'),
+        ('OBSERVADO', 'OBSERVADO'),
+        ('SALIDA AUTORIZADA', 'SALIDA AUTORIZADA')
+    )
+    estado_senae = models.CharField(
+        max_length=50,
+        choices=TYPE_STATUS_SENAE,
+        blank=True,
+        null=True,
+        default='PENDIENTE'
+    )
     bg_isliquidated = models.IntegerField(blank=True, null=True)
     bg_have_tasa_control = models.IntegerField(blank=True, null=True)
     id_user_cierre = models.PositiveSmallIntegerField(blank=True, null=True)

@@ -1,6 +1,7 @@
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from lib_src import InvoicesUtils
+from logs.app_log import loggin
 
 
 # /auditoria/
@@ -10,6 +11,7 @@ class InvoiceListTemplateView(LoginRequiredMixin, TemplateView):
 
     # /auditoria/
     def get(self, request, *args, **kwargs):
+        loggin('i', 'Cargando listado facturas audotoria')
         invoice_utils = InvoicesUtils()
         context = self.get_context_data(**kwargs)
 
@@ -19,22 +21,10 @@ class InvoiceListTemplateView(LoginRequiredMixin, TemplateView):
         else:
             local_invoices = invoice_utils.get_unapproved_local_invoices()
             foreign_invoices = invoice_utils.get_unapproved_foreign_invoices()
-            
+
         context['data'] = {
             'title_page': 'Facturas Pendientes',
             'local_invoices': local_invoices,
-            'foreign_invoices' : foreign_invoices,
+            'foreign_invoices': foreign_invoices,
         }
         return self.render_to_response(context)
-        
-
-
-class inicio():
-    """[summary]
-
-    Args:
-        Object ([type]): [description]
-    """
-
-    def __init__(self):
-        pass

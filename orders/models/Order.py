@@ -5,6 +5,19 @@ from simple_history.models import HistoricalRecords
 
 from logs.app_log import loggin
 
+TYPE_CHARGE = (
+    ('Carga Suelta', 'Carga Suelta'),
+    ('Carga Contenerizada', 'Carga Contenerizada'),
+    ('Otro', 'Otro'),
+)
+
+TYPE_FREIGHT = (
+    ('Marítimo', 'Marítimo'),
+    ('Aereo', 'Aereo'),
+    ('Terrestre', 'Terrestre'),
+    ('Otro', 'Otro'),
+)
+
 
 class Order(models.Model):
     nro_pedido = models.CharField(primary_key=True, max_length=6)
@@ -14,6 +27,42 @@ class Order(models.Model):
     incoterm = models.CharField(max_length=4)
     pais_origen = models.CharField(max_length=45, blank=True, null=True)
     ciudad_origen = models.CharField(max_length=45, blank=True, null=True)
+    fecha_embarque = models.DateField(blank=True, null=True)
+    agente_embarque_forwarder = models.CharField(
+        max_length=70,
+        blank=True,
+        null=True
+    )
+    tipo_carga = models.CharField(
+        max_length=45,
+        blank=True,
+        null=True,
+        choices=TYPE_CHARGE,
+        default=None
+    )
+    tipo_flete = models.CharField(
+        max_length=70,
+        blank=True,
+        null=True,
+        choices=TYPE_FREIGHT,
+        default=None
+    )
+    peso_carga = models.PositiveIntegerField(
+        blank=True,
+        null=True,
+        default=None
+    )
+    volumen_carga_cbm = models.PositiveIntegerField(
+        blank=True,
+        null=True,
+        default=None
+    )
+    nro_seguimiento_formarder = models.CharField(
+        max_length=50,
+        blank=True,
+        null=True,
+        default=None
+    )
     fecha_arribo = models.DateField(blank=True, null=True)
     dias_libres = models.PositiveIntegerField(default=21)
     fecha_salida_bodega_puerto = models.DateField(blank=True, null=True)
@@ -35,8 +84,11 @@ class Order(models.Model):
     fecha_pegado_etiquetas = models.DateField(blank=True, null=True)
     fecha_aforo = models.DateField(blank=True, null=True)
     fecha_envio_de_documentos = models.DateField(blank=True, null=True)
+    fecha_aprovacion_compra = models.DateField(blank=True, null=True)
     fecha_llegada_documentos = models.DateField(blank=True, null=True)
     fecha_aprovacion_dai = models.DateField(blank=True, null=True)
+    fecha_emision_bl = models.DateField(blank=True, null=True)
+
     otros = models.DecimalField(
         max_digits=8,
         decimal_places=3,
@@ -255,6 +307,48 @@ class Order(models.Model):
     url_liquidacion_1 = models.CharField(max_length=600, blank=True, null=True)
     url_liquidacion_2 = models.CharField(max_length=600, blank=True, null=True)
     url_liquidacion_3 = models.CharField(max_length=600, blank=True, null=True)
+    # Indica el tipo de aforo asignado por la SENAE
+    TYPE_INSPECTION = (
+        ('AUTOMATICO', 'AUTOMATICO'),
+        ('DOCUMENTAL', 'DOCUMENTAL'),
+        ('FISICO', 'FISICO'),
+    )
+    tipo_aforo = models.CharField(
+        max_length=50,
+        choices=TYPE_INSPECTION,
+        blank=True,
+        null=True
+    )
+    # Estado en Aduana
+    TYPE_STATUS_SENAE = (
+        ('PENDIENTE', 'PENDIENTE'),
+        ('EN PROCESO SENAE', 'EN PROCESO SENAE'),
+        ('OBSERVADO', 'OBSERVADO'),
+        ('SALIDA AUTORIZADA', 'SALIDA AUTORIZADA')
+    )
+    estado_senae = models.CharField(
+        max_length=50,
+        choices=TYPE_STATUS_SENAE,
+        blank=True,
+        null=True,
+        default='PENDIENTE'
+    )
+    # Estado Embarque
+    TYPE_STATUS_SHIPMENT = (
+        ('RESERVA PENDIENTE', 'RESERVA PENDIENTE'),
+        ('RESERA CONFIRMADA', 'RESERA CONFIRMADA'),
+        ('EMBARCADO', 'EMBARCADO')
+        ('LLEGADO', 'LLEGADO')
+    )
+    estado_embarque = models.CharField(
+        max_length=70,
+        choices=TYPE_STATUS_SHIPMENT,
+        blank=True,
+        null=True,
+        default='RESERVA PENDIENTE'
+    )
+    # proforma proveedor de producto
+    nro_proforma = models.CharField(max_length=25)
     path_liquidacion_1 = models.FileField(
         upload_to='liquidaciones/',
         max_length=600,
@@ -274,13 +368,15 @@ class Order(models.Model):
         null=True
     )
     nro_bl = models.CharField(max_length=70, blank=True, null=True)
+    nro_hbl_awb = models.CharField(max_length=70, blank=True, null=True)
+    puerto_destino = models.CharField(max_length=70, blank=True, null=True)
     nro_matricula = models.CharField(max_length=11, blank=True, null=True)
     numero_de_carga_mrn = models.CharField(
         max_length=30,
         blank=True,
         null=True
     )
-    naviera = models.CharField(max_length=70, blank=True, null=True)
+    embarcador = models.CharField(max_length=70, blank=True, null=True)
     agente_aduana = models.CharField(max_length=100, blank=True, null=True)
     ruc_agente_aduana = models.CharField(max_length=13, blank=True, null=True)
     punto_lledada = models.CharField(max_length=60, blank=True, null=True)
@@ -303,6 +399,13 @@ class Order(models.Model):
         null=True,
         default=0
     )
+    # nos indica si el pedido es trackeado por defecto se coloca en SI
+    # si es traqueado se lo toma en cuenta para los reportes de movimientos
+    bg_is_tracked = models.BooleanField(default=1, blank=True, null=True)
+    # indica si el pedido esta definitivamente cerrado para otpimizar
+    # la depuracion de pedidos activos
+    bg_is_closed_checked = models.BooleanField(
+        default=0, blank=True, null=True)
     id_user = models.SmallIntegerField(default=0)
     date_create = models.DateTimeField(
         blank=True,
@@ -380,7 +483,7 @@ class Order(models.Model):
         if orders.count() == 0:
             loggin('e', 'No existen pedidos abiertos')
             return []
-        
+
         loggin('i', 'Retornando todos los pedidos abiertos')
         return orders
 
@@ -390,39 +493,39 @@ class Order(models.Model):
             'total_pagado': 0,
             'total_pagado_sin_iva': 0,
             'total_provisionado': 0,
-            }
+        }
 
         order = self.get_by_order(nro_order)
 
         if order is None or order.regimen == '70' or order.bg_isliquidated == 0 or order.bg_isliquidated is None:
             loggin(
-            'w',
-            ('No se obtener los tributos del pedido {nro_order} pedido '
-             'inexistente o regimen = 70'.format(
-                nro_order=nro_order
-            )))
+                'w',
+                ('No se obtener los tributos del pedido {nro_order} pedido '
+                 'inexistente o regimen = 70'.format(
+                     nro_order=nro_order
+                 )))
             return taxes
 
         return {
-            'total_pagado' : (
-                      order.arancel_advalorem_pagar_pagado
-                    + order.arancel_especifico_pagar_pagado
-                    + order.fodinfa_pagado
-                    + order.ice_advalorem_pagado
-                    + order.ice_especifico_pagado
+            'total_pagado': (
+                order.arancel_advalorem_pagar_pagado
+                + order.arancel_especifico_pagar_pagado
+                + order.fodinfa_pagado
+                + order.ice_advalorem_pagado
+                + order.ice_especifico_pagado
             ),
-            'total_pagado_sin_iva' : (
-                    order.arancel_advalorem_pagar_pagado
-                    + order.arancel_especifico_pagar_pagado
-                    + order.fodinfa_pagado
-                    + order.ice_advalorem_pagado
-                    + order.ice_especifico_pagado
+            'total_pagado_sin_iva': (
+                order.arancel_advalorem_pagar_pagado
+                + order.arancel_especifico_pagar_pagado
+                + order.fodinfa_pagado
+                + order.ice_advalorem_pagado
+                + order.ice_especifico_pagado
             ),
-            'total_provisionado' : (
-                    order.arancel_advalorem_pagar_pagado
-                    + order.arancel_especifico_pagar_pagado
-                    + order.fodinfa_pagado
-                    + order.ice_advalorem_pagado
-                    + order.ice_especifico_pagado
+            'total_provisionado': (
+                order.arancel_advalorem_pagar_pagado
+                + order.arancel_especifico_pagar_pagado
+                + order.fodinfa_pagado
+                + order.ice_advalorem_pagado
+                + order.ice_especifico_pagado
             )
         }

@@ -11,4 +11,3 @@ sgi/settings.py
 *.pdf
 /media/
 .idea/
-sgi/enterprise_data.py

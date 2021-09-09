@@ -1,25 +1,27 @@
-import pdb
-
-from django.contrib.auth.models import User
-from django.test import Client, TestCase
-
 from audit.views import InvoiceListTemplateView
-from logs import loggin
+from django.contrib.auth.models import AnonymousUser, User
+from django.test import RequestFactory, TestCase
 
 
 class InvoiceListTemplateViewTEST(TestCase):
 
     def setUp(self):
-        self.client = Client()
-        self.invoice_list_template_view = InvoiceListTemplateView()
+        self.path = '/auditoria/'
+        self.factory = RequestFactory()
         self.user = User.objects.get(username='eduardo')
-        self.client.login(username='eduardo', password='elian.2011')
         return super().setUp()
 
     def test_get(self):
-        response = self.client.get('/auditoria/')
+        request = self.factory.get(self.path)
+        request.user = self.user
+        response = InvoiceListTemplateView.as_view()(request)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.template_name[0], 'audit/listado-facturas.html')
+        self.assertTemplateUsed('audit/listado-facturas.html')
+        self.assertIsInstance(response.context_data['data'], dict)
 
-    def test_get_local(self):
-        self.assertEqual([],self.invoice_list_template_view.get_local())
+    def test_user_not_logged(self):
+        request = self.factory.get(self.path)
+        request.user = AnonymousUser()
+        response = InvoiceListTemplateView.as_view()(request)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, '/login/?next=' + self.path)

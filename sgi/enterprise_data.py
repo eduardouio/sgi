@@ -5,8 +5,10 @@
     ENTERPRISE_CONF = [cordovez | imnac | vid | test]
 """
 
+import os
 
-ENTERPRISE_CONF = 'test'
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 DATOS_EMPRESAS = {
     'test': {
@@ -27,6 +29,10 @@ DATOS_EMPRESAS = {
         'db_port': '3306',
         'db_user': 'root',
         'db_passwd': 'elian.2011',
+        'secret_key': 'sj-z02b^$ifmzup+&qb+6!fi4mgbah_n3ddss@9m4=e0u$fdrr',
+        'url_almagro_report': 'https://almanet.almagro.com.ec/almCryReport.aspx?Enlace=0021790023516001{}/{}/{}',
+        'almagro_user': 'MSALA',
+        'almagro_paa': 'almagro2018',
     },
     'cordovez': {
         'nombre': 'AGENCIAS Y REPRESENTACIONES CORDOVEZ S A',
@@ -46,6 +52,10 @@ DATOS_EMPRESAS = {
         'db_port': '3306',
         'db_user': 'appCordovez',
         'db_passwd': '\DBGfW<7;vBa5(LB',
+        'secret_key': 'sj-z02b^$ifmzup+&qb+6!fi4mgbah_n3ddss@9m4=Cordovez2021',
+        'url_almagro_report': 'https://almanet.almagro.com.ec/almCryReport.aspx?Enlace=0021790023516001{}/{}/{}',
+        'almagro_user': 'MSALA',
+        'almagro_paa': 'almagro2018',
     },
     'imnac': {
         'nombre': 'IMNAC CIA LTDA',
@@ -65,15 +75,19 @@ DATOS_EMPRESAS = {
         'db_port': '3306',
         'db_user': 'appCordovez',
         'db_passwd': '\DBGfW<7;vBa5(LB',
+        'secret_key': 'sj-z02b^$ifmzup+&qb+6!fi4mgbah_n3ddss@9m4=Imnac2021',
+        'url_almagro_report': 'https://almanet.almagro.com.ec/almCryReport.aspx?Enlace=0021792324289001{}/{}/{}',
+        'almagro_user': 'MSALA_IM',
+        'almagro_paa': 'almagro2018',
     },
     'vid': {
         'nombre': 'VIDINTERNACIONAL S A',
         'empresa': 'vid',
-        'ruc': '1791771907',
+        'ruc': '1791771907001',
         'direccion': 'AV 10 DE AGOSTO Y LEONARDO MURIALDO ',
         'telefono': '022405911',
         'email': 'sgi@vidinternacional.com.ec',
-        'url_logo': 'http://179.49.60.158:8888/img/logo_vid.png',
+        'url_logo': 'http://179.49.60.158:8888/img/logo_vid.jpg',
         'url_app': 'http://179.49.60.158:5003/',
         'url_app_local': 'http://localhost:5003/',
         'url_app_importaciones': 'http://179.49.60.158:8888/vid/',
@@ -84,11 +98,18 @@ DATOS_EMPRESAS = {
         'db_port': '3306',
         'db_user': 'appCordovez',
         'db_passwd': '\DBGfW<7;vBa5(LB',
+        'secret_key': 'sj-z02b^$ifmzup+&qb+6!fi4mgbah_n3ddss@9m4=Vid2021',
+        'url_almagro_report': 'https://almanet.almagro.com.ec/almCryReport.aspx?Enlace=0021791771907001{mm}/{dd}/{yyyy}',
+        'almagro_user': 'MSALA_VI',
+        'almagro_paa': 'almagro2018',
     },
 
 }
 
 CMT_DEBUG = True
+NAME_ENTERPRISE = BASE_DIR.split('/')[-1]
+ENTERPRISE_CONF = 'test' if NAME_ENTERPRISE == 'sgi' else NAME_ENTERPRISE
+
 EMPRESA = DATOS_EMPRESAS[ENTERPRISE_CONF]
 
 if EMPRESA['empresa'] != 'test':

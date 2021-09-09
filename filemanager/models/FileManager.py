@@ -16,7 +16,7 @@ class FileManager(models.Model):
     id_registro = models.CharField(max_length=10)
     archivo = models.FileField(upload_to='archivos/')
     nombre_fichero = models.CharField(max_length=125)
-    obserbaciones = models.TextField(blank=True,null=True, default=None)
+    observaciones = models.TextField(blank=True, null=True, default=None)
     date_create = models.DateTimeField(blank=True, null=True, default=timezone.now)
     last_update = models.DateTimeField(blank=True, null=True)
     bg_isvalid = models.BooleanField(default=True)
@@ -30,7 +30,7 @@ class FileManager(models.Model):
         db_table = 'gestor_archivos'
         verbose_name_plural = 'Gestion de Archivos'
 
-    
+
     @classmethod
     def get_by_model_id(self,app_label, model_name, id_row):
         '''
@@ -53,7 +53,7 @@ class FileManager(models.Model):
         return []
 
 
-#signal, enviamos a eliminar el archivo luego de eliminar el registro
+# Se envia a eliminar el archivo cuando se elimine el registro
 @receiver(post_delete, sender=FileManager)
 def submission_delete(sender, instance, **kwargs):
     instance.archivo.delete(False)

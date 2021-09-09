@@ -2,10 +2,11 @@
     "python.linting.pylintEnabled": false,
     "python.linting.flake8Enabled": true,
     "python.linting.enabled": true,
-    "editor.rulers": [79,80],
+    "editor.rulers": [78,79],
     "workbench.colorCustomizations": {
-        "editorRuler.foreground": "#2a9dff"
+        "editorRuler.foreground": "#fc1e1e"
     },
-    "editor.cursorBlinking": "smooth",
-     "editor.cursorStyle": "block",
+    "editor.cursorBlinking": "expand",
+     "editor.cursorStyle": "line-thin",
+
 }
