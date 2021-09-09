@@ -92,7 +92,6 @@ class Ledger(models.Model):
         unique_together = (('nro_pedido', 'id_parcial', 'tipo'),)
         verbose_name_plural = 'Mayores Liquidaciones'
         ordering = ['nro_pedido', 'id_parcial','tipo']
-    
 
     @classmethod
     def get_by_order(self, nro_order):
@@ -101,19 +100,18 @@ class Ledger(models.Model):
         order = Order.get_by_order(nro_order)
         if order is None:
             return None
-        
+
         if(order.regimen == '70'):
             loggin('e', 'No existe mayor de un pedido R70 {}'.format(
                 order.nro_pedido))
             return None
 
-        items = self.objects.filter(nro_pedido = order.nro_pedido)
+        items = self.objects.filter(nro_pedido=order.nro_pedido)
         if items.count() == 0:
             loggin('w', 'El pedido {} no tiene mayor'.format(order.nro_pedido))
             return None
 
         return items.first()
-
 
     @classmethod
     def get_by_parcial(self, id_partial):
@@ -128,11 +126,11 @@ class Ledger(models.Model):
             return None
         loggin('i', 'retornando mayor para el parcial {}'.format(id_partial))
         return items.first()
-    
+
     @classmethod
     def get_by_order_and_partial(self, nro_order, id_partial):
         """Obtiene un mayor desde el pedido y parcial
-        
+
         Arguments:
             nro_order {str}
             id_partial {int}
