@@ -337,8 +337,8 @@ class Order(models.Model):
     TYPE_STATUS_SHIPMENT = (
         ('RESERVA PENDIENTE', 'RESERVA PENDIENTE'),
         ('RESERA CONFIRMADA', 'RESERA CONFIRMADA'),
-        ('EMBARCADO', 'EMBARCADO')
-        ('LLEGADO', 'LLEGADO')
+        ('EMBARCADO', 'EMBARCADO'),
+        ('LLEGADO', 'LLEGADO'),
     )
     estado_embarque = models.CharField(
         max_length=70,
