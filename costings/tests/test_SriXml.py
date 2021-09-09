@@ -99,8 +99,9 @@ class TestIceSriXml(TestCase):
             month_sales_f.read(),
             month_returns_f.read(),
             month_imports.read(),
-            '2020',
-            '02'
+            '2021',
+            '08'
         )
         iceSRIXml.gerate_report()
         report = iceSRIXml.get_xml()
+        print(report)
