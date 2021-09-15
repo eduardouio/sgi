@@ -337,8 +337,8 @@ class Order(models.Model):
     TYPE_STATUS_SHIPMENT = (
         ('RESERVA PENDIENTE', 'RESERVA PENDIENTE'),
         ('RESERA CONFIRMADA', 'RESERA CONFIRMADA'),
-        ('EMBARCADO', 'EMBARCADO')
-        ('LLEGADO', 'LLEGADO')
+        ('EMBARCADO', 'EMBARCADO'),
+        ('LLEGADO', 'LLEGADO'),
     )
     estado_embarque = models.CharField(
         max_length=70,
@@ -348,7 +348,7 @@ class Order(models.Model):
         default='RESERVA PENDIENTE'
     )
     # proforma proveedor de producto
-    nro_proforma = models.CharField(max_length=25)
+    nro_proforma = models.CharField(max_length=25, blank=True, null=True)
     path_liquidacion_1 = models.FileField(
         upload_to='liquidaciones/',
         max_length=600,
