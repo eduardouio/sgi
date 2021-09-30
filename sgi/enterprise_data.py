@@ -24,7 +24,7 @@ DATOS_EMPRESAS = {
         'url_app_importaciones': 'http://179.49.60.158:8888/cordovez/',
         'url_bottle_sap': 'http://192.168.0.198:8000/cordovez/',
         'admin_title': 'TEST',
-        'database': 't_imnacApp',
+        'database': 'test_cordovezApp',
         'db_host': 'localhost',
         'db_port': '3306',
         'db_user': 'root',

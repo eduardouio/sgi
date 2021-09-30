@@ -2,7 +2,8 @@ from django.urls import path
 
 from .views import (ICEAnexoReportTemplateView, ICEReportTemplateView,
                     WarenhouseArrivalsTemplateView, ExpensesReportTemplateView,
-                    ActiveOrdersTemplateView, CostAnalysisTemplateView)
+                    ActiveOrdersTemplateView, CostAnalysisTemplateView,
+                    CurrentNationalizationTV)
 
 app_name = 'reports'
 
@@ -13,4 +14,5 @@ urlpatterns = [
     path('provisiones/', ExpensesReportTemplateView.as_view(), name='reporte-provisiones'),
     path('activos/', ActiveOrdersTemplateView.as_view(), name='reporte-pedidos-activos'),
     path('analisis-costos/', CostAnalysisTemplateView.as_view(),name='reporte-analisis-costos'),
+    path('procesos-activos/', CurrentNationalizationTV.as_view(), name='reporte-nacionalizaciones'),
 ]
