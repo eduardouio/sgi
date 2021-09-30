@@ -69,9 +69,9 @@
                     <td>{{ loop.index }}</td>
                     <td nowrap="">
                         {% if item.origen != 'CONSUMO' %}
-                            <a class="text-dark" target="_blank" href="{{ data.enterprise.url_app_importaciones}}index.php/gstnacionalizacion/parcial/{{item.id_parcial}}"> {{item.nro_pedido }} <small class="text-info">[{{item.id_parcial}}]</small></a>
+                            <a class="text-dark" target="_blank" href="{{ request.enterprise.url_app_importaciones}}index.php/gstnacionalizacion/parcial/{{item.id_parcial}}"> {{item.nro_pedido }} <small class="text-info">[{{item.id_parcial}}]</small></a>
                         {% else %}
-                            <a class="text-dark" target="_blank" href="{{ data.enterprise.url_app_importaciones}}index.php/pedido/presentar/{{item.nro_pedido}}"> {{item.nro_pedido }}</a>
+                            <a class="text-dark" target="_blank" href="{{ request.enterprise.url_app_importaciones}}index.php/pedido/presentar/{{item.nro_pedido}}"> {{item.nro_pedido }}</a>
 
                         {% endif %}
                     </td>

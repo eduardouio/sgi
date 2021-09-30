@@ -3,7 +3,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from logs.app_log import loggin
 from django.db import connection
 from datetime import date
-from sgi.settings import EMPRESA
 
 
 class CurrentNationalizationTV(TemplateView, LoginRequiredMixin):
@@ -20,7 +19,6 @@ class CurrentNationalizationTV(TemplateView, LoginRequiredMixin):
 
         context['data'] = {
             'title_page': 'Reporte En Nacionalización',
-            'enterprise': EMPRESA,
             'report': self.get_report(deep),
             'today': date.today()
         }
