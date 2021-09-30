@@ -4,3 +4,4 @@ from .WarenhouseArrivalsTemplateView import WarenhouseArrivalsTemplateView
 from .ExpensesReportTemplateView import ExpensesReportTemplateView
 from .ActiveOrders import ActiveOrdersTemplateView
 from .CostAnalysisTemplateView import CostAnalysisTemplateView
+from .CurrentNationalizationTV import CurrentNationalizationTV

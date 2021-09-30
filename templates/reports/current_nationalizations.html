@@ -1,0 +1,102 @@
+{% extends 'base/base.html' %}
+{% block header %}
+<!--cARGAMOS LIBRERIAS ADICIONALES PARA MOSTRAR LA TABLA-->
+<link rel="stylesheet" href="{{ static('css/jquery.dataTables.min.css') }}">
+<script src="{{ static('js/jquery.dataTables.min.js') }}"></script>
+{% endblock %}
+{% block title_content %}
+    <div class="row border">
+   <div class="col-8">
+      <i class="fa fa-list"></i>
+      Reporte de productos en Nacionalización {% if data.data %}  {{ data.data.__len__() }} {% endif %}
+   </div>
+   <div class="col-4 text-right">SGI <small>[Sistema Gestón de Importaciones] Reportes</small></div>
+</div>
+{% endblock title_content %}
+{% block content %}
+<div class="container-fluid">
+    <br>
+    <div class="row">
+        <div class="col-4">
+            <form class="form-inline" method="get">
+                <div class="form-check mb-2 mr-sm-2">
+                    <input class="form-check-input" type="checkbox" id="inlineFormCheck" name="ignore_liquidated" {% if request.GET.ignore_liquidated  == 'on'%} checked {%endif%} >
+                    <label class="form-check-label" for="inlineFormCheck">
+                        <strong>
+                            Mostrar producto con costeo realizado
+                        </strong> 
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-outline-primary btn-sm"> <i class="fas fa-sync"></i> Actualizar</button>
+            </form>
+        </div>
+        <div class="col-4 text-center text-secondary"> <h6>REPORTE DE PRODUCTOS EN PROCESO DE NACIOALIZACION</h6></div>
+        <div class="col-4 text-right"></div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-condensed table-bordered table-hover" id="ReproteActivos">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Pedido</th>
+                        <th>Proveedor</th>
+                        <th>IDP</th>
+                        <th>Trámite</th>
+                        <th>Producto</th>
+                        <th>C ML</th>
+                        <th>Cajas</th>
+                        <th>UXC</th>
+                        <th>Unidades</th>
+                        <th>Nro DAI</th>
+                        <th>Liquidación</th>
+                        <th>Fecha Liq</th>
+                        <th>Etiquetas</th>
+                        <th>Pegado E</th>
+                        <th>Aforo</th>
+                        <th>Salida Aut</th>
+                        <th>Llegada B</th>
+                        <th>Liquidado</th>
+                        <th>Cerrado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {%for item in data.report%} 
+                <tr>
+                    <td>{{ loop.index +1 }}</td>
+                    <td>{{item.nro_pedido }}</td>
+                    <td>{{item.nombre }}</td>
+                    <td>{{item.id_parcial}}</td>
+                    <td>{{item.origen}}</td>
+                    <td>{{item.product }}</td>
+                    <td>{{item.capacidad_ml}}</td>
+                    <td>{{item.nro_cajas}}</td>
+                    <td>{{item.cantidad_x_caja}}</td>
+                    <td>{{item.unidades}}</td>
+                    <td>{{item.nro_refrendo}}</td>
+                    <td>{{item.nro_liquidacion}}</td>
+                    <td>{{item.fecha_liquidacion}}</td>
+                    <td>{{item.fecha_entrega_etiquetas_senae}}</td>
+                    <td>{{item.fecha_pegado_etiquetas}}</td>
+                    <td>{{item.fecha_aforo}}</td>
+                    <td>{{item.fecha_salida_autorizada}}</td>
+                    <td>{{item.fecha_llegada_cliente}}</td>
+                    <td>
+                        
+                    </td>
+                    <td>{{item.bg_isclosed}}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% block footer %}
+<script>
+    $(document).ready( function () {
+    $('#ReproteActivos').dataTable();
+} );
+</script>
+{% endblock %}
+{% endblock content %}
