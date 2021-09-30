@@ -24,7 +24,7 @@ DATOS_EMPRESAS = {
         'url_app_importaciones': 'http://179.49.60.158:8888/cordovez/',
         'url_bottle_sap': 'http://192.168.0.198:8000/cordovez/',
         'admin_title': 'TEST',
-        'database': 'test_cordovezApp',
+        'database': 't_imnacApp',
         'db_host': 'localhost',
         'db_port': '3306',
         'db_user': 'root',
@@ -109,7 +109,6 @@ DATOS_EMPRESAS = {
 CMT_DEBUG = True
 NAME_ENTERPRISE = BASE_DIR.split('/')[-1]
 ENTERPRISE_CONF = 'test' if NAME_ENTERPRISE == 'sgi' else NAME_ENTERPRISE
-
 EMPRESA = DATOS_EMPRESAS[ENTERPRISE_CONF]
 
 if EMPRESA['empresa'] != 'test':

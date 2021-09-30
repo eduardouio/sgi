@@ -119,17 +119,20 @@ class IceSriXml(object):
             arr = {
                 'cod_ice': row[0],
                 'ventas': [{'id': x, 'cant': y}
-                        for x, y in zip(self.sales['headers'][1:], row[1:])],
-                'devoluciones': self.__get_devs(row[0])
+                           for x, y in zip(['0992716428001', '0992870230001', '1792049598001', '1792288916001'], row[1:])],
+                'devoluciones': 0
             }
+
             xml_report['ventas'].append(arr)
 
+        
+        import ipdb;ipdb.set_trace()
         xml_report['importaciones'] = self.__get_imports()
 
         final_report = []
         for vta in xml_report['ventas']:
             if vta['ventas']:
-                for line in vta['ventas']:
+                for line in xml_report['ventventas']:
                     final_report.append({
                         'codProdICE': vta['cod_ice'],
                         'gramoAzucar': '0.00',

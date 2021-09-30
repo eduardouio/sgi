@@ -51,7 +51,7 @@ class Order(models.Model):
         blank=True,
         null=True,
         default=None
-        )
+    )
     volumen_carga_cbm = models.PositiveIntegerField(
         blank=True,
         null=True,
@@ -84,6 +84,7 @@ class Order(models.Model):
     fecha_pegado_etiquetas = models.DateField(blank=True, null=True)
     fecha_aforo = models.DateField(blank=True, null=True)
     fecha_envio_de_documentos = models.DateField(blank=True, null=True)
+    fecha_aprovacion_compra = models.DateField(blank=True, null=True)
     fecha_llegada_documentos = models.DateField(blank=True, null=True)
     fecha_aprovacion_dai = models.DateField(blank=True, null=True)
     fecha_emision_bl = models.DateField(blank=True, null=True)
@@ -306,6 +307,48 @@ class Order(models.Model):
     url_liquidacion_1 = models.CharField(max_length=600, blank=True, null=True)
     url_liquidacion_2 = models.CharField(max_length=600, blank=True, null=True)
     url_liquidacion_3 = models.CharField(max_length=600, blank=True, null=True)
+    # Indica el tipo de aforo asignado por la SENAE
+    TYPE_INSPECTION = (
+        ('AUTOMATICO', 'AUTOMATICO'),
+        ('DOCUMENTAL', 'DOCUMENTAL'),
+        ('FISICO', 'FISICO'),
+    )
+    tipo_aforo = models.CharField(
+        max_length=50,
+        choices=TYPE_INSPECTION,
+        blank=True,
+        null=True
+    )
+    # Estado en Aduana
+    TYPE_STATUS_SENAE = (
+        ('PENDIENTE', 'PENDIENTE'),
+        ('EN PROCESO SENAE', 'EN PROCESO SENAE'),
+        ('OBSERVADO', 'OBSERVADO'),
+        ('SALIDA AUTORIZADA', 'SALIDA AUTORIZADA')
+    )
+    estado_senae = models.CharField(
+        max_length=50,
+        choices=TYPE_STATUS_SENAE,
+        blank=True,
+        null=True,
+        default='PENDIENTE'
+    )
+    # Estado Embarque
+    TYPE_STATUS_SHIPMENT = (
+        ('RESERVA PENDIENTE', 'RESERVA PENDIENTE'),
+        ('RESERA CONFIRMADA', 'RESERA CONFIRMADA'),
+        ('EMBARCADO', 'EMBARCADO'),
+        ('LLEGADO', 'LLEGADO'),
+    )
+    estado_embarque = models.CharField(
+        max_length=70,
+        choices=TYPE_STATUS_SHIPMENT,
+        blank=True,
+        null=True,
+        default='RESERVA PENDIENTE'
+    )
+    # proforma proveedor de producto
+    nro_proforma = models.CharField(max_length=25, blank=True, null=True)
     path_liquidacion_1 = models.FileField(
         upload_to='liquidaciones/',
         max_length=600,
@@ -333,7 +376,7 @@ class Order(models.Model):
         blank=True,
         null=True
     )
-    naviera = models.CharField(max_length=70, blank=True, null=True)
+    embarcador = models.CharField(max_length=70, blank=True, null=True)
     agente_aduana = models.CharField(max_length=100, blank=True, null=True)
     ruc_agente_aduana = models.CharField(max_length=13, blank=True, null=True)
     punto_lledada = models.CharField(max_length=60, blank=True, null=True)
@@ -361,7 +404,8 @@ class Order(models.Model):
     bg_is_tracked = models.BooleanField(default=1, blank=True, null=True)
     # indica si el pedido esta definitivamente cerrado para otpimizar
     # la depuracion de pedidos activos
-    bg_is_closed_checked = models.BooleanField(default=0, blank=True, null=True)
+    bg_is_closed_checked = models.BooleanField(
+        default=0, blank=True, null=True)
     id_user = models.SmallIntegerField(default=0)
     date_create = models.DateTimeField(
         blank=True,
@@ -449,39 +493,39 @@ class Order(models.Model):
             'total_pagado': 0,
             'total_pagado_sin_iva': 0,
             'total_provisionado': 0,
-            }
+        }
 
         order = self.get_by_order(nro_order)
 
         if order is None or order.regimen == '70' or order.bg_isliquidated == 0 or order.bg_isliquidated is None:
             loggin(
-            'w',
-            ('No se obtener los tributos del pedido {nro_order} pedido '
-             'inexistente o regimen = 70'.format(
-                nro_order=nro_order
-            )))
+                'w',
+                ('No se obtener los tributos del pedido {nro_order} pedido '
+                 'inexistente o regimen = 70'.format(
+                     nro_order=nro_order
+                 )))
             return taxes
 
         return {
-            'total_pagado' : (
-                      order.arancel_advalorem_pagar_pagado
-                    + order.arancel_especifico_pagar_pagado
-                    + order.fodinfa_pagado
-                    + order.ice_advalorem_pagado
-                    + order.ice_especifico_pagado
+            'total_pagado': (
+                order.arancel_advalorem_pagar_pagado
+                + order.arancel_especifico_pagar_pagado
+                + order.fodinfa_pagado
+                + order.ice_advalorem_pagado
+                + order.ice_especifico_pagado
             ),
-            'total_pagado_sin_iva' : (
-                    order.arancel_advalorem_pagar_pagado
-                    + order.arancel_especifico_pagar_pagado
-                    + order.fodinfa_pagado
-                    + order.ice_advalorem_pagado
-                    + order.ice_especifico_pagado
+            'total_pagado_sin_iva': (
+                order.arancel_advalorem_pagar_pagado
+                + order.arancel_especifico_pagar_pagado
+                + order.fodinfa_pagado
+                + order.ice_advalorem_pagado
+                + order.ice_especifico_pagado
             ),
-            'total_provisionado' : (
-                    order.arancel_advalorem_pagar_pagado
-                    + order.arancel_especifico_pagar_pagado
-                    + order.fodinfa_pagado
-                    + order.ice_advalorem_pagado
-                    + order.ice_especifico_pagado
+            'total_provisionado': (
+                order.arancel_advalorem_pagar_pagado
+                + order.arancel_especifico_pagar_pagado
+                + order.fodinfa_pagado
+                + order.ice_advalorem_pagado
+                + order.ice_especifico_pagado
             )
         }

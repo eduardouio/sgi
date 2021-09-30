@@ -15,6 +15,7 @@ class ICEAnexoReportTemplateView(LoginRequiredMixin, TemplateView):
         anexo = AnexoICE(year, month).get()
 
         context['data'] = {
+            'empresa': 'AGENCIAS CORDOVEZ',
             'title_page': 'Anexo ICE {} {}'.format(year, month),
             'anexo': anexo,
             'year': year,
