@@ -108,7 +108,7 @@ class Migration(migrations.Migration):
                 ('tipo_aforo', models.CharField(blank=True, choices=[('AUTOMATICO', 'AUTOMATICO'), ('DOCUMENTAL', 'DOCUMENTAL'), ('FISICO', 'FISICO')], max_length=50, null=True)),
                 ('estado_senae', models.CharField(blank=True, choices=[('PENDIENTE', 'PENDIENTE'), ('EN PROCESO SENAE', 'EN PROCESO SENAE'), ('OBSERVADO', 'OBSERVADO'), ('SALIDA AUTORIZADA', 'SALIDA AUTORIZADA')], default='PENDIENTE', max_length=50, null=True)),
                 ('estado_embarque', models.CharField(blank=True, choices=[('RESERVA PENDIENTE', 'RESERVA PENDIENTE'), ('RESERA CONFIRMADA', 'RESERA CONFIRMADA'), ('EMBARCADO', 'EMBARCADO'), ('LLEGADO', 'LLEGADO')], default='RESERVA PENDIENTE', max_length=70, null=True)),
-                ('nro_proforma', models.CharField(max_length=25)),
+                ('nro_proforma', models.CharField(max_length=25, null=True, default=None)),
                 ('path_liquidacion_1', models.FileField(blank=True, max_length=600, null=True, upload_to='liquidaciones/')),
                 ('path_liquidacion_2', models.FileField(blank=True, max_length=600, null=True, upload_to='liquidaciones/')),
                 ('path_liquidacion_3', models.FileField(blank=True, max_length=600, null=True, upload_to='liquidaciones/')),

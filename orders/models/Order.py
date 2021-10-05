@@ -348,7 +348,7 @@ class Order(models.Model):
         default='RESERVA PENDIENTE'
     )
     # proforma proveedor de producto
-    nro_proforma = models.CharField(max_length=25, blank=True, null=True)
+    nro_proforma = models.CharField(max_length=25, blank=True, null=True, default=0)
     path_liquidacion_1 = models.FileField(
         upload_to='liquidaciones/',
         max_length=600,
