@@ -13,11 +13,11 @@ class OrderCreateView(CreateView, LoginRequiredMixin):
     model = Order
     form_class = OrderFormModel
     success_url = '/pedidos/ver/{}/?created=true'
-    template_name = "pedidos/form-pedido.html"
+    template_name = "orders/form-pedido.html"
 
-    def get_context_data(self, request, *args, **kwargs):
+    def get_context_data(self, **kwargs):
         loggin('i', 'Mostramos formulatio para la creacion de un pedido')
-        context = super().get_context_data(**kwargs)
+        context = super().get_context_data( **kwargs)
         context['data'] = {
             'title_page': 'Nuevo Pedido',
             'new_id': Order.get_new_id_order(),
