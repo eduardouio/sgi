@@ -10,8 +10,22 @@
 {% endblock  %}
 {% block content %}
 <div class="container">
+    {% if data.current_status == 'load' %}
     <div class="row">
-        <div class="col-12">
+    <div class="col">
+    <a href="{{request.enterprise.url_bottle_sap}}{{data.year}}/" target="_blank" class="btn btn-sm btn-outline-info">Listar Pedidos {{ data.year}}</a>
+    <hr/>
+    <form method="POST">
+   {{ csrf_input }}
+    <textarea id="pedidos-sap" class="form-control" rows="15" name="pedidos"></textarea>
+    <br/>
+    <button class="btn btn-primary btn-lg"> <i class="fas fa-cogs"></i> Evaluar Datos</button>
+    </form>
+    </div>
+    </div>
+    {% else %}
+        <div class="row">
+        <div class="col">
             {% if data.imported  %}
             <table class="table table-bordered table-striped">
                 <thead>
@@ -40,9 +54,10 @@
                 </tbody>
             </table>
         {% else %}
-        <h1 class="text-info">No hay pedidos para importar </h1>
+         <h1 class="text-info">No hay pedidos para importar </h1>
         {% endif %}
         </div>
     </div>
+    {% endif %}
 </div>
 {% endblock  %}

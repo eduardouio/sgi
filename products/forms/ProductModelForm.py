@@ -7,7 +7,7 @@ class ProductFormModel(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ProductFormModel, self).__init__(*args, **kwargs)
 
-        for fied_name, field, in self.fields.items():
+        for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control form-control-sm'
 
     class Meta:

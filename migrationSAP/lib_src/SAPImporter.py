@@ -5,10 +5,7 @@ SAP importa de forma automatica los pedido que no estan en el sistema
 import json
 from decimal import Decimal
 from random import randint
-from urllib.error import HTTPError
-from urllib.request import urlopen
 
-from django.conf import settings
 from django.db import DataError, IntegrityError
 from logs.app_log import loggin
 from orders.models import Order, OrderInvoice, OrderInvoiceDetail
@@ -18,22 +15,8 @@ from suppliers.models import Supplier
 
 class SAPImporter(object):
 
-    def __init__(self):
-        self.url_api = settings.EMPRESA['url_bottle_sap']
-
-    def check_orders(self, year):
-        loggin('i', 'Realizando peticion {}{}/'.format(self.url_api, year))
-        try:
-            response = urlopen(self.url_api + '{}/'.format(year))
-        except HTTPError as e:
-            loggin('e', 'La peticion fallo {}'.format(e))
-            response = False
-
-        if not response:
-            loggin('e', 'La peticion no retorno ningun dato')
-            return []
-
-        data = json.load(response)
+    def check_orders(self, data):
+        data = json.loads(data)
 
         if not data['data']:
             return []
@@ -55,7 +38,7 @@ class SAPImporter(object):
             order_sgi = Order.get_by_order(
                 order['nro_pedido'].replace('/', '-')
             )
-            if not order_sgi:
+            if order_sgi is None:
                 origen = order['ciudad_origen']
                 origin_country = ''
                 origin_city = ''
@@ -76,6 +59,7 @@ class SAPImporter(object):
                     incoterm=order['incoterm'].upper(),
                     pais_origen=origin_country,
                     ciudad_origen=origin_city,
+                    nro_proforma='',
                     comentarios=order['observaciones'],
                     observaciones=order['observaciones'],
                     id_user=1
@@ -98,6 +82,7 @@ class SAPImporter(object):
                     })
 
                 except IntegrityError as e:
+                    print("Informacion Incompleta {}".format(order_sgi.nro_pedido))
                     loggin('e', 'informacion incompleta {}'.format(e))
 
                 except DataError as e:

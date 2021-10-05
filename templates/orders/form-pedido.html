@@ -1,0 +1,39 @@
+{% extends 'base/base.html' %}
+    {% block title_content %}
+    <div class="row border">
+   <div class="col-8">
+      <i class="fa fa-list"></i>
+      {% if object %}
+        Editar Pedido  <strong> {{ object.nro_pedido }} </strong>
+        {% else %}
+        Formulario de registro de pedido
+        {% endif %}
+   </div>
+   <div class="col-4 text-right">SGI <small>[Sistema Gestón de Importaciones] | Módulo Productos</small></div>
+</div>
+{% endblock title_content %}
+{% block content %}
+<br>
+<div class="container bordered">
+    <br>
+    {{ form.errors }}
+    <form method="post" enctype="multipart/form-data">
+        {% if data.new_id %}
+        <input type="hidden" name="id_producto" id="id_id_producto" value="{{ data.new_id }}">
+            {%else%}
+            {{ form.id_producto }}
+        {%endif%}
+        {{ csrf_input }}
+       
+        <div class="row text-right">
+            <div class="col-12">
+                {% if object %}
+                <a href="/productos/ver/{{ object.cod_contable }}/" class="btn btn-outline-primary"> <i class="fas fa-ban"></i> Cancelar</a>
+                {% endif %}
+                <button  class="btn btn-outline-primary"> <i class="fas fa-save"></i> Guardar</button>
+            </div>
+        </div>
+    </form>
+    <br>
+</div>
+{% endblock %}
