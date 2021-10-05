@@ -125,14 +125,13 @@ class IceSriXml(object):
 
             xml_report['ventas'].append(arr)
 
-        
-        import ipdb;ipdb.set_trace()
         xml_report['importaciones'] = self.__get_imports()
 
         final_report = []
         for vta in xml_report['ventas']:
+            print(vta)
             if vta['ventas']:
-                for line in xml_report['ventventas']:
+                for line in xml_report['ventas']:
                     final_report.append({
                         'codProdICE': vta['cod_ice'],
                         'gramoAzucar': '0.00',
@@ -212,7 +211,6 @@ class IceSriXml(object):
                 'paisICE': row[0][29:32],
                 'impCantICE': row[3]
             }
-
             cods = [i['impCodProdICE'] for i in importations]
             # es un codigo ice duplicado, verificamos si es de la misma dai
             if item['impCodProdICE'] in cods:
