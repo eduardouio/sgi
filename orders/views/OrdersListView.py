@@ -1,20 +1,21 @@
-#django
+# django
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
-#sgi
+# sgi
 from lib_src.sgi_utlils import get_host, run_query
 from orders.models import Order
 from partials.models import Partial
 from logs.app_log import loggin
 
-#/pedidos/listar/
+
+# /pedidos/listar/
 class OrdersListView(LoginRequiredMixin, TemplateView):
     template_name = 'orders/lista_pedidos.html'
 
     def get(self, request, *args, **kwargs):
         loggin('i', 'Mostrando pedidos por liquidar')
-        
+
         orders_list = None
         search = False
 
@@ -25,17 +26,16 @@ class OrdersListView(LoginRequiredMixin, TemplateView):
             orders_list = self.get_orders_list()
 
         context = self.get_context_data(**kwargs)
-        context['data']  = {
-            'search' : search,
-            'title_page' : 'Pedidos por liquidar',
-            'request' : request,
-            'host' : get_host(request),
-            'orders_list' : orders_list,
+        context['data'] = {
+            'search': search,
+            'title_page': 'Pedidos por liquidar',
+            'request': request,
+            'host': get_host(request),
+            'orders_list': orders_list,
         }
 
         return self.render_to_response(context)
-    
-    
+
     def get_orders_list(self):
         """Obtiene la lista de pedidos llegados a Almagro
         los pendientes de llegada del puerto
@@ -66,7 +66,6 @@ class OrdersListView(LoginRequiredMixin, TemplateView):
         for item in results_almagro:
             item['partial'] = Partial.objects.get(pk=item['id_parcial'])
         return (results + results_almagro)
-        
 
     def search_order(self, query):
         query = query.replace('/','-')
