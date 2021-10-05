@@ -529,3 +529,14 @@ class Order(models.Model):
                 + order.ice_especifico_pagado
             )
         }
+
+    @classmethod
+    def get_new_id_order(cls):
+        """Retorna el id autoincremental que le corresponde al nuevo registro_sanitario
+        esto por retrocompatibilidad con el sistema de importaciones de PHP
+        """
+        last_order = cls.objects.raw(
+            'SELECT * FROM pedido order by id_pedido desc limit 1'
+        )
+        for _ in last_order:
+            return _.id_pedido
