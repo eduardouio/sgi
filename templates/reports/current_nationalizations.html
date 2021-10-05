@@ -52,7 +52,6 @@
                         <th>Cajas</th>
                         <th>Unds</th>
                         <th>Nro DAI</th>
-                        <th>Liquidación</th>
                         <th>Fecha Liq</th>
                         <th>Etiquetas</th>
                         <th>Pegado</th>
@@ -66,7 +65,11 @@
                 <tbody>
                 {%for item in data.report%} 
                 <tr>
-                    <td>{{ loop.index }}</td>
+                    <td>
+                    <a href="#">
+                        <i class="fas fa-pen-square"></i> {{ loop.index }}
+                    </a>
+                    </td>
                     <td nowrap="">
                         {% if item.origen != 'CONSUMO' %}
                             <a class="text-dark" target="_blank" href="{{ request.enterprise.url_app_importaciones}}index.php/gstnacionalizacion/parcial/{{item.id_parcial}}"> {{item.nro_pedido }} <small class="text-info">[{{item.id_parcial}}]</small></a>
@@ -88,7 +91,6 @@
                     <td class="text-right">{{item.nro_cajas | round(0) }} X {{ item.cantidad_x_caja | round(0) }}</td>
                     <td class="text-right">{{item.unidades | round(0) }}</td>
                     <td nowrap="" class="text-center">{{item.nro_refrendo}}</td>
-                    <td class="text-right">{{item.nro_liquidacion}}</td>
                     <td nowrap="" class="text-center">{% if item.fecha_liquidacion %}{{ item.fecha_liquidacion.strftime('%d/%m/%Y')}} {%else%} <i class="fas fa-ban"></i> {% endif %}</td>
                     <td nowrap="" class="text-center">{% if item.fecha_entrega_etiquetas_senae %}{{ item.fecha_entrega_etiquetas_senae.strftime('%d/%m/%Y')}} {%else%}<i class="fas fa-minus text-danger"></i>{% endif %}</td>
                     <td nowrap="" class="text-center">{% if item.fecha_pegado_etiquetas %}{{ item.fecha_pegado_etiquetas.strftime('%d/%m/%Y')}} {%else%}<i class="fas fa-minus text-danger"></i>{% endif %}</td>
