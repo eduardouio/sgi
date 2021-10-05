@@ -135,7 +135,7 @@ class Product(models.Model):
         """Retorna el id autoincremental que le corresponde al producto nuevo
         """
         las_product = cls.objects.raw(
-            'SELECT * FROM producto order by id_producto desc'
+            'SELECT * FROM producto order by id_producto desc limit 1'
         )
 
         for product in las_product:
