@@ -1,6 +1,9 @@
-from django.urls import path, include
-from orders.views import OrderSaleTemplateView, CompleteOrderTemplateView, OrdersListView
+from django.urls import include, path
+
+from orders.views import (CompleteOrderTemplateView, OrderSaleTemplateView,
+                          OrdersListView)
 from orders.views.OrderCreateView import OrderCreateView
+
 app_name = 'authentication'
 
 urlpatterns = [
