@@ -1,39 +1,304 @@
-{% extends 'base/base.html' %}
-    {% block title_content %}
-    <div class="row border">
-   <div class="col-8">
-      <i class="fa fa-list"></i>
-      {% if object %}
-        Editar Pedido  <strong> {{ object.nro_pedido }} </strong>
-        {% else %}
-        Formulario de registro de pedido
-        {% endif %}
-   </div>
-   <div class="col-4 text-right">SGI <small>[Sistema Gestón de Importaciones] | Módulo Productos</small></div>
+{% extends 'base/base.html' %} {% block title_content %}
+<div class="row border">
+  <div class="col-8">
+    <i class="fa fa-list"></i>
+    {% if object %} Editar Pedido <strong> {{ object.nro_pedido }} </strong>
+    {% else %} Formulario de registro de pedido {% endif %}
+  </div>
+  <div class="col-4 text-right">
+    SGI <small>[Sistema Gestón de Importaciones] | Módulo Pedidos</small>
+  </div>
 </div>
-{% endblock title_content %}
-{% block content %}
-<br>
-<div class="container bordered">
-    <br>
-    {{ form.errors }}
-    <form method="post" enctype="multipart/form-data">
-        {% if data.new_id %}
-        <input type="hidden" name="id_producto" id="id_id_producto" value="{{ data.new_id }}">
-            {%else%}
-            {{ form.id_producto }}
-        {%endif%}
-        {{ csrf_input }}
-       
-        <div class="row text-right">
-            <div class="col-12">
-                {% if object %}
-                <a href="/productos/ver/{{ object.cod_contable }}/" class="btn btn-outline-primary"> <i class="fas fa-ban"></i> Cancelar</a>
-                {% endif %}
-                <button  class="btn btn-outline-primary"> <i class="fas fa-save"></i> Guardar</button>
-            </div>
+{% endblock title_content %} {% block add_style%}
+<style type="text/css">
+  .card-header {
+    padding: 0.1rem 1rem;
+    margin-bottom: 0;
+    background-color: rgba(0, 0, 0, 0.03);
+    /* border-bottom: 1px solid rgba(0, 0, 0, 0.125); */
+  }
+  .col {
+    padding-right: 3px;
+    padding-left: 3px;
+  }
+</style>
+{% endblock add_style%} {% block content %}
+<div class="container">
+  <br />
+  <br />
+  {{ form.errors }}
+  <form method="post" enctype="multipart/form-data">
+    {% if data.new_id %}
+    <input
+      type="hidden"
+      name="id_pedido"
+      id="id_pedido"
+      value="{{ data.new_id }}"
+    />
+    {%else%} {{ form.id_pedido }} {%endif%} {{ csrf_input }}
+    <div class="accordion" id="accordionExample">
+      <div class="card">
+        <div class="card-header" id="headingOne">
+          <h2 class="mb-0">
+            <button
+              class="btn btn-link btn-block text-left text-secondary"
+              type="button"
+              data-toggle="collapse"
+              data-target="#infoBasica"
+              aria-expanded="true"
+              aria-controls="infoBasica"
+            >
+              <i class="fas fa-cubes"></i> INFORMACION BÁSICA
+            </button>
+          </h2>
         </div>
-    </form>
-    <br>
+        <div
+          id="infoBasica"
+          class="collapse show"
+          aria-labelledby="headingOne"
+          data-parent="#accordionExample"
+        >
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label for="nro_pedido">Nro Pedido</label>
+                  {{form.nro_pedido}}
+                </div>
+              </div>
+              <div class="col">
+                  <div class="form-group">
+                    <label for="regimen">Regimen</label>
+                    {{form.regimen}}
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="col">
+                  <div class="form-group">
+                    <label for="incoterm">Incoterm</label>
+                    {{form.incoterm}}
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="col">
+                  <div class="form-group">
+                    <label for="pais_origen">Pa. Origen</label>
+                    {{form.pais_origen}}
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="col">
+                  <div class="form-group">
+                    <label for="ciudad_origen">Prto Origen</label>
+                    {{form.ciudad_origen}}
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="col">
+                  <div class="form-group">
+                    <label for="puerto_destino">Prto Destino</label>
+                    {{form.puerto_destino}}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label for="flete_aduana">Flete Aduana</label>
+                  {{form.flete_aduana}}
+                </div>
+              </div>
+              <div class="col">
+                <div class="col">
+                  <div class="form-group">
+                    <label for="seguro_aduana">Seguro Aduana</label>
+                    {{form.seguro_aduana}}
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="col">
+                  <div class="form-group">
+                    <label for="nro_aplicacion">Aplicación Seg</label>
+                    {{form.nro_aplicacion}}
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="col">
+                  <div class="form-group">
+                    <label for="nro_refrendo">Nro Refrendo</label>
+                    {{form.nro_refrendo}}
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="col">
+                  <div class="form-group">
+                    <label for="nro_matricula">Matrícula</label>
+                    {{form.nro_matricula}}
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="col">
+                  <div class="form-group">
+                    <label for="nro_bl">Nro BL</label>
+                    {{form.nro_bl}}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              
+              <div class="col">
+                <div class="col">
+                  <div class="form-group">
+                    <label for="seguro_aduana">Seguro Aduana</label>
+                    {{form.seguro_aduana}}
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="col">
+                  <div class="form-group">
+                    <label for="nro_aplicacion">Aplicación Seg</label>
+                    {{form.nro_aplicacion}}
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="col">
+                  <div class="form-group">
+                    <label for="nro_refrendo">Nro Refrendo</label>
+                    {{form.nro_refrendo}}
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="col">
+                  <div class="form-group">
+                    <label for="nro_matricula">Matrícula</label>
+                    {{form.nro_matricula}}
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="col">
+                  <div class="form-group">
+                    <label for="nro_bl">Nro BL</label>
+                    {{form.nro_bl}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header" id="headingTwo">
+          <h2 class="mb-0">
+            <button
+              class="btn btn-link btn-block text-left text-secondary collapsed"
+              type="button"
+              data-toggle="collapse"
+              data-target="#collapseTwo"
+              aria-expanded="false"
+              aria-controls="collapseTwo"
+            >
+              <i class="fas fa-calendar"></i> FECHAS
+            </button>
+          </h2>
+        </div>
+        <div
+          id="collapseTwo"
+          class="collapse"
+          aria-labelledby="headingTwo"
+          data-parent="#accordionExample"
+        >
+          <div class="card-body">
+            Some placeholder content for the second accordion panel. This panel
+            is hidden by default.
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header" id="headingThree">
+          <h2 class="mb-0">
+            <button
+              class="btn btn-link btn-block text-left text-secondary collapsed"
+              type="button"
+              data-toggle="collapse"
+              data-target="#collapseThree"
+              aria-expanded="false"
+              aria-controls="collapseThree"
+            >
+              <i class="fas fa-info-circle"></i> INFORMACIÓN ADICIONAL
+            </button>
+          </h2>
+        </div>
+        <div
+          id="collapseThree"
+          class="collapse"
+          aria-labelledby="headingThree"
+          data-parent="#accordionExample"
+        >
+          <div class="card-body">
+            And lastly, the placeholder content for the third and final
+            accordion panel. This panel is hidden by default.
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header" id="headingThree">
+          <h2 class="mb-0">
+            <button
+              class="btn btn-link btn-block text-left text-secondary collapsed"
+              type="button"
+              data-toggle="collapse"
+              data-target="#collapseThree"
+              aria-expanded="false"
+              aria-controls="collapseThree"
+            >
+              <i class="fas fa-file-pdf"></i> ENLACES A ARCHIVOS Y DAIS
+            </button>
+          </h2>
+        </div>
+        <div
+          id="collapseThree"
+          class="collapse"
+          aria-labelledby="headingThree"
+          data-parent="#accordionExample"
+        >
+          <div class="card-body">
+            And lastly, the placeholder content for the third and final
+            accordion panel. This panel is hidden by default.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row text-right">
+      <div class="col-12">
+        {% if object %}
+        <a
+          href="/productos/ver/{{ object.cod_contable }}/"
+          class="btn btn-outline-primary"
+        >
+          <i class="fas fa-ban"></i> Cancelar</a
+        >
+        {% endif %}
+        <button class="btn btn-outline-primary">
+          <i class="fas fa-save"></i> Guardar
+        </button>
+      </div>
+    </div>
+  </form>
+  <br />
+  {% endblock %}
 </div>
-{% endblock %}

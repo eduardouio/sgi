@@ -3,6 +3,9 @@
 <!--CARGAMOS LIBRERIAS ADICIONALES PARA MOSTRAR LA TABLA-->
 <link rel="stylesheet" href="{{ static('css/jquery.dataTables.min.css') }}">
 <script src="{{ static('js/jquery.dataTables.min.js') }}"></script>
+<!-- CARGAMOS LIBRERIA DE VUEJS-->
+<script src="{{ static("js/vue.js") }}"></script>
+<script src="{{ static("js/vue-resource.js") }}"></script>
 {% endblock %}
 {% block title_content %}
     <div class="row border">
@@ -14,7 +17,7 @@
 </div>
 {% endblock title_content %}
 {% block content %}
-<div class="container-fluid">
+<div class="container-fluid" id="app_current_process">
     <br>
     <div class="row">
         <div class="col-4">
@@ -38,6 +41,14 @@
         <div class="col-4 text-right"></div>
     </div>
     <div class="row">
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col text-right"><strong class="text-info">Seleccione una Fecha:</strong></div>
+        <div class="col text-right">
+            <input type="date" class="form-control" id="date_update">
+        </div>
+    </div>
+    <div class="row">
         <div class="col-12">
         <div class="table-responsive">
             <table class="table table-condensed table-bordered table-hover" id="ReproteActivos">
@@ -46,18 +57,18 @@
                         <th>#</th>
                         <th>Pedido</th>
                         <th>Proveedor</th>
-                        <th>Reg</th>
                         <th>Producto</th>
-                        <th>ML</th>
-                        <th>Cajas</th>
-                        <th>Unds</th>
-                        <th>Nro DAI</th>
                         <th>Fecha Liq</th>
                         <th>Etiquetas</th>
                         <th>Pegado</th>
                         <th>Aforo</th>
                         <th>Salida Aut</th>
                         <th>Llegada</th>
+                        <th>ML</th>
+                        <th>Reg</th>
+                        <th>Cajas</th>
+                        <th>Unds</th>
+                        <th>Nro DAI</th>
                         <th>Días</th>
                         <th>Sts</th>
                     </tr>
@@ -66,8 +77,8 @@
                 {%for item in data.report%} 
                 <tr>
                     <td>
-                    <a href="#">
-                        <i class="fas fa-pen-square"></i> {{ loop.index }}
+                    <a href="{{ request.enterprise.url_app_importaciones }}index.php/pedido/presentar/{{item.nro_pedido}}/" target="_blank">
+                        <i class="fas fa-plus-square"></i> {{ loop.index }}
                     </a>
                     </td>
                     <td nowrap="">
@@ -75,10 +86,47 @@
                             <a class="text-dark" target="_blank" href="{{ request.enterprise.url_app_importaciones}}index.php/gstnacionalizacion/parcial/{{item.id_parcial}}"> {{item.nro_pedido }} <small class="text-info">[{{item.id_parcial}}]</small></a>
                         {% else %}
                             <a class="text-dark" target="_blank" href="{{ request.enterprise.url_app_importaciones}}index.php/pedido/presentar/{{item.nro_pedido}}"> {{item.nro_pedido }}</a>
-
                         {% endif %}
                     </td>
                     <td nowrap="">{{item.nombre }}</td>
+                    <td nowrap="">{{item.product }}</td>
+                    <td nowrap="" class="text-center">{% if item.fecha_liquidacion %}{{ item.fecha_liquidacion.strftime('%d/%m/%Y')}} {%else%} <i class="fas fa-ban"></i> {% endif %}</td>
+                    <td nowrap="" class="text-center" id="fecha_entrega_etiquetas_senae__{{ item.id }}">
+                        {% if item.fecha_entrega_etiquetas_senae %}
+                            {{ item.fecha_entrega_etiquetas_senae.strftime('%d/%m/%Y')}}
+                        {%else%}
+                            <input type="checkbox" @click="updateDateProcess('fecha_entrega_etiquetas_senae','{{ item.id }}','{{ item.nro_pedido }}')" id="fecha_entrega_etiquetas_senae_{{ item.id }}">
+                        {% endif %}
+                    </td>
+                    <td nowrap="" class="text-center" id="fecha_pegado_etiquetas__{{ item.id }}">
+                        {% if item.fecha_pegado_etiquetas %}
+                            {{ item.fecha_pegado_etiquetas.strftime('%d/%m/%Y')}}
+                        {%else%}
+                            <input type="checkbox" @click="updateDateProcess('fecha_pegado_etiquetas','{{ item.id }}','{{ item.nro_pedido }}')" id="fecha_pegado_etiquetas_{{ item.id }}">
+                        {% endif %}
+                    </td>
+                    <td nowrap="" class="text-center" id="fecha_aforo__{{ item.id }}">
+                        {% if item.fecha_aforo %}
+                            {{ item.fecha_aforo.strftime('%d/%m/%Y')}} 
+                        {%else%}
+                            <input type="checkbox" @click="updateDateProcess('fecha_aforo','{{ item.id }}','{{ item.nro_pedido }}')" id="fecha_aforo_{{ item.id }}">
+                        {% endif %}
+                    </td>
+                    <td nowrap="" class="text-center" id="fecha_salida_autorizada__{{ item.id }}">
+                        {% if item.fecha_salida_autorizada %}
+                            {{ item.fecha_salida_autorizada.strftime('%d/%m/%Y')}} 
+                        {%else%}
+                            <input type="checkbox" @click="updateDateProcess('fecha_salida_autorizada','{{ item.id }}','{{ item.nro_pedido }}')" id="fecha_salida_autorizada_{{ item.id }}">
+                        {% endif %}
+                    </td>
+                    <td nowrap="" class="text-center" id="fecha_llegada_cliente__{{ item.id }}">
+                        {% if item.fecha_llegada_cliente %}
+                            {{ item.fecha_llegada_cliente.strftime('%d/%m/%Y')}} 
+                        {%else%}
+                            --
+                        {% endif %}
+                    </td>
+                     <td class="text-center">{{item.capacidad_ml | round(0) }}</td>
                     <td class="text-center">
                         {% if item.origen  %}
                             {{item.origen}}
@@ -86,17 +134,9 @@
                             --
                         {% endif %}
                     </td>
-                    <td nowrap="">{{item.product }}</td>
-                    <td class="text-center">{{item.capacidad_ml | round(0) }}</td>
                     <td class="text-right">{{item.nro_cajas | round(0) }} X {{ item.cantidad_x_caja | round(0) }}</td>
                     <td class="text-right">{{item.unidades | round(0) }}</td>
                     <td nowrap="" class="text-center">{{item.nro_refrendo}}</td>
-                    <td nowrap="" class="text-center">{% if item.fecha_liquidacion %}{{ item.fecha_liquidacion.strftime('%d/%m/%Y')}} {%else%} <i class="fas fa-ban"></i> {% endif %}</td>
-                    <td nowrap="" class="text-center">{% if item.fecha_entrega_etiquetas_senae %}{{ item.fecha_entrega_etiquetas_senae.strftime('%d/%m/%Y')}} {%else%}<i class="fas fa-minus text-danger"></i>{% endif %}</td>
-                    <td nowrap="" class="text-center">{% if item.fecha_pegado_etiquetas %}{{ item.fecha_pegado_etiquetas.strftime('%d/%m/%Y')}} {%else%}<i class="fas fa-minus text-danger"></i>{% endif %}</td>
-                    <td nowrap="" class="text-center">{% if item.fecha_aforo %}{{ item.fecha_aforo.strftime('%d/%m/%Y')}} {%else%}<i class="fas fa-minus text-danger"></i>{% endif %}</td>
-                    <td nowrap="" class="text-center">{% if item.fecha_salida_autorizada %}{{ item.fecha_salida_autorizada.strftime('%d/%m/%Y')}} {%else%}<i class="fas fa-minus text-danger"></i>{% endif %}</td>
-                    <td nowrap="" class="text-center">{% if item.fecha_llegada_cliente %}{{ item.fecha_llegada_cliente.strftime('%d/%m/%Y')}} {%else%}<i class="fas fa-minus text-danger"></i>{% endif %}</td>
                     <td class="text-center">
                     {% if item.bg_isclosed %}
                         {% if item.fecha_llegada_cliente %}
@@ -124,4 +164,8 @@
 } );
 </script>
 {% endblock %}
+
 {% endblock content %}
+{% block script%}
+   {% include 'js/app_current_process.js' %}
+{% endblock script%}
