@@ -41,16 +41,23 @@ var app = new Vue({
 
         let url = "{{request.enterprise.url_app }}api/order/update/" + id +'/';
         let name_column = 'nro_pedido';
+        let salida_autprizada = "fecha_salida_autorizada_puerto";
 
         if(id.search('-') === -1){
             url = "{{request.enterprise.url_app }}api/partial/update/" + id +'/';
             name_column = 'id_parcial';
+            salida_autprizada = "fecha_salida_autorizada_almagro";
         }
 
         let data = {};
         data[name_column] = id;
-        data[column] = date;
         data['nro_pedido'] = nro_order;
+        
+        if (column === 'fecha_salida_autorizada'){
+          data[salida_autprizada] = date + ' 00:00:00';
+        }else{
+          data[column] = date;
+        }
 
 
         this.$http.put(url,
