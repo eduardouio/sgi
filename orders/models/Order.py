@@ -28,15 +28,19 @@ INCOTERM = (
     ('FCA','FCA'),
     ('CPT','CPT'),
     ('EXW','EXW'),
+    ('CFR','CFR'),
 )
 
 
 class Order(models.Model):
     nro_pedido = models.CharField(primary_key=True, max_length=6)
     regimen = models.CharField(max_length=2, choices=TYPE_REG, default='00')
-    flete_aduana = models.DecimalField(max_digits=10, decimal_places=4)
-    seguro_aduana = models.DecimalField(max_digits=10, decimal_places=4)
-    incoterm = models.CharField(max_length=4, choices=INCOTERM)
+    flete_aduana = models.DecimalField(
+        max_digits=10, decimal_places=4, blank=True, null=True)
+    seguro_aduana = models.DecimalField(
+        max_digits=10, decimal_places=4, blank=True, null=True)
+    incoterm = models.CharField(
+        max_length=4, choices=INCOTERM, blank=True, null=True)
     pais_origen = models.CharField(max_length=45, blank=True, null=True)
     ciudad_origen = models.CharField(max_length=45, blank=True, null=True)
     fecha_embarque = models.DateField(blank=True, null=True)
