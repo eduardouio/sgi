@@ -19,7 +19,7 @@
 {% block content %}
 <div class="container-fluid" id="app_current_process">
    <div class="row">
-      {% if request.GET.deep == 'on' %}
+      {% if data.is_filtered %}
       <div class="col text-center text-info">
          <h6>REPORTE DE PRODUCTOS EN PROCESO DE NACIONALIZACION <span class="text-primary">[HISTORICO]</span></h6>
       </div>
@@ -65,7 +65,13 @@
             </div>
          </form>
       </div>
-      <div class="col-1"></div>
+      <div class="col-1">
+      {% if data.is_filtered %}
+         <a href="/reportes/procesos-activos/" class="btn btn-outline-dark">
+            <i class="fas fa-eye text-center"></i> Ver Todo
+         </a>
+      {% endif %}
+      </div>
       <div class="col-2 bordered rounded">
          <div class="form-group">
             <label for="date_update">Seleccionar Fecha:</label>
@@ -95,18 +101,18 @@
                      <th>Unds</th>
                      <th>Nro DAI</th>
                      <th>Días</th>
-                     <th>Sts</th>
                   </tr>
                </thead>
                <tbody>
                   {%for item in data.report%} 
                   <tr>
-                     <td>
+                     <td class="text-center">
                         <a href="{{ request.enterprise.url_app_importaciones }}index.php/pedido/presentar/{{item.nro_pedido}}/" target="_blank">
-                        <i class="fas fa-plus-square"></i> {{ loop.index }}
+                        {{ loop.index }}
                         </a>
                      </td>
                      <td nowrap="">
+                     {% if item.bg_isclosed %}<i class="fas fa-lock text-dark"></i>{% else %}<i class="fas fa-lock-open text-primary"></i>{% endif %}
                         {% if item.origen != 'CONSUMO' %}
                         <a class="text-dark" target="_blank" href="{{ request.enterprise.url_app_importaciones}}index.php/gstnacionalizacion/parcial/{{item.id_parcial}}"> {{item.nro_pedido }} <small class="text-info">[{{item.id_parcial}}]</small></a>
                         {% else %}
@@ -173,7 +179,6 @@
                         {{ (data.today - item.fecha_liquidacion).days }}
                         {% endif %}
                      </td>
-                     <td class="text-center">{% if item.bg_isclosed %}<i class="fas fa-check text-success"></i>{% else %}<i class="fas fa-lock-open text-info"></i>{% endif %}</td>
                   </tr>
                   {% endfor %}
                </tbody>
