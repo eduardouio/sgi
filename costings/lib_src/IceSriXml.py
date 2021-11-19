@@ -1,35 +1,30 @@
 """
 Genera el anexo xml del ICe a partir de los valores de reportados desde excell
 """
-import re
 from django.conf import settings
-import ipdb
 from logs.app_log import loggin
 import xml.etree.ElementTree as ET
 import csv
 
 
 class IceSriXml(object):
-    
+
     def get_xml_report(self, base_report):
-        # TODO verificar que el reporte sea valido
         root = ET.Element('ice')
-        for k, v in self.xml_report['headers'].items():
+        for k, v in base_report['headers'].items():
             header = ET.SubElement(root, k)
             header.text = v
 
-        # cargamos las ventas en el reporte
         ventas = ET.SubElement(root, 'ventas')
-        for line in self.xml_report['ventas']:
+        for line in base_report['sales']:
             vta = ET.SubElement(ventas, 'vta')
             for k, v in line.items():
                 el = ET.SubElement(vta, k)
                 el.text = str(v)
 
-        # cargamos las importaciones
         importaciones = ET.SubElement(root, 'importaciones')
 
-        for line in self.xml_report['importaciones']:
+        for line in base_report['importations']:
             imp = ET.SubElement(importaciones, 'imp')
             for k, v in line.items():
                 el = ET.SubElement(imp, k)
@@ -61,7 +56,7 @@ class IceSriXml(object):
                 if venta > 0:
                     base_report['sales'].append({
                         'codProdICE': vta[0],
-                        'gramoAzucar': '0.00',
+                        'gramoAzucar': self.__get_suggar(vta[0]),
                         'tipoIdCliente': type_client,
                         'idCliente': head_sales[k][1:],
                         'tipoVentaICE': '1',
@@ -93,7 +88,7 @@ class IceSriXml(object):
                 if cant > 0:
                     base_report['sales'].append({
                         'codProdICE': dev[0],
-                        'gramoAzucar': '0.00',
+                        'gramoAzucar': self.__get_suggar(dev[0]),
                         'tipoIdCliente': type_client,
                         'idCliente': head_devs[k][1:],
                         'tipoVentaICE': '1',
@@ -129,17 +124,20 @@ class IceSriXml(object):
         imports = [_ if _ else 0 for _ in imports]
         report = []
 
-        for row in imports:
+        for i, row in enumerate(imports):
             ref_ice = '-'.join([row[-4], row[-3], row[-2], row[-1]])
             keys = [i['impCodProdICE'] for i in report]
 
+            is_added = True
             if row[2] in keys:
                 for itm in report:
                     if itm['impCodProdICE'] == row[2] and itm['refICE'] == ref_ice:
                         itm['impCantICE'] = str(
                             int(itm['impCantICE']) + int(row[6])
                         )
-            else:
+                        is_added = False
+
+            if is_added:
                 report.append({
                     'impCodProdICE': row[2],
                     'refICE': ref_ice,
@@ -167,3 +165,19 @@ class IceSriXml(object):
                 return False
 
         return True
+
+    def __get_suggar(self, cod_ice):
+        loggin('i', 'Se inicia la clase IceSriXml')
+        tonic_waters = [
+            ['3053-84-026707-013-000200-66-213-000144', '104.00'],
+            ['3053-84-026708-013-000200-66-213-000144', '83.40'],
+            ['3053-84-026709-013-000200-66-213-000144', '0.00'],
+            ['3053-84-026710-013-000200-66-213-000144', '90.00'],
+            ['3053-84-026795-013-000200-66-213-000144', '88.00']
+        ]
+
+        for itm in tonic_waters:
+            if itm[0] == cod_ice:
+                return itm[1]
+
+        return '0.00'

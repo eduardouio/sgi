@@ -1,6 +1,6 @@
 from django.test import TestCase
-import ipdb
 from costings.lib_src import IceSriXml
+from xml.etree import ElementTree as ET
 
 
 class TestIceSriXml(TestCase):
@@ -37,7 +37,7 @@ class TestIceSriXml(TestCase):
         )
 
     def test_imports(self):
-        spected_dafa = [
+        spected_data = [
             {
                 'impCodProdICE': '3031-53-036359-013-000750-66-209-000146',
                 'refICE': '055-2021-10-00078585',
@@ -86,7 +86,7 @@ class TestIceSriXml(TestCase):
         imports = file_data.read()
         cleaned_data = self.ice_sri_xml.clean_imports(imports)
 
-        for spected in spected_dafa:
+        for spected in spected_data:
             for returned in cleaned_data:
                 if spected['impCodProdICE'] == returned['impCodProdICE']:
                     if spected['refICE'] == returned['refICE']:
@@ -146,7 +146,7 @@ class TestIceSriXml(TestCase):
             },
             {
                 'codProdICE': '3053-84-026708-013-000200-66-213-000144',
-                'gramoAzucar': '0.00',
+                'gramoAzucar': '83.40',
                 'tipoIdCliente': 'R',
                 'idCliente': '1790016919001',
                 'tipoVentaICE': '1',
@@ -263,7 +263,5 @@ class TestIceSriXml(TestCase):
         report = self.ice_sri_xml.get_report(
             '2021', '11', sales, devs, imports
         )
-        
         xml_report = self.ice_sri_xml.get_xml_report(report)
-        
-        import ipdb; ipdb.set_trace()
+        self.assertTrue(xml_report)
