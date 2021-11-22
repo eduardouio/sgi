@@ -233,7 +233,7 @@ class TestIceSriXml(TestCase):
         devs = self.ice_sri_xml.clean_data(devs)
         imports = self.ice_sri_xml.clean_imports(imports)
         report = self.ice_sri_xml.get_report(
-            '2021', '11', sales, devs, imports
+            '2021', '09', sales, devs, imports
         )
 
         for spected in spected_sales:
@@ -261,7 +261,7 @@ class TestIceSriXml(TestCase):
         devs = self.ice_sri_xml.clean_data(devs)
         imports = self.ice_sri_xml.clean_imports(imports)
         report = self.ice_sri_xml.get_report(
-            '2021', '11', sales, devs, imports
+            '2021', '09', sales, devs, imports
         )
         xml_report = self.ice_sri_xml.get_xml_report(report)
         self.assertTrue(xml_report)
