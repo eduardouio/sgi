@@ -32,7 +32,7 @@ class ICEXmlFormView(LoginRequiredMixin, FormView):
             sales = my_report.clean_data(form.cleaned_data['sales'])
             devs = my_report.clean_data(form.cleaned_data['devs'])
             importations = my_report.clean_imports(form.cleaned_data['importations'])
-            import ipdb; ipdb.set_trace()
+                #import ipdb; ipdb.set_trace()
             report = my_report.get_report(
                 form.cleaned_data['year'],
                 form.cleaned_data['month'],
