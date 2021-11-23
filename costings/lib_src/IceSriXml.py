@@ -4,189 +4,27 @@ Genera el anexo xml del ICe a partir de los valores de reportados desde excell
 from django.conf import settings
 from logs.app_log import loggin
 import xml.etree.ElementTree as ET
+import csv
 
 
 class IceSriXml(object):
 
-    def __init__(self):
-        self.sales = None
-        self.returns = None
-        self.report = None
-        self.xml_report = None
-        self.importations = None
-        self.year = None
-        self.month = None
-        self.bg_error = False
-        self.message_erros = ''
-
-    def set_data(self, sales, returns, importations, year, month):
-        loggin('i', 'Llamada a generador reporte Sri')
-        if sales.__len__() == 0:
-            loggin("e", "No existen datos para trabajar en el reporte")
-            return None
-
-        if returns.__len__() == 0:
-            loggin("w", "El reporte se genera sin devoluciones")
-
-        sales = sales.split("\n")
-        sales = [s.split("\t") for s in sales]
-
-        returns = returns.split("\n")
-        returns = [r.split("\t") for r in returns]
-
-        importations = importations.split("\n")
-        self.importations = [i.split("\t") for i in importations]
-
-        self.year = year
-        self.month = month
-        self.sales = self.check_data(sales)
-        self.returns = self.check_data(returns)
-
-    def check_data(self, data):
-        """Comprueba los totales de la información con las sumas de cada
-        columna y fila de los arreglos
-
-        Args:
-            type (lisr): indica la categoria a la que se debe hacer referencia
-            sales o returns (devoluciones)
-        """
-        headers = data[0]
-        del(headers[-1])
-        total_result_x = [f.strip().replace(',', '') for f in data[-1]]
-        total_result_x = [int(f)
-                              for i, f in enumerate(total_result_x) if i > 0]
-        del(total_result_x[-1])
-        del(data[0])
-        del(data[-1])
-        total_result_y = [int(x[-1]) for x in data]
-
-        rows = []
-        cleaned_data = []
-        cols = [0 for r in range(data[0].__len__() - 2)]
-        for idx, row in enumerate(data):
-            cleaned_row = []
-            total_row = 0
-
-            for idy, col in enumerate(row):
-                if idy > 0:
-                    col = col.strip()
-                    col = 0 if col == '' else int(col)
-                    if idy < row.__len__() - 1:
-                        total_row += col
-                        cols[idy-1] += col
-
-                cleaned_row.append(col)
-
-            rows.append(total_row)
-            del(cleaned_row[-1])
-            cleaned_data.append(cleaned_row)
-
-        if total_result_x == cols and total_result_y == rows:
-            loggin('i', 'Informacion Validada Correctamente')
-            return {
-                'headers': headers,
-                'data': cleaned_data,
-                'rows': rows,
-                'cols': cols
-            }
-
-        loggin('e', 'Los datos no coinciden')
-        self.bg_error = True
-        self.message_erros = ('Los valores ingresados no coinciden favor '
-                'verificar el reporte, las sumas de las columnas o filas'
-                ' no corresponde'
-        )
-
-        return []
-
-    def gerate_report(self):
-        loggin('i', 'Comenzamos la construccion del reporte')
-        xml_report = {
-                'headers': {
-                    'TipoIDInformante': 'R',
-                    'IdInformante': settings.EMPRESA['ruc'],
-                    'razonSocial': settings.EMPRESA['nombre'],
-                    'Anio': self.year,
-                    'Mes': self.month,
-                    'actImport': '01',
-                    'codigoOperativo': 'ICE',
-                },
-                'ventas': [],
-                'importaciones': []
-        }
-
-        for row in self.sales['data']:
-            arr = {
-                'cod_ice': row[0],
-                'ventas': [{'id': x, 'cant': y}
-                           for x, y in zip(['0992716428001', '0992870230001', '1792049598001', '1792288916001'], row[1:])],
-                'devoluciones': 0
-            }
-
-            xml_report['ventas'].append(arr)
-
-        xml_report['importaciones'] = self.__get_imports()
-
-        final_report = []
-        for vta in xml_report['ventas']:
-            print(vta)
-            if vta['ventas']:
-                for line in xml_report['ventas']:
-                    final_report.append({
-                        'codProdICE': vta['cod_ice'],
-                        'gramoAzucar': '0.00',
-                        'tipoIdCliente': 'R' if len(line['id']) == 13 else 'C',
-                        'idCliente': line['id'],
-                        'tipoVentaICE': 1,
-                        'ventaICE': line['cant'],
-                        'devICE': self.__consolidate_devs(vta, line),
-                        'cantProdBajaICE': 0
-                    })
-            else:
-                for line in vta['devoluciones']:
-                    final_report.append({
-                        'codProdICE': vta['cod_ice'],
-                        'gramoAzucar': '0.00',
-                        'tipoIdCliente': 'R' if len(line['id']) == 13 else 'C',
-                        'idCliente': line['id'],
-                        'tipoVentaICE': 1,
-                        'ventaICE': 0,
-                        'devICE': line['cant'],
-                        'cantProdBajaICE': 0
-                    })
-
-        xml_report['ventas'] = final_report
-        self.xml_report = xml_report
-
-    def __consolidate_devs(self, ventas, line):
-        if ventas['devoluciones'] is None:
-            return 0
-
-        for item in ventas['devoluciones']:
-            if item['id'] == line['id']:
-                return item['cant']
-
-        return 0
-
-    def get_xml(self):
-        # cargamos la cabecera del report
+    def get_xml_report(self, base_report):
         root = ET.Element('ice')
-        for k, v in self.xml_report['headers'].items():
+        for k, v in base_report['headers'].items():
             header = ET.SubElement(root, k)
             header.text = v
 
-        # cargamos las ventas en el reporte
         ventas = ET.SubElement(root, 'ventas')
-        for line in self.xml_report['ventas']:
+        for line in base_report['sales']:
             vta = ET.SubElement(ventas, 'vta')
             for k, v in line.items():
                 el = ET.SubElement(vta, k)
                 el.text = str(v)
 
-        # cargamos las importaciones
         importaciones = ET.SubElement(root, 'importaciones')
 
-        for line in self.xml_report['importaciones']:
+        for line in base_report['importations']:
             imp = ET.SubElement(importaciones, 'imp')
             for k, v in line.items():
                 el = ET.SubElement(imp, k)
@@ -194,37 +32,152 @@ class IceSriXml(object):
 
         return ET.tostring(root).decode()
 
-    def __get_devs(self, cod_ice):
-        for row in self.returns['data']:
-            if row[0] == cod_ice:
-                return [{'id': x, 'cant': y}
-                        for x, y in zip(self.returns['headers'][1:], row[1:])
-                        ]
+    def get_report(self, year, month, sales, devs, imports):
+        loggin('i', 'Se inicia generacion del reporte')
+        base_report = {
+            'headers': {
+                'TipoIDInformante': 'R',
+                'IdInformante': settings.EMPRESA['ruc'],
+                'razonSocial': settings.EMPRESA['nombre'],
+                'Anio': year,
+                'Mes': month,
+                'actImport': '01',
+                'codigoOperativo': 'ICE',
+            },
+            'sales': [],
+            'importations': []
+        }
 
-    def __get_imports(self):
-        importations = []
-        for row in self.importations:
-            item = {
-                'impCodProdICE': row[0],
-                'refICE': '-'.join([row[-4], row[-3], row[-2], row[-1]]),
-                'impFDesadICE': row[1].replace('-', '/'),
-                'paisICE': row[0][29:32],
-                'impCantICE': row[3]
-            }
-            cods = [i['impCodProdICE'] for i in importations]
-            # es un codigo ice duplicado, verificamos si es de la misma dai
-            if item['impCodProdICE'] in cods:
-                for i in importations:
-                    old = i.copy()
-                    new = item.copy()
-                    del(old['impCantICE'])
-                    del(new['impCantICE'])
+        head_sales = sales[0]
+        for vta in sales[1:-1]:
+            for k, venta in enumerate(vta[1:-1], start=1):
+                type_client = 'R' if head_sales[k].__len__() == 14 else 'C'
 
-                    if old == new:
-                        i['impCantICE'] = str(
-                            int(i['impCantICE']) + int(item['impCantICE'])
+                if venta > 0:
+                    base_report['sales'].append({
+                        'codProdICE': vta[0],
+                        'gramoAzucar': self.__get_suggar(vta[0]),
+                        'tipoIdCliente': type_client,
+                        'idCliente': head_sales[k][1:],
+                        'tipoVentaICE': '1',
+                        'ventaICE': str(venta),
+                        'devICE': '0',
+                        'cantProdBajaICE': '0',
+                    })
+
+        head_devs = devs[0]
+        delete_keys = []
+        additionals_devs = []
+
+        for idx, dev in enumerate(devs[1:-1]):
+            for k, cant in enumerate(dev[1:-1], start=1):
+                type_client = 'R' if head_devs[k].__len__() == 14 else 'C'
+                if cant > 0:
+                    for sale in base_report['sales']:
+                        if sale['codProdICE'] == dev[0] and sale['idCliente'] == head_devs[k][1:]:
+                            sale['devICE'] = str(cant)
+                            delete_keys.append(idx)
+
+        for k, dev in enumerate(devs[1:-1]):
+            if k not in delete_keys:
+                additionals_devs.append(dev)
+
+        for dev in additionals_devs:
+            for k, cant in enumerate(dev[1:-1], start=1):
+                type_client = 'R' if head_devs[k].__len__() == 14 else 'C'
+                if cant > 0:
+                    base_report['sales'].append({
+                        'codProdICE': dev[0],
+                        'gramoAzucar': self.__get_suggar(dev[0]),
+                        'tipoIdCliente': type_client,
+                        'idCliente': head_devs[k][1:],
+                        'tipoVentaICE': '1',
+                        'ventaICE': '0',
+                        'devICE': str(cant),
+                        'cantProdBajaICE': '0',
+                    })
+
+        base_report['importations'] = imports
+        return base_report
+
+    def clean_data(self, data):
+        loggin('i', 'Se inicia limpieza de datos de ventas')
+        data = data.replace(',', '')
+        data = csv.reader(data.split('\n'), delimiter=';', dialect='excel')
+        data = [_ if _ else 0 for _ in data]
+        cleaned_data = []
+        for row in data:
+            cleaned_data.append(
+                [self.__get_number(itm.strip()) if bool(itm) else 0 
+                 for itm in row]
+            )
+
+        if self.__check_sums(cleaned_data):
+            return cleaned_data
+
+        return False
+
+    def clean_imports(self, imports):
+        loggin('i', 'Se inicia limpieza de datos de importaciones')
+        imports = imports.replace(',', '')
+        imports = csv.reader(imports.split('\n'), delimiter=';', dialect='excel')
+        imports = [_ if _ else 0 for _ in imports]
+        report = []
+
+        for i, row in enumerate(imports):
+            ref_ice = '-'.join([row[-4], row[-3], row[-2], row[-1]])
+            keys = [i['impCodProdICE'] for i in report]
+
+            is_added = True
+            if row[2] in keys:
+                for itm in report:
+                    if itm['impCodProdICE'] == row[2] and itm['refICE'] == ref_ice:
+                        itm['impCantICE'] = str(
+                            int(itm['impCantICE']) + int(row[6])
                         )
-            else:
-                importations.append(item)
+                        is_added = False
 
-        return importations
+            if is_added:
+                report.append({
+                    'impCodProdICE': row[2],
+                    'refICE': ref_ice,
+                    'impFDesadICE': row[3].replace('-', '/'),
+                    'paisICE': row[2][-10:-7],
+                    'impCantICE': row[6]
+                })
+
+        return report
+
+    def __get_number(self, number):
+        try:
+            return int(number)
+        except ValueError:
+            return number
+
+    def __check_sums(self, data):
+        rows_sums = [_[-1] for _ in data]
+
+        for key, row in enumerate(data[1:-1], start=1):
+
+            sum_row = sum([_ for _ in row[1:-1]])
+            if sum_row != rows_sums[key]:
+                loggin('e', 'Error en la suma de la fila {}'.format(key))
+                return False
+
+        return True
+
+    def __get_suggar(self, cod_ice):
+        loggin('i', 'Se inicia la clase IceSriXml')
+        tonic_waters = [
+            ['3053-84-026707-013-000200-66-213-000144', '104.00'],
+            ['3053-84-026708-013-000200-66-213-000144', '83.40'],
+            ['3053-84-026709-013-000200-66-213-000144', '0.00'],
+            ['3053-84-026710-013-000200-66-213-000144', '90.00'],
+            ['3053-84-026795-013-000200-66-213-000144', '88.00']
+        ]
+
+        for itm in tonic_waters:
+            if itm[0] == cod_ice:
+                return itm[1]
+
+        return '0.00'

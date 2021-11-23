@@ -8,7 +8,7 @@
 <script src="{{ static("js/vue-resource.js") }}"></script>
 {% endblock %}
 {% block title_content %}
-    <div class="row border">
+<div class="row border">
    <div class="col-8">
       <i class="fa fa-list"></i>
       Reporte de productos en Nacionalización {% if data.data %}  {{ data.data.__len__() }} {% endif %}
@@ -18,154 +18,183 @@
 {% endblock title_content %}
 {% block content %}
 <div class="container-fluid" id="app_current_process">
-    <br>
-    <div class="row">
-        <div class="col-4">
-            <form class="form-inline" method="get">
-                <div class="form-check mb-2 mr-sm-2">
-                    <input class="form-check-input" type="checkbox" id="inlineFormCheck" name="deep" {% if request.GET.deep  == 'on'%} checked {%endif%} >
-                    <label class="form-check-label" for="inlineFormCheck">
-                        <strong>
-                            Mostrar producto con costeo realizado
-                        </strong> 
-                    </label>
-                </div>
-                <button type="submit" class="btn btn-outline-primary btn-sm"> <i class="fas fa-sync"></i> Actualizar Reporte</button>
-            </form>
-        </div>
-        {% if request.GET.deep == 'on' %}
-        <div class="col-4 text-center text-info"> <h6>REPORTE DE PRODUCTOS EN PROCESO DE NACIONALIZACION <span class="text-primary">[HISTORICO]</span></h6></div>
-        {% else %}
-        <div class="col-4 text-center text-info"> <h6>REPORTE DE PRODUCTOS EN PROCESO DE NACIONALIZACION</h6></div>
-        {% endif %}
-        <div class="col-4 text-right"></div>
-    </div>
-    <div class="row">
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col text-right"><strong class="text-info">Seleccione una Fecha:</strong></div>
-        <div class="col text-right">
-            <input type="date" class="form-control" id="date_update">
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
-        <div class="table-responsive">
+   <div class="row">
+      {% if data.is_filtered %}
+      <div class="col text-center text-info">
+         <h6>REPORTE DE PRODUCTOS EN PROCESO DE NACIONALIZACION <span class="text-primary">[HISTORICO]</span></h6>
+      </div>
+      {% else %}
+      <div class="col text-center text-info">
+         <h6>REPORTE DE PRODUCTOS EN PROCESO DE NACIONALIZACION</h6>
+      </div>
+      {% endif %}
+   </div>
+   <div class="row">
+      <div class="col-9 bordered bg-light rounded">
+         <form method="get">
+            <div class="row">
+               <div class="col-3">
+                  <div class="form-group">
+                     <label for="start_date">Fecha Inicio <small class="text-info"> <strong>{{request.GET.start_date }}</strong></small></label>
+                     <input type="date" class="form-control form-control-sm" name="start_date" required value='{{request.GET.start_date}}'>
+                  </div>
+               </div>
+               <div class="col-3">
+                  <div class="form-group">
+                     <label for="end_date">Fecha Fin <small class="text-info"> <strong>{{request.GET.end_date }}</strong></small></label>
+                     <input type="date" class="form-control form-control-sm" name="end_date" required value='{{request.GET.end_date}}'>
+                  </div>
+               </div>
+               <div class="col-3">
+               <div class="form-group">
+                <label for="option">Seleccione <small class="text-info"> <strong>{{ data.params[request.GET.option] }}</strong></small> </label>
+                <select name="option" class="form-control form-control-sm">
+                  {% if request.GET.option %}
+                     <option selected value='{{request.GET.option}}' class="text-success bg-light">{{ data.params[request.GET.option] }}</option>
+                  {% endif %}
+                  {% for key in data.params %}
+                     <option value='{{ key }}'>{{data.params[key]}}</option>
+                  {% endfor %}
+                </select>
+               </div>
+               </div>
+               <div class="col-3 text-right">
+               <label><br/><br/></label>
+                <button class="btn btn-outline-dark btn-sm"> <i class="fas fa-table"></i> Generar Reporte</button>
+               </div>
+            </div>
+         </form>
+      </div>
+      <div class="col-1">
+      {% if data.is_filtered %}
+         <a href="/reportes/procesos-activos/" class="btn btn-outline-dark">
+            <i class="fas fa-eye text-center"></i> Ver Todo
+         </a>
+      {% endif %}
+      </div>
+      <div class="col-2 bordered rounded">
+         <div class="form-group">
+            <label for="date_update">Seleccionar Fecha:</label>
+            <input type="date" class="form-control form-control-sm" id="date_update" placeholder="Seleccione una Fecha">
+         </div>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-12">
+         <div class="table-responsive">
             <table class="table table-condensed table-bordered table-hover" id="ReproteActivos">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Pedido</th>
-                        <th>Proveedor</th>
-                        <th>Producto</th>
-                        <th>Fecha Liq</th>
-                        <th>Etiquetas</th>
-                        <th>Pegado</th>
-                        <th>Aforo</th>
-                        <th>Salida Aut</th>
-                        <th>Llegada</th>
-                        <th>ML</th>
-                        <th>Reg</th>
-                        <th>Cajas</th>
-                        <th>Unds</th>
-                        <th>Nro DAI</th>
-                        <th>Días</th>
-                        <th>Sts</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {%for item in data.report%} 
-                <tr>
-                    <td>
-                    <a href="{{ request.enterprise.url_app_importaciones }}index.php/pedido/presentar/{{item.nro_pedido}}/" target="_blank">
-                        <i class="fas fa-plus-square"></i> {{ loop.index }}
-                    </a>
-                    </td>
-                    <td nowrap="">
+               <thead>
+                  <tr>
+                     <th>#</th>
+                     <th>Pedido</th>
+                     <th>Proveedor</th>
+                     <th>Producto</th>
+                     <th>Fecha Liq</th>
+                     <th>Etiquetas</th>
+                     <th>Pegado</th>
+                     <th>Aforo</th>
+                     <th>Salida Aut</th>
+                     <th>Llegada</th>
+                     <th>ML</th>
+                     <th>Reg</th>
+                     <th>Cajas</th>
+                     <th>Unds</th>
+                     <th>Nro DAI</th>
+                     <th>Días</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  {%for item in data.report%} 
+                  <tr>
+                     <td class="text-center">
+                        <a href="{{ request.enterprise.url_app_importaciones }}index.php/pedido/presentar/{{item.nro_pedido}}/" target="_blank">
+                        {{ loop.index }}
+                        </a>
+                     </td>
+                     <td nowrap="">
+                     {% if item.bg_isclosed %}<i class="fas fa-lock text-dark"></i>{% else %}<i class="fas fa-lock-open text-primary"></i>{% endif %}
                         {% if item.origen != 'CONSUMO' %}
-                            <a class="text-dark" target="_blank" href="{{ request.enterprise.url_app_importaciones}}index.php/gstnacionalizacion/parcial/{{item.id_parcial}}"> {{item.nro_pedido }} <small class="text-info">[{{item.id_parcial}}]</small></a>
+                        <a class="text-dark" target="_blank" href="{{ request.enterprise.url_app_importaciones}}index.php/gstnacionalizacion/parcial/{{item.id_parcial}}"> {{item.nro_pedido }} <small class="text-info">[{{item.id_parcial}}]</small></a>
                         {% else %}
-                            <a class="text-dark" target="_blank" href="{{ request.enterprise.url_app_importaciones}}index.php/pedido/presentar/{{item.nro_pedido}}"> {{item.nro_pedido }}</a>
+                        <a class="text-dark" target="_blank" href="{{ request.enterprise.url_app_importaciones}}index.php/pedido/presentar/{{item.nro_pedido}}"> {{item.nro_pedido }}</a>
                         {% endif %}
-                    </td>
-                    <td nowrap="">{{item.nombre }}</td>
-                    <td nowrap="">{{item.product }}</td>
-                    <td nowrap="" class="text-center">{% if item.fecha_liquidacion %}{{ item.fecha_liquidacion.strftime('%d/%m/%Y')}} {%else%} <i class="fas fa-ban"></i> {% endif %}</td>
-                    <td nowrap="" class="text-center" id="fecha_entrega_etiquetas_senae__{{ item.id }}">
+                     </td>
+                     <td nowrap="">{{item.nombre }}</td>
+                     <td nowrap="">{{item.product }}</td>
+                     <td nowrap="" class="text-center">{% if item.fecha_liquidacion %}{{ item.fecha_liquidacion.strftime('%d/%m/%Y')}} {%else%} <i class="fas fa-ban"></i> {% endif %}</td>
+                     <td nowrap="" class="text-center" id="fecha_entrega_etiquetas_senae__{{ item.id }}">
                         {% if item.fecha_entrega_etiquetas_senae %}
-                            {{ item.fecha_entrega_etiquetas_senae.strftime('%d/%m/%Y')}}
+                        {{ item.fecha_entrega_etiquetas_senae.strftime('%d/%m/%Y')}}
                         {%else%}
-                            <input type="checkbox" @click="updateDateProcess('fecha_entrega_etiquetas_senae','{{ item.id }}','{{ item.nro_pedido }}')" id="fecha_entrega_etiquetas_senae_{{ item.id }}">
+                        <input type="checkbox" @click="updateDateProcess('fecha_entrega_etiquetas_senae','{{ item.id }}','{{ item.nro_pedido }}')" id="fecha_entrega_etiquetas_senae_{{ item.id }}">
                         {% endif %}
-                    </td>
-                    <td nowrap="" class="text-center" id="fecha_pegado_etiquetas__{{ item.id }}">
+                     </td>
+                     <td nowrap="" class="text-center" id="fecha_pegado_etiquetas__{{ item.id }}">
                         {% if item.fecha_pegado_etiquetas %}
-                            {{ item.fecha_pegado_etiquetas.strftime('%d/%m/%Y')}}
+                        {{ item.fecha_pegado_etiquetas.strftime('%d/%m/%Y')}}
                         {%else%}
-                            <input type="checkbox" @click="updateDateProcess('fecha_pegado_etiquetas','{{ item.id }}','{{ item.nro_pedido }}')" id="fecha_pegado_etiquetas_{{ item.id }}">
+                        <input type="checkbox" @click="updateDateProcess('fecha_pegado_etiquetas','{{ item.id }}','{{ item.nro_pedido }}')" id="fecha_pegado_etiquetas_{{ item.id }}">
                         {% endif %}
-                    </td>
-                    <td nowrap="" class="text-center" id="fecha_aforo__{{ item.id }}">
+                     </td>
+                     <td nowrap="" class="text-center" id="fecha_aforo__{{ item.id }}">
                         {% if item.fecha_aforo %}
-                            {{ item.fecha_aforo.strftime('%d/%m/%Y')}} 
+                        {{ item.fecha_aforo.strftime('%d/%m/%Y')}} 
                         {%else%}
-                            <input type="checkbox" @click="updateDateProcess('fecha_aforo','{{ item.id }}','{{ item.nro_pedido }}')" id="fecha_aforo_{{ item.id }}">
+                        <input type="checkbox" @click="updateDateProcess('fecha_aforo','{{ item.id }}','{{ item.nro_pedido }}')" id="fecha_aforo_{{ item.id }}">
                         {% endif %}
-                    </td>
-                    <td nowrap="" class="text-center" id="fecha_salida_autorizada__{{ item.id }}">
+                     </td>
+                     <td nowrap="" class="text-center" id="fecha_salida_autorizada__{{ item.id }}">
                         {% if item.fecha_salida_autorizada %}
-                            {{ item.fecha_salida_autorizada.strftime('%d/%m/%Y')}} 
+                        {{ item.fecha_salida_autorizada.strftime('%d/%m/%Y')}} 
                         {%else%}
-                            <input type="checkbox" @click="updateDateProcess('fecha_salida_autorizada','{{ item.id }}','{{ item.nro_pedido }}')" id="fecha_salida_autorizada_{{ item.id }}">
+                        <input type="checkbox" @click="updateDateProcess('fecha_salida_autorizada','{{ item.id }}','{{ item.nro_pedido }}')" id="fecha_salida_autorizada_{{ item.id }}">
                         {% endif %}
-                    </td>
-                    <td nowrap="" class="text-center" id="fecha_llegada_cliente__{{ item.id }}">
+                     </td>
+                     <td nowrap="" class="text-center" id="fecha_llegada_cliente__{{ item.id }}">
                         {% if item.fecha_llegada_cliente %}
-                            {{ item.fecha_llegada_cliente.strftime('%d/%m/%Y')}} 
+                        {{ item.fecha_llegada_cliente.strftime('%d/%m/%Y')}} 
                         {%else%}
-                            --
+                        --
                         {% endif %}
-                    </td>
+                     </td>
                      <td class="text-center">{{item.capacidad_ml | round(0) }}</td>
-                    <td class="text-center">
+                     <td class="text-center">
                         {% if item.origen  %}
-                            {{item.origen}}
+                        {{item.origen}}
                         {% else %}
-                            --
+                        --
                         {% endif %}
-                    </td>
-                    <td class="text-right">{{item.nro_cajas | round(0) }} X {{ item.cantidad_x_caja | round(0) }}</td>
-                    <td class="text-right">{{item.unidades | round(0) }}</td>
-                    <td nowrap="" class="text-center">{{item.nro_refrendo}}</td>
-                    <td class="text-center">
-                    {% if item.bg_isclosed %}
+                     </td>
+                     <td class="text-right">{{item.nro_cajas | round(0) }} X {{ item.cantidad_x_caja | round(0) }}</td>
+                     <td class="text-right">{{item.unidades | round(0) }}</td>
+                     <td nowrap="" class="text-center">{{item.nro_refrendo}}</td>
+                     <td class="text-center">
+                        {% if item.bg_isclosed %}
                         {% if item.fecha_llegada_cliente %}
-                            {{ ( item.fecha_llegada_cliente - item.fecha_liquidacion ).days  }}
+                        {{ ( item.fecha_llegada_cliente - item.fecha_liquidacion ).days  }}
                         {% else %}
-                            <i class="fas fa-calendar-times"></i>
+                        <i class="fas fa-calendar-times"></i>
                         {% endif %}
-                    {% else %}
+                        {% else %}
                         {{ (data.today - item.fecha_liquidacion).days }}
-                    {% endif %}
-                    </td>
-                    <td class="text-center">{% if item.bg_isclosed %}<i class="fas fa-check text-success"></i>{% else %}<i class="fas fa-lock-open text-info"></i>{% endif %}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
+                        {% endif %}
+                     </td>
+                  </tr>
+                  {% endfor %}
+               </tbody>
             </table>
-        </div>
-        </div>
-    </div>
+         </div>
+      </div>
+   </div>
 </div>
 {% block footer %}
 <script>
-    $(document).ready( function () {
-    $('#ReproteActivos').dataTable();
-} );
+   $(document).ready( function () {
+   $('#ReproteActivos').dataTable();
+   } );
 </script>
 {% endblock %}
-
 {% endblock content %}
 {% block script%}
-   {% include 'js/app_current_process.js' %}
+{% include 'js/app_current_process.js' %}
 {% endblock script%}

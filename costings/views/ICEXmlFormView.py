@@ -2,10 +2,10 @@ import io
 
 from costings.lib_src import IceSriXml
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse
 from django.views.generic import FormView
 from logs.app_log import loggin
 from costings.forms import FormICEXML
+from django.http import HttpResponse
 
 
 # costos/ice-xml/
@@ -26,40 +26,27 @@ class ICEXmlFormView(LoginRequiredMixin, FormView):
 
     def post(self, request, *args, **kwargs):
         loggin('i', 'Iniciando proceso de generacion de reporte')
-        form = FormICEXML(self.request)
+        form = FormICEXML(self.request.POST)
+        if form.is_valid():
+            my_report = IceSriXml()
+            sales = my_report.clean_data(form.cleaned_data['sales'])
+            devs = my_report.clean_data(form.cleaned_data['devs'])
+            importations = my_report.clean_imports(form.cleaned_data['importations'])
+            import ipdb; ipdb.set_trace()
+            report = my_report.get_report(
+                form.cleaned_data['year'],
+                form.cleaned_data['month'],
+                sales,
+                devs,
+                importations
+            )
 
-        if self.form_valid(form=form):
-            request.sesion['data'] = self.check_data(request)
-        else:
-            return self.render_to_response(self.get_context_data(form=form))
+            return HttpResponse(my_report.get_xml_report(report), content_type='text/xml')
 
-    def check_data(self, sh_importations):
-
-        book = xlrd.open_workbook(
-            file_contents=input_file.read(),
-            encoding_override='iso-8859-1'
-        )  
-
-        # definir los valores de los usuarios
-        # sh_sales = book.sheet_by_name('ventas')
-        # sh_returns = book.sheet_by_name('devoluciones')
-
-        importations = self.check_importations(
-            book.sheet_by_name('importaciones')
-        )
-
-        # definimos los ice que necesitamos para el reporte
-        idx_import = {
-            'cod_ice': 0,
-            'date': 0,
-            'quantity': 0,
-            'referendo_sequential': 0,
-            'referendo_year': 0,
-            'referendo_reg': 0,
-            'referendo_district': 0,
-        } 
-
-        matriz = []
-        # quitamos las dos filas de la cabecera
-        for idl in range(2, sh_importations.nrows):
-            matriz.append(sh_importations.row_values(idl))
+        context = self.get_context_data(**kwargs)
+        context['form'] = form
+        context['data'] = {
+            'title_page': 'Generador XML ICE',
+            'view_form': True,
+        }
+        return self.render_to_response(context)

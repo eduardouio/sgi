@@ -7,6 +7,7 @@ from django.utils import timezone
 
 class Supplier(models.Model):
     identificacion_proveedor = models.CharField(primary_key=True, max_length=16)
+    id_proveedor = models.SmallIntegerField(null=True, blank=True)
     nombre = models.CharField(unique=True, max_length=60)
     tipo_provedor = models.CharField(max_length=13, default='NACIONAL')
     moneda_transaccion = models.CharField(max_length=10)
@@ -21,12 +22,11 @@ class Supplier(models.Model):
         return self.nombre
 
     class Meta:
-        #managed = False
-        managed = True
+        managed = False
         db_table = 'proveedor'
         verbose_name_plural = 'Proveedores'
         ordering = ['tipo_provedor', 'nombre']
-    
+
     @classmethod
     def get_all(self):
         return self.objects.all()
