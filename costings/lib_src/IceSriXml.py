@@ -30,7 +30,9 @@ class IceSriXml(object):
                 el = ET.SubElement(imp, k)
                 el.text = v
 
-        return ET.tostring(root).decode()
+        report = ET.tostring(root).decode()
+        report = '<?xml version="1.0" encoding="UTF-8"?>' + report
+        return report
 
     def get_report(self, year, month, sales, devs, imports):
         loggin('i', 'Se inicia generacion del reporte')
@@ -168,7 +170,7 @@ class IceSriXml(object):
 
     def __get_suggar(self, cod_ice):
         loggin('i', 'Se inicia la clase IceSriXml')
-        tonic_waters = [
+        tonic_whaters = [
             ['3053-84-026707-013-000200-66-213-000144', '104.00'],
             ['3053-84-026708-013-000200-66-213-000144', '83.40'],
             ['3053-84-026709-013-000200-66-213-000144', '0.00'],
@@ -176,7 +178,7 @@ class IceSriXml(object):
             ['3053-84-026795-013-000200-66-213-000144', '88.00']
         ]
 
-        for itm in tonic_waters:
+        for itm in tonic_whaters:
             if itm[0] == cod_ice:
                 return itm[1]
 

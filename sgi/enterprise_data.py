@@ -35,7 +35,7 @@ DATOS_EMPRESAS = {
         'almagro_paa': 'almagro2018',
     },
     'cordovez': {
-        'nombre': 'AGENCIAS Y REPRESENTACIONES CORDOVEZ S A',
+        'nombre': 'AGENCIAS Y REPRESENTACIONES CORDOVEZ SA',
         'empresa': 'cordovez',
         'ruc': '1790023516001',
         'direccion': 'AV 10 DE AGOSTO Y LEONARDO MURIALDO ',
@@ -81,7 +81,7 @@ DATOS_EMPRESAS = {
         'almagro_paa': 'almagro2018',
     },
     'vid': {
-        'nombre': 'VIDINTERNACIONAL S A',
+        'nombre': 'VIDINTERNACIONAL S.A.',
         'empresa': 'vid',
         'ruc': '1791771907001',
         'direccion': 'AV 10 DE AGOSTO Y LEONARDO MURIALDO ',
