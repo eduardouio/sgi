@@ -49,10 +49,13 @@ class ICEXmlFormView(LoginRequiredMixin, FormView):
                 '.xml'
             )
 
-            response = HttpResponse(my_report.get_xml_report(report), content_type='application/xml')
-            response['Content-Disposition'] = 'attachment; filename="{}"'.format(
-                file_name
+            response = HttpResponse(
+                my_report.get_xml_report(report),
+                content_type='application/xml'
             )
+
+            content_disposition = 'attachment; filename=' + file_name
+            response['Content-Disposition'] = content_disposition
 
             return response
 

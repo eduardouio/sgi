@@ -22,15 +22,24 @@ class IceSriXml(object):
                 el = ET.SubElement(vta, k)
                 el.text = str(v)
 
-        importaciones = ET.SubElement(root, 'importaciones')
-
-        for line in base_report['importations']:
-            imp = ET.SubElement(importaciones, 'imp')
-            for k, v in line.items():
-                el = ET.SubElement(imp, k)
-                el.text = v
+        if base_report['importations']:
+            importaciones = ET.SubElement(root, 'importaciones')
+            for line in base_report['importations']:
+                imp = ET.SubElement(importaciones, 'imp')
+                for k, v in line.items():
+                    el = ET.SubElement(imp, k)
+                    el.text = v
+        else:
+            importaciones = ET.SubElement(root, 'importaciones')
 
         report = ET.tostring(root).decode()
+
+        if not base_report['importations']:
+            report = report.replace(
+                '<importaciones />',
+                '<importaciones></importaciones>'
+            )
+
         report = '<?xml version="1.0" encoding="UTF-8"?>' + report
         return report
 
@@ -67,6 +76,16 @@ class IceSriXml(object):
                         'cantProdBajaICE': '0',
                     })
 
+        base_report['sales'] = self.__get_devs(devs, base_report)
+        base_report['importations'] = imports if bool(imports) else []
+
+        return base_report
+
+    def __get_devs(self, devs, base_report):
+        if bool(devs) is False:
+            loggin('i', 'El reporte no registra deboluciones')
+            return base_report['sales']
+
         head_devs = devs[0]
         delete_keys = []
         additionals_devs = []
@@ -99,11 +118,15 @@ class IceSriXml(object):
                         'cantProdBajaICE': '0',
                     })
 
-        base_report['importations'] = imports
-        return base_report
+        return base_report['sales']
 
     def clean_data(self, data):
-        loggin('i', 'Se inicia limpieza de datos de ventas')
+        loggin('i', 'Se inicia limpieza de daros de ventas/devoluciones')
+
+        if bool(data) is False:
+            loggin('e', 'No se encontraron datos para ventas/devoluciones ')
+            return []
+
         data = data.replace(',', '')
         data = csv.reader(data.split('\n'), delimiter=';', dialect='excel')
         data = [_ if _ else 0 for _ in data]
@@ -117,10 +140,15 @@ class IceSriXml(object):
         if self.__check_sums(cleaned_data):
             return cleaned_data
 
+        loggin('e', 'Error en la suma de las filas')
         return False
 
     def clean_imports(self, imports):
         loggin('i', 'Se inicia limpieza de datos de importaciones')
+        if bool(imports) is False:
+            loggin('e', 'No se encontraron datos para importaciones')
+            return []
+
         imports = imports.replace(',', '')
         imports = csv.reader(imports.split('\n'), delimiter=';', dialect='excel')
         imports = [_ if _ else 0 for _ in imports]

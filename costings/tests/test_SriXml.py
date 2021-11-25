@@ -265,3 +265,22 @@ class TestIceSriXml(TestCase):
         )
         xml_report = self.ice_sri_xml.get_xml_report(report)
         self.assertTrue(xml_report)
+
+    def test_partial_report(self):
+        sales = open('costings/tests/sri_data/sales.txt', 'r').read()
+        devs = ''
+        imports = None
+
+        sales = self.ice_sri_xml.clean_data(sales)
+        devs = self.ice_sri_xml.clean_data(devs)
+        imports = self.ice_sri_xml.clean_imports(imports)
+
+        self.assertEqual([], devs)
+        self.assertEqual([], imports)
+
+        report = self.ice_sri_xml.get_report(
+            '2021','11', sales, devs, imports
+        )
+        xml_report = self.ice_sri_xml.get_xml_report(report)
+
+        self.assertTrue(xml_report)
