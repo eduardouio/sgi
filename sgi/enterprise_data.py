@@ -58,7 +58,7 @@ DATOS_EMPRESAS = {
         'almagro_paa': 'almagro2018',
     },
     'imnac': {
-        'nombre': 'IMNAC CIA LTDA',
+        'nombre': 'IMNAC IMPORTADORA NACIONAL CIA. LTDA.',
         'empresa': 'imnac',
         'ruc': '1792324289001',
         'direccion': 'PAUL RIVET 227 Y JAMES ORTON',
