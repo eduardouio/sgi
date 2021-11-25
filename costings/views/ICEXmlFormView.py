@@ -40,7 +40,24 @@ class ICEXmlFormView(LoginRequiredMixin, FormView):
                 importations
             )
 
-            return HttpResponse(my_report.get_xml_report(report), content_type='text/xml')
+            file_name = (
+                'ICE_' +
+                str(form.cleaned_data['year']) +
+                '_' +
+                str(form.cleaned_data['month']) +
+                request.enterprise['empresa'].upper() +
+                '.xml'
+            )
+
+            response = HttpResponse(
+                my_report.get_xml_report(report),
+                content_type='application/xml'
+            )
+
+            content_disposition = 'attachment; filename=' + file_name
+            response['Content-Disposition'] = content_disposition
+
+            return response
 
         context = self.get_context_data(**kwargs)
         context['form'] = form

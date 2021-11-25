@@ -1,4 +1,5 @@
 from django import forms
+from django.http import request
 
 YEARS = (
     ('2021', '2021'),
@@ -38,10 +39,10 @@ class FormICEXML(forms.Form):
         widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 2})
     )
     devs = forms.CharField(
-        required=True,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 2} )
+        required=False,
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 2})
     )
     importations = forms.CharField(
-        required=True,
+        required=False,
         widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 2})
     )

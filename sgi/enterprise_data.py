@@ -35,7 +35,7 @@ DATOS_EMPRESAS = {
         'almagro_paa': 'almagro2018',
     },
     'cordovez': {
-        'nombre': 'AGENCIAS Y REPRESENTACIONES CORDOVEZ S A',
+        'nombre': 'AGENCIAS Y REPRESENTACIONES CORDOVEZ SA',
         'empresa': 'cordovez',
         'ruc': '1790023516001',
         'direccion': 'AV 10 DE AGOSTO Y LEONARDO MURIALDO ',
@@ -58,7 +58,7 @@ DATOS_EMPRESAS = {
         'almagro_paa': 'almagro2018',
     },
     'imnac': {
-        'nombre': 'IMNAC CIA LTDA',
+        'nombre': 'IMNAC IMPORTADORA NACIONAL CIA. LTDA.',
         'empresa': 'imnac',
         'ruc': '1792324289001',
         'direccion': 'PAUL RIVET 227 Y JAMES ORTON',
@@ -81,7 +81,7 @@ DATOS_EMPRESAS = {
         'almagro_paa': 'almagro2018',
     },
     'vid': {
-        'nombre': 'VIDINTERNACIONAL S A',
+        'nombre': 'VIDINTERNACIONAL S.A.',
         'empresa': 'vid',
         'ruc': '1791771907001',
         'direccion': 'AV 10 DE AGOSTO Y LEONARDO MURIALDO ',
