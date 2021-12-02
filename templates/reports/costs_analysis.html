@@ -57,6 +57,13 @@
          </div>
          </div>
          <div class="container-fluid">
+         {% if data.show_error %}
+         <div class="row bordered shadow">
+           <div class="col text-center">
+            <h3 class="text-danger"><br/>Producto no Encontrado<br/></h3>
+           </div>
+         </div>
+         {% endif %}
          <div class="row">
            <div class="col-12">
           <canvas class="my-4" id="myChart" width="950" height="280"></canvas>
