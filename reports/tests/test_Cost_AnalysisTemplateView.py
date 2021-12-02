@@ -40,3 +40,12 @@ class TESTCostAnalysisTemplateView(TestCase):
         response = CostAnalysisTemplateView.as_view()(request)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, '/login/?next=' + self.path)
+
+    def test_with_not_found_prodcut(self):
+        request = self.factory.get(self.path + '?products=not_found')
+        request.user = self.user
+        reponse = CostAnalysisTemplateView.as_view()(request)
+        
+        self.assertEqual(reponse.context_data['data']['show_error'], True)
+        self.assertEqual(reponse.status_code, 200)
+

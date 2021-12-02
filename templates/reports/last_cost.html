@@ -1,0 +1,37 @@
+{% extends 'base/base.html' %}
+{% block header %}
+<!--cARGAMOS LIBRERIAS ADICIONALES PARA MOSTRAR LA TABLA-->
+<link rel="stylesheet" href="/static/css/jquery.dataTables.min.css">
+<script src="/static/js/jquery.dataTables.min.js"></script>
+{% endblock header %}
+{% block title_content %}
+    <div class="row border">
+   <div class="col-8">
+      <i class="fas fa-chart-line"></i>
+      Costos Ultima Importación
+   </div>
+   <div class="col-4 text-right">SGI <small>[Sistema Gestón de Importaciones] AUDITORIA</small></div>
+</div>
+{% endblock title_content %}
+
+{% block content %}
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            {% for value in  data.report[0].history[0].keys()%}
+                <th>{{value}}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+            {% for value in  data.report %}
+                <tr>
+                    {% for val in value.history[0].values() %}
+                        <td nowrap>{{val}}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock content %}

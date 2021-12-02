@@ -7,5 +7,5 @@ class ExpensesWithSaleTEST(TestCase):
     def test_all_expenses(self):
         ExpensesSale = ExpensesWithSale()
         expenses = ExpensesSale.get_all_expeneses_with_sale()
-        self.assertEqual(226, expenses.__len__())
-        self.assertIsInstance(expenses, list )
+        self.assertEqual(510, expenses.__len__())
+        self.assertIsInstance(expenses, list)
