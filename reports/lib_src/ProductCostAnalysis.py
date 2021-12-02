@@ -5,6 +5,7 @@ y tipo de cambio, el reporte es por productos
 
 from products.models import Product
 from django.db import connection
+from logs.app_log import loggin
 
 
 class ProductCostAnalysis():
@@ -19,6 +20,7 @@ class ProductCostAnalysis():
         self.deep = 0 if deep == 0 else deep
 
     def get(self):
+        loggin('i', 'Analizando producto {}'.format(self.product))
         if self.product is None:
             return None
 

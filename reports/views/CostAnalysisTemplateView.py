@@ -28,7 +28,7 @@ class CostAnalysisTemplateView(LoginRequiredMixin, TemplateView):
                 loggin('e', 'No se encontro el producto')
                 context['data'] = {
                     'show_error': True,
-                    'title_page': 'Análsis de Costos',
+                    'title_page': 'Análsis de Costos - 404',
                     'form': form,
                     'json_report': [],
                 }
