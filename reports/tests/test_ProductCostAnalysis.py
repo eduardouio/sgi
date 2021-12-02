@@ -5,23 +5,30 @@ from products.models import Product
 
 class TESTProductCostAnalysis(TestCase):
 
-    def test_get_info(self):
-        pca = ProductCostAnalysis('01011080011917010750')
-        product = Product.get_by_cod_contable('01011080011917010750')
-        report = pca.get()
-        self.assertEqual(len(report['history']), 1)
-        self.assertEqual(report['product'], product)
+    def test_get_last_item(self):
+        my_product = Product.objects.get(pk='02012130020202010750')
+        report = ProductCostAnalysis('02012130020202010750', 1).get()
+        last_cost = round(float(report['history'][0]['costo_botella']), 2)
 
-    def test_info_product_does_exist(self):
-        pca = ProductCostAnalysis('010110800119170750')
-        product = Product.get_by_cod_contable('010110800119170750')
-        report = pca.get()
-        self.assertEqual(product, None)
-        self.assertEqual(report, None)
+        self.assertEqual(report['product'], my_product)
+        self.assertEqual(report['history'].__len__(), 1)
+        self.assertEqual(last_cost, 10.03)
 
-    def test_get_info_deep(self):
-        pca = ProductCostAnalysis('01011080011917010750', 5)
-        product = Product.get_by_cod_contable('01011080011917010750')
-        report = pca.get()
-        self.assertEqual(len(report['history']), 1)
-        self.assertEqual(report['product'], product)
+    def test_get_all_items_for_product(self):
+        my_product = Product.objects.get(pk='01011080010207010750')
+        report = ProductCostAnalysis('01011080010207010750').get()
+
+        self.assertEqual(report['product'], my_product)
+        self.assertEqual(report['history'].__len__(), 33)
+        self.assertEqual(
+            round(float(report['history'][0]['costo_botella']), 2), 
+            2.77
+        )
+        self.assertEqual(
+            round(float(report['history'][-1]['costo_botella']), 2),
+            2.66
+        )
+
+    def test_product_not_found(self):
+        report = ProductCostAnalysis('not-found-product').get()
+        self.assertIsNone(report)

@@ -29,24 +29,25 @@ class ProductCostAnalysis():
 
     def get_history(self):
         conn = connection.cursor()
-        if self.deep:
-            sql = '''
-                select * from
-                    (   select * from v_costs_analysis 
-                        WHERE  cod_contable  = '{}' 
-                        order by fecha_llegada_cliente desc, nro_pedido limit {}
-                    ) var1  order by fecha_llegada_cliente asc, nro_pedido
-            '''.format(self.product.cod_contable,  self.deep)
-        else:
-            sql = '''
+        sql = '''
                 select * from
                     (   select * from v_costs_analysis 
                         WHERE  cod_contable  = '{}' 
                         order by fecha_llegada_cliente desc, nro_pedido
                     ) var1  order by fecha_llegada_cliente asc, nro_pedido
                 '''.format(
-                self.product.cod_contable
-            )
+            self.product.cod_contable
+        )
+
+        if self.deep:
+            sql = '''
+                select * from
+                    (   select * from v_costs_analysis
+                        WHERE  cod_contable  = '{}'
+                        order by fecha_llegada_cliente desc, nro_pedido limit {}
+                    ) var1  order by fecha_llegada_cliente asc, nro_pedido
+            '''.format(self.product.cod_contable,  self.deep)
+
         conn.execute(sql)
         cols = [col[0] for col in conn.description]
         return [
