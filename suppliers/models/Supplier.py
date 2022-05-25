@@ -32,9 +32,25 @@ class Supplier(models.Model):
         return self.objects.all()
 
     @classmethod
+    def get_last_id(self):
+        last_obj = self.objects.all().order_by('id_proveedor').latest('id_proveedor')
+        return last_obj.id_proveedor
+
+    @classmethod
     def get_by_ruc(self, id_supplier):
         try:
             return self.objects.get(pk=id_supplier)
         except ObjectDoesNotExist:
             loggin('w', 'El proveedor {id_supplier} no existe en el sistema'.format(id_supplier=id_supplier))
-            return None 
+            return None
+
+    def clean(self, *args, **kwargs):
+        """
+            Sobre escribimos el metodo clean para calcular el proximo 
+            id_proveedor, es automatico y no se puede modificar
+        """
+        if self.id_proveedor is None:
+            last_id = self.get_last_id()
+            self.id_proveedor = last_id + 1
+
+        super(Supplier, self).clean()

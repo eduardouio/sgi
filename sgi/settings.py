@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'audit',
     'reports',
     'almagro',
+    'labels',
 ]
 
 MIDDLEWARE = [

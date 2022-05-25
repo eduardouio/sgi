@@ -33,6 +33,15 @@ DATOS_EMPRESAS = {
         'url_almagro_report': 'https://almanet.almagro.com.ec/almCryReport.aspx?Enlace=0021790023516001{}/{}/{}',
         'almagro_user': 'MSALA',
         'almagro_paa': 'almagro2018',
+        'safetrack': {
+            'login_data': {
+                'username': 'cordovez',
+                'password': 'Cordovez2022!',
+                'grant_type': 'password',
+                'client_id': 'cordovez-cli'
+            },
+            'url_login': 'https://auth.test1.safetrack.cloud/auth/realms/safetrack/protocol/openid-connect/token',
+        }
     },
     'cordovez': {
         'nombre': 'AGENCIAS Y REPRESENTACIONES CORDOVEZ SA',

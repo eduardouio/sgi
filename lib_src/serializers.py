@@ -10,6 +10,7 @@ from partials.models import (Apportionment, ApportionmentDetail, InfoInvoice,
 from products.models import Product
 from suppliers.models import Supplier
 from filemanager.models import FileManager
+from labels.models import Label
 
 
 class LedgerSerializer(ModelSerializer):
@@ -120,4 +121,10 @@ class SupplierSerializer(ModelSerializer):
 class FileManagerSerializer(ModelSerializer):
     class Meta:
         model = FileManager
+        fields = ('__all__')
+
+
+class LabelSerializer(ModelSerializer):
+    class Meta:
+        model = Label
         fields = ('__all__')

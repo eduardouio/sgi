@@ -556,3 +556,4 @@ class Order(models.Model):
         )
         for _ in last_order:
             return _.id_pedido
+    

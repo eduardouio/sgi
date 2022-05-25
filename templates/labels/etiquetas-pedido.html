@@ -1,0 +1,248 @@
+{% extends 'base/base.html' %}
+{% block header %}
+<script src="{{ static("js/vue.js") }}"></script>
+<script src="{{ static("js/vue-resource.js") }}"></script>
+{% endblock header %}
+{% block title_content %}
+<div class="row border">
+   <div class="col-4">
+      <i class="fa fa-tags"></i>
+      <small>
+          <i class="fas fa-user"></i> 
+          <strong class="text-success">{{ request.user | upper }}</strong>
+          Registro de Etiquetas Para Pedido {{  data.order }} -> {{ data.order_data.supplier }}
+     </small> 
+   </div>
+   <div class="col-8 text-right">
+      <span>{{ request.enterprise.nombre }}</span>
+   </div>
+</div>
+{% endblock title_content %}
+{% block content %}
+<div id="app">
+   <div class="row">
+      <table class="table table-bordered table-striped table-hover bg-light">
+         <thead>
+            <tr>
+               <th class="text-right">Nro Pedido</th>
+               <td class="text-center">{{ data.order }}</td>
+               <th class="text-right">Provedor</th>
+               <td class="text-center">{{ data.order_data.supplier }}</td>
+               <th class="text-right">Tipo</th>
+               <td class="text-center">
+                  {% if data.order_data.regimen == '70' %}
+                     <span class="badge badge-primary">{{ data.order.regimen }}</span>
+                     Almagro Parcial
+                  {% else %}
+                     <span class="badge badge-success">{{ data.order.regimen }}</span>
+                     Directo Consumo
+                  {% endif %}
+               </td>
+               <th class="text-right">Nro DAI</th>
+               <td class="text-center">{{ data.order.nro_refrendo }}</td>
+            </tr>
+            <tr>
+               <th class="text-right">N Factura</th>
+               <td class="text-center">{{ data.order_data.order_invoice }}</td>
+               <th class="text-right">Moneda</th>
+               <td class="text-center">{{ data.order_data.order_invoice.moneda }}</td>
+               <th class="text-right">Cajas Tot</th>
+               <td class="text-center">{{ data.order_data.boxes }} Cajas</td>
+               <th class="text-right">Unidades Tot</th>
+               <td class="text-center  ">{{ data.order_data.units | round(0)}} Botellas</td>
+            </tr>
+         </thead>
+      </table>
+   </div>
+   <div class="row">
+      <div class="col-7 text-center">
+         <div class="col text-center text-primary">
+            DETALLE DE PRODUCTOS PEDIDO {{ data.order }}
+         </div>
+      </div>
+      <div class="col text-center">
+           <div class="col text-center text-primary">
+            RANGOS DE ETIQUETAS ASIGNADOS 
+            <br>
+            <strong v-if="current_product" class="text-danger"> ${ current_product.product }</strong>  
+         </div>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-7">
+          <table class="table table-bordered table-striped table-condensed">
+         <thead>
+            <tr>
+               <th>#</th>
+               <th>Producto</th>
+               <th>Cap ML</th>
+               <th>Registro Sanitario</th>
+               <th>Nro Cajas</th>
+               <th>UxC</th>
+               <th>Unidades</th>
+            </tr>
+         </thead>
+         <tbody>
+            {% for detail in data.order_data.order_invoice_details %}
+            <tr @click="selectProduct('{{detail.cod_contable_id}}')">
+               <td class="text-center">{{ loop.index }}</td>
+               <td class="text-primary">{{ detail.cod_contable }}</td>
+               <td class="text-center">{{ detail.capacidad_ml | round(0)}}</td>
+               <td>{{ detail.cod_contable.nro_registro_sanitario }} 
+                  <a href="{{ detail.cod_contable.registro_sanitario }}" target="_blank">
+                     <i class="fas fa-file-pdf"></i> 
+                  </a>
+               </td>
+               <td class="text-right">{{ detail.nro_cajas }}</td>
+               <td class="text-center">1 X {{ detail.cod_contable.cantidad_x_caja }}</td>
+               <td class="text-right">{{ detail.unidades | round(0)}} </td>
+            </tr>
+            {% endfor %}
+
+         </tbody>
+      </table>
+      </div>
+      <div class="col">
+         <table class="table table-bordered table-hover table-bordered" v-if="current_product">
+            <thead>
+               <tr>
+                  <th>IDL</th>
+                  <th>FID</th>
+                  <th>Inicial</th>
+                  <th>Final</th>
+                  <th>Unidades</th>
+                  <th>Parcial</th>
+                  <th>Notas</th>
+               </tr>
+            </thead>
+            <tbody>
+               <tr v-for="item in current_lables">
+                  <td>${item.id_label}</td>
+                  <td>${item.id_factura_detalle}</td>
+                  <td>${item.initial_range}</td>
+                  <td>${item.end_range}</td>
+                  <td>${item.quantity}</td>
+                  <td>${item.parcial}</td>
+                  <td>${item.notas}</td>
+               </tr>
+            </tbody>
+         </table>
+         <button 
+            v-if="current_product"
+            class="btn btn-sm btn-outline-primary"
+            data-toggle="modal"
+            data-target=".bd-example-modal-lg"
+            >
+            <i class="fas fa-plus"></i>
+            Agregar Etiquetas 
+         </button>
+
+
+      </div>
+   </div>
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" v-if="current_product">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+           Detalle de Rangos ${ current_product.product }
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+         <div class="container">
+            <div class="row">
+                 <div class="col-1">
+                  <div class="form-group">
+                     <label for="">ID</label>
+                     <input 
+                        type="text" 
+                        class="form-control" 
+                        v-model="new_range.detalle_pedido_factura"
+                        readonly
+                        >
+                  </div>
+               </div>
+               <div class="col-2">
+                  <div class="form-group">
+                     <label for="">Rango Inicial</label>
+                     <input 
+                        type="text" 
+                        class="form-control" 
+                        v-model="new_range.initial_range"
+                        maxlength="15"
+                        >
+                  </div>
+               </div>
+               <div class="col-2">
+                  <div class="form-group">
+                     <label for="">Rango Final</label>
+                     <input
+                     type="text" 
+                     class="form-control" 
+                     v-model="new_range.end_range"
+                     maxlength="15"
+                     >
+                  </div>
+               </div>
+               <div class="col-2">
+                  <div class="form-group">
+                     <label for="">Parcial</label>
+                     <input 
+                     type="number" 
+                     v-model="new_range.parcial"
+                     class="form-control"
+                     >
+                  </div>
+               </div>
+               <div class="col-2">
+                  <div class="form-group">
+                     <label for="">Unds</label>
+                     <input 
+                     type="text"
+                     class="form-control"
+                     v-model="new_range.quantity"
+                     >
+                  </div>
+               </div>
+               <div class="col-3">
+                  <div class="form-group">
+                     <label for="">COD CONTABLE</label>
+                     <input 
+                        type="text"
+                        class="form-control"
+                        v-model="new_range.cod_contable"
+                        readonly="true">
+                  </div>
+               </div>
+            </div>
+            <div class="row">
+               <div class="col-11">
+                  <div class="form-group">
+                     <label for="">Observaciones</label>
+                     <textarea v-model="new_range.notas" cols="30" rows="1" class="form-control"></textarea></div>
+               </div>
+                  <div class="col-1">
+                  <div class="form-group">
+                     <label for=""></label>
+                     <a @clic(validateRange()) class="btn btn-success">Validar</a>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button  type="button" class="btn btn-primary" @click="addRange">Agregar Rango</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+{% endblock content %}
+{% block script %}
+   var data = {{ data.serialized_data | tojson }}
+  {% include "js/app_labels.js" %}
+{% endblock script %}

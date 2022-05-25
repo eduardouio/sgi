@@ -30,6 +30,7 @@ class OrderInvoice(models.Model):
     bg_isclosed = models.IntegerField(blank=True, null=True,default=0)
     bg_audit = models.IntegerField(default=0)
     bg_isrejected = models.IntegerField(default=0)
+    bg_have_tags = models.BooleanField(default=False)
     audit_date = models.DateTimeField(blank=True, null=True)
     audit_user = models.SmallIntegerField(default=0, blank=True, null=True)
     gasto_origen = models.DecimalField(max_digits=20, decimal_places=13,default=0)

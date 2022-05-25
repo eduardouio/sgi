@@ -1,0 +1,93 @@
+{% extends 'base/base.html' %}
+{% block title_content %}
+<div class="row border">
+   <div class="col-4">
+      <i class="fa fa-tags"></i>
+      <small>
+          <i class="fas fa-user"></i> 
+          <strong class="text-success">{{ request.user | upper }}</strong>
+          Lstado de Pedidos
+     </small> 
+   </div>
+   <div class="col-8 text-right">
+      <span>{{ request.enterprise.nombre }}</span>
+   </div>
+</div>
+{% endblock title_content %}
+{% block content %}
+<div class="container">
+   {% if data.show_error %}
+   <div class="row">
+      <div class="col text-white bordered rounded bg-danger">
+         <h5 class="text-center"> 
+            <i class="fas fa-exclamation-circle"></i>
+            EL PEDIDO NO EXISTE O NO TIENE PRODUCTOS
+            <i class="fas fa-exclamation-circle"></i>
+            </h5>
+      </div>
+   </div>
+   {% endif %}
+<form action="" method="get">
+<div class="row bordered rounded bg-secondary text-light" style="padding:12px">
+      <div class="col col-md-2">
+         <input class="form-control" type="text" name="nro_order" autocomplete="off">
+      </div>
+      <div class="col col-md-3 text-left">
+         <button type="submit" class="btn btn-sm btn-outerline btn-primary"> <i class="fas fa-search"></i> Buscar</button>
+      </div>
+      <div class="col text-left">
+         <h5>INGRESE EL NUMERO DE PEDIDO A BUSCAR</h5>
+      </div>
+   </div>
+</form>
+<div class="row"></div>
+<div class="row bordered rounded">
+   <table class="table table-bordered table-striped table-hover">
+      <th>
+         <tr>
+            <th>#</th>
+            <th>Nro Pedido</th>
+            <th>Regimen</th>
+            <th>Proveedor</th>
+            <th>Nro DAI</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+         </tr>
+      </th>
+      <body>
+         {% for order in data.orders %}
+         <tr>
+            <td class="text-center">{{ loop.index }}</td>
+            <td class="text-center"><strong class="text-dark">{{ order.nro_pedido }}</strong></td>
+            <td>
+               {% if order.regimen == '70' %}
+                  <span class="badge badge-success">{{ order.regimen }}</span>
+                  Almagro Parcial
+               {% else %}
+                  <span class="badge badge-danger">{{ order.regimen }}</span>
+                  Directo Consumo
+               {% endif %}
+               
+            </td>
+            <td>{{ order.proveedor }}</td>
+            <td>{{ order.nro_refrendo }}</td>
+            <td>
+               {% if order.bg_isclosed == 1 %}
+                  <span class="text-danger">Cerrado</span>
+               {% else %}
+                  <span class="text-primary">Activo</span>
+               {% endif %}
+            </td>
+            <td>
+               <a href="/etiquetas/detalle/{{order.nro_pedido}}/" class="btn btn-sm btn-outline-primary">
+                  <i class="fas fa-tags"></i>
+                  <span>Etiquetas</span>
+               </a>
+            </td>
+         </tr>
+         {% endfor %}
+      </body>
+   </table>
+</div>
+</div>
+{% endblock content %}

@@ -23,5 +23,6 @@ urlpatterns = [
     path('reportes/', include('reports.urls', namespace='reports_urls')),
     path('almagro/', include('almagro.urls', namespace='almagro_urls')),
     path('sap/', include('migrationSAP.urls', namespace='sap_urls')),
+    path('etiquetas/', include('labels.urls', namespace='labels_urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
