@@ -68,5 +68,8 @@ class Label(models.Model):
         """
             Obtiene el ultimo jwt de una etiqueta
         """
-        last_labels = cls.objects.all().last()
-        return last_labels.jwt
+        last_label = cls.objects.all().last()
+        if (last_label.last_jwt):
+            return last_label.jwt
+
+        return False
