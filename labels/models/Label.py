@@ -1,3 +1,4 @@
+import jwt
 from django.db import models
 from orders.models import OrderInvoiceDetail
 from simple_history.models import HistoricalRecords
@@ -17,6 +18,8 @@ class Label(models.Model):
         ('S', 'Sended'),
         ('A', 'Active'),
         ('D', 'Disabled'),
+        ('R', 'Rejected'),
+        ('E', 'Error'),
     )
     id_label = models.AutoField(primary_key=True)
     id_factura_detalle = models.ForeignKey(
@@ -62,11 +65,3 @@ class Label(models.Model):
             self.initial_range,
             self.end_range
         )
-
-    @classmethod
-    def get_last_jwt(cls):
-        """
-            Obtiene el ultimo jwt de una etiqueta
-        """
-        last_labels = cls.objects.all().last()
-        return last_labels.jwt

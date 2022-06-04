@@ -1,7 +1,6 @@
-from cmath import log
-from email import header
+import json
+
 import requests
-from labels.models import Label
 from logs.app_log import loggin
 from sgi.settings import EMPRESA
 
@@ -9,26 +8,38 @@ from sgi.settings import EMPRESA
 class LoginSafeTrack():
     def __init__(self):
         loggin('i', 'Obteniendo el ultimo jwt ')
-        self.last_jwt = None
+        self.token = self.get_token()
+        self.my_headers = {
+            'Authorization': 'Bearer ' + self.token['token'],
+            'Host': 'bdo.safetrack.cloud',
+            'content-type': 'application/json',
+        }
+        self.status_service = self.token['status_service']
 
-    def get_jwt(self):
-        last_labels = Label.get_last_jwt()
-        if self.check_jwt(last_labels.jwt):
-            loggin('i', 'Token Válido')
-            return last_labels.jwt
-
-        loggin('i', 'Token Inválido, solicitamos un nuevo')
+    def get_token(self):
         safe_track_user = EMPRESA['safetrack']['login_data']
         url_login = EMPRESA['safetrack']['url_login']
-
         response = requests.post(
             url_login,
-            data=safe_track_user
+            data=safe_track_user,
         )
 
-        return response.json()
+        if response.status_code != 200:
+            loggin('e', 'Error al obtener el token de safetrack')
+            return({
+                'status_code': response.status_code,
+                'error': json.loads(response.text),
+                'status_service': False,
+                'error_message': ''
+            })
 
-    def check_jwt(self, jwt):
-        import ipdb; ipdb.set_trace()
-        loggin('t', 'Comptando el ultimo jwt')
-        
+        loggin('i', 'Token obtenido de safetrack')
+        # token_base64 = base64.urlsafe_b64decode(token[1]).decode('utf-8')
+        return({
+            'token': response.json()['access_token'],
+            'sub': EMPRESA['safetrack']['sub'],
+            'response': response.json(),
+            'status_code': response.status_code,
+            'status_service': True,
+            'error_message': '',
+        })

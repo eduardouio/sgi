@@ -35,12 +35,15 @@ DATOS_EMPRESAS = {
         'almagro_paa': 'almagro2018',
         'safetrack': {
             'login_data': {
-                'username': 'cordovez',
-                'password': 'Cordovez2022!',
+                'username': 'evillota',
+                'password': 'Evillota2022!',
                 'grant_type': 'password',
-                'client_id': 'cordovez-cli'
+                'client_id': 'cordovez-cli',
             },
-            'url_login': 'https://auth.test1.safetrack.cloud/auth/realms/safetrack/protocol/openid-connect/token',
+            'sub': '4e6b02f1-c83b-47a2-a76e-663569e8c71b',
+            'url_login': 'https://auth.bdo.safetrack.cloud/auth/realms/safetrack/protocol/openid-connect/token',
+            'url_validate_tag': 'https://bdo.safetrack.cloud/api/v1/unique-mark/validate-activate/{}/1e000ba2-7a75-4490-9e0a-9d011a63c136/{}',
+            'url_validate_range': 'https://bdo.safetrack.cloud/api/v1/unique-mark/filter/',
         }
     },
     'cordovez': {
@@ -65,6 +68,15 @@ DATOS_EMPRESAS = {
         'url_almagro_report': 'https://almanet.almagro.com.ec/almCryReport.aspx?Enlace=0021790023516001{}/{}/{}',
         'almagro_user': 'MSALA',
         'almagro_paa': 'almagro2018',
+        'safetrack': {
+            'login_data': {
+                 'username': 'imna',
+                'password': 'Cordovez2022!',
+                'grant_type': 'password',
+                'client_id': 'cordovez-cli'
+            },
+            'url_login': 'https://auth.bdo.safetrack.cloud/auth/realms/safetrack/protocol/openid-connect/token',
+        }
     },
     'imnac': {
         'nombre': 'IMNAC IMPORTADORA NACIONAL CIA. LTDA.',
