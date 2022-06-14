@@ -1,3 +1,4 @@
+from urllib import response
 from django.test import TestCase
 from labels.lib_src import ValidateRangeSafeTrack
 
@@ -6,24 +7,49 @@ class TESTValidateRangeSafeTrack(TestCase):
 
     def setUp(self):
         self.validateRange = ValidateRangeSafeTrack()
-        self.first_tag = '001RTH00'
-        self.last_tag = '001S73I1'
-        self.quantity = 19
-        return super().setUp()
-
-    def test_validate_range_ordered(self):
-        spected_data = {
-            'first_tag': self.first_tag,
-            'end_tag': self.last_tag,
-            'is_valid': True,
-            'quantity': self.quantity,
-            'error_message': '',
-            'status_code': 200
+        self.spected_data = {
+            'first_tag': '001RTH00',
+            'last_tag': '001S73I1',
+            'quantity': 19,
+            'status_code': 200,
+            'cheked_reverse': False,
+            'concordance': True,
+            'difference': 0,
         }
 
-        response = self.validateRange.validateRange(
-            self.first_tag,
-            self.last_tag,
+    def test_validate_range_ordered(self):
+        response = self.validateRange.validate(
+            self.spected_data['first_tag'],
+            self.spected_data['last_tag'],
+            self.spected_data['quantity']
         )
-        
-        self.assertEqual(spected_data['status_code'], 200)
+
+        for test in self.spected_data:
+            self.assertEqual(self.spected_data[test], response[test])
+
+    def test_validate_range_unordered(self):
+        self.spected_data['cheked_reverse'] = True
+        response = self.validateRange.validate(
+            self.spected_data['last_tag'],
+            self.spected_data['first_tag'],
+            self.spected_data['quantity']
+        )
+
+        for test in self.spected_data:
+            self.assertEqual(self.spected_data[test], response[test])
+
+    def test_invalid_range(self):
+        self.spected_data['first_tag'] = '001S73ZZ'
+        self.spected_data['last_tag'] = '331RTH00'
+        self.spected_data['concordance'] = False
+        self.spected_data['difference'] = 29981
+        self.spected_data['quantity'] = 19
+
+        response = self.validateRange.validate(
+            self.spected_data['first_tag'],
+            self.spected_data['last_tag'],
+            self.spected_data['quantity']
+        )
+        for test in self.spected_data:
+            if test != 'quantity':
+                self.assertEqual(self.spected_data[test], response[test])
