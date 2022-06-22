@@ -44,6 +44,14 @@ DATOS_EMPRESAS = {
             'url_login': 'https://auth.bdo.safetrack.cloud/auth/realms/safetrack/protocol/openid-connect/token',
             'url_validate_tag': 'https://bdo.safetrack.cloud/api/v1/unique-mark/validate-activate/{}/1e000ba2-7a75-4490-9e0a-9d011a63c136/{}',
             'url_validate_range': 'https://bdo.safetrack.cloud/api/v1/unique-mark/filter/',
+            'wallet': {
+                'business_id': '1e000ba2-7a75-4490-9e0a-9d011a63c136',
+                'network': 'polygon"',
+                'networkAddress': '0xa62980efb254ac2f1e9d028d710f7dfd6746d0fd',
+                'networkPk': '0x44a9e1316b1d67ebef0cec0e82b7819d26e394b648f2746ccc4a2e5e42531956',
+                'userId': '4e6b02f1-c83b-47a2-a76e-663569e8c71b',
+                'networkProvider': 'https://matic-mumbai.chainstacklabs.com',
+            }
         }
     },
     'cordovez': {
@@ -79,7 +87,7 @@ DATOS_EMPRESAS = {
         }
     },
     'imnac': {
-        'nombre': 'IMNAC IMPORTADORA NACIONAL CIA. LTDA.',
+        'nombre': 'IMNAC IMPORTADORA NACIONAL CIA LTDA',
         'empresa': 'imnac',
         'ruc': '1792324289001',
         'direccion': 'PAUL RIVET 227 Y JAMES ORTON',
@@ -102,7 +110,7 @@ DATOS_EMPRESAS = {
         'almagro_paa': 'almagro2018',
     },
     'vid': {
-        'nombre': 'VIDINTERNACIONAL S.A.',
+        'nombre': 'VIDINTERNACIONAL SA',
         'empresa': 'vid',
         'ruc': '1791771907001',
         'direccion': 'AV 10 DE AGOSTO Y LEONARDO MURIALDO ',
