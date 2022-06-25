@@ -19,7 +19,9 @@ class LabelDeleteView(generics.DestroyAPIView):
 
     def delete(self, response, pk, *args, **kwargs):
         label = Label.objects.get(pk=pk)
-        label.delete()
+        if(label.bg_status == 'I'):
+            label.delete()
+
         return Response(status=204)
 
 
