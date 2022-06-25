@@ -1,2 +1,3 @@
 from labels.views.TagsListTemplateView import TagsListTemplateView
 from labels.views.TagsOrderTemplateView import TagsOrderTemplateView
+from labels.views.ManagerTemplateView import ManagerTemplateView

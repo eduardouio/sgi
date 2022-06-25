@@ -22,7 +22,7 @@ class TagsListTemplateView(LoginRequiredMixin, TemplateView):
                 orders = Order.objects.filter(
                     nro_pedido__startswith=nro_order
                 )
-                
+        
         context['data'] = {
             'title_page': 'Etiquetas de Consumo',
             'host': get_host(request),

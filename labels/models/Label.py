@@ -1,4 +1,3 @@
-import jwt
 from django.db import models
 from orders.models import OrderInvoiceDetail
 from simple_history.models import HistoricalRecords
@@ -20,6 +19,7 @@ class Label(models.Model):
         ('D', 'Disabled'),
         ('R', 'Rejected'),
         ('E', 'Error'),
+        ('V', 'Validated'),
     )
     id_label = models.AutoField(primary_key=True)
     id_factura_detalle = models.ForeignKey(
