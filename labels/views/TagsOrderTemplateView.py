@@ -1,7 +1,6 @@
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http.response import HttpResponseRedirect
-from yaml import serialize
 
 from lib_src.sgi_utlils import get_host
 from logs.app_log import loggin
@@ -14,7 +13,7 @@ from lib_src.serializers import (
 )
 
 
-# /importaciones/etiquetas/pedido/<nro_order>/
+# /importaciones/etiquetas/detalle/<nro_order>/
 class TagsOrderTemplateView(LoginRequiredMixin, TemplateView):
 
     template_name = 'labels/etiquetas-pedido.html'

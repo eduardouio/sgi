@@ -23,6 +23,11 @@ TYPE_REG = (
     ('70', '70'),
 )
 
+STATUS_CFS_DOCUMENTS = (
+    ('PENDING','PENDING'),
+    ('SENDED', 'SENDED'),
+)
+
 INCOTERM = (
     ('FOB','FOB'),
     ('FCA','FCA'),
@@ -427,6 +432,11 @@ class Order(models.Model):
         blank=True,
         null=True,
         default=timezone.now
+    )
+    bg_status_documents_cfs = models.TextField(
+        default=None,
+        null=True,
+        choices=STATUS_CFS_DOCUMENTS
     )
     last_update = models.DateTimeField(blank=True, null=True)
     saldo_mayor = models.DecimalField(

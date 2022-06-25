@@ -58,7 +58,12 @@
          {% for order in data.orders %}
          <tr>
             <td class="text-center">{{ loop.index }}</td>
-            <td class="text-center"><strong class="text-dark">{{ order.nro_pedido }}</strong></td>
+            <td class="text-center"><strong class="text-dark">
+               <a href="/etiquetas/detalle/{{order.nro_pedido}}/">
+                  <i class="fas fa-arrow-right"></i>
+                  {{ order.nro_pedido }}
+               </a>
+            </strong></td>
             <td>
                {% if order.regimen == '70' %}
                   <span class="badge badge-success">{{ order.regimen }}</span>

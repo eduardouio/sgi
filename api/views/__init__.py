@@ -47,4 +47,5 @@ from api.views.Suppliers import (SupplierCreateView, SupplierDeleteView,
                                  SupplierDetailView, SupplierUpdateView)
 from api.views.Label import (LabelCreateView, LabelDeleteView,
                              LabelDetailView, LabelUpdateView,
-                             LabelsFromDetallePedidoFactura)
+                             LabelsFromDetallePedidoFactura,
+                             LabesValidRange, LabesValidateBatch, LabelsValidateLabel)

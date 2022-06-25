@@ -17,6 +17,11 @@ class PartialDeleteView(generics.DestroyAPIView):
     queryset = Partial.objects.all()
     serializer_class = PartialSerializer
 
+    def delete(self, request, pk, *args, **kwargs):
+        partial = Partial.objects.get(pk=pk)
+        partial.delete()
+        return Response(status=204)
+
 
 class PartialDetailView(generics.RetrieveAPIView):
     queryset = Partial.objects.all()

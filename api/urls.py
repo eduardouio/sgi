@@ -36,7 +36,9 @@ from api.views import (AllOrders, ApportionmenCreateView,
                        SupplierUpdateView, OrderCloseView,
                        LabelCreateView, LabelDeleteView,
                        LabelDetailView, LabelUpdateView,
-                       LabelsFromDetallePedidoFactura
+                       LabelsFromDetallePedidoFactura,
+                       LabesValidRange, LabesValidateBatch,
+                       LabelsValidateLabel
                        )
 
 app_name = 'api'
@@ -125,4 +127,7 @@ urlpatterns = [
     path('labels/detail/<pk>/', LabelDetailView.as_view(), name='detail-suppliers' ),
     path('labels/update/<pk>/', LabelUpdateView.as_view(), name='update-suppliers' ),
     path('labels/from-id-invoice/<id_factura_detalle>/', LabelsFromDetallePedidoFactura.as_view(), name='labels-detail-order'),
+    path('labels/validate-range/<first_tag>/<last_tag>/<quantity_spected>/', LabesValidRange.as_view(), name='labels-validate-order'),
+    path('labels/validate-batch/<batch>/', LabesValidateBatch.as_view(), name='labels-validat-bath-order'),
+    path('labels/validate-label/<label>/', LabelsValidateLabel.as_view(), name='labels-validate-label-order'),
 ]   
