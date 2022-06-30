@@ -14,7 +14,6 @@ class ValidateRangeSafeTrack(LoginSafeTrack):
     Args:
         LoginSafeTrack (obj): autoinicia la secion al instanaciar la clase
     """
-
     def __init__(self):
         loggin('i', 'Iniciando validacion de rango')
         self.url = EMPRESA['safetrack']['url_validate_range']

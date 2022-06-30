@@ -40,6 +40,31 @@ class Label(models.Model):
     quantity = models.IntegerField('Cantidad', default=0)
     parcial = models.SmallIntegerField('Parcial', default=0)
     notas = models.TextField(default=None, null=True, blank=True)
+    response = models.TextField(default=None, null=True, blank=True)
+    message = models.CharField(
+        max_length=500,
+        default=None,
+        null=True,
+        blank=True
+    )
+    sign = models.CharField(
+        max_length=500,
+        default=None,
+        null=True,
+        blank=True
+    )
+    message_status = models.CharField(
+        max_length=200,
+        default=None,
+        null=True,
+        blank=True
+    )
+    checked_reverse = models.BooleanField(default=False)
+    concordance = models.BooleanField(default=False)
+    difference = models.SmallIntegerField(blank=True, null=True, default=None)
+    validated_date = models.DateTimeField(default=None, blank=True, null=True)
+    activated_date = models.DateTimeField(default=None, blank=True, null=True)
+    signed_date = models.DateTimeField(default=None, blank=True, null=True)
     bg_status = models.CharField(
         'Estado',
         max_length=15,
