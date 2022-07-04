@@ -4,7 +4,8 @@ from datetime import datetime
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.views.generic import TemplateView
-from labels.lib_src import ValidateRangeSafeTrack, SignMessageSafeTrack
+from labels.lib_src import (ActivateRangeSafeTrack, SignMessageSafeTrack,
+                            ValidateRangeSafeTrack)
 from labels.models import Label
 from lib_src.sgi_utlils import get_host
 from logs.app_log import loggin
@@ -16,18 +17,17 @@ class ManagerTemplateView(LoginRequiredMixin, TemplateView):
 
     def get(self, request, *args, **kwargs):
         loggin('i', 'Accesando a Administrador de Etiquetas')
-        labels = Label.objects.all()
-
         if request.GET:
             action = request.GET.get('action')
             deep = int(request.GET.get('deep'))
 
             if action == 'verify':
-                self.validate(labels, deep)
+                self.validate(deep)
 
             if action == 'activate':
-                self.activate(labels, deep)
+                self.activate(deep)
 
+        labels = Label.objects.all()
         context = self.get_context_data(**kwargs)
         context['data'] = {
             'title_page': 'Manager Etiquetas',
@@ -58,7 +58,7 @@ class ManagerTemplateView(LoginRequiredMixin, TemplateView):
 
         return data
 
-    def validate(self, labels, deep):
+    def validate(self, deep):
         loggin('i', 'Validando rango de etiquetas')
         validate_range = ValidateRangeSafeTrack()
         labels = Label.objects.filter(Q(bg_status='I') | Q(bg_status='E'))
@@ -96,14 +96,71 @@ class ManagerTemplateView(LoginRequiredMixin, TemplateView):
 
     def sign(self, label):
         loggin('i', 'Firmando mensaje')
-        message = '{"uniqueMarks":["{f_tag}"],"iceSku":"{l_tag}","businessId":"{business_id}"}'
-        import ipdb; ipdb.set_trace()
-        message.replace('f.tag', label.initial_range)
-        message.replace('l.tag', label.end_range)
-        import ipdb; ipdb.set_trace()
+        ice_sku = label.id_factura_detalle.cod_contable.cod_ice
+        valid_ice_sku = self.vefrify_ice_sku(ice_sku)
 
-    def activate(self, labels, deep):
+        if not valid_ice_sku:
+            loggin('e', 'SKU ICE no valido')
+            label.status = 'E'
+            label.message_status = 'SKU ICE no valido, las logitudes no coinciden'
+            label.save()
+            return False
+        message = '{"uniqueMarks": [{"uniqueMarkStart": "f_tag", "uniqueMarkEnd": "l_tag"}], "iceSku": "{ice_sku}", "businessId": "{business_id}"}'
+        message = message.replace('f_tag', label.initial_range)
+        message = message.replace('l_tag', label.end_range)
+        message = message.replace('ice_sku', valid_ice_sku)
+        SignMessage = SignMessageSafeTrack()
+        label.sign = SignMessage.sign(message)
+        label.status = 'S'
+        label.message_status = 'Mensaje Firmado'
+        label.message = message
+        label.save()
+        return True
+
+    def activate(self, deep):
         loggin('i', 'Activando rango de etiquetas')
-        pass
+        RangeActivator = ActivateRangeSafeTrack()
+        labels = Label.objects.filter(bg_status='V')
+        labels = labels[:deep]
 
+        for label in labels:
+            RangeActivator.activate(label)
+        return True
 
+    def vefrify_ice_sku(self, ice_sku):
+        """Verify long ice SKU of the label
+
+        Args:
+            ice_sku (str): 'xxxx-xxx-xxxxxx-xxxx-xxxxxx-xx-xxx-xxxxx'
+            En el nuevo codigod debe tener e digitos en la seguda posicion
+        https://www.sri.gob.ec/o/sri-portlet-biblioteca-alfresco-internet/descargar/7578a9e9-32f4-4dbf-bd12-c0ec688ea9a2/FICHA+T%C9CNICA+ANEXO+ICE.pdf
+        https://www.sri.gob.ec/o/sri-portlet-biblioteca-alfresco-internet/descargar/7510a56f-d397-4188-99b5-bd68af19c10e/CATALOGO_ANEXO_ICE.xls
+
+        xxxx -> Codigo impuesto 4 caracteres
+        xxx -> Clasificacion 3 caracteres codigo ICE ejem Vino
+        xxxxxx -> Marca 6 caracteres ejem: Henkell Rose
+        xxx -> Presentacion 3 caracteres ejem: Botella de Vidrio (013)
+        xxxxxx -> Capacidad 6 caracteres ejem: 1500 (001500)
+        xx -> Unidad de Medida 2 caracteres ejem: 66 - para ml
+        xxx -> Codigo de pais ejem: 593 -> Ecuador
+        xxxxxx -> Grados alcoholicos ver tabla de grados alcoholicos
+        """
+        spected_long_ice_sku = [4, 3, 6, 3, 6, 2, 3, 6]
+        ice_sku_parts = ice_sku.split('-')
+        ice_valid = ''
+
+        if len(spected_long_ice_sku) != len(ice_sku_parts):
+            loggin('e', 'Longitud de ICE SKU incorrecta')
+            return False
+
+        for i, sku in enumerate(ice_sku_parts):
+            if i == 1:
+                sku = '0' + sku
+
+            if len(sku) != spected_long_ice_sku[i]:
+                loggin('e', 'Longitud de ICE SKU incorrecta')
+                return False
+            ice_valid += sku
+        import ipdb; ipdb.set_trace()
+        loggin('i', 'Logitudes ICE SKU correcto')
+        return ice_valid

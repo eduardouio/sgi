@@ -44,6 +44,7 @@ DATOS_EMPRESAS = {
             'url_login': 'https://auth.bdo.safetrack.cloud/auth/realms/safetrack/protocol/openid-connect/token',
             'url_validate_tag': 'https://bdo.safetrack.cloud/api/v1/unique-mark/validate-activate/{}/1e000ba2-7a75-4490-9e0a-9d011a63c136/{}',
             'url_validate_range': 'https://bdo.safetrack.cloud/api/v1/unique-mark/filter/',
+            'url_activate_range': 'https://bdo.safetrack.cloud/api/v1/unique-mark/activate/range',
             'wallet': {
                 'business_id': '1e000ba2-7a75-4490-9e0a-9d011a63c136',
                 'network': 'polygon"',

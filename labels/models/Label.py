@@ -15,6 +15,7 @@ class Label(models.Model):
     STATUS_CHOICES = (
         ('I', 'Inactive'),
         ('S', 'Sended'),
+        ('F', 'Signed'),
         ('A', 'Active'),
         ('D', 'Disabled'),
         ('R', 'Rejected'),

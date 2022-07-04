@@ -1,14 +1,14 @@
-from cvxpy import length
 from django.test import TestCase
 from labels.lib_src import ActivateRangeSafeTrack
+from labels.lib_src import SignMessageSafeTrack
+from labels.models import Label
 
 
 class TESTActivateRange(TestCase):
 
     def setUp(self) -> None:
-        self.activate_range = ActivateRangeSafeTrack()
         self.for_activate = [
-            ['CORDOVEZ','043-22','3031-053-024579-013-000750-66-108-000037','002FPBO7','002FQU64'],
+            ['CORDOVEZ','043-22','3031-53-024579-013-000750-66-108-000037','002FPBO7','002FQU64'],
             ['CORDOVEZ','005-22','3031-018-002474-013-001000-66-213-000077','002C65B0','002BYJQF','002D3K01','002CVZ31','002EMOV4','002E3R87','002EOBR0','002EV451'],
             ['CORDOVEZ','004-22','3031-018-002474-013-001000-66-213-000077','002F8S65','002F16L3','002D0E88','002F16L3'],
             ['CORDOVEZ','008-22','3031-018-002474-013-001000-66-213-000077','002E46H4','002E26M2','002E2ZZ0','002EY045','002EQ2J1','002E16Y5','002E66F0','002EP307'],
@@ -46,18 +46,24 @@ class TESTActivateRange(TestCase):
         ]
         return super().setUp()
 
-    def test_check_labels(self):
-        all_ranges = []
-        for item in self.for_activate:                
-            tmp_ranges = item[3:]
-            ranges = []
-            for k, v in enumerate(tmp_ranges):
-                if k//2 == 0:
-                    ranges.append([tmp_ranges[k-1], tmp_ranges[k]])
-                
-            all_ranges.append({
-                'ice_sku': item[2],
-                'ranges': ranges
-            })
+    def test_activate_range(self):
+        return False
+        # SignMessage = SignMessageSafeTrack()
+        # RangeActivator = ActivateRangeSafeTrack()
+        # f_tag = '002FPBO7'
+        # l_tag = '002FQU64'
+        # ice_sku = '3031-053-024579-013-000750-66-108-000037'
+        # message = '{"uniqueMarks": [{"uniqueMarkStart": "f_tag", "uniqueMarkEnd": "l_tag"}], "iceSku": "{ice_sku}", "businessId": "{business_id}"}'
+        # message = message.replace('f_tag', l_tag)
+        # message = message.replace('l_tag', f_tag)
+        # message = message.replace('ice_sku', ice_sku)
+        # sign = SignMessage.sign(message)
+        # label = Label()
+        # label.initial_range = f_tag
+        # label.end_range = l_tag
+        # label.sign = sign
+        # label.message = message
+        # response = RangeActivator.activate(label)
         
-        results = [self.activate_range.activate(i) for i in all_ranges]
+        
+        
