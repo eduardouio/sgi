@@ -54,8 +54,7 @@ class Label(models.Model):
         null=True,
         blank=True
     )
-    message_status = models.CharField(
-        max_length=200,
+    message_status = models.TextField(
         default=None,
         null=True,
         blank=True

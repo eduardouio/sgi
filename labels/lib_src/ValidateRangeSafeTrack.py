@@ -36,7 +36,6 @@ class ValidateRangeSafeTrack(LoginSafeTrack):
             "businessId": "",
             "status": -1
         }
-
         response = requests.post(
             self.url,
             data=json.dumps(range_data),

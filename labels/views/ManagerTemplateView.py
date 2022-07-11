@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from datetime import date, datetime
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
@@ -53,7 +53,7 @@ class ManagerTemplateView(LoginRequiredMixin, TemplateView):
                 data['validated'].append(label)
             elif label.bg_status == 'A':
                 data['active'].append(label)
-            elif label.bg_status == 'E':
+            elif label.bg_status == 'E' or label.bg_status == 'S':
                 data['error'].append(label)
 
         return data
@@ -74,7 +74,7 @@ class ManagerTemplateView(LoginRequiredMixin, TemplateView):
             ((result['last_tag'] == label.initial_range) or
              (result['last_tag'] == label.end_range))):
                 label.bg_status = 'V'
-                label.message_status = 'Validado Correctamente'
+                label.message_status = 'Validado Correctamente;'
                 label.validated_date = datetime.now()
                 label.initial_range = result['first_tag']
                 label.end_range = result['last_tag']
@@ -90,7 +90,7 @@ class ManagerTemplateView(LoginRequiredMixin, TemplateView):
             else:
                 label.bg_status = 'E'
                 label.validated_date = datetime.now()
-                label.message_status = 'Error al Validar'
+                label.message_status = 'Error al Validar;'
                 label.response = json.dumps(result)
                 label.save()
 
@@ -101,19 +101,20 @@ class ManagerTemplateView(LoginRequiredMixin, TemplateView):
 
         if not valid_ice_sku:
             loggin('e', 'SKU ICE no valido')
-            label.status = 'E'
-            label.message_status = 'SKU ICE no valido, las logitudes no coinciden'
+            label.bg_status = 'E'
+            label.message_status = 'SKU ICE no valido, las logitudes no coinciden;'
             label.save()
             return False
-        message = '{"uniqueMarks": [{"uniqueMarkStart": "f_tag", "uniqueMarkEnd": "l_tag"}], "iceSku": "{ice_sku}", "businessId": "{business_id}"}'
+        message = """{"uniqueMarks":[{"uniqueMarkStart":"f_tag","uniqueMarkEnd":"l_tag"}],"iceSku":"ice_sku","businessId":"business_id"}"""
         message = message.replace('f_tag', label.initial_range)
         message = message.replace('l_tag', label.end_range)
         message = message.replace('ice_sku', valid_ice_sku)
         SignMessage = SignMessageSafeTrack()
-        label.sign = SignMessage.sign(message)
-        label.status = 'S'
-        label.message_status = 'Mensaje Firmado'
-        label.message = message
+        result = SignMessage.sign(message)
+        label.message = result['message']
+        label.sign = result['signature']
+        label.message_status = 'Mensaje Firmado;'
+        label.signed_date = datetime.now()
         label.save()
         return True
 
@@ -147,7 +148,7 @@ class ManagerTemplateView(LoginRequiredMixin, TemplateView):
         """
         spected_long_ice_sku = [4, 3, 6, 3, 6, 2, 3, 6]
         ice_sku_parts = ice_sku.split('-')
-        ice_valid = ''
+        ice_valid = []
 
         if len(spected_long_ice_sku) != len(ice_sku_parts):
             loggin('e', 'Longitud de ICE SKU incorrecta')
@@ -160,7 +161,8 @@ class ManagerTemplateView(LoginRequiredMixin, TemplateView):
             if len(sku) != spected_long_ice_sku[i]:
                 loggin('e', 'Longitud de ICE SKU incorrecta')
                 return False
-            ice_valid += sku
-        import ipdb; ipdb.set_trace()
+
+            ice_valid.append(sku)
+
         loggin('i', 'Logitudes ICE SKU correcto')
-        return ice_valid
+        return '-'.join(ice_valid)

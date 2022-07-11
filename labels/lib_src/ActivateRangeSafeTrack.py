@@ -33,21 +33,29 @@ class ActivateRangeSafeTrack(LoginSafeTrack):
             "msg": label.message,
             "signature": label.sign
         }
-        label.status = 'S'
+        label.bg_status = 'S'
+        label.message_status += 'Enviando Request para activar rango;'
         label.save()
-        import ipdb; ipdb.set_trace()
-        
+
         response = requests.put(
             self.url,
             data=json.dumps(data),
             headers=self.my_headers
         )
-        
 
-        if reponse.status_code == 400:
-            label.status = 'E'
-            label.response = response.text
-            label.message_status = 'Ocurrio un error al activar el rango'
-            loggin('i', 'Rango activado correctamente')
-        
-        import pdb; pdb.set_trace()
+        if response.status_code == 400:
+            loggin('i', 'Error al Activar el rango')
+            label.bg_status = 'E'
+            label.message_status += 'Ocurrio un error al activar el rango;' + response.text + ';'
+            label.save()
+            return False
+
+        if response.status_code == 500:
+            loggin('i', 'En peticion http')
+            label.bg_status = 'E'
+            label.message_status += 'Ocurrio un error al enviar peticion;' + response.text + ';'
+            label.save()
+
+        label.bg_status = 'A'
+        label.message_status += 'Rango Activado;' + response.text + ';'
+        label.save()

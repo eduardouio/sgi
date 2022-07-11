@@ -13,7 +13,7 @@ class SignMessageSafeTrack:
         self.business_id = EMPRESA['safetrack']['wallet']['business_id']
 
     def sign(self, message):
-        message = message.replace('{business_id}', self.business_id)
+        message = message.replace('business_id', self.business_id)
         web3 = Web3(Web3.HTTPProvider(self.address))
         msg = encode_defunct(text=message)
         sign = web3.eth.account.sign_message(
@@ -21,4 +21,7 @@ class SignMessageSafeTrack:
             private_key=self.private_key
         )
         loggin('i', 'Mensaje firmado')
-        return sign.signature.hex()
+        return {
+            'message': message,
+            'signature': sign.signature.hex()
+            }
