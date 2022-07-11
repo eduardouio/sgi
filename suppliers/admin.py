@@ -24,12 +24,23 @@ class SupplierAdmin(SimpleHistoryAdmin):
         'categoria',
     )
 
+    fields = (
+        'nombre',
+        'tipo_provedor',
+        'identificacion_proveedor',
+        'moneda_transaccion',
+        'categoria',
+        'comentarios',
+        'id_user',
+    )
+
     list_filter = (
         'nombre',
         'tipo_provedor',
         'moneda_transaccion',
         'categoria',
     )
+    
 
 
 admin.site.register(Supplier, SupplierAdmin)

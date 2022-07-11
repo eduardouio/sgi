@@ -45,6 +45,7 @@ class Product(models.Model):
         null=True,
         choices=STATUS_CHOICES
         )
+    solicitud_aucp = models.CharField(max_length=50, default=None, null=True)
     grado_alcoholico = models.DecimalField(
         max_digits=12,
         decimal_places=3,

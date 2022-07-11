@@ -6,6 +6,10 @@ from simple_history.models import HistoricalRecords
 from logs.app_log import loggin
 from orders.models.Order import Order
 
+STATUS_CFS_DOCUMENTS = (
+    ('PENDING', 'PENDING'),
+    ('SENDED', 'SENDED'),
+)
 
 class Partial(models.Model):
     id_parcial = models.AutoField(primary_key=True)
@@ -232,6 +236,11 @@ class Partial(models.Model):
         default=0,
         blank=True,
         null=True
+    )
+    bg_status_documents_cfs = models.TextField(
+        default=None,
+        null=True,
+        choices=STATUS_CFS_DOCUMENTS
     )
     # Indica el tipo de aforo asignado por la SENAE
     TYPE_INSPECTION = (

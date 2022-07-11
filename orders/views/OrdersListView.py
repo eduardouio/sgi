@@ -4,7 +4,6 @@ from django.views.generic import TemplateView
 
 # sgi
 from lib_src.sgi_utlils import get_host, run_query
-from orders.models import Order
 from partials.models import Partial
 from logs.app_log import loggin
 
