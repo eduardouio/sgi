@@ -2,19 +2,18 @@ import json
 
 import requests
 
-from labels.lib_src import LoginSafeTrack
 from logs.app_log import loggin
 from sgi.settings import EMPRESA
 
 
-class ValidateBatchSafeTrack(LoginSafeTrack):
+class ValidateBatchSafeTrack():
     """
     Verificamos que el batch sea valido
     """
 
-    def __init__(self):
+    def __init__(self, login):
         self.url = EMPRESA['safetrack']['url_validate_range']
-        super().__init__()
+        self.login = login
 
     def validate(self, batch):
         loggin('i', 'Validando Lote de etiquetas')
@@ -26,7 +25,7 @@ class ValidateBatchSafeTrack(LoginSafeTrack):
         response = requests.post(
             self.url,
             data=json.dumps(batch_data),
-            headers=self.my_headers
+            headers=self.login.my_headers
         )
 
         if len(response.json()) == 0:
@@ -41,6 +40,7 @@ class ValidateBatchSafeTrack(LoginSafeTrack):
             }
 
         data = response.json()
+        loggin('i', 'Lote {} de etiquetas validado'.format(batch))
         return {
             'batch': batch,
             'first_tag': data[0]['uniquemark'],

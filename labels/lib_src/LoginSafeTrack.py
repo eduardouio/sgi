@@ -17,6 +17,7 @@ class LoginSafeTrack():
         self.status_service = self.token['status_service']
 
     def get_token(self):
+        loggin('i', 'Renovando JWT')
         safe_track_user = EMPRESA['safetrack']['login_data']
         url_login = EMPRESA['safetrack']['url_login']
         response = requests.post(
@@ -25,7 +26,9 @@ class LoginSafeTrack():
         )
 
         if response.status_code != 200:
-            loggin('e', 'Error al obtener el token de safetrack')
+            loggin('e', 'Error al obtener el token de safetrack {}'.format(
+                response.text)
+            )
             return({
                 'status_code': response.status_code,
                 'error': json.loads(response.text),
@@ -34,7 +37,6 @@ class LoginSafeTrack():
             })
 
         loggin('i', 'Token obtenido de safetrack')
-        # token_base64 = base64.urlsafe_b64decode(token[1]).decode('utf-8')
         return({
             'token': response.json()['access_token'],
             'sub': EMPRESA['safetrack']['sub'],
