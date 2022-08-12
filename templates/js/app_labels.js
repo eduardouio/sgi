@@ -54,6 +54,7 @@ var app = new Vue({
       const checkArray = Object.entries(form_data).map(([key, value]) => {
         if (key != "notas") {
           if (value === null || value === "") {
+            console.log(key);
             is_valid = false;
           }
         }
@@ -94,6 +95,7 @@ var app = new Vue({
         },
         (error) => {
           alert("Error en Servidor");
+          console.dir(error);
           this.is_loading = false;
         }
       );
@@ -129,10 +131,11 @@ var app = new Vue({
           this.is_loading = false;
           this.show_add_range_button = false;
         }
-      },error => {
+      },(error) => {
         alert("Error en Servidor");
         this.is_loading = false;
         this.show_add_range_button = false;
+        console.dir(error);
       });
     },
     getRangesLabels: function (id_factura_detalle) {
@@ -145,8 +148,9 @@ var app = new Vue({
           labels = response.body;
           this.current_lables = labels;
         },
-        (reponse) => {
+        (error) => {
           alert("Error al obtener las etiquetas");
+          console.dir(error);
         }
       );
     },
@@ -181,7 +185,6 @@ var app = new Vue({
     addRange: function () {
       console.log("agregando un nuevo rango");
       url = host.trim() + "api/labels/create/";
-      console.log(url);
       this.$http
         .post(url, this.new_range, {
           headers: { "X-CSRFToken": this.csrftoken },
@@ -211,6 +214,7 @@ var app = new Vue({
             this.new_range = new_range;
             altBtn.click();
             this.getRangesLabels(this.current_product.detalle_pedido_factura);
+            location.reload();
           },
           (response) => {
             console.log("error de la peticion");
@@ -242,7 +246,6 @@ var app = new Vue({
     total(){
       return parseInt(this.current_product.unidades);
     }
-
   },
   filters: {
     number(val) {
