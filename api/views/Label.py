@@ -1,6 +1,6 @@
 import json
 
-from labels.lib_src import ValidateRangeSafeTrack, ValidateBatchSafeTrack
+from labels.lib_src import ValidateRangeSafeTrack, ValidateBatchSafeTrack, LoginSafeTrack
 from labels.models import Label
 from lib_src.serializers import LabelSerializer
 from rest_framework import generics
@@ -49,7 +49,8 @@ class LabelsFromDetallePedidoFactura(APIView):
 # /api/labels/validate-range/<first_tag>/<last_tag>/<quatity_spected>/
 class LabesValidRange(APIView):
     def get(self, request, first_tag, last_tag, quantity_spected):
-        validateRange = ValidateRangeSafeTrack()
+        login = LoginSafeTrack()
+        validateRange = ValidateRangeSafeTrack(login)
         data = validateRange.validate(
             first_tag,
             last_tag,
