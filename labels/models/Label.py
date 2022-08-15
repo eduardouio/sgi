@@ -74,7 +74,7 @@ class Label(models.Model):
     id_user = models.SmallIntegerField(default=0)
     date_created = models.DateTimeField(
         'Fecha de Creación',
-        auto_now_add=True
+        auto_now_add=True,
     )
     last_updated = models.DateTimeField(
         'Ultima Actualización',
