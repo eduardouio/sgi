@@ -24,7 +24,9 @@ class ActivateRangeSafeTrack():
         self.label = label
         self.is_valid = self.__validate_label(ignore_diferences)
         self.is_signed = self.__sign()
-        return self.__send_activate_request()
+        self.__send_activate_request()
+        self.label.save()
+        return self.label
 
     def __validate_label(self, ignore_diferences=False):
         self.label.validated_date = datetime.now()
@@ -69,6 +71,7 @@ class ActivateRangeSafeTrack():
         self.label.activated_date = datetime.now()
         self.label.bg_status = 'S'
         self.label.message_status += 'Enviando Request para activar rango;'
+        loggin('i', 'Enviando Request para activar rango')
         data = {
             "address": self.address,
             "network": self.network,
@@ -84,7 +87,7 @@ class ActivateRangeSafeTrack():
         if response.status_code == 400:
             self.label.bg_status = 'R'
             self.label.message_status += (
-                'Ocurrio un error en Serivicio BDO al activar el rango {};'
+                'httpCode:400 Ocurrio un error en Serivicio BDO al activar el rango {};'
             ).format(self.label)
             self.label.response = response.text
             return False
@@ -92,11 +95,13 @@ class ActivateRangeSafeTrack():
         if response.status_code == 500:
             self.label.bg_status = 'E'
             self.label.message_status += (
-                'Error interno de Servidor de BDO, se pasa el rango a Error;'
+                'httpCode:500 Error interno de Servidor de BDO, '
+                'se pasa el rango a Error;'
             ).format()
             self.label.response = response.text
             return False
 
+        loggin('i', 'Rango Activado correctamente')
         self.label.bg_status = 'A'
         self.label.message_status += 'Rango Activado;'
         self.label.response = response.text
