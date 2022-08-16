@@ -22,6 +22,7 @@ class ActivateRangeSafeTrack():
     def try_activate(self, label, ignore_diferences=False):
         loggin('i', 'Activando rango de etiquetas, validando etiquetas')
         self.label = label
+        self.label.message_status = 'Iniciando Activacion de Rango;'
         self.is_valid = self.__validate_label(ignore_diferences)
         self.is_signed = self.__sign()
         self.__send_activate_request()
@@ -36,7 +37,7 @@ class ActivateRangeSafeTrack():
             self.label.end_range,
             self.label.quantity
         )
-
+        self.label.last_jwt = result['response']
         if ignore_diferences and not result['concordance']:
             loggin('i', 'Ignorando diferencias')
             self.label.bg_status = 'V'

@@ -67,8 +67,7 @@ class ManagerTemplateView(LoginRequiredMixin, TemplateView):
         elif action == 'activate_all':
             login = LoginSafeTrack()
             RangeActivator = ActivateRangeSafeTrack(login)
-            labels = Label.objects.filter(bg_status='V')
-            labels = labels[:deep] if deep > 0 else labels
+            labels = Label.objects.filter(bg_status='I')
             for label in labels:
                 RangeActivator.try_activate(label)
         elif action == 'move_to_error':
