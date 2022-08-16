@@ -1,8 +1,10 @@
 from django.test import TestCase
 from labels.lib_src import ValidateBatchSafeTrack
+from labels.lib_src import LoginSafeTrack
 
 
 class TESTValidateBacth(TestCase):
+
     def setUp(self):
         self.batchs = [
             {
@@ -36,7 +38,8 @@ class TESTValidateBacth(TestCase):
                 'quantity': 1000
             },
         ]
-        self.validate_batch = ValidateBatchSafeTrack()
+        login = LoginSafeTrack()
+        self.validate_batch = ValidateBatchSafeTrack(login)
         return super().setUp()
 
     def test_batch(self):
@@ -63,4 +66,4 @@ class TESTValidateBacth(TestCase):
 
         for bacth in batchs:
             result = self.validate_batch.validate(bacth['batch'])
-            self.assertEqual(result, False)
+            self.assertEqual(result['status'], 500)

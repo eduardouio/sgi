@@ -1,12 +1,11 @@
 import json
 
 import requests
-from labels.lib_src import LoginSafeTrack
 from logs.app_log import loggin
 from sgi.settings import EMPRESA
 
 
-class ValidateRangeSafeTrack(LoginSafeTrack):
+class ValidateRangeSafeTrack():
     """
     Valida que una etiqueta sea valida
     https://bdo.safetrack.cloud/api/v1/unique-mark/validate-activate/{id_tag}/{bussines_id}/{ice_sku}/
@@ -14,11 +13,11 @@ class ValidateRangeSafeTrack(LoginSafeTrack):
     Args:
         LoginSafeTrack (obj): autoinicia la secion al instanaciar la clase
     """
-    def __init__(self):
+    def __init__(self, login):
         loggin('i', 'Iniciando validacion de rango')
         self.url = EMPRESA['safetrack']['url_validate_range']
         self.check_reverse = False
-        super().__init__()
+        self.login = login
 
     def validate(self, first_tag, last_tag, quantity_spected):
         """
@@ -39,7 +38,7 @@ class ValidateRangeSafeTrack(LoginSafeTrack):
         response = requests.post(
             self.url,
             data=json.dumps(range_data),
-            headers=self.my_headers
+            headers=self.login.my_headers
         )
         quantity = len(response.json())
         result = {
@@ -56,6 +55,7 @@ class ValidateRangeSafeTrack(LoginSafeTrack):
         if result['difference'] == 0:
             result['concordance'] = True
         else:
+            loggin('i', 'No concorda la cantidad de etiquetas')
             result['concordance'] = False
 
         if quantity == 0 and not self.check_reverse:

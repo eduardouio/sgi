@@ -4,7 +4,6 @@
     valores posibles -> cordovez | imnac | vid | test
     ENTERPRISE_CONF = [cordovez | imnac | vid | test]
 """
-
 import os
 
 
@@ -82,7 +81,7 @@ DATOS_EMPRESAS = {
                 'username': 'evillota',
                 'password': 'Evillota2022!',
                 'grant_type': 'password',
-                'client_id': 'cordovez-cli',
+                'client_id': 'safetrack-cli',
             },
             'sub': '4e6b02f1-c83b-47a2-a76e-663569e8c71b',
             'url_login': 'https://auth.bdo.safetrack.cloud/auth/realms/safetrack/protocol/openid-connect/token',
@@ -126,7 +125,7 @@ DATOS_EMPRESAS = {
                  'username': 'imnac',
                 'password': 'Imnac2022!',
                 'grant_type': 'password',
-                'client_id': 'cordovez-cli',
+                'client_id': 'safetrack-cli',
             },
             'sub': 'a275994b-188f-4901-861e-9a739813550f',
             'url_login': 'https://auth.bdo.safetrack.cloud/auth/realms/safetrack/protocol/openid-connect/token',
@@ -170,7 +169,7 @@ DATOS_EMPRESAS = {
                  'username': 'vidinternacional',
                 'password': 'Vidinter2022!',
                 'grant_type': 'password',
-                'client_id': 'cordovez-cli',
+                'client_id': 'safetrack-cli',
             },
             'sub': 'df8c7f43-66b2-470f-a72f-cc6d0e1f042e',
             'url_login': 'https://auth.bdo.safetrack.cloud/auth/realms/safetrack/protocol/openid-connect/token',

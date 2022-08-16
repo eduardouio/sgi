@@ -1,12 +1,13 @@
-from urllib import response
 from django.test import TestCase
 from labels.lib_src import ValidateRangeSafeTrack
+from labels.lib_src import LoginSafeTrack
+from logs.app_log import loggin
 
 
 class TESTValidateRangeSafeTrack(TestCase):
 
     def setUp(self):
-        self.validateRange = ValidateRangeSafeTrack()
+        loggin('t', 'inciamos validado de los rangos')
         self.spected_data = {
             'first_tag': '001RTH00',
             'last_tag': '001S73I1',
@@ -16,6 +17,8 @@ class TESTValidateRangeSafeTrack(TestCase):
             'concordance': True,
             'difference': 0,
         }
+        login = LoginSafeTrack()
+        self.validateRange = ValidateRangeSafeTrack(login)
 
     def test_validate_range_ordered(self):
         response = self.validateRange.validate(
