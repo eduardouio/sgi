@@ -37,7 +37,7 @@ class ActivateRangeSafeTrack():
             self.label.end_range,
             self.label.quantity
         )
-        self.label.last_jwt = result['response']
+        self.label.last_jwt = result['response'].text
         if ignore_diferences and not result['concordance']:
             loggin('i', 'Ignorando diferencias')
             self.label.bg_status = 'V'
