@@ -35,11 +35,6 @@ class LedgerOrder():
         }
 
     def get_fob_sale(self):
-        """Retorna el saldo de mayor del producto de un pedido
-
-        Returns:
-            [float]: saldo total de los items del pedido
-        """
         self.order_invoice = OrderInvoice.get_by_order(self.order.nro_pedido)
         if self.order_invoice is None:
             loggin('e', 'el pedido {} no tiene factura'.format(
