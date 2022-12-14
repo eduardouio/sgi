@@ -27,17 +27,9 @@ class LedgerReportView(LoginRequiredMixin, TemplateView):
         context = self.get_context_data(**kwargs)
 
         orders = request.POST['pedidos'].split('\n')
-        orders = [o.replace('/', '-') for o in orders]
-        orders = [o.replace('\r', '') for o in orders]
-        orders_list = []
-        for order in orders:
-            if len(orders) > 6:
-                orders_list.append(order[:6])
-            elif len(orders) == 6:
-                orders_list.append(order)
-
+        orders = [o[:6].replace('/', '-') for o in orders]
         report = []
-        for order in orders_list:
+        for order in orders:
             order_sale = LedgerOrder().get_sale(order)
             if order_sale is not None:
                 report.append(order_sale)
@@ -48,4 +40,5 @@ class LedgerReportView(LoginRequiredMixin, TemplateView):
             'report': report,
             'show_form': False
         }
+
         return self.render_to_response(context)

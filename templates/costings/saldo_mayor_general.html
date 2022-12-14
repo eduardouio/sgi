@@ -34,24 +34,34 @@
    </div>
    {% else  %}
     <div class="row">
-      <table class="table table-bordered table-striped">
-      <tr>
-      <th colspan="7" class="text-center">Saldo Mayor General {{ request.enterprise.empresa }}</th>
+      <table class="table table-bordered table-condensed table-hover">
+      <tr class="bg-secondary text-light">
+      <th colspan="9" class="text-center" style="font-size: 18px;">
+         Saldo Mayor General {{ request.enterprise.empresa }}
+      </th>
       </tr>
       <tr>
       <th>#</th>
       <th>Pedido</th>
+      <th>Proveedor</th>
       <th>Fob Pendiente</th>
       <th>Gastos Pendientes</th>
       <th>Saldo</th>
+      <th class="bg-light">G Iniciales</th>
+      <th class="bg-light">G Facturados</th>
+      <th class="bg-light">G Por Llegar</th>
       </tr>
       {% for item in data.report %}
          <tr>
          <td class="text-center">{{ loop.index }}</td>
-         <td class="text-right">{{ item.nro_order }}</td>
-         <td class="text-right">{{ item.fob_tct }}</td>
-         <td class="text-right">{{ item.expenses }}</td>
-         <td class="text-right">{{ item.sale }}</td>
+         <td class="text-center">{{ item.order }}</td>
+         <td class="">{{ item.order.proveedor }}</td>
+         <td class="text-right">{{ item.product.sale }}</td>
+         <td class="text-right">{{ item.expenses.sale }}</td>
+         <td class="text-right bg_sap">{{ item.product.sale + item.expenses.sale }}</td>
+         <td class="bg-light text-right text-secondary">{{ item.expenses.initial_sale }}</td>
+         <td class="bg-light text-right text-secondary">{{ item.expenses.justified }}</td>
+         <td class="bg-light text-right text-secondary">{{ item.expenses.per_justified}}</td>
          </tr>   
       {% endfor %}
       </table>

@@ -20,10 +20,11 @@ class LedgerOrder():
         self.nro_order = nro_order
         self.order = Order.get_by_order(nro_order)
         if self.order is None or nro_order == '000-00':
-            loggin('e', 'El pedido no existe')
             return None
 
         return {
+            'order': self.order,
+            'order_invoice': self.order_invoice,
             'product' : self.get_fob_sale(),
             'expenses': self.get_expenses_sale(),
         }
@@ -64,6 +65,7 @@ class LedgerOrder():
             'downloaded': 0,
             'sale':0,
             'justified': 0,
+            'per_justified': 0,
         }
         expenses = Expense.get_complete_expenses(self.order.nro_pedido)
         self.origin_expense = (
@@ -86,6 +88,9 @@ class LedgerOrder():
 
         expenses_sale['sale'] = (
             expenses_sale['initial_sale'] - expenses_sale['downloaded']
+        ).__round__(2)
+        expenses_sale['per_justified'] = (
+            expenses_sale['initial_sale'] - expenses_sale['justified']
         ).__round__(2)
         return expenses_sale;
 
