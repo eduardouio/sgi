@@ -50,6 +50,9 @@ class LedgerOrder():
             [p.nro_cajas * p.costo_caja for p in init_sale]
         )* self.order_invoice.tipo_cambio).__round__(2)
 
+        if self.order.bg_isclosed and self.order.regimen == '10':
+            return product_sale
+
         product_sale['sale'] = float(sum(
             [p['nro_cajas'] * p['costo_caja'] for p in order_sale['sale']]
         )* float(self.order_invoice.tipo_cambio)).__round__(2)
@@ -78,9 +81,13 @@ class LedgerOrder():
             + self.origin_expense 
             + taxes['initial_sale']
         )
-        expenses_sale['downloaded'] = self.__get_downloaded_expenses(
-            partials
-        )
+ 
+        if self.order.bg_isclosed and self.order.regimen == '10':
+            expenses_sale['downloaded'] = expenses_sale['initial_sale']
+        else:
+            expenses_sale['downloaded'] = self.__get_downloaded_expenses(
+                partials
+            )
 
         expenses_sale['justified'] = (
             self.__get_invoiced_value(expenses) + float(taxes['initial_sale'])

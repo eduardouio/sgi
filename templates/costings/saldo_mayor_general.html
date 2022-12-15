@@ -54,7 +54,11 @@
       {% for item in data.report %}
          <tr>
          <td class="text-center">{{ loop.index }}</td>
-         <td class="text-center">{{ item.order }}</td>
+         <td class="text-center">
+            <a href="{{request.enterprise.url_app_importaciones}}index.php/pedido/presentar/{{ item.order }}" target="_blank">
+               {{ item.order }} <small>[{{item.order.regimen}}]</small>
+            </a>
+         </td>
          <td class="">{{ item.order.proveedor }}</td>
          <td class="text-right">{{ item.product.sale }}</td>
          <td class="text-right">{{ item.expenses.sale }}</td>
