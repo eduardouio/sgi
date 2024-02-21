@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView
 from labels.lib_src import ActivateRangeSafeTrack, LoginSafeTrack
 from labels.models import Label
@@ -16,8 +17,9 @@ class ManagerTemplateView(LoginRequiredMixin, TemplateView):
             action = request.GET.get('action')
             pk = int(request.GET.get('pk'))
             self.activate(action, pk, deep=pk)
+            return HttpResponseRedirect('/etiquetas/manager/')
 
-        labels = Label.objects.all()
+        labels = Label.objects.all().exclude(bg_status='A')
         context = self.get_context_data(**kwargs)
         context['data'] = {
             'title_page': 'Manager Etiquetas',
@@ -46,7 +48,7 @@ class ManagerTemplateView(LoginRequiredMixin, TemplateView):
                 data['total_inactive'] += label.quantity
             elif label.bg_status == 'A':
                 data['active'].append(label)
-                data['total_active'] += label.quantity   
+                data['total_active'] += label.quantity
             elif label.bg_status == 'E' or label.bg_status == 'S':
                 data['error'].append(label)
                 data['total_error'] += label.quantity

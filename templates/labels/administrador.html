@@ -1,6 +1,6 @@
 {% extends 'base/base.html' %}
 {% block header %}
-<!--cARGAMOS LIBRERIAS ADICIONALES PARA MOSTRAR LA TABLA-->
+<!--CARGAMOS LIBRERIAS ADICIONALES PARA MOSTRAR LA TABLA-->
 <link rel="stylesheet" href="{{ static('css/jquery.dataTables.min.css') }}">
 <script src="{{ static('js/jquery.dataTables.min.js') }}"></script>
 {% endblock %}
@@ -72,17 +72,32 @@
                      <a
                         href="{{request.enterprise.url_app_importaciones}}index.php/pedido/presentar/{{ etiqueta.id_factura_detalle.id_pedido_factura.nro_pedido }}">
                         [{{ etiqueta.parcial }}]
+
                      </a>
                   </td>
-                  <td><a href="/admin/labels/label/{{etiqueta.id_label}}" target="_blank" rel="noopener noreferrer">{{
-                        etiqueta.id_factura_detalle.product[:40] }}</a></td>
-                  <td class="">{{ etiqueta.notas[40:] if etiqueta.notas else '--' }}</td>
-                  <td class="text-center">{{ etiqueta }}</td>
+                  <td>
+                     <a href="/admin/labels/label/{{etiqueta.id_label}}" target="_blank" rel="noopener noreferrer">
+                        {{ etiqueta.id_factura_detalle.product[:60] if etiqueta.id_factura_detalle.product}}
+                     </a>
+                        <a href="/productos/ver/{{etiqueta.id_factura_detalle.cod_contable_id}}" target="_blank" rel="noopener">
+                           {{ etiqueta.id_factura_detalle.cod_contable.cod_ice }}
+                        </a>
+                     </td>
+                  <td class="">{{ etiqueta.notas[:60] if etiqueta.notas else '--' }}</td>
+                  <td class="text-center">
+                     <a href="http://s4t.io/{{ etiqueta.initial_range }}" target="_blank" rel="noopener noreferrer">
+                        {{ etiqueta.initial_range }}
+                     </a>
+                     -
+                     <a href="http://s4t.io/{{ etiqueta.end_range }}" target="_blank" rel="noopener noreferrer">
+                        {{ etiqueta.end_range }}
+                     </a>
+                  </td>
                   <td class="text-right">{{ etiqueta.quantity }}</td>
-                  <td class="text-right">{{ etiqueta.date_created.strftime('%d/%h/%Y %H:%M') }}</td>
+                  <td class="text-right">{{ etiqueta.date_created.strftime('%d/%h/%Y %H:%M') if etiqueta.date_created }}</td>
                   <td class="text-center">{{ etiqueta.bg_status }}</td>
                   <td class="text-center">
-                     <a href="?action=activate_pk&pk={{etiqueta.id_label}}" class="text-success"><i class="fa fa-paper-plane"></i></a> |
+                     <a href="?action=activate_pk&pk={{etiqueta.id_label}}" target="_blank" class="text-success"><i class="fa fa-paper-plane"></i></a> |
                      <a href="?action=move_to_error&pk={{etiqueta.id_label}}" class="text-danger"><i class="fa fa-ban"></i></a>
                   </td>
                </tr>
@@ -124,21 +139,39 @@
                         [{{ etiqueta.parcial }}]
                      </a>
                   </td>
-                  <td><a href="/admin/labels/label/{{etiqueta.id_label}}" target="_blank" rel="noopener noreferrer">{{
-                        etiqueta.id_factura_detalle.product[:40] }}</a></td>
-                  <td class="">{{ etiqueta.notas[40:] if etiqueta.notas else '--' }}</td>
-                  <td class="text-center">{{ etiqueta }}</td>
+                  <td>
+                     <a href="/admin/labels/label/{{etiqueta.id_label}}" target="_blank" rel="noopener noreferrer">{{
+			     etiqueta.id_factura_detalle.product[:60] }}
+                     </a>
+                     <a href="/productos/ver/{{etiqueta.id_factura_detalle.cod_contable_id}}" target="_blank" rel="noopener">
+                           {{ etiqueta.id_factura_detalle.cod_contable.cod_ice }}
+                     </a>
+                     </td>
+                  <td class="">{{ etiqueta.notas[:60] if etiqueta.notas else '--' }}</td>
+                  <td class="text-center">
+                     <a href="http://s4t.io/{{ etiqueta.initial_range }}" target="_blank" rel="noopener noreferrer">
+                        {{ etiqueta.initial_range }}
+                     </a>
+                     -
+                     <a href="http://s4t.io/{{ etiqueta.end_range }}" target="_blank" rel="noopener noreferrer">
+                        {{ etiqueta.end_range }}
+                     </a>
+                  </td>
                   <td class="text-right">{{ etiqueta.quantity }}</td>
                   <td class="text-right">{{ etiqueta.date_created.strftime('%d/%h/%Y %H:%M') }}</td>
                   <td class="text-right">
-                     {% if etiqueta.validated_date %}
-                        {{ etiqueta.validated_date.strftime('%d/%h/%Y %H:%M') }}
-                     {% endif %}
+                     {%if etiqueta.validated_date %}
+                         {{etiqueta.validated_date.strftime('%d/%h/%Y %H:%M')}}
+                     {%else%}
+                     <span class="text-secondary">Sin Validar</span>
+                     {%endif%}
                   </td>
                   <td class="text-right">
-                     {% if etiqueta.signed_date %}
-                        {{ etiqueta.signed_date.strftime('%d/%h/%Y %H:%M') }}
-                     {% endif %}
+                     {%if etiqueta.signed_date %}
+                     {{etiqueta.signed_date.strftime('%d/%h/%Y %H:%M')}}
+                     {%else%}
+                     <span class="text-secondary">Sin Firma</span>
+                     {%endif%}
                   </td>
                   <td class="text-center">{{ etiqueta.bg_status }}</td>
                   <td class="text-center">
@@ -183,20 +216,38 @@
                            [{{ etiqueta.parcial }}]
                         </a>
                      </td>
-                     <td><a href="/admin/labels/label/{{etiqueta.id_label}}" target="_blank" rel="noopener noreferrer">{{
-                           etiqueta.id_factura_detalle.product[:40] }}</a></td>
-                     <td class="">{{ etiqueta.notas[40:] if etiqueta.notas else '--' }}</td>
-                     <td class="text-center">{{ etiqueta }}</td>
+                     <td>
+                        <a href="/admin/labels/label/{{etiqueta.id_label}}" target="_blank" rel="noopener noreferrer">{{
+                           etiqueta.id_factura_detalle.product[:60] }}
+                        </a>
+                        <a href="/productos/ver/{{etiqueta.id_factura_detalle.cod_contable_id}}" target="_blank" rel="noopener">
+                           {{ etiqueta.id_factura_detalle.cod_contable.cod_ice }}
+                        </a>
+                        </td>
+                     <td class="">{{ etiqueta.notas[:60] if etiqueta.notas else '--' }}</td>
+                     <td class="text-center">
+                        <a href="http://s4t.io/{{ etiqueta.initial_range }}" target="_blank" rel="noopener noreferrer">
+                           {{ etiqueta.initial_range }}
+                        </a>
+                        -
+                        <a href="http://s4t.io/{{ etiqueta.end_range }}" target="_blank" rel="noopener noreferrer">
+                           {{ etiqueta.end_range }}
+                        </a>
+                     </td>
                      <td class="text-right">{{ etiqueta.quantity }}</td>
                      <td class="text-right">{{ etiqueta.date_created.strftime('%d/%h/%Y %H:%M')}}</td>
                      <td class="text-right">
                         {%if etiqueta.validated_date %}
                            {{etiqueta.validated_date.strftime('%d/%h/%Y %H:%M')}}
+                           {%else%}
+                           <span class="text-secondary">Sin Validar</span>
                         {%endif%}
                      </td>
                      <td class="text-right">
                         {%if etiqueta.signed_date %}
                            {{etiqueta.signed_date.strftime('%d/%h/%Y %H:%M')}}
+                           {%else%}
+                           <span class="text-secondary">Sin Firma</span>
                         {%endif%}
                      </td>
                      <td class="text-center">{{ etiqueta.bg_status }}</td>
@@ -239,14 +290,27 @@
                [{{ etiqueta.parcial }}]
             </a>
          </td>
-         <td><a href="/admin/labels/label/{{etiqueta.id_label}}" target="_blank" rel="noopener noreferrer">{{
-               etiqueta.id_factura_detalle.product[:80] }}</a></td>
-         <td class="">{{ etiqueta.notas[40:] if etiqueta.notas else '--' }}</td>
-         <td class="text-center">{{ etiqueta }}</td>
-         <td class="text-right">{{ etiqueta.quantity }}</td>
-         <td class="text-right">{{ etiqueta.date_created.strftime('%d/%h/%Y %H:%M') }}</td>
-         <td class="text-right">{{ etiqueta.validated_date.strftime('%d/%h/%Y %H:%M') }}</td>
-         <td class="text-right">{{ etiqueta.signed_date.strftime('%d/%h/%Y %H:%M') }}</td>
+         <td>
+            <a href="/admin/labels/label/{{etiqueta.id_label}}" target="_blank" rel="noopener noreferrer">{{
+               etiqueta.id_factura_detalle.product[:80] }}</a>
+               <a href="/productos/ver/{{etiqueta.id_factura_detalle.cod_contable_id}}" target="_blank" rel="noopener">
+                           {{ etiqueta.id_factura_detalle.cod_contable.cod_ice }}
+               </a>
+            </td>
+         <td class="">{{ etiqueta.notas[:60] if etiqueta.notas else '--' }}</td>
+         <td class="text-center">
+            <a href="http://s4t.io/{{ etiqueta.initial_range }}" target="_blank" rel="noopener noreferrer">
+               {{ etiqueta.initial_range }}
+            </a>
+            -
+            <a href="http://s4t.io/{{ etiqueta.end_range }}" target="_blank" rel="noopener noreferrer">
+               {{ etiqueta.end_range }}
+            </a>
+         </td>
+         <td class="text-right">{% if etiqueta.quantity %}{{ etiqueta.quantity }}{%endif%}</td>
+         <td class="text-right">{% if etiqueta.date_created %}{{ etiqueta.date_created.strftime('%d/%h/%Y %H:%M') }}{%endif%}</td>
+         <td class="text-right">{% if etiqueta.validated_date %}{{ etiqueta.validated_date.strftime('%d/%h/%Y %H:%M') }}{%endif%}</td>
+         <td class="text-right">{% if etiqueta.signed_date %}{{ etiqueta.signed_date.strftime('%d/%h/%Y %H:%M') }}{%endif%}</td>
          <td class="text-right">
             {%if etiqueta.activated_date %}
                {{ etiqueta.activated_date.strftime('%d/%h/%Y %H:%M') }}

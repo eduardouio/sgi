@@ -6,7 +6,28 @@ from logs.app_log import loggin
 
 class OrderDetailProductSale():
     """Obtiene el saldo en detalle de un pedido metodo get()"""
+
     def get(self, nro_order, ignore_liquidated=False):
+        """Obtiene el detalle de productos del pedido
+        el detalle contiene saldo y nacionalizaciones
+
+        return   {
+            init_sale = {
+                {cod_contable, nro_cajas, costo_caja, tipo_cambio},
+            },
+            nationalized = {
+                {cod_contable, nro_cajas, costo_caja, tipo_cambio},
+            },
+            sale = {
+                {cod_contable, nro_cajas, costo_caja, tipo_cambio},
+            }
+        }
+
+        Arguments:
+            nro_order {str} -- nro de pedido a consultar
+            ignore_liquidated {bool} -- no se concideran parciales sin 
+                                        con liqudiacion y sin cerrar
+        """
         loggin('w', 'Iniciando verificacion de saldos {} pedido {}'.format(
             __name__, nro_order
         ))
@@ -25,15 +46,18 @@ class OrderDetailProductSale():
         nationalized = self.get_nationalized(order, ignore_liquidated)
         sale = self.calculate_sale(init_sale, nationalized)
 
+        # Comprobamos si no hay cajas, cerramos el pedido
         sale_boxes = sum([s['nro_cajas'] for s in sale])
         if not sale_boxes:
             order.bg_closed = 1
             order.save()
+
         data = {
             'init_sale': init_sale,
             'nationalized': nationalized,
             'sale': sale
         }
+
         return data
 
     def get_init_sale(self, nro_order):
@@ -53,6 +77,20 @@ class OrderDetailProductSale():
         return init_sale
 
     def get_nationalized(self, order, ignore_liquidated):
+        """busca los productos que han sido nacionalizados, la referencia
+        es que el pedido o parcial tenga la liquidacion de aduana ingresada
+
+        Arguments:
+            order {Order} -- Pedido
+
+        Returns:
+            {array} -- Listado de items nacionalizados
+            ||
+            {boolean} -- si es verdadero solo toma en cuenta los productos de 
+                        los parciales cerrados, sino toma en cunenta los 
+                        productos de los parciales con liquidacion de aduana 
+                        ingresada
+        """
         if order.regimen == '10':
             init_sale = self.get_init_sale(order.nro_pedido) 
             if not ignore_liquidated and order.bg_isliquidated:
@@ -103,6 +141,11 @@ class OrderDetailProductSale():
         return sale
 
     def unify_items(self, products):
+        """group items for detalle_pedido_factura and sum boxes value
+
+        Args:
+            products (list): list of dict products
+        """
         index = set([itm['detalle_pedido_factura'] for itm in products])
         result = []
         for idx in index:

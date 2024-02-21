@@ -34,16 +34,17 @@ DATOS_EMPRESAS = {
         'almagro_paa': 'almagro2018',
         'safetrack': {
             'login_data': {
-                'username': 'evillota',
+               'username': 'evillota',
                 'password': 'Evillota2022!',
                 'grant_type': 'password',
-                'client_id': 'cordovez-cli',
+                'client_id': 'safetrack-cli',
             },
             'sub': '4e6b02f1-c83b-47a2-a76e-663569e8c71b',
             'url_login': 'https://auth.bdo.safetrack.cloud/auth/realms/safetrack/protocol/openid-connect/token',
             'url_validate_tag': 'https://bdo.safetrack.cloud/api/v1/unique-mark/validate-activate/{}/1e000ba2-7a75-4490-9e0a-9d011a63c136/{}',
             'url_validate_range': 'https://bdo.safetrack.cloud/api/v1/unique-mark/filter/',
             'url_activate_range': 'https://bdo.safetrack.cloud/api/v1/unique-mark/activate/range',
+            'url_activate_tag': 'https://bdo.safetrack.cloud/api/v1/unique-mark/activate/individual',
             'wallet': {
                 'business_id': '1e000ba2-7a75-4490-9e0a-9d011a63c136',
                 'network': 'polygon',
@@ -88,6 +89,7 @@ DATOS_EMPRESAS = {
             'url_validate_tag': 'https://bdo.safetrack.cloud/api/v1/unique-mark/validate-activate/{}/1e000ba2-7a75-4490-9e0a-9d011a63c136/{}',
             'url_validate_range': 'https://bdo.safetrack.cloud/api/v1/unique-mark/filter/',
             'url_activate_range': 'https://bdo.safetrack.cloud/api/v1/unique-mark/activate/range',
+            'url_activate_tag': 'https://bdo.safetrack.cloud/api/v1/unique-mark/activate/individual',
             'wallet': {
                 'business_id': '1e000ba2-7a75-4490-9e0a-9d011a63c136',
                 'network': 'polygon',
@@ -132,6 +134,7 @@ DATOS_EMPRESAS = {
             'url_validate_tag': 'https://bdo.safetrack.cloud/api/v1/unique-mark/validate-activate/{}/24674626-0c17-4dbc-8176-7fb3805d9efb/{}',
             'url_validate_range': 'https://bdo.safetrack.cloud/api/v1/unique-mark/filter/',
             'url_activate_range': 'https://bdo.safetrack.cloud/api/v1/unique-mark/activate/range',
+            'url_activate_tag': 'https://bdo.safetrack.cloud/api/v1/unique-mark/activate/individual',
             'wallet': {
                 'business_id': '24674626-0c17-4dbc-8176-7fb3805d9efb',
                 'network': 'polygon',
@@ -166,7 +169,7 @@ DATOS_EMPRESAS = {
         'almagro_paa': 'almagro2018',
         'safetrack': {
             'login_data': {
-                 'username': 'vidinternacional',
+                'username': 'vidinternacional',
                 'password': 'Vidinter2022!',
                 'grant_type': 'password',
                 'client_id': 'safetrack-cli',
@@ -176,6 +179,7 @@ DATOS_EMPRESAS = {
             'url_validate_tag': 'https://bdo.safetrack.cloud/api/v1/unique-mark/validate-activate/{}/ac1e614f-9738-42e0-8e05-7b169baac68e/{}',
             'url_validate_range': 'https://bdo.safetrack.cloud/api/v1/unique-mark/filter/',
             'url_activate_range': 'https://bdo.safetrack.cloud/api/v1/unique-mark/activate/range',
+            'url_activate_tag': 'https://bdo.safetrack.cloud/api/v1/unique-mark/activate/individual',
             'wallet': {
                 'business_id': 'ac1e614f-9738-42e0-8e05-7b169baac68e',
                 'network': 'polygon',
@@ -195,4 +199,4 @@ ENTERPRISE_CONF = 'test' if NAME_ENTERPRISE == 'sgi' else NAME_ENTERPRISE
 EMPRESA = DATOS_EMPRESAS[ENTERPRISE_CONF]
 
 if EMPRESA['empresa'] != 'test':
-    CMT_DEBUG = False
+    CMT_DEBUG = True

@@ -20,7 +20,7 @@ class ProductCostAnalysis():
         self.deep = 0 if deep == 0 else deep
 
     def get(self):
-        loggin('i', 'Analizando producto {}'.format(self.product))
+        # loggin('i', 'Analizando producto {}'.format(self.product))
         if self.product is None:
             return None
 

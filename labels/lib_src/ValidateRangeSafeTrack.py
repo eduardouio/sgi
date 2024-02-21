@@ -8,8 +8,7 @@ from sgi.settings import EMPRESA
 class ValidateRangeSafeTrack():
     """
     Valida que una etiqueta sea valida
-    https://bdo.safetrack.cloud/api/v1/unique-mark/validate-activate/{id_tag}/{bussines_id}/{ice_sku}/
-
+    https://bdo.safetrack.cloud/api/v1/unique-mark/validate-activate/{id_tag}/{bussines_id}/{ice_sku}
     Args:
         LoginSafeTrack (obj): autoinicia la secion al instanaciar la clase
     """

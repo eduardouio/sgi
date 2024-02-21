@@ -69,7 +69,7 @@
    </div>
 </div>
 <div class="row">
-   <div class="col-7">
+   <div class="col-6">
       <table class="table table-bordered table-striped table-condensed">
          <thead>
             <tr>
@@ -78,7 +78,6 @@
                <th>Cap ML</th>
                <th>Registro Sanitario</th>
                <th>Nro Cajas</th>
-               <th>UxC</th>
                <th>Unidades</th>
             </tr>
          </thead>
@@ -94,14 +93,12 @@
                   </a>
                </td>
                <td class="text-right">{{ detail.nro_cajas }}</td>
-               <td class="text-center">1 X {{ detail.cod_contable.cantidad_x_caja }}</td>
                <td class="text-right">{{ detail.unidades | round(0)}} </td>
             </tr>
             {% endfor %}
             <tr class="bg-secondary text-white">
                <td colspan="4" class="text-right"><strong>Sumas</strong></td>
                <td class="text-right"><strong>{{ data.order_data.boxes }}</strong></td>
-               <td class="text-right"><strong>--</strong></td>
                <td class="text-right"><strong>{{ data.order_data.units | round(0) }}</strong></td>
             </tr>
          </tbody>
@@ -114,27 +111,33 @@
       <table class="table table-bordered table-hover table-bordered" v-if="current_product">
          <thead>
             <tr>
-               <th>IDL</th>
-               <th>FID</th>
                <th>Parcial</th>
                <th>Inicial</th>
                <th>Final</th>
                <th>Unidades</th>
                <th>Notas</th>
-               <th><i class="fas fa-eraser"></i></th>
+               <th>Fecha</th>
+               <th>Estado</th>
             </tr>
          </thead>
          <tbody>
             <tr v-for="item in current_lables">
-               <td class="text-center">${item.id_label}</td>
-               <td class="text-center">${item.id_factura_detalle}</td>
-               <td class="text-center">${item.parcial}</td>
+               <td class="text-center">
+                  <a :href="'/admin/labels/label/' + item.id_label" target="_blank">
+                     ${item.parcial}
+                  </a>
+               </td>
                <td class="text-center">${item.initial_range}</td>
                <td class="text-center">${item.end_range}</td>
                <td class="text-center">${item.quantity}</td>
                <td class="text-center">${item.notas}</td>
+               <td class="text-center">${item.date_created | formatedDate }</td>
                <td class="text-center">
-                  <i 
+                  <span v-if = "item.bg_status === 'A'"> Activado </span>
+                  <span v-if = "item.bg_status === 'I'"> Inactivo </span>
+                  <span v-if = "item.bg_status === 'E'"> Error </span>
+                  <span v-if = "item.bg_status === 'R'"> Rechazado </span>
+                  <i v-if="item.bg_status === 'I'"
                      class="fas fa-minus text-danger"
                      @click="deleteRange(item.id_label)">
                   </i>
@@ -340,7 +343,10 @@
                                  type="number" 
                                  class="form-control"
                                  v-model="new_range.initial_range"
-                                 readonly="true">
+                                 readonly="true"
+                                 id="initial_range"
+                                 autofocus
+                              >
                            </div>
                         </div>
                         <div class="col-2">
@@ -350,7 +356,9 @@
                                  type="number" 
                                  class="form-control"
                                  v-model="new_range.end_range"
-                                 readonly="true">
+                                 readonly="true"
+                                 id="end_range"
+                              >
                            </div>
                         </div>
                         </div>

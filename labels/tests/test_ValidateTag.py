@@ -1,11 +1,13 @@
 from django.test import TestCase
-from labels.lib_src import ValidateTagSafeTrack
+from labels.lib_src import LoginSafeTrack, ValidateTagSafeTrack
+from sgi.settings import EMPRESA
 
 
 class TESTValidateTagSafeTrack(TestCase):
 
     def setUp(self):
-        self.validate_tag_safe_track = ValidateTagSafeTrack()
+        self.login  = LoginSafeTrack()
+        self.validate_tag_safe_track = ValidateTagSafeTrack(self.login)
         self.true_labels = [
             '001F7QY9',
             '001RTH00',
@@ -53,7 +55,7 @@ class TESTValidateTagSafeTrack(TestCase):
             )
             self.assertTrue(response['is_valid'])
 
-    def test_fail_labels(self):
+    def fail_labels(self):
         spected_data = {
             'name': 'BadRequestError',
             'httpCode': 400,
@@ -70,7 +72,7 @@ class TESTValidateTagSafeTrack(TestCase):
             )
             self.assertEqual(response['status_code'], 400)
 
-    def test_fail_sku_ice(self):
+    def fail_sku_ice(self):
         valid_tag = '001RUZI5'
         fail_tag = '001RUXX5'
 

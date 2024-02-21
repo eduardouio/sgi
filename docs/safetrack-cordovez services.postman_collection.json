@@ -1,0 +1,713 @@
+{
+	"info": {
+		"_postman_id": "b94fd029-61c1-44d0-95a0-64f2277cd786",
+		"name": "safetrack-cordovez services",
+		"description": "Servicios para Cordovez",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "solicitar token safrtrack sri Cordovez",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "cordovez",
+							"description": "a",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Cordovez2022!",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "cordovez-cli",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://auth.test1.safetrack.cloud/auth/realms/safetrack/protocol/openid-connect/token",
+					"protocol": "https",
+					"host": [
+						"auth",
+						"test1",
+						"safetrack",
+						"cloud"
+					],
+					"path": [
+						"auth",
+						"realms",
+						"safetrack",
+						"protocol",
+						"openid-connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validar etiqueta si se la puede activar",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJHZmZpVUNYc0R3a0tSOGRfdTRvN0R0OWpfbjRFaVF1SldIUFNRU1JLSzFBIn0.eyJleHAiOjE2NTU2NjEyMTYsImlhdCI6MTY1MzA2OTIxNiwianRpIjoiNmM2ODc5NjMtNmU1NS00NTZjLThjNTktNmMxN2IyODM0YzEzIiwiaXNzIjoiaHR0cHM6Ly9hdXRoLnRlc3QxLnNhZmV0cmFjay5jbG91ZC9hdXRoL3JlYWxtcy9zYWZldHJhY2siLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiMzUzYjNiZmQtMjI3YS00NDZlLWEzNWQtMWRiNzEyMTRmMDdlIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiY29yZG92ZXotY2xpIiwic2Vzc2lvbl9zdGF0ZSI6ImVjMjkzNWMyLWY2MmQtNDExZi05NmQ5LWJjZWNjN2RjNjAyYyIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiQ09SRE9WRVpfb3BlcmF0b3IiLCJvZmZsaW5lX2FjY2VzcyIsImRlZmF1bHQtcm9sZXMtc2FmZXRyYWNrIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6InByb2ZpbGUgdW5pcXVlX21hcmtfdmFsaWRhdGUgZW1haWwgdW5pcXVlX21hcmtfcmVhZCIsInNpZCI6ImVjMjkzNWMyLWY2MmQtNDExZi05NmQ5LWJjZWNjN2RjNjAyYyIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoiY29yZG92ZXogQ29yZG92ZXoiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJjb3Jkb3ZleiIsImdpdmVuX25hbWUiOiJjb3Jkb3ZleiIsImZhbWlseV9uYW1lIjoiQ29yZG92ZXoiLCJlbWFpbCI6ImNvcmRvdmV6QGNvcmRvdmV6LmNvbSJ9.eP48lxsLrCyvA8s3FO31_QhMtnRIe61hkQPFouQ3EN_zgOECtEG_o-bIb4JBZ0ZZchfBNNPMtpSUvaRdi5gGHVmyS5cid9oninOte0xfbgQvn9oJD87X9HTf-WeNDh01dhtk22TavGvpfI5omKsHRN-mBb8nvnV2kdJcBHS_RUrrMHN4icHi56uLK9tDVGdMZbX53qUToGySjkn1oQe96YDMa3R_G3LnSrLyf7u4K0PTysD-t0dLs8IkmgCS-8y5PK3WKJgWotoIpbCAIfiX022_QV50flI6r6IJxXD3L92tyPKoXmrNvcQqm7gJcJWs29OsDNqdz3OVpbxZcFZfdw",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://test1.safetrack.cloud/api/v1/unique-mark/validate-activate/0017T5/c868eff8-288e-4831-9029-7df31f680dc0/3031-057-019863-013-000375-66-593-000064",
+					"protocol": "https",
+					"host": [
+						"test1",
+						"safetrack",
+						"cloud"
+					],
+					"path": [
+						"api",
+						"v1",
+						"unique-mark",
+						"validate-activate",
+						"0017T5",
+						"c868eff8-288e-4831-9029-7df31f680dc0",
+						"3031-057-019863-013-000375-66-593-000064"
+					]
+				},
+				"description": "https://test1.safetrack.cloud/api/v1/unique-mark/validate-activate/{uniqueMark}/{businessId}/{iceSku}"
+			},
+			"response": []
+		},
+		{
+			"name": "Validar etiqueta se la puede desactivar",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJHZmZpVUNYc0R3a0tSOGRfdTRvN0R0OWpfbjRFaVF1SldIUFNRU1JLSzFBIn0.eyJleHAiOjE2NTU2NjEyMTYsImlhdCI6MTY1MzA2OTIxNiwianRpIjoiNmM2ODc5NjMtNmU1NS00NTZjLThjNTktNmMxN2IyODM0YzEzIiwiaXNzIjoiaHR0cHM6Ly9hdXRoLnRlc3QxLnNhZmV0cmFjay5jbG91ZC9hdXRoL3JlYWxtcy9zYWZldHJhY2siLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiMzUzYjNiZmQtMjI3YS00NDZlLWEzNWQtMWRiNzEyMTRmMDdlIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiY29yZG92ZXotY2xpIiwic2Vzc2lvbl9zdGF0ZSI6ImVjMjkzNWMyLWY2MmQtNDExZi05NmQ5LWJjZWNjN2RjNjAyYyIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiQ09SRE9WRVpfb3BlcmF0b3IiLCJvZmZsaW5lX2FjY2VzcyIsImRlZmF1bHQtcm9sZXMtc2FmZXRyYWNrIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6InByb2ZpbGUgdW5pcXVlX21hcmtfdmFsaWRhdGUgZW1haWwgdW5pcXVlX21hcmtfcmVhZCIsInNpZCI6ImVjMjkzNWMyLWY2MmQtNDExZi05NmQ5LWJjZWNjN2RjNjAyYyIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoiY29yZG92ZXogQ29yZG92ZXoiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJjb3Jkb3ZleiIsImdpdmVuX25hbWUiOiJjb3Jkb3ZleiIsImZhbWlseV9uYW1lIjoiQ29yZG92ZXoiLCJlbWFpbCI6ImNvcmRvdmV6QGNvcmRvdmV6LmNvbSJ9.eP48lxsLrCyvA8s3FO31_QhMtnRIe61hkQPFouQ3EN_zgOECtEG_o-bIb4JBZ0ZZchfBNNPMtpSUvaRdi5gGHVmyS5cid9oninOte0xfbgQvn9oJD87X9HTf-WeNDh01dhtk22TavGvpfI5omKsHRN-mBb8nvnV2kdJcBHS_RUrrMHN4icHi56uLK9tDVGdMZbX53qUToGySjkn1oQe96YDMa3R_G3LnSrLyf7u4K0PTysD-t0dLs8IkmgCS-8y5PK3WKJgWotoIpbCAIfiX022_QV50flI6r6IJxXD3L92tyPKoXmrNvcQqm7gJcJWs29OsDNqdz3OVpbxZcFZfdw",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://test1.safetrack.cloud/api/v1/unique-mark/validate-disable/0017T5/c868eff8-288e-4831-9029-7df31f680dc0",
+					"protocol": "https",
+					"host": [
+						"test1",
+						"safetrack",
+						"cloud"
+					],
+					"path": [
+						"api",
+						"v1",
+						"unique-mark",
+						"validate-disable",
+						"0017T5",
+						"c868eff8-288e-4831-9029-7df31f680dc0"
+					]
+				},
+				"description": "https://test1.safetrack.cloud/api/v1/unique-mark/validate-disable/{uniqueMark}/{businessId}"
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener identidad",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJHZmZpVUNYc0R3a0tSOGRfdTRvN0R0OWpfbjRFaVF1SldIUFNRU1JLSzFBIn0.eyJleHAiOjE2NTU2NjQ3NjYsImlhdCI6MTY1MzA3Mjc2NiwianRpIjoiNWIyNjBlODktZDE0Ny00ZDU1LThkZDYtMTJiYzdmNGU3NmQzIiwiaXNzIjoiaHR0cHM6Ly9hdXRoLnRlc3QxLnNhZmV0cmFjay5jbG91ZC9hdXRoL3JlYWxtcy9zYWZldHJhY2siLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiMzUzYjNiZmQtMjI3YS00NDZlLWEzNWQtMWRiNzEyMTRmMDdlIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiY29yZG92ZXotY2xpIiwic2Vzc2lvbl9zdGF0ZSI6IjA2ODIyMzhkLTM0ZTEtNGNmYy1iMGM1LTQ5Njg0ODJiMGU0ZSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiQ09SRE9WRVpfb3BlcmF0b3IiLCJvZmZsaW5lX2FjY2VzcyIsImRlZmF1bHQtcm9sZXMtc2FmZXRyYWNrIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6InByb2ZpbGUgdW5pcXVlX21hcmtfdmFsaWRhdGUgZW1haWwgdW5pcXVlX21hcmtfcmVhZCBpZGVudGl0eV9yZWFkIiwic2lkIjoiMDY4MjIzOGQtMzRlMS00Y2ZjLWIwYzUtNDk2ODQ4MmIwZTRlIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJjb3Jkb3ZleiBDb3Jkb3ZleiIsInByZWZlcnJlZF91c2VybmFtZSI6ImNvcmRvdmV6IiwiZ2l2ZW5fbmFtZSI6ImNvcmRvdmV6IiwiZmFtaWx5X25hbWUiOiJDb3Jkb3ZleiIsImVtYWlsIjoiY29yZG92ZXpAY29yZG92ZXouY29tIn0.UNSZc_JgOvKb7Ge6V1tvTbAwB_NSOelOl64wWpbS2iWQoKCPfjQFc-E7HZSfDjqx39HcDY-Xxy1QfH0iueo44UW_r4Fe2dqmP7GOmue5hrxGyXQ4MWD6Zr1tuHEwWz2HrFfCVtvPdx8VQZB76wx3Zfyhc05H-UgOqX37kMV3e0A_zVyJ2PW82rAtP7Hb8LrAiAOIpxEID-b2FBCpP0qm7EHOpAiGU2tdZh7nn2I2wi5N8zpj8zMA_bJLQ1qEAYWf1vzt_-KFCXzJL6yqy9HIMQmF1UwcWaV5Sa_HNraJ0NRYp-4nZH-WOz9Hm9UaN4zqkmIstNF441sWQKSeskHxhA",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://test1.safetrack.cloud/api/v1/identity/19bd4ab5-e59b-4330-a4ac-abbeee2d9561/polygon",
+					"protocol": "https",
+					"host": [
+						"test1",
+						"safetrack",
+						"cloud"
+					],
+					"path": [
+						"api",
+						"v1",
+						"identity",
+						"19bd4ab5-e59b-4330-a4ac-abbeee2d9561",
+						"polygon"
+					]
+				},
+				"description": "Obtener dirección publica y proveedor\nhttps://test1.safetrack.cloud/api/v1/identity/{userId}/polygon\nuserId se puede obtener del token, propiedad sub"
+			},
+			"response": []
+		},
+		{
+			"name": "Validar/listar rango",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJHZmZpVUNYc0R3a0tSOGRfdTRvN0R0OWpfbjRFaVF1SldIUFNRU1JLSzFBIn0.eyJleHAiOjE2NTU2NjUyOTcsImlhdCI6MTY1MzA3MzI5NywianRpIjoiZjg5ZjkzMWItMjM0Yy00MTMxLWIyMTAtNjQ3ODQ2ZjRkY2E1IiwiaXNzIjoiaHR0cHM6Ly9hdXRoLnRlc3QxLnNhZmV0cmFjay5jbG91ZC9hdXRoL3JlYWxtcy9zYWZldHJhY2siLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiMzUzYjNiZmQtMjI3YS00NDZlLWEzNWQtMWRiNzEyMTRmMDdlIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiY29yZG92ZXotY2xpIiwic2Vzc2lvbl9zdGF0ZSI6Ijk0ODlmNmM4LTc4MzgtNGJkNy05ZDY2LTdmNjU5YWUzNWEyMCIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiQ09SRE9WRVpfb3BlcmF0b3IiLCJvZmZsaW5lX2FjY2VzcyIsImRlZmF1bHQtcm9sZXMtc2FmZXRyYWNrIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6InVuaXF1ZV9tYXJrX3dyaXRlIHByb2ZpbGUgdW5pcXVlX21hcmtfdmFsaWRhdGUgbG90c191bmlxdWVfbWFya193cml0ZSBlbWFpbCB1bmlxdWVfbWFya19yZWFkIGlkZW50aXR5X3JlYWQiLCJzaWQiOiI5NDg5ZjZjOC03ODM4LTRiZDctOWQ2Ni03ZjY1OWFlMzVhMjAiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmFtZSI6ImNvcmRvdmV6IENvcmRvdmV6IiwicHJlZmVycmVkX3VzZXJuYW1lIjoiY29yZG92ZXoiLCJnaXZlbl9uYW1lIjoiY29yZG92ZXoiLCJmYW1pbHlfbmFtZSI6IkNvcmRvdmV6IiwiZW1haWwiOiJjb3Jkb3ZlekBjb3Jkb3Zlei5jb20ifQ.VM4zZZmKQPnVyhj6P4W7Kwbjtq4cSMmS5k2tLxyL6lLReChGcdj6jjiqCu75xo1KKSLlvnTVESCcyrhOp_uOWxpvoW9wR44f8SB3MnkOMvYnKOJvmobUkcmPi-pXicl0g9tfuTWZ_5FdYrRFzUwU-7koWQ4KeROJaGORTtRO3VAWL19RXDOYMYbCF1hGgb_iKfjrG4g0NNhsjWELJPySS32XdQw6QnOzh2jH5z6TqNLb_d8N74pmaiPlpkCqj_wCqWPp3_xUwNfHxinWZrY2NR9AT72m4xLJJh27r3M8ZFyA0oDm1pa5tDh4rQyXVFSualoly7cd7LRtUKQ4hix7DA",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"uniqueMark\": \"001GE8\", \"uniqueMarkEnd\": \"001GG4\", \"businessId\": \"\", \"status\": -1}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://test1.safetrack.cloud/api/v1/unique-mark/filter/",
+					"protocol": "https",
+					"host": [
+						"test1",
+						"safetrack",
+						"cloud"
+					],
+					"path": [
+						"api",
+						"v1",
+						"unique-mark",
+						"filter",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validar/listar lote",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJHZmZpVUNYc0R3a0tSOGRfdTRvN0R0OWpfbjRFaVF1SldIUFNRU1JLSzFBIn0.eyJleHAiOjE2NTU2NjUyOTcsImlhdCI6MTY1MzA3MzI5NywianRpIjoiZjg5ZjkzMWItMjM0Yy00MTMxLWIyMTAtNjQ3ODQ2ZjRkY2E1IiwiaXNzIjoiaHR0cHM6Ly9hdXRoLnRlc3QxLnNhZmV0cmFjay5jbG91ZC9hdXRoL3JlYWxtcy9zYWZldHJhY2siLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiMzUzYjNiZmQtMjI3YS00NDZlLWEzNWQtMWRiNzEyMTRmMDdlIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiY29yZG92ZXotY2xpIiwic2Vzc2lvbl9zdGF0ZSI6Ijk0ODlmNmM4LTc4MzgtNGJkNy05ZDY2LTdmNjU5YWUzNWEyMCIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiQ09SRE9WRVpfb3BlcmF0b3IiLCJvZmZsaW5lX2FjY2VzcyIsImRlZmF1bHQtcm9sZXMtc2FmZXRyYWNrIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6InVuaXF1ZV9tYXJrX3dyaXRlIHByb2ZpbGUgdW5pcXVlX21hcmtfdmFsaWRhdGUgbG90c191bmlxdWVfbWFya193cml0ZSBlbWFpbCB1bmlxdWVfbWFya19yZWFkIGlkZW50aXR5X3JlYWQiLCJzaWQiOiI5NDg5ZjZjOC03ODM4LTRiZDctOWQ2Ni03ZjY1OWFlMzVhMjAiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmFtZSI6ImNvcmRvdmV6IENvcmRvdmV6IiwicHJlZmVycmVkX3VzZXJuYW1lIjoiY29yZG92ZXoiLCJnaXZlbl9uYW1lIjoiY29yZG92ZXoiLCJmYW1pbHlfbmFtZSI6IkNvcmRvdmV6IiwiZW1haWwiOiJjb3Jkb3ZlekBjb3Jkb3Zlei5jb20ifQ.VM4zZZmKQPnVyhj6P4W7Kwbjtq4cSMmS5k2tLxyL6lLReChGcdj6jjiqCu75xo1KKSLlvnTVESCcyrhOp_uOWxpvoW9wR44f8SB3MnkOMvYnKOJvmobUkcmPi-pXicl0g9tfuTWZ_5FdYrRFzUwU-7koWQ4KeROJaGORTtRO3VAWL19RXDOYMYbCF1hGgb_iKfjrG4g0NNhsjWELJPySS32XdQw6QnOzh2jH5z6TqNLb_d8N74pmaiPlpkCqj_wCqWPp3_xUwNfHxinWZrY2NR9AT72m4xLJJh27r3M8ZFyA0oDm1pa5tDh4rQyXVFSualoly7cd7LRtUKQ4hix7DA",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"status\": -1, \"agregationCode\": \"001\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://test1.safetrack.cloud/api/v1/unique-mark/filter/",
+					"protocol": "https",
+					"host": [
+						"test1",
+						"safetrack",
+						"cloud"
+					],
+					"path": [
+						"api",
+						"v1",
+						"unique-mark",
+						"filter",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Activación individual",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJHZmZpVUNYc0R3a0tSOGRfdTRvN0R0OWpfbjRFaVF1SldIUFNRU1JLSzFBIn0.eyJleHAiOjE2NTU2NjYyMzIsImlhdCI6MTY1MzA3NDIzMiwianRpIjoiNTdiOTU0MmEtN2IyYy00YzlhLThmNjktNTJlNDA5MjBhMWViIiwiaXNzIjoiaHR0cHM6Ly9hdXRoLnRlc3QxLnNhZmV0cmFjay5jbG91ZC9hdXRoL3JlYWxtcy9zYWZldHJhY2siLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiMzUzYjNiZmQtMjI3YS00NDZlLWEzNWQtMWRiNzEyMTRmMDdlIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiY29yZG92ZXotY2xpIiwic2Vzc2lvbl9zdGF0ZSI6IjU2NzgyNDgxLTVkM2UtNGQ0NS1hZDk3LTJjNzYzYWIwZjcyOCIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiQ09SRE9WRVpfb3BlcmF0b3IiLCJvZmZsaW5lX2FjY2VzcyIsImRlZmF1bHQtcm9sZXMtc2FmZXRyYWNrIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6InVuaXF1ZV9tYXJrX3dyaXRlIHByb2ZpbGUgdW5pcXVlX21hcmtfZGlzYWJsZV93cml0ZSB1bmlxdWVfbWFya192YWxpZGF0ZSBsb3RzX3VuaXF1ZV9tYXJrX3dyaXRlIGVtYWlsIHVuaXF1ZV9tYXJrX3JlYWQgdW5pcXVlX21hcmtfYWN0aXZhdGlvbl93cml0ZSBpZGVudGl0eV9yZWFkIiwic2lkIjoiNTY3ODI0ODEtNWQzZS00ZDQ1LWFkOTctMmM3NjNhYjBmNzI4IiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJjb3Jkb3ZleiBDb3Jkb3ZleiIsInByZWZlcnJlZF91c2VybmFtZSI6ImNvcmRvdmV6IiwiZ2l2ZW5fbmFtZSI6ImNvcmRvdmV6IiwiZmFtaWx5X25hbWUiOiJDb3Jkb3ZleiIsImVtYWlsIjoiY29yZG92ZXpAY29yZG92ZXouY29tIn0.JP8q5fpZiXbiZV5kDzAgNUC0d37L0tqn8yh5gzIkG03NKUaTDXaAyjbtFcXxOLyoV7YWDRbfYXGPdOaMyX_r3dZlY4IkLf1wneo81loJSoL9P2b_71x1nbuEyYB2iXZ0hmXWruUngWPDs96H1h-jbbeZuGHRVMLqN0RUAI5S1Rclk-A4IkCo_UOGCly3NsrLzG4Bs7O9EzNCemySZbtMyrhc82yVa9evZKzrqOgvl2YEhxnH1doSwGyt69Ax-_NpOUi_Qhs5ivmowigsSse_tqu1V77ObnNr8hyzuQEjgXFrYgTeZ1ddChgUZo6UFL7k1IIPQ3RiA6odEnBhH3-XOA",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"address\": \"0x32CF48eda12Db568C1BE9B3bC36F7fC0b8348e87\",\n    \"network\": \"polygon\",\n    \"msg\": \"{\\\"uniqueMarks\\\":[\\\"001GG4\\\"],\\\"iceSku\\\":\\\"3031-057-019863-013-000375-66-593-000064\\\",\\\"businessId\\\":\\\"c868eff8-288e-4831-9029-7df31f680dc0\\\",\\\"productionBatch\\\":\\\"1234\\\"}\",\n    \"signature\": \"0xad69c4701e813d1d03585ab2678a052198d708d0112161d7a259e98c6ad4f9f93cca3545f3739ee582b3e139d28aaa688c356b1f37b4327f6ee8812a9137b3ff1b\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://test1.safetrack.cloud/api/v1/unique-mark/activate/individual",
+					"protocol": "https",
+					"host": [
+						"test1",
+						"safetrack",
+						"cloud"
+					],
+					"path": [
+						"api",
+						"v1",
+						"unique-mark",
+						"activate",
+						"individual"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Activación range",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJHZmZpVUNYc0R3a0tSOGRfdTRvN0R0OWpfbjRFaVF1SldIUFNRU1JLSzFBIn0.eyJleHAiOjE2NTU2NjYyMzIsImlhdCI6MTY1MzA3NDIzMiwianRpIjoiNTdiOTU0MmEtN2IyYy00YzlhLThmNjktNTJlNDA5MjBhMWViIiwiaXNzIjoiaHR0cHM6Ly9hdXRoLnRlc3QxLnNhZmV0cmFjay5jbG91ZC9hdXRoL3JlYWxtcy9zYWZldHJhY2siLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiMzUzYjNiZmQtMjI3YS00NDZlLWEzNWQtMWRiNzEyMTRmMDdlIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiY29yZG92ZXotY2xpIiwic2Vzc2lvbl9zdGF0ZSI6IjU2NzgyNDgxLTVkM2UtNGQ0NS1hZDk3LTJjNzYzYWIwZjcyOCIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiQ09SRE9WRVpfb3BlcmF0b3IiLCJvZmZsaW5lX2FjY2VzcyIsImRlZmF1bHQtcm9sZXMtc2FmZXRyYWNrIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6InVuaXF1ZV9tYXJrX3dyaXRlIHByb2ZpbGUgdW5pcXVlX21hcmtfZGlzYWJsZV93cml0ZSB1bmlxdWVfbWFya192YWxpZGF0ZSBsb3RzX3VuaXF1ZV9tYXJrX3dyaXRlIGVtYWlsIHVuaXF1ZV9tYXJrX3JlYWQgdW5pcXVlX21hcmtfYWN0aXZhdGlvbl93cml0ZSBpZGVudGl0eV9yZWFkIiwic2lkIjoiNTY3ODI0ODEtNWQzZS00ZDQ1LWFkOTctMmM3NjNhYjBmNzI4IiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJjb3Jkb3ZleiBDb3Jkb3ZleiIsInByZWZlcnJlZF91c2VybmFtZSI6ImNvcmRvdmV6IiwiZ2l2ZW5fbmFtZSI6ImNvcmRvdmV6IiwiZmFtaWx5X25hbWUiOiJDb3Jkb3ZleiIsImVtYWlsIjoiY29yZG92ZXpAY29yZG92ZXouY29tIn0.JP8q5fpZiXbiZV5kDzAgNUC0d37L0tqn8yh5gzIkG03NKUaTDXaAyjbtFcXxOLyoV7YWDRbfYXGPdOaMyX_r3dZlY4IkLf1wneo81loJSoL9P2b_71x1nbuEyYB2iXZ0hmXWruUngWPDs96H1h-jbbeZuGHRVMLqN0RUAI5S1Rclk-A4IkCo_UOGCly3NsrLzG4Bs7O9EzNCemySZbtMyrhc82yVa9evZKzrqOgvl2YEhxnH1doSwGyt69Ax-_NpOUi_Qhs5ivmowigsSse_tqu1V77ObnNr8hyzuQEjgXFrYgTeZ1ddChgUZo6UFL7k1IIPQ3RiA6odEnBhH3-XOA",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"address\": \"0x32CF48eda12Db568C1BE9B3bC36F7fC0b8348e87\",\n    \"network\": \"polygon\",\n    \"msg\": \"{\\\"uniqueMarks\\\":[{\\\"uniqueMarkStart\\\":\\\"005C44G4\\\",\\\"uniqueMarkEnd\\\":\\\"005C44I0\\\"},{\\\"uniqueMarkStart\\\":\\\"005C44J9\\\",\\\"uniqueMarkEnd\\\":\\\"005C44L5\\\"}],\\\"iceSku\\\":\\\"3031-057-019863-013-000375-66-593-000064\\\",\\\"businessId\\\":\\\"c868eff8-288e-4831-9029-7df31f680dc0\\\"}\",\n    \"signature\": \"0xad69c4701e813d1d03585ab2678a052198d708d0112161d7a259e98c6ad4f9f93cca3545f3739ee582b3e139d28aaa688c356b1f37b4327f6ee8812a9137b3ff1b\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://test1.safetrack.cloud/api/v1/unique-mark/activate/range",
+					"protocol": "https",
+					"host": [
+						"test1",
+						"safetrack",
+						"cloud"
+					],
+					"path": [
+						"api",
+						"v1",
+						"unique-mark",
+						"activate",
+						"range"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Activación lote",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJHZmZpVUNYc0R3a0tSOGRfdTRvN0R0OWpfbjRFaVF1SldIUFNRU1JLSzFBIn0.eyJleHAiOjE2NTU2NjYyMzIsImlhdCI6MTY1MzA3NDIzMiwianRpIjoiNTdiOTU0MmEtN2IyYy00YzlhLThmNjktNTJlNDA5MjBhMWViIiwiaXNzIjoiaHR0cHM6Ly9hdXRoLnRlc3QxLnNhZmV0cmFjay5jbG91ZC9hdXRoL3JlYWxtcy9zYWZldHJhY2siLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiMzUzYjNiZmQtMjI3YS00NDZlLWEzNWQtMWRiNzEyMTRmMDdlIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiY29yZG92ZXotY2xpIiwic2Vzc2lvbl9zdGF0ZSI6IjU2NzgyNDgxLTVkM2UtNGQ0NS1hZDk3LTJjNzYzYWIwZjcyOCIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiQ09SRE9WRVpfb3BlcmF0b3IiLCJvZmZsaW5lX2FjY2VzcyIsImRlZmF1bHQtcm9sZXMtc2FmZXRyYWNrIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6InVuaXF1ZV9tYXJrX3dyaXRlIHByb2ZpbGUgdW5pcXVlX21hcmtfZGlzYWJsZV93cml0ZSB1bmlxdWVfbWFya192YWxpZGF0ZSBsb3RzX3VuaXF1ZV9tYXJrX3dyaXRlIGVtYWlsIHVuaXF1ZV9tYXJrX3JlYWQgdW5pcXVlX21hcmtfYWN0aXZhdGlvbl93cml0ZSBpZGVudGl0eV9yZWFkIiwic2lkIjoiNTY3ODI0ODEtNWQzZS00ZDQ1LWFkOTctMmM3NjNhYjBmNzI4IiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJjb3Jkb3ZleiBDb3Jkb3ZleiIsInByZWZlcnJlZF91c2VybmFtZSI6ImNvcmRvdmV6IiwiZ2l2ZW5fbmFtZSI6ImNvcmRvdmV6IiwiZmFtaWx5X25hbWUiOiJDb3Jkb3ZleiIsImVtYWlsIjoiY29yZG92ZXpAY29yZG92ZXouY29tIn0.JP8q5fpZiXbiZV5kDzAgNUC0d37L0tqn8yh5gzIkG03NKUaTDXaAyjbtFcXxOLyoV7YWDRbfYXGPdOaMyX_r3dZlY4IkLf1wneo81loJSoL9P2b_71x1nbuEyYB2iXZ0hmXWruUngWPDs96H1h-jbbeZuGHRVMLqN0RUAI5S1Rclk-A4IkCo_UOGCly3NsrLzG4Bs7O9EzNCemySZbtMyrhc82yVa9evZKzrqOgvl2YEhxnH1doSwGyt69Ax-_NpOUi_Qhs5ivmowigsSse_tqu1V77ObnNr8hyzuQEjgXFrYgTeZ1ddChgUZo6UFL7k1IIPQ3RiA6odEnBhH3-XOA",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"address\": \"0x32CF48eda12Db568C1BE9B3bC36F7fC0b8348e87\",\n    \"network\": \"polygon\",\n    \"msg\": \"{\\\"aggregationCode\\\":\\\"001\\\",\\\"businessId\\\":\\\"c868eff8-288e-4831-9029-7df31f680dc0\\\",\\\"iceSku\\\":\\\"3031-057-019863-013-000375-66-593-000064\\\",\\\"productionBatch\\\":\\\"1123\\\"}\",\n    \"signature\": \"0xad69c4701e813d1d03585ab2678a052198d708d0112161d7a259e98c6ad4f9f93cca3545f3739ee582b3e139d28aaa688c356b1f37b4327f6ee8812a9137b3ff1b\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://test1.safetrack.cloud/api/v1/unique-mark/activate/batch",
+					"protocol": "https",
+					"host": [
+						"test1",
+						"safetrack",
+						"cloud"
+					],
+					"path": [
+						"api",
+						"v1",
+						"unique-mark",
+						"activate",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Desactivación lote",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJHZmZpVUNYc0R3a0tSOGRfdTRvN0R0OWpfbjRFaVF1SldIUFNRU1JLSzFBIn0.eyJleHAiOjE2NTU2NjYyMzIsImlhdCI6MTY1MzA3NDIzMiwianRpIjoiNTdiOTU0MmEtN2IyYy00YzlhLThmNjktNTJlNDA5MjBhMWViIiwiaXNzIjoiaHR0cHM6Ly9hdXRoLnRlc3QxLnNhZmV0cmFjay5jbG91ZC9hdXRoL3JlYWxtcy9zYWZldHJhY2siLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiMzUzYjNiZmQtMjI3YS00NDZlLWEzNWQtMWRiNzEyMTRmMDdlIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiY29yZG92ZXotY2xpIiwic2Vzc2lvbl9zdGF0ZSI6IjU2NzgyNDgxLTVkM2UtNGQ0NS1hZDk3LTJjNzYzYWIwZjcyOCIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiQ09SRE9WRVpfb3BlcmF0b3IiLCJvZmZsaW5lX2FjY2VzcyIsImRlZmF1bHQtcm9sZXMtc2FmZXRyYWNrIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6InVuaXF1ZV9tYXJrX3dyaXRlIHByb2ZpbGUgdW5pcXVlX21hcmtfZGlzYWJsZV93cml0ZSB1bmlxdWVfbWFya192YWxpZGF0ZSBsb3RzX3VuaXF1ZV9tYXJrX3dyaXRlIGVtYWlsIHVuaXF1ZV9tYXJrX3JlYWQgdW5pcXVlX21hcmtfYWN0aXZhdGlvbl93cml0ZSBpZGVudGl0eV9yZWFkIiwic2lkIjoiNTY3ODI0ODEtNWQzZS00ZDQ1LWFkOTctMmM3NjNhYjBmNzI4IiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJjb3Jkb3ZleiBDb3Jkb3ZleiIsInByZWZlcnJlZF91c2VybmFtZSI6ImNvcmRvdmV6IiwiZ2l2ZW5fbmFtZSI6ImNvcmRvdmV6IiwiZmFtaWx5X25hbWUiOiJDb3Jkb3ZleiIsImVtYWlsIjoiY29yZG92ZXpAY29yZG92ZXouY29tIn0.JP8q5fpZiXbiZV5kDzAgNUC0d37L0tqn8yh5gzIkG03NKUaTDXaAyjbtFcXxOLyoV7YWDRbfYXGPdOaMyX_r3dZlY4IkLf1wneo81loJSoL9P2b_71x1nbuEyYB2iXZ0hmXWruUngWPDs96H1h-jbbeZuGHRVMLqN0RUAI5S1Rclk-A4IkCo_UOGCly3NsrLzG4Bs7O9EzNCemySZbtMyrhc82yVa9evZKzrqOgvl2YEhxnH1doSwGyt69Ax-_NpOUi_Qhs5ivmowigsSse_tqu1V77ObnNr8hyzuQEjgXFrYgTeZ1ddChgUZo6UFL7k1IIPQ3RiA6odEnBhH3-XOA",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"address\": \"0x32CF48eda12Db568C1BE9B3bC36F7fC0b8348e87\",\n    \"network\": \"polygon\",\n    \"msg\": \"{\\\"aggregationCode\\\":\\\"001\\\",\\\"businessId\\\":\\\"c868eff8-288e-4831-9029-7df31f680dc0\\\",\\\"iceSku\\\":\\\"3031-057-019863-013-000375-66-593-000064\\\"}\",\n    \"signature\": \"0xad69c4701e813d1d03585ab2678a052198d708d0112161d7a259e98c6ad4f9f93cca3545f3739ee582b3e139d28aaa688c356b1f37b4327f6ee8812a9137b3ff1b\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://test1.safetrack.cloud/api/v1/unique-mark/disable/batch",
+					"protocol": "https",
+					"host": [
+						"test1",
+						"safetrack",
+						"cloud"
+					],
+					"path": [
+						"api",
+						"v1",
+						"unique-mark",
+						"disable",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Desactivación range",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJHZmZpVUNYc0R3a0tSOGRfdTRvN0R0OWpfbjRFaVF1SldIUFNRU1JLSzFBIn0.eyJleHAiOjE2NTU2NjYyMzIsImlhdCI6MTY1MzA3NDIzMiwianRpIjoiNTdiOTU0MmEtN2IyYy00YzlhLThmNjktNTJlNDA5MjBhMWViIiwiaXNzIjoiaHR0cHM6Ly9hdXRoLnRlc3QxLnNhZmV0cmFjay5jbG91ZC9hdXRoL3JlYWxtcy9zYWZldHJhY2siLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiMzUzYjNiZmQtMjI3YS00NDZlLWEzNWQtMWRiNzEyMTRmMDdlIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiY29yZG92ZXotY2xpIiwic2Vzc2lvbl9zdGF0ZSI6IjU2NzgyNDgxLTVkM2UtNGQ0NS1hZDk3LTJjNzYzYWIwZjcyOCIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiQ09SRE9WRVpfb3BlcmF0b3IiLCJvZmZsaW5lX2FjY2VzcyIsImRlZmF1bHQtcm9sZXMtc2FmZXRyYWNrIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6InVuaXF1ZV9tYXJrX3dyaXRlIHByb2ZpbGUgdW5pcXVlX21hcmtfZGlzYWJsZV93cml0ZSB1bmlxdWVfbWFya192YWxpZGF0ZSBsb3RzX3VuaXF1ZV9tYXJrX3dyaXRlIGVtYWlsIHVuaXF1ZV9tYXJrX3JlYWQgdW5pcXVlX21hcmtfYWN0aXZhdGlvbl93cml0ZSBpZGVudGl0eV9yZWFkIiwic2lkIjoiNTY3ODI0ODEtNWQzZS00ZDQ1LWFkOTctMmM3NjNhYjBmNzI4IiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJjb3Jkb3ZleiBDb3Jkb3ZleiIsInByZWZlcnJlZF91c2VybmFtZSI6ImNvcmRvdmV6IiwiZ2l2ZW5fbmFtZSI6ImNvcmRvdmV6IiwiZmFtaWx5X25hbWUiOiJDb3Jkb3ZleiIsImVtYWlsIjoiY29yZG92ZXpAY29yZG92ZXouY29tIn0.JP8q5fpZiXbiZV5kDzAgNUC0d37L0tqn8yh5gzIkG03NKUaTDXaAyjbtFcXxOLyoV7YWDRbfYXGPdOaMyX_r3dZlY4IkLf1wneo81loJSoL9P2b_71x1nbuEyYB2iXZ0hmXWruUngWPDs96H1h-jbbeZuGHRVMLqN0RUAI5S1Rclk-A4IkCo_UOGCly3NsrLzG4Bs7O9EzNCemySZbtMyrhc82yVa9evZKzrqOgvl2YEhxnH1doSwGyt69Ax-_NpOUi_Qhs5ivmowigsSse_tqu1V77ObnNr8hyzuQEjgXFrYgTeZ1ddChgUZo6UFL7k1IIPQ3RiA6odEnBhH3-XOA",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"address\": \"0x32CF48eda12Db568C1BE9B3bC36F7fC0b8348e87\",\n    \"network\": \"polygon\",\n    \"msg\": \"{\\\"uniqueMarks\\\":[{\\\"uniqueMarkStart\\\":\\\"005C44G4\\\",\\\"uniqueMarkEnd\\\":\\\"005C44I0\\\"},{\\\"uniqueMarkStart\\\":\\\"005C44J9\\\",\\\"uniqueMarkEnd\\\":\\\"005C44L5\\\"}],\\\"iceSku\\\":\\\"3031-057-019863-013-000375-66-593-000064\\\",\\\"businessId\\\":\\\"c868eff8-288e-4831-9029-7df31f680dc0\\\"}\",\n    \"signature\": \"0xad69c4701e813d1d03585ab2678a052198d708d0112161d7a259e98c6ad4f9f93cca3545f3739ee582b3e139d28aaa688c356b1f37b4327f6ee8812a9137b3ff1b\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://test1.safetrack.cloud/api/v1/unique-mark/disable/individual",
+					"protocol": "https",
+					"host": [
+						"test1",
+						"safetrack",
+						"cloud"
+					],
+					"path": [
+						"api",
+						"v1",
+						"unique-mark",
+						"disable",
+						"individual"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Desactivación individual",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJHZmZpVUNYc0R3a0tSOGRfdTRvN0R0OWpfbjRFaVF1SldIUFNRU1JLSzFBIn0.eyJleHAiOjE2NTU2NjYyMzIsImlhdCI6MTY1MzA3NDIzMiwianRpIjoiNTdiOTU0MmEtN2IyYy00YzlhLThmNjktNTJlNDA5MjBhMWViIiwiaXNzIjoiaHR0cHM6Ly9hdXRoLnRlc3QxLnNhZmV0cmFjay5jbG91ZC9hdXRoL3JlYWxtcy9zYWZldHJhY2siLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiMzUzYjNiZmQtMjI3YS00NDZlLWEzNWQtMWRiNzEyMTRmMDdlIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiY29yZG92ZXotY2xpIiwic2Vzc2lvbl9zdGF0ZSI6IjU2NzgyNDgxLTVkM2UtNGQ0NS1hZDk3LTJjNzYzYWIwZjcyOCIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiQ09SRE9WRVpfb3BlcmF0b3IiLCJvZmZsaW5lX2FjY2VzcyIsImRlZmF1bHQtcm9sZXMtc2FmZXRyYWNrIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6InVuaXF1ZV9tYXJrX3dyaXRlIHByb2ZpbGUgdW5pcXVlX21hcmtfZGlzYWJsZV93cml0ZSB1bmlxdWVfbWFya192YWxpZGF0ZSBsb3RzX3VuaXF1ZV9tYXJrX3dyaXRlIGVtYWlsIHVuaXF1ZV9tYXJrX3JlYWQgdW5pcXVlX21hcmtfYWN0aXZhdGlvbl93cml0ZSBpZGVudGl0eV9yZWFkIiwic2lkIjoiNTY3ODI0ODEtNWQzZS00ZDQ1LWFkOTctMmM3NjNhYjBmNzI4IiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJjb3Jkb3ZleiBDb3Jkb3ZleiIsInByZWZlcnJlZF91c2VybmFtZSI6ImNvcmRvdmV6IiwiZ2l2ZW5fbmFtZSI6ImNvcmRvdmV6IiwiZmFtaWx5X25hbWUiOiJDb3Jkb3ZleiIsImVtYWlsIjoiY29yZG92ZXpAY29yZG92ZXouY29tIn0.JP8q5fpZiXbiZV5kDzAgNUC0d37L0tqn8yh5gzIkG03NKUaTDXaAyjbtFcXxOLyoV7YWDRbfYXGPdOaMyX_r3dZlY4IkLf1wneo81loJSoL9P2b_71x1nbuEyYB2iXZ0hmXWruUngWPDs96H1h-jbbeZuGHRVMLqN0RUAI5S1Rclk-A4IkCo_UOGCly3NsrLzG4Bs7O9EzNCemySZbtMyrhc82yVa9evZKzrqOgvl2YEhxnH1doSwGyt69Ax-_NpOUi_Qhs5ivmowigsSse_tqu1V77ObnNr8hyzuQEjgXFrYgTeZ1ddChgUZo6UFL7k1IIPQ3RiA6odEnBhH3-XOA",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"address\": \"0x32CF48eda12Db568C1BE9B3bC36F7fC0b8348e87\",\n    \"network\": \"polygon\",\n    \"msg\": \"{\\\"uniqueMarks\\\":[\\\"001GG4\\\"],\\\"iceSku\\\":\\\"3031-057-019863-013-000375-66-593-000064\\\",\\\"businessId\\\":\\\"c868eff8-288e-4831-9029-7df31f680dc0\\\"}\",\n    \"signature\": \"0xad69c4701e813d1d03585ab2678a052198d708d0112161d7a259e98c6ad4f9f93cca3545f3739ee582b3e139d28aaa688c356b1f37b4327f6ee8812a9137b3ff1b\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://test1.safetrack.cloud/api/v1/unique-mark/disable/individual",
+					"protocol": "https",
+					"host": [
+						"test1",
+						"safetrack",
+						"cloud"
+					],
+					"path": [
+						"api",
+						"v1",
+						"unique-mark",
+						"disable",
+						"individual"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener wallet",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJHZmZpVUNYc0R3a0tSOGRfdTRvN0R0OWpfbjRFaVF1SldIUFNRU1JLSzFBIn0.eyJleHAiOjE2NTU2NjY4NjQsImlhdCI6MTY1MzA3NDg2NCwianRpIjoiZDcxZGZlYTYtOGIwMy00MWZhLTk5ZWUtMGU3YTdiMTQ2Njg5IiwiaXNzIjoiaHR0cHM6Ly9hdXRoLnRlc3QxLnNhZmV0cmFjay5jbG91ZC9hdXRoL3JlYWxtcy9zYWZldHJhY2siLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiMzUzYjNiZmQtMjI3YS00NDZlLWEzNWQtMWRiNzEyMTRmMDdlIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiY29yZG92ZXotY2xpIiwic2Vzc2lvbl9zdGF0ZSI6IjM0ZTExNzA4LTIwNjUtNGRiYy05ZWMwLTVmOTE1NTk1ZDFiZCIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiQ09SRE9WRVpfb3BlcmF0b3IiLCJvZmZsaW5lX2FjY2VzcyIsImRlZmF1bHQtcm9sZXMtc2FmZXRyYWNrIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6InVuaXF1ZV9tYXJrX3dyaXRlIHByb2ZpbGUgdW5pcXVlX21hcmtfZGlzYWJsZV93cml0ZSB1bmlxdWVfbWFya192YWxpZGF0ZSBsb3RzX3VuaXF1ZV9tYXJrX3dyaXRlIGVtYWlsIHVuaXF1ZV9tYXJrX3JlYWQgdW5pcXVlX21hcmtfYWN0aXZhdGlvbl93cml0ZSBpZGVudGl0eV9yZWFkIiwic2lkIjoiMzRlMTE3MDgtMjA2NS00ZGJjLTllYzAtNWY5MTU1OTVkMWJkIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJjb3Jkb3ZleiBDb3Jkb3ZleiIsInByZWZlcnJlZF91c2VybmFtZSI6ImNvcmRvdmV6IiwiZ2l2ZW5fbmFtZSI6ImNvcmRvdmV6IiwiZmFtaWx5X25hbWUiOiJDb3Jkb3ZleiIsImVtYWlsIjoiY29yZG92ZXpAY29yZG92ZXouY29tIn0.b1rP8XIgXKY02vbfLlkJx_ww2zNuNQ3BWgEQsI9AmOfEcw1SAiO0f_aBte0kEY9lni9lBoiXKQjS64mqQRgsfCpcBs_NeBheNHhdQlOcejPhXpaxXKHI9z93mH38TYPA8FBLSShSqoixVmC6CRLTMMJQNMOBi0yDnZ97OUvnFYcfhOneB3FEja4ns6-e9gVxehTqKo7ET98uwbrq5MepUR8r0Eo8qz06r3EwjRM6B3ArWVXmZgMXJQ2MCxIoAVLapQ6_jeIJwQ8RUj8Dtv3TjN_IJhBZHDdWT3TMb4cgVIf9AnkVXLb1cpwKMx27dE7Yo-zbPHvlWCxM6-SCrBsSXg",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://test1.safetrack.cloud/api/v1/identity/wallet/353b3bfd-227a-446e-a35d-1db71214f07e/polygon",
+					"protocol": "https",
+					"host": [
+						"test1",
+						"safetrack",
+						"cloud"
+					],
+					"path": [
+						"api",
+						"v1",
+						"identity",
+						"wallet",
+						"353b3bfd-227a-446e-a35d-1db71214f07e",
+						"polygon"
+					]
+				},
+				"description": "https://test1.safetrack.cloud/api/v1/identity/wallet/{userId}/polygon"
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "accessToken",
+				"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJHZmZpVUNYc0R3a0tSOGRfdTRvN0R0OWpfbjRFaVF1SldIUFNRU1JLSzFBIn0.eyJleHAiOjE2NTU2NTk4NTksImlhdCI6MTY1MzA2Nzg1OSwianRpIjoiZmFjY2E5OWEtODM0My00ODUyLWE0ZjMtYjk3ZTcyM2Y4ZGVkIiwiaXNzIjoiaHR0cHM6Ly9hdXRoLnRlc3QxLnNhZmV0cmFjay5jbG91ZC9hdXRoL3JlYWxtcy9zYWZldHJhY2siLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiMzUzYjNiZmQtMjI3YS00NDZlLWEzNWQtMWRiNzEyMTRmMDdlIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiY29yZG92ZXotY2xpIiwic2Vzc2lvbl9zdGF0ZSI6IjA3YjZhODliLWI3Y2QtNGVjNy1iMDM0LThhMWRhZjI3OTMxMiIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJkZWZhdWx0LXJvbGVzLXNhZmV0cmFjayIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJwcm9maWxlIHVuaXF1ZV9tYXJrX3ZhbGlkYXRlIGVtYWlsIiwic2lkIjoiMDdiNmE4OWItYjdjZC00ZWM3LWIwMzQtOGExZGFmMjc5MzEyIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJjb3Jkb3ZleiBDb3Jkb3ZleiIsInByZWZlcnJlZF91c2VybmFtZSI6ImNvcmRvdmV6IiwiZ2l2ZW5fbmFtZSI6ImNvcmRvdmV6IiwiZmFtaWx5X25hbWUiOiJDb3Jkb3ZleiIsImVtYWlsIjoiY29yZG92ZXpAY29yZG92ZXouY29tIn0.gAN_kLXQJiBLegDUITqWY6r4qCL23sQXgKSv41OBvuJQ1Wmd15FbDljTad9rac7i37a-r96lQB2sPkFbdbbK7z-2ZErPFSyFmr8WsH69gwJro4BkccDo9je9ZP4vPx_KSpr1MHvji2lhEJPtiWFdyKnwg8FSrChVhpaOgWFBzEhQ4BWfgraNRZO6L5zpUZeMS-4GC8E18ceP8PEcv4CknUj9dEz1RQwsknhFVbFLhkNGwJ3MXMaS_tcVCXdMYUSUDvbRuJqa0nxDR_c5JSuOu7qe5lNAngSULCT0vOqcYtBiscxd5K2Q9D6OI_K6A8JCve3PFzHX6gXRF96rh9HoDA",
+				"type": "string"
+			},
+			{
+				"key": "tokenType",
+				"value": "Bearer",
+				"type": "string"
+			},
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "9e4bdc93-dbfd-4392-82a3-ebb9c78c4933",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "cab9448b-30e6-4595-85a7-f3c5d83c044b",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

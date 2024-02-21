@@ -67,6 +67,11 @@ class ActivateRangeSafeTrack():
     def __send_activate_request(self):
         if not self.is_valid or not self.is_signed:
             loggin('i', 'No se puede activar el rango no valido o no firmado')
+            self.label.bg_status = 'E'
+            self.label.message_status += (
+                'No se puede activar el rango'
+                ' no valido -> {} o no firmado -> {};'
+                ).format(self.is_valid, self.is_signed)
             return False
 
         self.label.activated_date = datetime.now()
@@ -85,11 +90,14 @@ class ActivateRangeSafeTrack():
             headers=self.login.my_headers
         )
 
+        response_data = json.loads(response.text)
+
         if response.status_code == 400:
             self.label.bg_status = 'R'
             self.label.message_status += (
                 'httpCode:400 Ocurrio un error en Serivicio BDO al activar el rango {};'
             ).format(self.label)
+            self.label.notas = response_data['description']
             self.label.response = response.text
             return False
 
@@ -102,11 +110,22 @@ class ActivateRangeSafeTrack():
             self.label.response = response.text
             return False
 
-        loggin('i', 'Rango Activado correctamente')
-        self.label.bg_status = 'A'
-        self.label.message_status += 'Rango Activado;'
+        if response.status_code == 200:
+            loggin('i', 'Rango Activado correctamente')
+            self.label.bg_status = 'A'
+            self.label.message_status += 'Rango Activado;'
+            self.label.response = response.text
+            self.label.notas = response.text
+            if response_data['totalNotUpdate']:
+                self.label.bg_status = 'R'
+                self.label.message_status += ';Etiquetas activadas parcialmente'
+            return True
+
+        loggin('e', 'Ocurrio un problema con el servidor')
+        self.label.bg_status = 'E'
         self.label.response = response.text
-        return True
+        self.label.notas = 'Error con el Server'
+        return False
 
     def __sign(self):
         if not self.is_valid:
@@ -115,7 +134,7 @@ class ActivateRangeSafeTrack():
         loggin('i', 'Firmando mensaje Rango Valido')
         self.label.signed_date = datetime.now()
         ice_sku = self.label.id_factura_detalle.cod_contable.cod_ice
-        valid_ice_sku = self.__vefrify_ice_sku(ice_sku)
+        valid_ice_sku = self.vefrify_ice_sku(ice_sku)
 
         if not bool(valid_ice_sku):
             self.label.bg_status = 'E'
@@ -136,7 +155,7 @@ class ActivateRangeSafeTrack():
         loggin('i', 'Mensaje Firmado')
         return True
 
-    def __vefrify_ice_sku(self, ice_sku):
+    def vefrify_ice_sku(self, ice_sku):
         """Verify long ice SKU of the label
         Args:
             ice_sku (str): 'xxxx-xxx-xxxxxx-xxxx-xxxxxx-xx-xxx-xxxxx'

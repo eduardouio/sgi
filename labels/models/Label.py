@@ -86,7 +86,8 @@ class Label(models.Model):
     history = HistoricalRecords()
 
     def __str__(self):
-        return '{}-{}'.format(
+        return '{}-{}->{}'.format(
             self.initial_range,
-            self.end_range
+            self.end_range,
+            self.bg_status
         )
