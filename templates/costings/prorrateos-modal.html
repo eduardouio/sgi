@@ -1,0 +1,133 @@
+<!-- Modal -->
+<div class="modal fade" id="modal-prorrateos" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title" id="exampleModalLabel">SGI Prorrateos Parcial {{ data.ordinal_partial }} del pedido {{ data.nro_order }}  <strong>Moneda: {{ data.complete_order_info.order_invoice.order_invoice.moneda | upper }}</strong></h6>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <div class="text-tittle">Cabecera de Prorrateos</div>
+            <table class="table table-bordered table-condensed">
+        <tbody>
+          <tr>
+            <td style="width:130px;" class="text-right bg-light">% Parcial</td>
+            <td class="text-right">{{ '%0.02f'% data.apportioments.apportionment.porcentaje_parcial| float }}</td>
+            <td style="width:130px;" class="text-right bg-light">Fob Inicial</td>
+            <td class="text-right">{{ '%0.02f'% data.apportioments.apportionment.fob_inicial | float }}</td>
+            <td style="width:130px;" class="text-right bg-light">Fob Parcial</td>
+            <td class="text-right text-primary">{{ '%0.02f'% data.apportioments.apportionment.fob_parcial | float }}</td>
+            <td style="width:130px;" class="text-right bg-light">Fob Saldo</td>
+            <td class="text-right">{{ '%0.02f'% data.apportioments.apportionment.fob_saldo | float }}</td>
+          </tr>
+          <tr>
+            <td style="width:130px;" class="text-right bg-light">Fob Parcial R Inicial</td>
+            <td class="text-right">{{ '%0.02f'% data.apportioments.apportionment.fob_parcial_razon_inicial | float }}</td>
+            <td style="width:130px;" class="text-right bg-light">Fob Parcial R Saldo</td>
+            <td class="text-right">{{ '%0.02f'% data.apportioments.apportionment.fob_parcial_razon_saldo | float }}</td>
+            <td style="width:130px;" class="text-right bg-light">Fob Próximo Parcial</td>
+            <td class="text-right">{{ '%0.02f'% data.apportioments.apportionment.fob_proximo_parcial | float }}</td>
+            <td style="width:130px;" class="text-right bg-light">TCT</td>
+            <td class="text-right">{{ '%0.02f'% data.complete_order_info.tipo_cambio_trimestral | float }}</td>
+          </tr>
+          <tr>
+            <td style="width:130px;" class="text-right bg-light">Almacenaje Anterior</td>
+            <td class="text-right">{{ '%0.02f'% data.apportioments.apportionment.almacenaje_anterior | float }}</td>
+            <td style="width:130px;" class="text-right bg-light">Almacenaje Parcial</td>
+            <td class="text-right">{{ '%0.02f'% data.apportioments.apportionment.almacenaje_parcial | float }}</td>
+            <td style="width:130px;" class="text-right bg-light">Almacenaje Aplicado</td>
+            <td class="text-right text-primary">{{ '%0.02f'% data.apportioments.apportionment.almacenaje_aplicado | float }}</td>
+            <td style="width:130px;" class="text-right bg-light">Alm Próximo Parcial</td>
+            <td class="text-right">{{ '%0.02f'% data.apportioments.apportionment.almacenaje_proximo_parcial | float }}</td>
+          </tr>
+          <tr>
+            <td style="width:130px;" class="text-right bg-light">Gst Origen Inicial</td>
+            <td class="text-right">{{ '%0.02f'% data.apportioments.apportionment.gastos_origen_incial | float}}</td>
+            <td style="width:130px;" class="text-right bg-light">Gst Origen Anterior P</td>
+            <td class="text-right">{{ '%0.02f'% data.apportioments.apportionment.gastos_origen_anterior_parcial | float }}</td>
+            <td style="width:130px;" class="text-right bg-light">Gst Origen Aplicado</td>
+            <td class="text-right text-primary">{{'%0.02f'%  data.apportioments.apportionment.gastos_origen_aplicado | float }}</td>
+            <td style="width:130px;" class="text-right bg-light">Gst Org Prox Parcial</td>
+            <td class="text-right">{{ '%0.02f'% data.apportioments.apportionment.gastos_origen_proximo_parcial | float }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+      <div class="text-tittle">Detalle Prorrateos de gastos</div>
+        <table class="table table-bordered table-condensed">
+        <thead>
+        <tr>
+        <th>Concepto</th>
+        <th>Tipo</th>
+        <th>Provicion</th>
+        <th>% Aplicado</th>
+        <th>Prorrateo</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for apportionment in data.apportioments.apportionment_detail %}
+        {% if apportionment.tipo == 'Gasto Inicial' %}
+          <tr>
+          <td>{{ apportionment.concepto }}</td>
+          <td class="text-center">{{ apportionment.tipo }}</td>
+          <td class="text-right">{{ apportionment.valor_provisionado | round(2)}}</td>
+          <td class="text-right">{{ '%0.2f' % (data.apportioments.apportionment.fob_parcial_razon_inicial * 100) | float  }} %</td>
+          <td class="text-right text-success">{{ '%0.2f' % apportionment.valor_prorrateado | float }}</td>
+          </tr>
+        {% endif %}
+        {% endfor %}
+        {% for apportionment in data.apportioments.apportionment_detail %}
+        {% if apportionment.tipo == 'Parcial' %}
+          <tr>
+          <td>{{ apportionment.concepto }}</td>
+          <td class="text-center">{{ apportionment.tipo }}</td>
+          <td class="text-right">{{ apportionment.valor_provisionado | round(2)}}</td>
+            <td class="text-right">100.000 %</td>
+          <td class="text-right">{{ '%0.2f' % apportionment.valor_prorrateado | float }}</td>
+          </tr>
+          {% endif %}
+        {% endfor %}
+        <tr>
+        <th>
+          <th class="text-right" colspan="2">Sumas:</th>
+          <th class="text-right">$ {{ '%0.2f' % data.apportioments.total_provisionado | float }}</th>
+          <th class="text-right text-primary">$ {{ '%0.2f' % data.apportioments.total_aplicado | float }}</th>
+        </th>
+        </tr>
+        </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <div class="container">
+        <div class="row">
+        <div class="col-10">
+          <div class="alert alert-dark">
+            Totales Tipo Cambio Trimestral: (Gst Origen + Prorrateos + Almacenaje P + Fob Parcial) = 
+            {{ '%0.2f'% data.apportioments.apportionment.gastos_origen_aplicado | float }} +  
+            {{ '%0.2f'% data.apportioments.total_aplicado | float }} + 
+            {{ '%0.2f'% data.apportioments.apportionment.almacenaje_aplicado | float }} +
+            {{ '%0.2f'% data.apportioments.apportionment.fob_parcial | float }} = 
+            <strong>
+            $ {{
+              '%0.2f'%
+              (
+                data.apportioments.apportionment.gastos_origen_aplicado
+                + data.apportioments.total_aplicado
+                + data.apportioments.apportionment.fob_parcial
+                + data.apportioments.apportionment.almacenaje_aplicado
+              ) | float
+                }}
+            </strong>
+          </div>
+        </div>
+        <div class="col-2 text-right">
+        <button type="button" class="btn btn-outline-primary" data-dismiss="modal" aria-label="Close"><i class="fa fa-check"></i> Cerrar</button>
+        </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

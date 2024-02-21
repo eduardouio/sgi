@@ -1,0 +1,97 @@
+{% extends 'base/base.html' %} {% block title_content %}
+<div class="row border">
+  <div class="col-4">
+    <i class="fa fa-cog"></i>
+    Generar Reporte ICE para {{ request.enterprise.empresa }}
+  </div>
+  <div class="col-8 text-right">
+    <span>Costeo de Productos</span>
+  </div>
+</div>
+{% endblock title_content %} {% block content %}
+<div class="container">
+  <br/>
+  <div class="row">
+    <div class="col">
+      <h4 class="text-info">Instrucciones:</h4>
+      <ol class="text-dark text-justify">
+      <li>
+      Generar tres archivos separados por comas (CSV) con los siguientes datos:
+      <ul>
+        <li><strong>Ventas</strong></li>
+        <li><strong>Devoluciones</strong></li>
+        <li><strong>Reporte de Importaciones</strong></li>
+        </ul>
+      </li>
+      <li>
+      Seleccione el mes y año del reporte.
+      </li>
+      <li>
+      Abrir los archivos con bloc de notas y copiar y pegar en cada uno de los recuados a los que le corresponda.
+      </li>
+      <li>
+      Precione sobre <strong>Generar Reporte </strong> para generar el archivo.
+      </li>
+      </ol>
+    </div>
+  </div>
+<div class="shadow border-top rounded">
+<br/>
+  <form action="" method="post">
+    <div class="row">
+    <div class="col-3"></div>
+    {{ csrf_input }}
+    <br/>
+      <div class="col">
+        <div class="form-group">
+          <label for="">Año</label>
+         {{ form.year }}
+         {{ form.year.errors }}
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="">Mes</label>
+         {{ form.month }}
+         {{ form.month.errors }}
+        </div>
+      </div>
+          <div class="col-3"></div>
+      </div>
+      <div class="row">
+      <div class="col">
+        <div class="form-group">
+          <label for="">Ventas (CSV)</label>
+          {{ form.sales }}
+          {{ form.sales.errors }}
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="">Devoluciones (CSV)</label>
+          {{ form.devs }}
+          {{ form.devs.errors }}
+        </div>
+      </div>
+      </div>
+      <div class="row">
+      <div class="col">
+        <div class="form-group">
+          <label for="">Importaciones (CSV)</label>
+          {{ form.importations }}
+          {{ form.importations.errors }}
+        </div>
+      </div>
+      </div>
+      <div class="row">
+      <div class="col text-right">
+        <button class="btn btn-sm  btn-outline-primary">
+          <i class="fas fa-code"></i> Generar Reporte
+        </button>
+      </div>
+  {{ form.errors }}
+</div>
+  </form>
+  <br/>
+    </div>
+{% endblock %}

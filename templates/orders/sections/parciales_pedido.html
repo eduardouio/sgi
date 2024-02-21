@@ -1,0 +1,87 @@
+<div role="tabpanel" class="tab-pane active" id="facturas-informativas">
+   <div class="row">
+      <div class="col-sm-12">
+         <table class="table table-bordered">
+            <thead>
+               <tr class="bg-secondary text-white" >
+                  <th>#</th>
+                  <th>Nro Factura</th>
+                  <th>Liquidacion</th>
+                  <th>Refrendo</th>
+                  <th>Salida A</th>
+                  <th>Fecha Ll. Bodega</th>
+                  <th>Cajas</th>
+                  <th>FOB</th>
+                  <th>Estado</th>
+                  <th>Costos</th>
+               </tr>
+            </thead>
+            <tbody>
+            {% for partial in data.order_info.partials_details %}
+                <tr 
+                {% if partial.bg_isclosed %}
+                  style="background-color:#ddd"
+               {% endif %}
+                >
+                  <td class="text-center"> 
+                  <a href="/admin/partials/partial/{{partial.id_parcial}}/change/" target="_blank">
+                    {{ loop.index }} 
+                  </a>
+                  </td>
+                    <td class="text-center">
+                     {% if partial.nro_factura_informativa %}
+                     {{ partial.nro_factura_informativa }}
+                     {% else %}
+                     <span class="text-danger">Sin Factura</span>
+                     {% endif %}
+                    </td>
+                    <td class="text-right">
+                    {% if partial.bg_isliquidated %}
+                        {{ partial.nro_liquidacion }}
+                        <span class="text-success"><i class="fas fa-check-circle" aria-hidden="true"></i></span>
+                    {% else %}
+                        <span class="text-danger">No Registra</span>
+                        <span class="text-danger"><i class="fas fa-ban" aria-hidden="true"></i></span>
+                    {% endif %}
+                    </td>
+                    <td class="text-center">
+                    {% if partial.nro_refrendo %}
+                     {{ partial.nro_refrendo }}
+                     {% else %}
+                     <span class="text-danger">No Registra</span>
+                    {% endif %}
+                    </td>
+                    <td class="text-right">
+                    {% if partial.fecha_salida_autorizada_almagro %}
+                     {{partial.fecha_salida_autorizada_almagro}}
+                    {% else %}
+                     --
+                    {% endif %}
+                    </td>
+                    <td class="text-right">
+                    {% if partial.fecha_llegada_cliente %}
+                        {{ partial.fecha_llegada_cliente }}
+                     {% else %}
+                        <span class="text-primary">En Transito</span>
+                    {% endif %}
+                    </td>
+                    <td td class="text-right">{{ partial.nro_cajas | round(3) }}</td>
+                    <td td class="text-right">{{ partial.valor_total | round(3) }}</td>
+                     <td td class="text-right">
+                    {% if partial.bg_isclosed %}
+                        <span class="text-dark">Liquidado <i class="fas fa-lock"></i></span>
+                    {% else %}
+                        <span class="text-success">Liquidar <i class="fas fa-lock-open"></i></span>
+                    {% endif %}                    
+                    </td>
+                    <td class="text-center"> <a href="/costos/parcial/{{ data.order_info.order.nro_pedido }}/{{ loop.index }}/" class="btn btn-outline-dark btn-sm"><i class="fas fa-cart-arrow-down"></i></a></td>
+                </tr>
+            {% endfor %}
+            <tr class="bg-primary text-white text-center">
+            <th colspan="10"> {{ data.order_info.partials.__len__() }} PARCIALE(S) EN TOTAL</th>
+            </tr>
+            </tbody>
+         </table>
+      </div>
+   </div>
+</div>

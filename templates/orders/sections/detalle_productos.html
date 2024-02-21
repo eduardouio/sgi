@@ -1,0 +1,91 @@
+<div class="row">
+<div class="col-sm-4">
+     <span>Proveedor</span>
+     <input type="text" readonly="readonly" value="{{ data.order_info.order_invoice.supplier.nombre }}" class="full-width">
+  </div>  
+  <div class="col-sm-2">
+     <span>Factura</span> 
+     <input type="text" readonly="readonly" value="{{ data.order_info.order_invoice.order_invoice.id_factura_proveedor }}" class="full-width">
+  </div>
+  <div class="col-sm-2">
+     <span>F. Emision</span>
+        <input type="text" value="{{ data.order_info.order_invoice.order_invoice.fecha_emision }}" readonly="readonly" class="full-width">            
+        </div>      
+  <div class="col-sm-1">
+  <span>Moneda</span>
+  <input type="text" class="full-width text-right" readonly="readonly" value="{{ data.order_info.order_invoice.order_invoice.moneda }}">
+  </div>
+  <div class="col-sm-1">
+  <span>Valor</span>
+  <input type="text" class="full-width text-right" readonly="readonly" value="{{ data.order_info.order_invoice.order_invoice.valor | round(3) }}">
+  </div>
+  <div class="col-sm-1">
+  <span>Tipo C</span>
+  <input type="text" class="full-width text-right" readonly="readonly" value="{{ data.order_info.order_invoice.order_invoice.tipo_cambio | round(3) }}">
+  </div>
+  <div class="col-sm-1">
+  <span>Total USD</span>
+  <input type="text" class="full-width text-right" readonly="readonly" value="$ {{ (data.order_info.order_invoice.order_invoice.valor * data.order_info.order_invoice.order_invoice.tipo_cambio) | round(3)}}">
+      </div>
+   </div>
+   <br>
+<div class="row">
+    <div class="col-12">
+        <table class="table table-bordered table-condensed table-striped">            
+            <thead>
+            <tr class="bg-secondary text-white">
+            <th>Cod Contable</th>
+            <th>Producto</th>
+            <th>Capacidad</th>
+            <th>C/C</th>
+            <th>Grado A.</th>
+            <th>Cajas</th>
+            <th>Unidades</th>
+            <th>C Caja</th>
+            <th>C Unidad</th>
+            <th>Total</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in data.order_info.order_invoice.order_invoice_details  %}
+                <tr>
+                    <td class="text-cneter">{{ item.cod_contable_id }}</td>
+                    <td>{{ item.cod_contable }}</td>
+                    <td class="text-right">{{ item.capacidad_ml | round(2) }} ml</td>
+                    <td class="text-right">{{ item.cantidad_x_caja | round(2) }}</td>
+                    <td class="text-right">{{ item.grado_alcoholico | round(2) }}</td>
+                    <td class="text-right">{{ item.nro_cajas | round(2) }}</td>
+                    <td class="text-right">{{ item.unidades | round }}</td>
+                    <td class="text-right">{{ item.costo_caja | round(2) }}</td>
+                    <td class="text-right">{{ (item.costo_caja / item.nro_cajas) | round(3)  }}</td>
+                    <td class="text-right">{{ (item.nro_cajas * item.costo_caja) | round(3)  }}</td>
+                </tr>
+            {% endfor %}
+            <tr class="bg-primary text-white">
+            <th colspan="5">Totales</th>
+            <th class="text-right">{{ data.order_info.order_invoice.totals.boxes | round(2) }}</th>
+            <th class="text-right">{{ data.order_info.order_invoice.totals.bottles | round(2) }}</th>
+            <th>--</th>
+            <th>--</th>
+            <th class="text-right">{{ data.order_info.order_invoice.totals.value | round(3) }}</th>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% if data.order_info.order.regimen == '10' %}
+<div class="row">
+<div class="col-12 text-right">
+    {% if  data.order_info.order.bg_isliquidated %}
+        <a href="/costos/pedido/{{ data.order_info.order_invoice.order_invoice.nro_pedido }}/" class="btn btn-sm btn-outline-dark"><i class="fa fa-cart-arrow-down"></i> Costeo Productos</a>
+        {% else %}
+        <h5 class='text-danger'><i class="fas fa-exclamation-triangle"></i>
+        SIN LIQUIDACIÓN SENAE
+        </h5>
+        <span class="text-primary">
+        Solicite al departamento de importaciones el ingreso de la liquidación de Aduana
+        </span>
+    {% endif %}
+</div>
+</div>
+{% endif %}

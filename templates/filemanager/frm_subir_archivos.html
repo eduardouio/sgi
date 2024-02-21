@@ -1,0 +1,66 @@
+{% extends 'base/base.html' %}
+{% block header %}
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+{% endblock header %}
+{% block title_content %}
+<div class="row border">
+   <div class="col-7">
+      <i class="fa fa-folder"></i> 
+	  <span>
+	  	Asistente para subir archivos a Pedidos o Parciales
+	  </span>		      
+   </div>
+   <div class="col-5 text-right">
+	Gestor de Archivos
+   </div>
+</div>
+{% endblock title_content %}
+{% block content %}
+	<div class="container-fluid" id="app">   
+   <a href="/archivos/" class="btn btn-outline-primary btn-sm"><i class="fas fa-list"></i> Lista de Archivos</a>
+   <div class="row">
+      <div class="col-5">
+      <div class="form-group">
+      <label for="url">Url</label>
+      <input type="url" class="form-control form-control-sm" v-model="url" placeholder="URL Archivo SENAE">
+      </div>
+   </div>
+   <div class="col-2">
+   <div class="form-group">
+   <label for="tipo" >Tipo</label>
+   <select v-model="tipo" class="form-control form-control-sm">
+   <option selected disabled>Seleccione...</option>
+   <option value="DAI">DAI</option>
+   <option value="LIQUIDACION ETIQUETAS">LIQUIDACION ETIQUETAS</option>
+   <option value="LIQUIDACION TRIBUTOS">LIQUIDACION TRIBUTOS</option>
+   </select>
+   </div>
+   </div>
+   <div class="col-2">
+   <div class="form-group">
+   <label for="">Pedido</label>
+   <select class="form-control form-control-sm" v-model="nro_pedido">
+      <option selected disabled>Selecciones...</option>
+
+   </select>
+   </div>
+   </div>
+   <div class="col-2">
+   <div class="form-group">
+   <label for="">Parcial</label>
+   {{ form.parcial }}
+   </div>
+   </div>
+   <div class="col-1">
+   <div class="form-group">
+   <label for="" class="text-withe">.</label>
+   <button type="submit" class="btn btn-sm btn-outline-primary"> <i class="fas fa-upload"></i> Subir Archivo</a>
+   </div>
+   </div>
+   </div>
+   </div>
+{% endblock content %}
+{% block script %}
+   {% include 'js/app_upload_file.js'  %}
+{% endblock script %}

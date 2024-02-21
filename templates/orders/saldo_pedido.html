@@ -1,0 +1,65 @@
+{% extends 'base/base.html' %}
+{% block title_content %}
+    <div class="row border">
+    <div class="col-6">
+    <i class="fa fa-boxes"></i>
+      Saldos Generales Pedidos Agencia Y Representaciones Cordovez S.A.
+    </div>
+  <div class="col-6 text-right">
+    <span>| Total Producto:</span>
+    <span>| Total Provisiones: </span>
+    <span>| Total Facturas: </span>
+    <span>| </span>
+  </div>
+</div>
+{% endblock title_content %}
+{% block content %}
+    <div class="row">
+    <div class="col-12">
+    <div class="text-tittle">
+        Listado de Pedidos
+    </div>
+        <table class="table table-bordered table-striped table-condensed">
+            <thead>
+            <tr>
+            <th>#</th>
+            <th>Nro Pedido</th>
+            <th>T/C T</th>
+            <th>Proveedor</th>
+            <th>Impotado</th>
+            <th>Nacionalizado</th>
+            <th>Saldo P</th>
+            <th>Provisiones</th>
+            <th>Facturado</th>
+            <th>Tributos</th>
+            <th>Indirectos</th>
+            <th>Saldo</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in data.sales %}            
+                <tr>
+                <td> <i class="fas fa-chevron-right text-primary"></i> {{ loop.index }}</td>
+                <td class="text-center">{{ item.product_sale.nro_order.replace('-','/')}}</td>
+                <td class="text-right"> {{"%.3f" | format(item.expenses_sale.type_change) }}</td>
+                <td>{{ item.product_sale.supplier}}</td>
+                <td class="text-right">{{ "%.3f" | format(item.product_sale.totals.imported) }}</td>
+                <td class="text-right">{{ "%.3f" | format(item.product_sale.totals.nationalized) }}</td>
+                <td class="text-right">{{ "%.3f" | format(item.product_sale.totals.sale) }}</td>
+                <td class="text-right">{{ "%.3f" | format(item.expenses_sale.totals.provision ) }}</td>
+                <td class="text-right">{{ "%.3f" | format(item.expenses_sale.totals.invoiced ) }}</td>
+                <td class="text-right">{{ "%.3f" | format(item.expenses_sale.taxes ) }}</td>
+                <td class="text-right">{{ "%.3f" | format(item.expenses_sale.indirectos) }} </td>
+                <td class="text-right text-success">
+                    <strong>
+                        {{ "%.3f" | format(item.product_sale.totals.imported + item.expenses_sale.totals.invoiced + item.expenses_sale.taxes - item.product_sale.totals.nationalized - item.expenses_sale.indirectos) }}
+                    </strong>
+                </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    </div>
+{% endblock content %}
+

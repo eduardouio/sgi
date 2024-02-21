@@ -1,0 +1,74 @@
+<table class="table table-condensed table-striped table-bordered" v-if="current_selected_partial">
+<thead>
+    <tr style="background-color: rgb(255, 255, 255);">
+        <th class="text-center"><i class="fa fa-list"></i></th>
+        <th class="text-center">CONCEPTO</th>
+        <th class="text-center">PROVISION</th>
+        <th class="text-center">MAYOR</th>
+        <th class="text-center">SALDO</th>
+    </tr>
+</thead>
+<tbody>
+    <tr @click="showInfoInvoice({{p}})">
+        <td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td>
+        <td>
+            <small class="text-success"><i class="fa fa-check-circle"></i></small>
+            F. INFORMATIVA  ${ current_selected_partial.info_invoice.info_invoice.nro_factura_informativa } ${ current_selected_partial.info_invoice.supplier.nombre }
+        </td>
+        <td class="text-right"> ${ current_selected_partial.info_invoice.info_invoice_detail_sums.value_tct | money }</td>
+        <td class="text-right"> ${ current_selected_partial.info_invoice.info_invoice_detail_sums.value_tct | money }</td>
+        <td class="text-right"> ${ 0 | money }</td>
+    </tr>
+    <tr @click="showTaxes()">
+        <td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td>
+        <td>
+            <small class="text-success"><i class="fa fa-check-circle"></i></small>
+            TRIBUTOS SENAE
+        </td>
+        <td class="text-right"> ${ current_selected_partial.taxes.total_provisionado | money  }</td>
+        <td class="text-right"> ${ current_selected_partial.taxes.total_pagado | money  }</td>
+        <td class="text-right"> ${ (current_selected_partial.taxes.total_provisionado - current_selected_partial.taxes.total_pagado ) | money  }</td>
+    </tr>
+    <tr @click="showReliquidacionICE()" v-if ="(current_selected_partial.partial.ordinal_parcial === current_ordinal_parcial) && (current_selected_partial.partial.bg_isclosed === 0)">
+        <td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td>
+        <td>
+            <small class="text-danger"><i class="fa fa-exclamation-triangle"></i></small>
+            RELIQUIDACION ICE
+        </td>
+        <td class="text-right">${ ice_reliquidado.provision | money }</td>
+        <td class="text-right">0.00</td>
+        <td class="text-right">${ ice_reliquidado.provision | money }</td>
+    </tr>
+    <tr @click="showReliquidacionICEMayor()" v-else="">
+        <td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td>
+        <td>
+            <small class="text-success" v-if="current_selected_partial.ledger.bg_mayor"><i class="fa fa-check-circle"></i></small>
+            <small class="text-danger" v-else=""><i class="fa fa-exclamation-triangle"></i></small>
+            RELIQUIDACION ICE
+        </td>
+        <td class="text-right">${ current_selected_partial.ledger.reliquidacion_ice | money }</td>
+        <td class="text-right" v-if="current_selected_partial.ledger.bg_mayor"> ${ current_selected_partial.ledger.reliquidacion_ice | money } </td>
+        <td class="text-right"  v-else=""> 0.00</td>
+        <td class="text-right" v-if="current_selected_partial.ledger.bg_mayor"> 0.00 </td>
+        <td class="text-right"  v-else=""> ${ current_selected_partial.ledger.reliquidacion_ice | money }</td>
+    </tr>
+    <tr v-for="item in current_selected_partial.expenses" @click="selectExpense(item)">
+        <td class="text-center text-primary"><i class="fa fa-chevron-right"></i></td>
+        <td>
+            <small class="text-secondary" v-if="item.parcial"><i class="fa fa-puzzle-piece"></i></small>
+            <small class="text-success" v-if="item.complete"><i class="fa fa-check-circle"></i></small>
+            <small class="text-danger" v-if="item.provision"><i class="fa fa-exclamation-triangle"></i></small>
+            ${ item.expense.concepto }
+        </td>
+        <td class="text-right">${ item.expense.valor_provisionado | money }</td>
+        <td class="text-right">${ item.legder | money }</td>
+        <td class="text-right">${ (item.expense.valor_provisionado - item.legder) | money }</td>
+    </tr>
+    <tr>
+        <th colspan="2">Sumas</th>
+        <th class="text-right">${ (current_selected_partial.total_expenses + current_selected_partial.total_taxes_product) | money }</th>
+        <th class="text-right">${ 0 | money }</th>
+        <th class="text-right">${ ((current_selected_partial.total_expenses + current_selected_partial.total_taxes_product) - current_selected_partial.total_invoiced) | money }</th>
+    </tr>
+</tbody>
+</table>

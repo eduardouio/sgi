@@ -1,0 +1,120 @@
+{% extends 'base/base.html' %}{% block header %}
+<script src="{{ static("js/vue.js") }}"></script>
+<script src="{{ static("js/vue-resource.js") }}"></script>
+{% endblock header %}
+{% block title_content %}
+<div class="row border">
+   <div class="col-4">
+      <i class="fa fa-cog"></i>
+      Auditoría Revisión de Facturas 
+   </div>
+   <div class="col-8 text-right">
+   <strong>Proveedor</strong> {{ data.invoice.invoice.identificacion_proveedor.nombre }} 
+   | <strong>RUC:</strong>  {{ data.invoice.invoice.identificacion_proveedor.identificacion_proveedor }}
+   | <strong>Tipo:</strong> {{data.invoice.invoice.identificacion_proveedor.tipo_provedor }}
+   | <strong>Moneda:</strong> {{data.invoice.invoice.identificacion_proveedor.moneda_transaccion }}
+   </div>
+</div>
+{% endblock title_content %}
+{% block content %}
+<div class="container" id='app'>
+   <div class="row">
+      <div class="col-12">
+         <table class="table table-bordered table-condensed">
+            <tbody>
+               <tr>
+                 <th style="width:100px;" class="text-right bg-light">ID:</th>
+                 <td>{{ data.invoice.invoice.id_documento_pago }}</td>
+                 <th style="width:100px;" class="text-right bg-light">Nro Factura:</th>
+                 <td>{{ data.invoice.invoice.nro_factura }}</td>
+                 <th style="width:100px;" class="text-right bg-light">Fecha Registro:</th>
+                 <td>{{ data.invoice.invoice.fecha_emision }}</td>
+                 <th style="width:100px;" class="text-right bg-light">Usuario:</th>
+                 <td>{{ data.invoice.user.nombres }}</td>
+               </tr>
+               <tr>
+                  <th style="width:100px;" class="text-right bg-light">Comentarios:</th>
+                  <td colspan="7">{{ data.invoice.invoice.comentarios }}</td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+   </div>
+   <div class="row">
+    <div class="col-6" style="font-size:14px">
+    {% if data.invoice.invoice.bg_audit %}
+      <span class="text-success"><span class="fa fa-check"></span>Aprovado</span>
+    {% else %}
+      <span class="text-danger"><span class="fa fa-ban"></span>&nbsp; Pendiente</span>
+    {% endif %}
+    &nbsp; <span class="text-secondary">|</span> &nbsp;
+    {% if data.invoice.is_complete %}
+         <span class="text-success"><span class="fa fa-check"></span>&nbsp; Factura Completa</span>
+         {% else %}
+         <span class="text-danger"><span class="fa fa-ban"></span>&nbsp; Factura Incompleta</span>
+    {% endif %}
+    </div> 
+    <div class="col-md-2"><h6 class="text-primary"><small>Val Factura: $</small> <span> {{ data.invoice.invoiced_value }} </span></h6></div>
+    <div class="col-md-2"><h6 class="text-success"><small>Val Justificado: </small> <span> {{ data.invoice.justified_value | round(2)}} </span></h6></div>
+    <div class="col-md-2"><h6 class="text-defult"><small>Val Pendiente: $</small> <span> {{data.invoice.balance | round(2)}} </span></h6></div>
+    </div>
+   <div class="row">
+   <table class="table table-bordered table-striped table-hover table-condensed">
+   <tr>
+   <th>#</th>
+   <th>Detalle</th>
+   <th>Pedido</th>
+   <th>Parcial</th>
+   <th>F Inicio</th>
+   <th>F Fin</th>
+   <th>Provisi&oacute;n</th>
+   <th>Justificaci&oacute;n</th>
+   <th>Ajuste</th>
+   <th>Saldo</th>
+   {% if data.invoice.details %}
+   {% for item in data.invoice.details %}
+   <tr>
+   <td class="text-center">{{ loop.index }}</td>
+   <td>{{ item.expense.concepto }}</td>
+   <td @click="loadOrder('{{ item.order.order.nro_pedido }}')"><span data-toggle="modal" data-target=".modal-pedido-parcial" class="text-primary">{{ item.order.order.nro_pedido }} | {{item.order.order_invoice.identificacion_proveedor}}</span></td>
+   <td class="text-center">{% if item.partial %}<span @click="loadPartial({{item.partial.partial.id_parcial}})" data-toggle="modal" data-target=".modal-pedido-parcial" class="text-primary">P {{item.partial.partial.ordinal_parcial}}</span>{% else %}P1{% endif %}</td>
+   <td class="text-center">{{ item.expense.fecha }}</td>
+   <td class="text-center"> {% if item.expense.fecha_fin %} {{ item.expense.fecha_fin }} {% else %}--{% endif %} </td>
+   <td class="text-right">{{ item.expense.valor_provisionado }}</td>
+   <td class="text-right">{{ item.detail.valor }}</td>
+   <td class="text-right">{{ item.expense.valor_ajuste }}</td>
+   <td class="text-right">{{ item.expense.valor_provisionado - item.detail.valor +  item.expense.valor_ajuste }}</td>
+   </tr>
+   {% endfor %}
+   {% else %}
+   <tr>
+      <td colspan="10" class="text-danger text-center">
+      <i class="fas fa-exclamation-triangle"></i>
+      ESTE DOCUMENTO NO REGISTRA JUSTIFICACIONES, FAVOR COMUNIQUESE CON EL DEPARTAMENTO DE IMPORTACIONES
+      </td>
+   </tr>
+   {% endif %}
+   </table>
+   </div>
+   <div class="row">
+   <div class="col-1 text-right">
+   Comentarios:
+   </div>
+   <div class="col-7">
+   <textarea cols="90" rows="1">{% if data.invoice.invoice.comentarios_audit %}{{ data.invoice.invoice.comentarios_audit }}{% endif %}</textarea>
+   </div>
+   <div class="col-4 text-right">
+   <a href="/auditoria/"class="btn btn-outline-primary"><i class="fas fa-list"></i> Volver a Listado</a>
+      {% if  data.invoice.invoice.bg_audit %}
+        <a href="" class="btn btn-outline-danger"><i class="fas fa-ban"></i> Rechazar Documento</a>
+        {% else %}
+        <a href="" class="btn btn-outline-success"> <i class="fas fa-check-circle"></i>  Aprobar Documento</a>
+      {% endif %}
+   </div>
+{% include 'audit/modal-pedido-parcial.html' %}
+   </div>
+</div>
+{% endblock content %}
+{% block script %}
+{% include "js/app_audit.js" %}
+{% endblock script %}

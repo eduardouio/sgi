@@ -1,0 +1,75 @@
+{% extends 'base/base.html' %}
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+        <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th colspan="2">Anexo ICE</th>
+            <th colspan="13">Empresa: {{ data.empresa.nombre }}</th>
+            <th colspan="1">Mes: {{ data.month }}</th>
+            <th colspan="1">Año: {{ data.year }}</th>
+        </tr>
+        <tr>
+        <th>PRODUCTO</th>
+        <th>NRO PEDIDO</th>
+        <th>CAJAS</th>
+        <th>UNIDADES</th>
+        <th>FOB</th>
+        <th>CAPACIDAD</th>
+        <th>GRADO ALCOHÓLICO</th>
+        <th>EXADUANA</th>
+        <th>BASE ADVALOREN LEGAL </th>
+        <th>ICE ESPECIFICO UNIT</th>
+        <th>ICE ESPECIFICO TOTAL</th>
+        <th>ICE ADVALOREN UNIT CALCULADO</th>
+        <th>ICE ADVALOREN UNIT PAGADO</th>
+        <th>ICE ADVALOREN TOTAL</th>
+        <th>ICE TOTAL PAGADO</th>
+        <th>VOLUMEN BRUTO ICE ESPECIFICO</th>
+        <th>BASE IMPONIBLE ICE ADVALOREN</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in data.anexo %}
+        <tr>
+            <td nowrap>{{ item.product }}</td>
+            <td nowrap>{{ item.nro_pedido | replace('-','/') }}</td>
+            <td nowrap class="text-rigth">{{ item.cajas }}</td>
+            <td nowrap class="text-rigth">{{ item.unidades }}</td>
+            <td nowrap class="text-rigth">{{ item.fob }}</td>
+            <td nowrap class="text-rigth">{{ item.capacidad }}</td>
+            <td nowrap class="text-rigth">{{ item.grado_alcoholico }}</td>
+            <td nowrap class="text-rigth">{{ item.exaduana }}</td>
+            <td nowrap class="text-right">{{ item.base_advalorem }}</td>
+            <td nowrap class="text-right">{{ item.ice_especifico_unitario }}</td>
+            <td nowrap class="text-right">{{ item.ice_especifico }}</td>
+            <td nowrap class="text-right">
+            {% if item.ice_advalorem_unitario > 0 %}
+                {{ item.ice_advalorem_unitario }}
+            {% else %}
+                0.00
+            {% endif %}
+            </td>
+            <td nowrap class="text-right">
+            {% if item.ice_advalorem_calculado > 0 %}
+                {{ item.ice_advalorem_calculado }}</td>
+            {% else %}
+                0.00
+            {% endif %}
+            <td nowrap class="text-right">
+                {% if item.ice_advalorem_pagado > 0 %}
+                {{ item.ice_advalorem_pagado }}</td>
+            {% else %}
+                0.00
+            {% endif %}
+            <td nowrap class="text-right">{{ item.total_ice  }}</td>
+            <td nowrap class="text-right">{{ item.volumen_bruto_ice  }}</td>
+            <td nowrap class="text-right">{{ item.base_imponible }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+        </div>
+</div>
+{% endblock content %}

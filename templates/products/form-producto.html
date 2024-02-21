@@ -1,0 +1,189 @@
+{% extends 'base/base.html' %}
+    {% block title_content %}
+    <div class="row border">
+   <div class="col-8">
+      <i class="fa fa-list"></i>
+      {% if object %}
+        Editar Producto  <strong> {{ object.nombre }} </strong>
+        {% else %}
+        Formulario de registro de producto
+        {% endif %}
+   </div>
+   <div class="col-4 text-right">SGI <small>[Sistema Gestón de Importaciones] | Módulo Productos</small></div>
+</div>
+{% endblock title_content %}
+{% block content %}
+<br>
+<div class="container bordered">
+    <br>
+    {{ form.errors }}
+    <form method="post" enctype="multipart/form-data">
+        {% if data.new_id %}
+        <input type="hidden" name="id_producto" id="id_id_producto" value="{{ data.new_id }}">
+            {%else%}
+            {{ form.id_producto }}
+        {%endif%}
+        {{ csrf_input }}
+        <div class="row">
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="cod_contable">Cod Contable</label>
+                    {{ form.cod_contable  }}
+                  </div>
+            </div>
+            <div class="col-8">
+                <div class="form-group">
+                    <label for="nombre">Nombre SAP</label>
+                    {{ form.nombre }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="identificacion_proveedor">Proveedor</label>
+                    {{ form.identificacion_proveedor }}
+                </div>
+            </div>
+            <div class="col-8">
+                <div class="form-group">
+                    <label for="nombre_extrangero">Nombre Extrangero</label>
+                    {{ form.nombre_extrangero }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <div class="form-gourp">
+                    <label for="cantidad_x_caja">Cantidad Caja</label>
+                    {{ form.cantidad_x_caja }}
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="form-gourp">
+                    <label for="capacidad_ml">Capacidad</label>
+                    {{ form.capacidad_ml }}
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="form-gourp">
+                    <label for="grado_alcoholico">Grado Alc.</label>
+                    {{ form.grado_alcoholico }}
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="form-gourp">
+                    <label for="costo_caja">Costo Caja</label>
+                    {{ form.costo_caja }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <div class="form-gourp">
+                    <label for="nro_registro_sanitario">Nro Registro San</label>
+                    {{ form.nro_registro_sanitario }}
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="form-gourp">
+                    <label for="nro_registro_sanitario">Soliciutd AUCP</label>
+                    {{ form.solicitud_aucp }}
+                </div>
+            </div>            
+            <div class="col-6">
+                <div class="form-gourp">
+                    <label for="registro_sanitario">Archivo Registro</label>
+                    {{ form.registro_sanitario }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="estado_registro">Estado Registro</label>
+                    {{ form.estado_registro }}
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="fecha_emision_registro">Fecha Emision RS</label>
+                    {{ form.fecha_emision_registro }}
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="fecha_vencimiento_registro">Fecha Vencimiento RS</label>
+                    {{ form.fecha_vencimiento_registro }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <div class="form-group">
+                    <label for="pais_origen">Pais Origen</label>
+                    {{ form.pais_origen }}
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="form-group">
+                    <label for="partida_arancelaria">Partida Arancela</label>
+                    {{ form.partida_arancelaria }}
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="form-group">
+                    <label for="subpartida_arancelaria">Subpartidad</label>
+                    {{ form.subpartida_arancelaria }}
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="form-group">
+                    <label for="tnan_codigo">Co&oacute;digo TNAN</label>
+                    {{ form.tnan_codigo }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <div class="from-group"><label for="estado">Estado Producto</label>
+                    {{ form.estado }}
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="from-group">
+                    <label for="peso">Peso</label>
+                    {{ form.peso }}
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="from-group"><label for="custodia_doble">Custodia Armada</label>
+                    {{ form.custodia_doble }}
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="from-group"><label for="cod_ice">Código ICE</label>
+                    {{ form.cod_ice }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                    <div class="from-group"><label for="custodia_doble">Comentarios</label>
+                        {{ form.comentarios }}
+                    </div>
+            </div>
+        </div>
+
+        <div class="row text-right">
+            <div class="col-12">
+                {% if object %}
+                <a href="/productos/ver/{{ object.cod_contable }}/" class="btn btn-outline-primary"> <i class="fas fa-ban"></i> Cancelar</a>
+                {% endif %}
+                <button  class="btn btn-outline-primary"> <i class="fas fa-save"></i> Guardar</button>
+            </div>
+        </div>
+    </form>
+    <br>
+</div>
+{% endblock %}

@@ -1,0 +1,172 @@
+{% extends 'base/base.html' %}
+{% block title_content %}
+    <div class="row border">
+   <div class="col-8">
+      <i class="fa fa-list"></i>
+      Listado de Facturas pendientes por Aprobar | Nacionales: {{ 0 }} | Productos {{ 0 }}
+   </div>
+   <div class="col-4 text-right">SGI <small>[Sistema Gestón de Importaciones] AUDITORIA</small></div>
+</div>
+{% endblock title_content %}
+{% block content %}
+<div class="row">
+  <div class="col-10">
+  Tiene un total de {{ data.local_invoices.__len__() }} <strong>Facturas  Locales</strong> y {{data.foreign_invoices.__len__()}} <strong>Facturas Internacionales</strong> pendientes de revisar
+  </div>
+  <div class="col-2"><a href="/auditoria-/" class="btn btn-outline-dark"><i class="fas fa-list"></i>
+  Volver a Lista</a></div>
+</div>
+    <div class="row">
+        <div class="col-12">
+    <table class="table table-bordered table-condensed table-striped" style="margin-top:5px">
+    <thead>
+    <tr class="bg-primary text-white text-center">
+    <td colspan="12">
+       FACTURAS DE PROVEEDORES LOCALES
+    </td>
+    </tr>
+        <tr>
+            <th>#</th>
+            <th>Factura</th>
+            <th>Proveedor</th>
+            <th>Creado</th>
+            <th>Fecha</th>
+            <th>Días</th>
+            <th>Valor</th>
+            <th>Just</th>
+            <th>Saldo</th>
+            <th>Sts</th>
+            <th>Fecha</th>
+            <th>Aprobado Por:</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for item in data.local_invoices %}
+    <tr >
+      <td class="text-center">{{ loop.index }}</td>
+      <td class="text-center">
+          <a href="/auditoria/factura/{{item.id_documento_pago}}/"> <i  class="fas fa-eye float-left"></i> {{ item.nro_factura }}</a></td>
+      <td>{{ item.identificacion_proveedor }}</td>
+      {# bindeamos el nombre del usuario #}
+      <td>
+        {% if item.id_user == 1 %}
+          ADMINISTRADOR
+          {% elif item.id_user == 25 %}
+          EDUARDO VILLOTA
+          {% elif item.id_user == 15 %}
+          JONATHAN CRUZ
+          {% elif item.id_user == 17 %}
+            ELIZABETH SALA
+          {% elif item.id_user == 4 %}
+            ALEXANDRA LEON
+          {% elif item.id_user == 31 %}
+            PATRICIA RAMOS
+          {% else %}
+            OTRO [{{ item.id_user }}]
+        {% endif %}      
+      </td>
+      <td class="text-center">{{ item.fecha_emision }}</td>
+      <td class="text-center">{{ item.days }}</td>
+      <td class="text-right text-primary">{{ item.valor }}</td>      
+      <td class="text-right text-secondary">{{ item.justify_value }}</td>      
+      <td class="text-right {%if (item.valor - item.justify_value) == 0 %} text-success {% else %} text-danger {%endif%}">
+        <strong>
+          {{ item.valor - item.justify_value }}
+        </strong>
+      </td>      
+      <td class="text-center">
+      {% if item.bg_audit %}
+        <i class="fas fa-check text-success"></i>
+      {% else %}
+        <i class="fas fa-times text-danger"></i>
+      {% endif %}
+      </td>
+      {% if  item.audit_user %}
+        <td>{{ item.audit_date }}</td>
+        <td>{{ item.user.first_name }} {{ item.user.last_name }}</td>
+      {% else %}
+        <td class="text-center"><i class="fas fa-minus text-danger"></i></td>
+        <td class="text-center"><i class="fas fa-minus text-danger"></i></td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table>  
+        </div>
+    </div>
+     <div class="row">
+        <div class="col-12">
+    <table class="table table-bordered table-condensed table-striped" style="margin-top:5px">
+    <thead>
+    <tr class="bg-dark text-white text-center"><td colspan="13">FACTURAS DE PROVEEDORES DEL EXTERIOR</td></tr>
+        <tr>
+            <th>#</th>
+            <th>Factura</th>
+            <th>Proveedor</th>
+            <th>Creado</th>
+            <th>Fecha</th>
+            <th>Días</th>
+            <th>Valor</th>
+            <th>Moneda</th>
+            <th>TC</th>
+            <th>Total</th>
+            <th>Sts</th>
+            <th>Fecha</th>
+            <th>Aprobado Por:</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for item in data.foreign_invoices %}
+    <tr>
+    <td class="text-center">{{ loop.index }}</td>
+    <td class="text-center">
+    <a href="/auditoria/factura-exterior/{{ item.id_pedido_factura }}/"> <i  class="fas fa-eye float-left"></i> {{ item.id_factura_proveedor }}</a>    
+    </td>
+    <td>{{ item.identificacion_proveedor.nombre }}</td>
+     <td>
+        {% if item.id_user == 1 %}
+          ADMINISTRADOR
+          {% elif item.id_user == 25 %}
+          EDUARDO VILLOTA
+          {% elif item.id_user == 15 %}
+          JONATHAN CRUZ
+          {% elif item.id_user == 17 %}
+            ELIZABETH SALA
+          {% elif item.id_user == 4 %}
+            ALEXANDRA LEON
+          {% elif item.id_user == 31 %}
+            PATRICIA RAMOS
+          {% elif item.id_user == 10 %}
+            JORGE CHULDE
+          {% elif item.id_user == 29 %}
+            ALEXANDRA YANEZ
+          {% else %}
+            OTRO [{{ item.id_user }}]
+        {% endif %}      
+    <td class="text-center">{{ item.fecha_emision }}</td>
+    <td class="text-center">{{ item.days}}</td>
+    <td class="text-right">{{ item.valor | round(2) }}</td>
+    <td class="text-right">{{ item.moneda }}</td>
+    <td class="text-right">{{ item.tipo_cambio | round(2) }}</td>
+    <td class="text-right">{{ (item.tipo_cambio * item.valor) | round(2) }}</td>
+          <td class="text-center">
+      {% if item.bg_audit %}
+        <i class="fas fa-check text-success"></i>
+      {% else %}
+        <i class="fas fa-times text-danger"></i>
+      {% endif %}
+      </td>
+      {% if  item.audit_user %}
+        <td>{{ item.audit_date }}</td>
+        <td>{{ item.user.first_name }} {{ item.user.last_name }}</td>
+      {% else %}
+        <td class="text-center"><i class="fas fa-minus text-danger"></i></td>
+        <td class="text-center"><i class="fas fa-minus text-danger"></i></td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+    </div>
+    </div>
+{% endblock content %}

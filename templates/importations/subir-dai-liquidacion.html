@@ -1,0 +1,63 @@
+{% extends 'base/base.html' %}
+{% block title_content %}
+<div class="row border">
+   <div class="col-6">
+      <i class="fa fa-folder"></i>
+      <small><i class="fas fa-user"></i> ASISTENTE DE IMPORTACIONES SUBIR LUQUIDACIONES/DAI PARA PARCIALES ALMAGRO</small> 
+   </div>
+   <div class="col-6 text-right">
+      <span>Sistema de gestión de Importaciones<strong class="text-primary">SGI</strong></span>
+   </div>
+</div>
+{% endblock title_content %}
+{% block content %}
+<form>
+ <div class="row">
+   <div class="col-2">
+   <div class="form-group">
+   <label for="tipo" >Tipo</label>
+   <select model="tipo" class="form-control form-control-sm" autofocus="">
+   <option selected disabled>Seleccione...</option>
+   <option value="dai">DAI</option>
+   <option value="tributos">LIQUIDACION TRIBUTOS</option>
+   <option value="etiquetas">LIQUIDACION ETIQUETAS</option>
+   <option value="adicional">LIQUIDACION ADICIONAL</option>
+   </select>
+   </div>
+   </div>
+   <div class="col-2">
+   <div class="form-group">
+   <label for="">Pedido</label>
+   <select class="form-control form-control-sm" v-model="nro_pedido">
+      <option selected disabled>Selecciones...</option>
+      {% for order in data.open_orders %}
+         <option value="nro_pedido"> {{ order.nro_pedido }} -> {{ order.proveedor }} </option>
+      {% endfor %}
+   </select>
+   </div>
+   </div>
+   <div class="col-2">
+   <div class="form-group">
+   <label for="">Parcial</label>
+   <select name="id_parcial" class="form-control form-control-sm">
+   	<option selected disabled>Selecciones...</option>
+   	{# cargar dinamicamente los parciales de cada pedido #}
+   </select>
+   </div>
+   </div>
+   <div class="col-6">
+      <div class="form-group">
+      <label for="url">Url <small class="text-info">(Copiar y pegar de la barra url Ecuapass)</small></label>
+      <input type="url" class="form-control form-control-sm" name="url" placeholder="URL Archivo SENAE" autocomplete="off">
+      </div>
+   </div>
+   </div>
+   <div class="row">
+   	<div class="col-12 text-right">
+   		<button class="btn btn-lg btn-primary">
+   			<i class="fas fa-upload"></i> Subir Archivo
+   		</button>
+   	</div>
+   </div>
+   </form>
+{% endblock content %}

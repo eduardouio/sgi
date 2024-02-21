@@ -1,0 +1,75 @@
+{% extends 'base/base.html' %}
+{% block title_content %}
+<div class="row border">
+   <div class="col-4">
+      <i class="fa fa-cog"></i>
+         Consulta General de Saldo de Mayor {{ request.enterprise.empresa }}
+   </div>
+   <div class="col-8 text-right">
+      <span>Costeo de Productos</span>
+   </div>
+</div>
+{% endblock title_content %}
+{% block content %}
+<div class="container">
+   <div class="row">
+      <div class="col-12 text-right">
+         <a href="?show_form=true" class="btn btn-outline-primary"> <i class="fas fa-eye"></i> Mostrar Formulario</a>
+      </div>
+   </div>
+   {% if data.show_form %}
+   <div class="row">
+      <div class="col-12 bordered">
+         <form action="" method="POST">
+            {{ csrf_input }}
+            <div class="form-group">
+               <label for="pedidos">Ingrese los numeros de pedido, el numero de pedido debe estar en formato 000-00 un pedido por cada línea</label>
+               <textarea class="form-control" name="pedidos" id="pedidos" rows="5"></textarea>
+            </div>
+            <button class="btn btn-outline-primary float-right" > <i class="fas fa-table"></i> Genrar Reporte</button>
+            <br>
+            <br>
+         </form>
+      </div>
+   </div>
+   {% else  %}
+    <div class="row">
+      <table class="table table-bordered table-condensed table-hover">
+      <tr class="bg-secondary text-light">
+      <th colspan="9" class="text-center" style="font-size: 18px;">
+         Saldo Mayor General {{ request.enterprise.empresa }}
+      </th>
+      </tr>
+      <tr>
+      <th>#</th>
+      <th>Pedido</th>
+      <th>Proveedor</th>
+      <th>Fob Pendiente</th>
+      <th>Gastos Pendientes</th>
+      <th>Saldo</th>
+      <th class="bg-light">G Iniciales</th>
+      <th class="bg-light">G Facturados</th>
+      <th class="bg-light">G Por Llegar</th>
+      </tr>
+      {% for item in data.report %}
+         <tr>
+         <td class="text-center">{{ loop.index }}</td>
+         <td class="text-center">
+            <a href="{{request.enterprise.url_app_importaciones}}index.php/pedido/presentar/{{ item.order }}" target="_blank">
+               {{ item.order }} <small>[{{item.order.regimen}}]</small>
+            </a>
+         </td>
+         <td class="">{{ item.order.proveedor }}</td>
+         <td class="text-right">{{ item.product.sale }}</td>
+         <td class="text-right">{{ item.expenses.sale }}</td>
+         <td class="text-right bg_sap">{{ item.product.sale + item.expenses.sale }}</td>
+         <td class="bg-light text-right text-secondary">{{ item.expenses.initial_sale }}</td>
+         <td class="bg-light text-right text-secondary">{{ item.expenses.justified }}</td>
+         <td class="bg-light text-right text-secondary">{{ item.expenses.per_justified}}</td>
+         </tr>   
+      {% endfor %}
+      </table>
+    </div>
+    {% endif %}
+</div>
+{% endblock content %}

@@ -1,0 +1,202 @@
+{% extends 'base/base.html' %}
+    {% block title_content %}
+    <div class="row border">
+   <div class="col-8">
+      <i class="fa fa-list"></i>
+      Rreporte ICE Pedidos Liquidados en {{ data.title_page }}
+   </div>
+   <div class="col-4 text-right">SGI <small>[Sistema Gestón de Importaciones]</small></div>
+</div>
+{% endblock title_content %}
+{% block content %}
+<div class="container-fluid">
+    <form action="" class="form" method="get">
+    <div class="row">
+        <div class="col-2">
+                <div class="form-group" >
+                    <label for="month">MES</label>
+                    <select name="month" id="month" class="form-control">
+                        <option value="1" {%if data.current_month == 1 %} selected {%endif %}>Enero</option>
+                        <option value="2" {%if data.current_month == 2 %} selected {%endif %}>Febrero</option>
+                        <option value="3" {%if data.current_month == 3 %} selected {%endif %}>Marzo</option>
+                        <option value="4" {%if data.current_month == 4 %} selected {%endif %}>Abril</option>
+                        <option value="5" {%if data.current_month == 5 %} selected {%endif %}>Mayo</option>
+                        <option value="6" {%if data.current_month == 6 %} selected {%endif %}>Junio</option>
+                        <option value="7" {%if data.current_month == 7 %} selected {%endif %}>Julio</option>
+                        <option value="8" {%if data.current_month == 8 %} selected {%endif %}>Agosto</option>
+                        <option value="9" {%if data.current_month == 9 %} selected {%endif %}>Septiembre</option>
+                        <option value="10" {%if data.curretn_month == 10 %} selected {%endif %}>Octubre</option>
+                        <option value="11" {%if data.curretn_month == 11 %} selected {%endif %}>Noviembre</option>
+                        <option value="12" {%if data.curretn_month == 12 %} selected {%endif %}>Diciembre</option>
+                    </select>
+                </div>
+                
+            </div>
+            <div class="col-2">
+                <div class="form-group">
+                    <label for="year">Ingrese el Año</label>
+                    <input type="number" name="year" id="year" class="form-control" value="{{ data.current_year }}">
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="form-group">
+                    <br>
+                    <br>
+                    <button class="btn btn-outline-primary"> <i class="fas fa-table"></i> Generar Reporte</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    {% if data.show_error %}
+    <div class="row">
+        <div class="col-12">
+            <span class="badge badge-danger">
+                Uno de los pedidos o parciales se encuentra abierto, por favor solicite el cierre de los mismos antes de continuar
+            </span>
+            <BR></BR>
+            PEDIDOS O PARCIALES SIN CERRAR
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Pedido</th>
+                            <th>Fecha LLegada</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for p in data.orders_opened %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ p.nro_pedido }}</td>
+                            <td>{{ p.fecha_llegada_cliente }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+        </div>
+    </div>
+    {% else  %}
+    <div class="row">
+    <div class="col-12">
+<table class="table table-bordered table-condensed table-responsive">
+<thead>
+  <tr>
+    <th class="text-center">NUMERO PEDIDO</th>
+    <th class="text-center">NOMBRE DEL PRODUCTO</th>
+    <th class="text-center">CODIGO DEL PRODUCTO</th>
+    <th class="text-center">FECHA DE DESADUANIZACION</th>
+    <th class="text-center">PROCEDEN</th>
+    <th class="text-center">CAJAS</th>
+    <th class="text-center">UNIDADES</th>
+    <th class="text-center">FOB</th>
+    <th class="text-center">COSTO TOTAL SIN ICE</th>
+    <th class="text-center">CAPACIDAD</th>
+    <th class="text-center">GRADO ALCOHÓLICO</th>
+    <th class="text-center">EX ADUANA</th>
+    <th class="text-center">ICE ESPECIFIC0</th>
+    <th class="text-center">ICE ADVALOREM</th>
+    <th class="text-center">ICE UNITARIO</th>
+    <th class="text-center">ICE TOTAL</th>
+    <th class="text-center">COSTO TOTAL + ICE TOTAL</th>
+    <th class="text-center">COSTO UNITARIO </th>
+    <th class="text-center">3 DIGITOS</th>
+    <th class="text-center">AÑO 4 DIG,</th>
+    <th class="text-center">REGIMEN</th>
+    <th class="text-center">REFRENDO</th>
+    <th class="text-center">ICE DIFF</th>
+  </tr>
+</thead>
+<tbody>
+{% for item in data.report['almacenera'] %}
+    <tr> 
+        <td nowrap="">{{ item.id_pedido_factura.nro_pedido_id.replace('-','/') }}</td>
+        <td nowrap="">{{ item.cod_contable.nombre }}</td>
+        <td nowrap="">{{ item.cod_contable.cod_ice }}</td>
+        <td nowrap="" class="text-right">{{ item.id_pedido_factura.nro_pedido.fecha_ingreso_almacenera.strftime('%d/%m/%Y') }}</td>
+        <td nowrap=""> {% if item.id_pedido_factura.nro_pedido.pais_origen == 'ESCOCIA' %} REINO UNIDO {% else %} {{ item.id_pedido_factura.nro_pedido.pais_origen }}{% endif %}</td>
+        <td nowrap="" class="text-right">{{ item.nro_cajas }}</td>
+        <td nowrap="" class="text-right">{{ item.unidades | round(0) }}</td>
+        <td nowrap="" class="text-right">{{ (item.nro_cajas  * item.costo_caja * item.id_pedido_factura.tipo_cambio ) | round(2)}}</td>
+        <td nowrap="" class="bg-secondary text-center"></td>
+        <td nowrap="" class="text-right">{{ item.cod_contable.capacidad_ml | round(0) }}</td>
+        <td nowrap="" class="text-right">{{ item.grado_alcoholico | round(0) }}</td>
+        <td nowrap="" class="bg-secondary text-center"></td>
+        <td nowrap="" class="bg-secondary text-center"></td>
+        <td nowrap="" class="bg-secondary text-center"></td>
+        <td nowrap="" class="bg-secondary text-center"></td>
+        <td nowrap="" class="bg-secondary text-center"></td>
+        <td nowrap="" class="bg-secondary text-center"></td>
+        <td nowrap="" class="bg-secondary text-center"></td>
+        <td nowrap="" class="text-right">{{ item.id_pedido_factura.nro_pedido.nro_refrendo[:3] }}</td>
+        <td nowrap="" class="text-right">{{ item.id_pedido_factura.nro_pedido.nro_refrendo[4:8] }}</td>
+        <td nowrap="" class="text-right">{{ item.id_pedido_factura.nro_pedido.nro_refrendo[9:11] }}</td>
+        <td nowrap="" class="text-right">{{ item.id_pedido_factura.nro_pedido.nro_refrendo[12:] }}</td>
+        <td nowrap="" class="bg-secondary text-center"></td>
+    </tr>
+{% endfor %}
+{% for item in data.report['consumo'] %}
+    <tr> 
+        <td nowrap="">{{ item.id_pedido_factura.nro_pedido_id.replace('-','/') }}</td>
+        <td nowrap="">{{ item.cod_contable.nombre }}</td>
+        <td nowrap="">{{ item.cod_contable.cod_ice }}</td>
+        <td nowrap="" class="text-right">{{ item.id_pedido_factura.nro_pedido.fecha_llegada_cliente.strftime('%d/%m/%Y') }}</td>
+        <td nowrap=""> {% if item.id_pedido_factura.nro_pedido.pais_origen == 'ESCOCIA' %} REINO UNIDO {% else %} {{ item.id_pedido_factura.nro_pedido.pais_origen }}{% endif %}</td>
+        <td nowrap="" class="text-right">{{ item.nro_cajas }}</td>
+        <td nowrap="" class="text-right">{{ item.unidades | round(0) }}</td>
+        <td nowrap="" class="text-right">{{ (item.nro_cajas  * item.costo_caja * item.id_pedido_factura.tipo_cambio ) | round(2)}}</td>
+        <td nowrap="" class="text-right">{{ item.costo_total - item.ice_advalorem -  item.ice_especifico }}</td>
+        <td nowrap="" class="text-right">{{ item.cod_contable.capacidad_ml | round(0) }}</td>
+        <td nowrap="" class="text-right">{{ item.grado_alcoholico | round(2) }}</td>
+        <td nowrap="" class="text-right">{{ item.ex_aduana_unitario }}</td>
+        <td nowrap="" class="text-right">{{ item.ice_especifico / item.unidades }}</td>
+        <td nowrap="" class="text-right">{{ item.ice_advalorem / item.unidades }}</td>
+        <td nowrap="" class="text-right">{{ (item.ice_especifico + item.ice_advalorem) / item.unidades }}</td>
+        <td nowrap="" class="text-right">{{ (item.ice_advalorem +  item.ice_especifico) | round(3)}}</td>
+        <td nowrap="" class="text-right">{{ item.costo_total }}</td>
+        <td nowrap="" class="text-right">{{ item.costo_total / item.unidades }}</td>
+        <td nowrap="" class="text-right">{{ item.id_pedido_factura.nro_pedido.nro_refrendo[:3] }}</td>
+        <td nowrap="" class="text-right">{{ item.id_pedido_factura.nro_pedido.nro_refrendo[4:8] }}</td>
+        <td nowrap="" class="text-right">{{ item.id_pedido_factura.nro_pedido.nro_refrendo[9:11] }}</td>
+        <td nowrap="" class="text-right">{{ item.id_pedido_factura.nro_pedido.nro_refrendo[12:] }}</td>
+        <td nowrap="" class="text-center {% if ((item.total_ice - item.ice_advalorem  - item.ice_especifico) | abs) > 1  %} bg-warning  {% endif %}"
+        >
+        {{ (item.total_ice - item.ice_advalorem  - item.ice_especifico) | round(2) }} 
+            </td>
+    </tr>
+{% endfor %}
+{% for item in data.report['parciales'] %}
+    <tr> 
+        <td>{{ item.id_factura_informativa.id_parcial.nro_pedido_id.replace('-','/') }}</td>
+        <td>{{ item.product }}</td>
+        <td>{{ item.detalle_pedido_factura.cod_contable.cod_ice }}</td>
+        <td class="text-right">{{ item.id_factura_informativa.id_parcial.fecha_llegada_cliente.strftime('%d/%m/%Y') }}</td>
+        <td>{% if item.detalle_pedido_factura.id_pedido_factura.nro_pedido.pais_origen == 'ESCOCIA' %}REINO UNIDO{% else %}{{ item.detalle_pedido_factura.id_pedido_factura.nro_pedido.pais_origen }}{% endif %}</td>
+        <td class="text-right">{{ item.nro_cajas | round(0) }}</td>
+        <td class="text-right">{{ item.unidades | round(0) }}</td>
+        <td class="text-right">{{ (item.nro_cajas  * item.costo_caja * item.detalle_pedido_factura.id_pedido_factura.tipo_cambio ) | round(2)}}</td>
+        <td class="text-right">{{ item.costo_total - item.ice_advalorem -  item.ice_especifico }}</td>
+        <td class="text-right">{{ item.capacidad_ml | round(0) }}</td>
+        <td class="text-right">{{ item.grado_alcoholico | round(2) }}</td>
+        <td class="text-right">{{ item.ex_aduana_unitario }}</td>
+        <td nowrap="" class="text-right">{{ item.ice_especifico / item.unidades }}</td>
+        <td nowrap="" class="text-right">{{ item.ice_advalorem / item.unidades }}</td>
+        <td nowrap="" class="text-right">{{ (item.ice_especifico + item.ice_advalorem) / item.unidades }}</td>
+        <td nowrap="" class="text-right">{{ (item.ice_advalorem +  item.ice_especifico) | round(3)}}</td>
+        <td class="text-right">{{ item.costo_total }}</td>
+        <td class="text-right">{{ item.costo_total / item.unidades }}</td>
+        <td class="text-right">{{ item.id_factura_informativa.nro_refrendo[:3] }}</td>
+        <td class="text-right">{{ item.id_factura_informativa.nro_refrendo[4:8] }}</td>
+        <td class="text-right">{{ item.id_factura_informativa.nro_refrendo[9:11] }}</td>
+        <td class="text-right">{{ item.id_factura_informativa.nro_refrendo[12:] }}</td>
+        <td nowrap="" class="text-center {% if ((item.total_ice - item.ice_advalorem  - item.ice_especifico) | abs) > 1  %} bg-warning  {% endif %}">
+        {{ (item.total_ice - item.ice_advalorem  - item.ice_especifico) | round(2) }} 
+        </td>
+    </tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</div>
+{% endif %}
+</div>
+{% endblock content %}

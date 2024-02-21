@@ -1,0 +1,23 @@
+{% extends 'base/base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-bordered table-condensed table-hover">
+                <tr>
+                    <th>Pedido</th>
+                    <th>Proveedor</th>
+                    <th>Nro Referendo</th>
+                </tr>
+                {% for o in data.data %}
+                <tr>
+                    <td> {{ o.nro_pedido }} </td>
+                    <td>{{ o.proveedor }}</td>
+                    <td>{{ o.nro_refrendo }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock content %}

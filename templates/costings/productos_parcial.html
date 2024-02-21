@@ -1,0 +1,176 @@
+<div class="row">
+    <div class="col-12">
+    <div class="text-tittle"> PARAMETROS DE LIQUIDACION </div>
+    <table class="table table-bordered table-condensed">
+        <tr>
+        <td style="width:10%" class="bg-light text-right">T/C Trim:</td> <td class="text-right">{{ "%.3f" | format(data.complete_order_info.order_invoice.order_invoice.tipo_cambio) }}</td>
+        <td style="width:10%" class="bg-light text-right">Moneda Pedido:</td> <td class="text-right"> {{ data.complete_order_info.order_invoice.order_invoice.moneda }}</td>
+        <td style="width:10%" class="bg-light text-right">Fecha Llegada:</td>
+        <td class="text-right">
+        {% if data.current_partial.partial.fecha_llegada_cliente %}
+            {{ data.current_partial.partial.fecha_llegada_cliente.strftime('%d/%m/%Y') }}
+        {% else %}
+            En tránsito
+        {% endif %}
+        </td>
+        <td style="width:10%" class="bg-light text-right">Items:</td> <td class="text-right">{{ data.current_partial.info_invoice.info_invoice_details.__len__() }}</td>
+        <td style="width:10%" class="bg-light text-right">Cajas:</td> <td class="text-right">{{ data.current_partial.info_invoice.totals.boxes }}</td>
+        <td style="width:10%" class="bg-light text-right">Botellas:</td> <td class="text-right">{{ data.current_partial.info_invoice.totals.bottles }}</td>
+        </tr>
+        <tr>
+        <td style="width:10%" class="bg-light text-right">F Pago Liquidacion:</td> <td class="text-right">{{ data.current_partial.partial.fecha_liquidacion }}</td>
+        <td style="width:10%" class="bg-light text-right">Liberacion A.:</td> <td class="text-right">{{ data.current_partial.partial.exoneracion_arancel | round(2) }} %</td>
+        <td style="width:10%" class="bg-light text-right">Base Fondinfa: </td> <td class="text-right">{{ (data.current_partial.partial.base_fodinfa * 100) | round(2) }} %</td>
+        <td style="width:10%" class="bg-light text-right">Base ICE Esp:</td> <td class="text-right">{{ data.current_partial.partial.base_ice_especifico }}</td>
+        <td style="width:10%" class="bg-light text-right">Base ICE Adv:</td> <td class="text-right">{{ data.current_partial.partial.base_ice_advalorem }}</td>
+        <td style="width:10%" class="bg-light text-right">Base IVA:</td> <td class="text-right">{{(data.current_partial.partial.base_iva * 100) | round(2)}} %</td>
+        </tr>
+        <tr>
+            ## TODO el total de ice no se sumaa
+        <td style="width:10%" class="bg-light text-right">Mayor SAP:</td> <td class="text-right">${ current_ledger.mayor_sap | money }</td>
+        <td style="width:10%" class="bg-light text-right">Mayor SGI: </td> <td class="text-right">${ current_ledger.mayor_sgi | money }</td>
+        <td style="width:10%" class="bg-success text-right">Precion Entrega:</td> <td class="text-right" style="backgroud-color:#ff9;">$ <strong>{{ data.costings.sums.prorrateos_total | round(2)}}</strong></td>
+        <td style="width:10%" class="bg-success text-right">Costo Producto:</td> <td class="text-right" style="backgroud-color:#ff9;">$ <strong>{{ data.costings.sums.fob_tasa_trimestral | round(2)}}</strong></td>
+        <td style="width:10%" class="bg-light text-right">Factura Inf:</td> <td class="text-right">{{ data.current_partial.info_invoice.info_invoice.nro_factura_informativa }}</td>
+        <td style="width:10%" class="bg-light text-right">Diferencia Senae:</td> <td class="text-right text-danger">{{ data.current_partial.partial.ice_advalorem_pagado - data.current_partial.partial.ice_advalorem_pagado  | round(2)}}</td>
+        </tr>
+    </table>    
+    </div>
+</div>
+<br>
+<div class="row text-dark">    
+    <div class="col-6">
+    T/C Impuestos: <strong>{{ data.current_partial.partial.tipo_cambio | round(8) }}</strong> 
+    | ID: {{ data.current_partial.info_invoice.info_invoice.id_factura_informativa }}
+    </div>
+    <div class="col-6 text-right">
+        ICE Reliquidado: <strong>$ 
+        ${ ice_reliquidado.provision | money }
+        </strong>
+    </div>
+</div>
+<div class="row">
+<div class="col-12">
+<div class="table-responsive" style="height:335px">
+<table class="table table-bordered table-condensed table-striped">
+    <thead>
+    <tr class="bg-light">
+               <th>#</th>
+               <th>Cod Contable</th>
+               <th>Producto</th>
+               <th>Cajas</th>
+               <th>UxC</th>
+               <th>Unds</th>
+               <th>FOB TCT</th>
+               <th>Seguro A</th>
+               <th>Flete A</th>
+               <th>CIF</th>
+               <th>Fodinfa</th>
+               <th>Ar Advalorem</th>
+               <th>Ar Espec&iacute;fico</th>
+               <th>Etiquetas F</th>
+                <th>Exaduana U</th>
+                <th>Base Ad</th>
+               <th>Cap.</th>
+               <th>% Alch</th>
+               <th>ICE Esp U</th>
+               <th>ICE Adv U</th>
+               <th>ICE Esp</th>
+               <th>ICE Adv</th>
+               <th>Total ICE</th>
+               <th>P Indirectos</th>
+               <th class="text-primary">Indirectos PE</th>
+               <th class="text-success">T Costos</th>
+               <th>Costo Caja</th>
+               <th>C/U</th>
+            </tr>
+    </thead>
+    <tbody>
+        {% for item in data.costings.taxes %}
+            <tr>
+                <td class="text-center" nowrap>{{ loop.index }}</td>
+                <td class="text-center" nowrap>{{ item.cod_contable }}</td>
+                <td nowrap>{{ item.product }}</td>
+                <td class="text-right" nowrap>{{ item.nro_cajas | round(2)}}</td>
+                <td class="text-right" nowrap>{{ item.cantidad_x_caja | round(0)}}</td>
+                <td class="text-right" nowrap>{{ item.unidades | round(0)}}</td>
+                <td class="text-right" nowrap>{{ item.fob_tasa_trimestral | round(2)}}</td>
+                <td class="text-right" nowrap>{{ item.seguro_aduana | round(2)}}</td>
+                <td class="text-right" nowrap>{{ item.flete_aduana | round(2)}}</td>
+                <td class="text-right" nowrap>{{ item.cif | round(2)}}</td>
+                <td class="text-right" nowrap>{{ item.fodinfa | round(2)}}</td>
+                <td class="text-right" nowrap>{{ item.arancel_advalorem_pagar | round(2)}}</td>
+                <td class="text-right" nowrap>{{ item.arancel_especifico_pagar | round(2)}}</td>
+                <td class="text-right" nowrap>{{ item.etiquetas_fiscales | round(2)}}</td>
+                <td class="text-right" nowrap>{{ item.ex_aduana_unitario | round(2)}}</td>
+                <td class="text-right" nowrap>{{ item.base_advalorem_reliquidado | round(2)}}</td>
+                <td class="text-right" nowrap>{{ item.capacidad_ml | round(0)}}</td>
+                <td class="text-right" nowrap>{{ item.grado_alcoholico | round(2)}}</td>
+                <td class="text-right" nowrap>{{ item.ice_especifico_unitario | round(2)}}</td>
+                <td class="text-right" nowrap>{{ (item.ice_advalorem / item.unidades) | round(2)}}</td>
+                <td class="text-right" nowrap>{{ item.ice_especifico | round(2)}}</td>
+                <td class="text-right" nowrap>{{ item.ice_advalorem  | round(2)}}</td>
+                <td class="text-right" nowrap>{{ item.total_ice  | round(2)}}</td>
+                <td class="text-right" nowrap>{{ item.indirectos  | round(2)}}</td>
+                <td class="text-right" nowrap>{{ item.prorrateos_total  | round(2)}}</td>
+                <td class="text-right" nowrap>{{ item.costo_total  | round(2)}}</td>
+                <td class="text-right" nowrap>{{ item.costo_caja_final  | round(2)}}</td>
+                <td class="text-right" nowrap>{{ (item.costo_caja_final/item.cantidad_x_caja)  | round(2)}}</td>
+            </tr>
+        {% endfor %}
+        <tr>
+        <th nowrap colspan="3" class="text-right"><strong>Sumas:</strong></th>
+        <th nowrap class="text-right">{{ data.costings.sums.nro_cajas | round(2) }}</th>
+        <th nowrap class="text-center text-secondary">-</th>
+        <th nowrap class="text-right">{{ data.costings.sums.unidades | round(2) }}</th>
+        <th nowrap class="text-right">$ {{ data.costings.sums.fob_tasa_trimestral | round(2) }}</th>
+        <th nowrap class="text-right">$ {{ data.costings.sums.seguro_aduana | round(2) }}</th>
+        <th nowrap class="text-right">$ {{ data.costings.sums.flete_aduana | round(2) }}</th>
+        <th nowrap class="text-right">$ {{ data.costings.sums.cif | round(2) }}</th>
+        <th nowrap class="text-right">$ {{ data.costings.sums.fodinfa | round(2) }}</th>
+        <th nowrap class="text-right">$ {{ data.costings.sums.arancel_advalorem_pagar | round(2) }}</th>
+        <th nowrap class="text-right">$ {{ data.costings.sums.arancel_especifico_pagar | round(2) }}</th>
+        <th nowrap class="text-right">$ {{ data.costings.sums.etiquetas_fiscales | round(2) }}</th>
+        <th nowrap class="text-center text-secondary">-</th>
+        <th nowrap class="text-center text-secondary">-</th>
+        <th nowrap class="text-center text-secondary">-</th>
+        <th nowrap class="text-center text-secondary">-</th>
+        <th nowrap class="text-center text-secondary">-</th>
+        <th nowrap class="text-center text-secondary">-</th>
+        <th nowrap class="text-right">$ {{ data.costings.sums.ice_especifico | round(2)}}</th>
+        <th nowrap class="text-right">$ {{ data.costings.sums.ice_advalorem | round(2)}}</th>
+        <th nowrap class="text-right">$ {{ data.costings.sums.total_ice | round(2)}}</th>
+        <th nowrap class="text-right">$ {{ data.costings.sums.indirectos | round(2)}}</th>
+        <th nowrap class="text-right text-primary">$ {{ data.costings.sums.prorrateos_total | round(2)}}</th>
+        <th nowrap class="text-right text-success">$ {{ data.costings.sums.costo_total | round(2)}}</th>
+        <th nowrap class="text-center text-secondary">-</th>
+        <th nowrap class="text-center text-secondary">-</th>
+        </tr>
+    </tbody>
+</table>    
+</div>
+</div>
+</div>
+<br>
+<div class="row animate" v-if="show_liquidate_confirm_btn" v-bind:class="{'fadeInDown' : liquidated_partial }">
+    <div class="col-12 bg-light border border-warning">
+    <div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="basic-addon1">Comentarios Cierre:</span>
+  </div>
+  <input type="text" class="form-control" v-model="comentarios" placeholder="Ingrese comentarios de cierre">
+</div>
+    </div>
+</div>
+<br>
+<div class="row">
+<div class="col-12 text-right">
+    <button class="btn btn-sm btn-outline-dark" @click="show_costings=false"><i class="fa fa-arrow-left"></i> Volver a Gastos</button>
+    <button class="btn btn-sm btn-outline-dark" data-toggle="modal" data-target="#modal-prorrateos"><i class="fas fa-chart-pie"></i> Prorrateos de Pedido</button>
+    <span v-if="liquidated_partial == false">
+        <button v-if="show_liquidate_btn" class="btn btn-sm btn-outline-primary" @click="show_liquidate_confirm_btn = true;show_liquidate_btn=false"><i class="fa fa-check"></i> Liquidar Parcial</button>
+        <button v-if="show_liquidate_confirm_btn" class="btn btn-sm btn-warning" @click="deleteExistingLedger()"><i class="fas fa-exclamation-triangle"></i> Confirmar y Continuar </button>
+    </span>
+        <button class="btn btn-sm btn-outline-danger" disabled v-else><i class="fas fa-stop"></i>  Parcial Cerrado</button>
+</div>
+</div>

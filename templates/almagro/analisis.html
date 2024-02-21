@@ -1,0 +1,102 @@
+{% extends 'base/base.html' %}
+{% block title_content %}
+<div class="row border">
+  <div class="col-8">
+    <i class="fa fa-list"></i>
+    Compruebe las difencias y seleccione la información que desee importar
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <strong class="text-warning">
+        <i class="fas fa-exclamation-triangle"></i>
+        Nota: Esta acción no se puede deshacer
+    </strong>
+  </div>
+  <div class="col-4 text-right">
+    SGI <small>[Sistema Gestón de Importaciones] ASISTENTE ALMAGRO</small>
+  </div>
+</div>
+{% endblock title_content %} 
+{% block content %}
+<div class="container">
+    <form method="post">
+        {{ csrf_input }}
+        <div class="row">
+        <div class="col-12">
+        <table class="table table-condensed table-striped table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th rowspan="2">#</th>
+                    <th colspan="4" class="bg_sap">ALMAGRO</th>
+                    <th rowspan="2"><i class="fas fa-cog"></i></th>
+                    <th colspan="3" class="bg-info">SGI</th>
+                    <th class="bg-success" rowspan="2">IMPORTAR <i class="fas fa-file-import"></i></th>
+                </tr>
+                <tr>
+                    <th class="bg_sap">PEDIDO</th>
+                    <th class="bg_sap">MATRICULA</th>
+                    <th class="bg_sap">BL</th>
+                    <th class="bg_sap">INGRESO ALM</th>
+                    <th class="bg-info">MATRICULA</th>
+                    <th class="bg-info">BL</th>
+                    <th class="bg-info">INGRESO ALM</th>
+        
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in data.data_result %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td> {{ order.almagro.nro_pedido }} </td>
+                    <td> {{ order.almagro.nro_matricula }} </td>
+                    <td> {{ order.almagro.nro_bl }} </td>
+                    <td> {{ order.almagro.fecha_ingreso_almacenera }}</td>
+                    <td class="text-center"> <i class="fas fa-arrow-right"></i> </td>
+                    <td class="
+                    {% if order.almagro.nro_matricula != order.sgi.nro_matricula %}
+                        bg-warning
+                    {%endif%}
+                    ">
+                        {{ order.sgi.nro_matricula }}
+                    </td>
+                    <td class="
+                    {% if order.almagro.nro_bl != order.sgi.nro_bl %}
+                        bg-warning
+                    {%endif%}
+                    ">
+                        {{ order.sgi.nro_bl }}
+                    </td>
+                    <td class="
+                    {% if order.almagro.fecha_ingreso_almacenera != order.sgi.fecha_ingreso_almacenera %}
+                        bg-warning
+                    {%endif%}
+                    ">
+                        {{ order.sgi.fecha_ingreso_almacenera }}
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox" name="ord_{{order.almagro.nro_pedido }}">
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="form-group">
+            <input type="checkbox" name="opt_empty_only">  
+            <label for="">Solo importar faltantes valores en naranja sin contenido (no considera demás opciones)</label>
+        </div>
+        <div class="form-group">
+            <input type="checkbox" name="opt_matricula">
+            <label for="">Sobre Escribir Matricula</label>
+        </div>
+        <div class="form-group">
+            <input type="checkbox" name="opt_bl">
+            <label for="">Sobre Escribir BL</label>
+        </div>
+        <div class="form-group">
+            <input type="checkbox" name="opt_fecha">
+            <label for="">Sobre Escribir Fecha Almagro</label>
+        </div>
+        <button class="btn btn-lg btn-outline-primary"> <i class="fas fa-file-import"></i>    Importar Seleccionados </button>
+    </div>
+</div>
+</form>
+</div>
+{% endblock %}

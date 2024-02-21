@@ -1,0 +1,475 @@
+{% extends 'base/base.html' %}
+{% block header %}
+<script src="{{ static("js/vue.js") }}"></script>
+<script src="{{ static("js/vue-resource.js") }}"></script>
+{% endblock header %}
+{% block title_content %}
+<div class="row border">
+   <div class="col-4">
+      <i class="fa fa-tags"></i>
+      <small>
+      <i class="fas fa-user"></i> 
+      <strong class="text-success">{{ request.user | upper }}</strong>
+      Registro de Etiquetas Para Pedido {{  data.order }} -> {{ data.order_data.supplier }}
+      </small> 
+   </div>
+   <div class="col-8 text-right">
+      <span>{{ request.enterprise.nombre }}</span>
+   </div>
+</div>
+{% endblock title_content %}
+{% block content %}
+<div id="app">
+<div class="row">
+   <table class="table table-bordered table-striped table-hover bg-light">
+      <thead>
+         <tr>
+            <th class="text-right">Nro Pedido</th>
+            <td class="text-center">{{ data.order }}</td>
+            <th class="text-right">Provedor</th>
+            <td class="text-center">{{ data.order_data.supplier }}</td>
+            <th class="text-right">Tipo</th>
+            <td class="text-center">
+               {% if data.order_data.regimen == '70' %}
+               <span class="badge badge-primary">{{ data.order.regimen }}</span>
+               Almagro Parcial
+               {% else %}
+               <span class="badge badge-success">{{ data.order.regimen }}</span>
+               Directo Consumo
+               {% endif %}
+            </td>
+            <th class="text-right">Nro DAI</th>
+            <td class="text-center">{{ data.order.nro_refrendo }}</td>
+         </tr>
+         <tr>
+            <th class="text-right">N Factura</th>
+            <td class="text-center">{{ data.order_data.order_invoice }}</td>
+            <th class="text-right">Moneda</th>
+            <td class="text-center">{{ data.order_data.order_invoice.moneda }}</td>
+            <th class="text-right">Cajas Tot</th>
+            <td class="text-center">{{ data.order_data.boxes }} Cajas</td>
+            <th class="text-right">Unidades Tot</th>
+            <td class="text-center  ">{{ data.order_data.units | round(0)}} Botellas</td>
+         </tr>
+      </thead>
+   </table>
+</div>
+<div class="row">
+   <div class="col-7 text-center">
+      <div class="col text-center text-primary">
+         DETALLE DE PRODUCTOS PEDIDO {{ data.order }}
+      </div>
+   </div>
+   <div class="col text-center">
+      <div class="col text-center text-primary">
+         Etiquetas Asignadas 
+         <br>
+         <strong v-if="current_product" class="text-danger">[${ current_product.product }]</strong>  
+      </div>
+   </div>
+</div>
+<div class="row">
+   <div class="col-6">
+      <table class="table table-bordered table-striped table-condensed">
+         <thead>
+            <tr>
+               <th>#</th>
+               <th>Producto</th>
+               <th>Cap ML</th>
+               <th>Registro Sanitario</th>
+               <th>Nro Cajas</th>
+               <th>Unidades</th>
+            </tr>
+         </thead>
+         <tbody>
+            {% for detail in data.order_data.order_invoice_details %}
+            <tr @click="selectProduct('{{detail.cod_contable_id}}')">
+               <td class="text-center">{{ loop.index }}</td>
+               <td class="text-primary"> <i class="fas fa-arrow-right"></i> {{ detail.cod_contable }}</td>
+               <td class="text-center">{{ detail.capacidad_ml | round(0)}}</td>
+               <td>{{ detail.cod_contable.nro_registro_sanitario }} 
+                  <a href="{{ detail.cod_contable.registro_sanitario }}" target="_blank">
+                  <i class="fas fa-file-pdf"></i> 
+                  </a>
+               </td>
+               <td class="text-right">{{ detail.nro_cajas }}</td>
+               <td class="text-right">{{ detail.unidades | round(0)}} </td>
+            </tr>
+            {% endfor %}
+            <tr class="bg-secondary text-white">
+               <td colspan="4" class="text-right"><strong>Sumas</strong></td>
+               <td class="text-right"><strong>{{ data.order_data.boxes }}</strong></td>
+               <td class="text-right"><strong>{{ data.order_data.units | round(0) }}</strong></td>
+            </tr>
+         </tbody>
+      </table>
+      <br>
+      <hr>
+      <a href="/etiquetas/pedidos/" class="btn btn-outline-primary btn-sm"> <i class="fas fa-arrow-left"></i> Volver</a>
+   </div>
+   <div class="col">
+      <table class="table table-bordered table-hover table-bordered" v-if="current_product">
+         <thead>
+            <tr>
+               <th>Parcial</th>
+               <th>Inicial</th>
+               <th>Final</th>
+               <th>Unidades</th>
+               <th>Notas</th>
+               <th>Fecha</th>
+               <th>Estado</th>
+            </tr>
+         </thead>
+         <tbody>
+            <tr v-for="item in current_lables">
+               <td class="text-center">
+                  <a :href="'/admin/labels/label/' + item.id_label" target="_blank">
+                     ${item.parcial}
+                  </a>
+               </td>
+               <td class="text-center">${item.initial_range}</td>
+               <td class="text-center">${item.end_range}</td>
+               <td class="text-center">${item.quantity}</td>
+               <td class="text-center">${item.notas}</td>
+               <td class="text-center">${item.date_created | formatedDate }</td>
+               <td class="text-center">
+                  <span v-if = "item.bg_status === 'A'"> Activado </span>
+                  <span v-if = "item.bg_status === 'I'"> Inactivo </span>
+                  <span v-if = "item.bg_status === 'E'"> Error </span>
+                  <span v-if = "item.bg_status === 'R'"> Rechazado </span>
+                  <i v-if="item.bg_status === 'I'"
+                     class="fas fa-minus text-danger"
+                     @click="deleteRange(item.id_label)">
+                  </i>
+               </td>
+            </tr>
+         </tbody>
+      </table>
+      <hr/>
+      <div class="row shadow text-secondary" v-if="current_product">
+         <div class="col text-center">
+            <h6>Total <br/> <strong>${total}</strong></h6>
+         </div>
+         <div class="col text-center">
+            <h6>Asignadas <br/> <strong>${assigned}</strong></h6>
+         </div>
+         <div class="col text-center">
+            <h6>Pendietes <br> <strong>${pending}</strong> </h6>
+         </div>
+      </div>
+      <hr/>
+      <button 
+         v-if="current_product"
+         class="btn btn-sm btn-outline-primary"
+         data-toggle="modal"
+         data-target=".bd-example-modal-lg"
+         >
+      <i class="fas fa-plus"></i>
+      Agregar Etiquetas 
+      </button>
+   </div>
+</div>
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" v-if="current_product">
+   <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+               <i class="fas fa-tags">
+               </i> ${ current_product.product }
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" id="altCloseButton">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body" id="my_modal">
+            <div v-if="show_error_message">
+               <div class="alert alert-danger" role="alert">
+                  <strong>Error!</strong> ${error_message}
+               </div>
+            </div>
+            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+               <li class="nav-item" role="presentation">
+                  <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Asignación por Rango</a>
+               </li>
+               <li class="nav-item" role="presentation">
+                  <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Asignación por Lote</a>
+               </li>
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+               <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                  <div class="container">
+                     <div class="row">
+                        <div class="col-1">
+                           <div class="form-group">
+                              <label for="">ID</label>
+                              <input 
+                                 type="text" 
+                                 class="form-control" 
+                                 v-model="new_range.id_factura_detalle"
+                                 readonly
+                                 >
+                           </div>
+                        </div>
+                        <div class="col-3">
+                           <div class="form-group">
+                              <label for="">COD CONTABLE</label>
+                              <input 
+                                 type="text"
+                                 class="form-control"
+                                 v-model="new_range.cod_contable"
+                                 readonly="true">
+                           </div>
+                        </div>
+                        <div class="col-2">
+                           <div class="form-group">
+                              <label for="">Rango Inicial</label>
+                              <input 
+                                 type="text" 
+                                 class="form-control" 
+                                 v-model="new_range.initial_range"
+                                 maxlength="15"
+                                 >
+                           </div>
+                        </div>
+                        <div class="col-2">
+                           <div class="form-group">
+                              <label for="">Rango Final</label>
+                              <input
+                                 type="text" 
+                                 class="form-control" 
+                                 v-model="new_range.end_range"
+                                 maxlength="15"
+                                 >
+                           </div>
+                        </div>
+                        <div class="col-2">
+                           <div class="form-group">
+                              <label for="">Unds</label>
+                              <input 
+                                 type="number"
+                                 class="form-control"
+                                 v-model="new_range.quantity"
+                                 >
+                           </div>
+                        </div>
+                          <div class="col-2">
+                           <div class="form-group">
+                              <label for="">Parcial</label>
+                              <input 
+                                 type="number" 
+                                 v-model="new_range.parcial"
+                                 class="form-control"
+                                 :readonly="is_direct_order"
+                                 >
+                           </div>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-10">
+                           <div class="form-group">
+                              <label for="">Observaciones</label>
+                              <textarea v-model="new_range.notas" cols="30" rows="1" class="form-control"></textarea>
+                           </div>
+                        </div>
+                        <div class="col-2 text-center">
+                           <div class="form-group">
+                              <label for=""></label>
+                              <img src="https://media4.giphy.com/media/2c85mEsTFONgM0sOQ/giphy.gif?cid=ecf05e47xh2f2usgco4khwvsx0hxhjphtw7z96kmy5rfvooo&rid=giphy.gif&ct=g" 
+                              v-if="is_loading"
+                              style="width: 50%; height: auto;"
+                              >
+                              <button
+                              type="button"
+                              class="btn btn-success w-100" 
+                              @click="validateRange()" 
+                              v-if="!is_loading">
+                              <i class="fas fa-eye"></i> Validar Rango
+                           </button>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                  <div class="container">
+                     <div class="row">
+                        <div class="col-1">
+                           <div class="form-group">
+                              <label for="">ID</label>
+                              <input 
+                                 type="text" 
+                                 class="form-control" 
+                                 v-model="new_range.id_factura_detalle"
+                                 readonly
+                                 >
+                           </div>
+                        </div>
+                        <div class="col-3">
+                           <div class="form-group">
+                              <label for="">COD CONTABLE</label>
+                              <input 
+                                 type="text"
+                                 class="form-control"
+                                 v-model="new_range.cod_contable"
+                                 readonly="true">
+                           </div>
+                        </div>
+                        <div class="col-2">
+                           <div class="form-group">
+                              <label for="">Nro Lote</label>
+                              <input 
+                                 type="text" 
+                                 class="form-control" 
+                                 v-model="batch_number"
+                                 maxlength="15"
+                                 >
+                           </div>
+                        </div>
+                        <div class="col-2">
+                           <div class="form-group">
+                              <label for="">Parcial</label>
+                              <input 
+                                 type="number" 
+                                 v-model="new_range.parcial"
+                                 class="form-control"
+                                 :readonly="is_direct_order"
+                                 >
+                           </div>
+                        </div>
+                        <div class="col-2">
+                           <div class="form-group">
+                              <label for="">Rango Inicial</label>
+                              <input 
+                                 type="number" 
+                                 class="form-control"
+                                 v-model="new_range.initial_range"
+                                 readonly="true"
+                                 id="initial_range"
+                                 autofocus
+                              >
+                           </div>
+                        </div>
+                        <div class="col-2">
+                           <div class="form-group">
+                              <label for="">Rango Final</label>
+                              <input 
+                                 type="number" 
+                                 class="form-control"
+                                 v-model="new_range.end_range"
+                                 readonly="true"
+                                 id="end_range"
+                              >
+                           </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                           <div class="col-2">
+                              <div class="form-group">
+                                 <label for="">Cantidad</label>
+                                 <input 
+                                    type="number" 
+                                    class="form-control"
+                                    v-model="new_range.quantity"
+                                    readonly="true">
+                              </div>
+                           </div>
+                           <div class="col-8">
+                              <div class="form-group">
+                                 <label for="">Observaciones</label>
+                                 <textarea v-model="new_range.notas" cols="30" rows="1" class="form-control"></textarea>
+                              </div>
+                           </div>
+                               <div class="col-2 text-center">
+                           <div class="form-group">
+                              <label for=""></label>
+                              <img src="https://media4.giphy.com/media/2c85mEsTFONgM0sOQ/giphy.gif?cid=ecf05e47xh2f2usgco4khwvsx0hxhjphtw7z96kmy5rfvooo&rid=giphy.gif&ct=g" 
+                              v-if="is_loading"
+                              style="width: 50%; height: auto;"
+                              >
+                              <button
+                              type="button"
+                              class="btn btn-success w-100" 
+                              @click="validateBatch()" 
+                              v-if="!is_loading">
+                              <i class="fas fa-eye"></i> Validar Lote
+                           </button>
+                           </div>
+                        </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+                         <div class="row" v-if="show_response_message">
+                  <div class="col-12">
+                     <table class="table table-hover table-striped table-bordered table-condensed" style="font-size: 14px;">
+                        <thead>
+                           <tr>
+                              <th class="text-center">#</th>
+                              <th class="text-center">E. Inicial</th>
+                              <th class="text-center">E. Final</th>
+                              <th class="text-center">Inverso</th>
+                              <th class="text-center">Cantidad</th>
+                              <th class="text-center">Diferencia</th>
+                              <th class="text-center">Concordancia</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr>
+                              <td class="text-center">1</td>
+                              <td class="text-center">
+                                    ${ response_range.first_tag }
+                              </td>
+                              <td class="text-center">
+                                    ${ response_range.last_tag }
+                              </td>
+                              <td class="text-center">
+                                 <span v-if="response_range.cheked_reverse">
+                                    SI
+                                 </span>
+                                 <span v-else>
+                                    NO
+                                 </span>
+                              <td class="text-center">${ response_range.quantity }</td>
+                              <td class="text-center">
+                                 <strong>
+                                    <span v-if="response_range.difference != 0" class="text-danger">
+                                       ${ response_range.difference }
+                                       <i class="fas fa-exclamation-triangle"></i>
+                                    </span>
+                                    <span v-else class="text-success">
+                                       ${ response_range.difference }
+                                       <i class="fas fa-check-square"></i>
+                                    </span>
+                                 </strong>
+                              </td>
+                              <td class="text-center">
+                                 <strong v-if="response_range.concordance" class="text-success">
+                                    SI <i class="fas fa-check-square"></i>
+                                 </strong>
+                                 <strong v-else class="text-danger">
+                                    NO<i class="fas fa-exclamation-triangle"></i>
+                                 </strong>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </div>
+               </div>
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-secondary" data-dismiss="modal" id="altCloseButton"><i class="fas fa-arrow-left"></i> Cancelar y Volver</button>
+               <button  v-if="show_add_range_button" type="button" class="btn btn-primary" @click="addRange">
+                  <i v-if="show_warning_simbol" class="fas fa-plus"></i>
+                  <i v-else class="fas fa-exclamation-triangle"></i>
+                   &nbsp;Agregar Rango 
+               </button>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+{% endblock content %}
+{% block script %}
+var data = {{ data.serialized_data | tojson }}
+{% include "js/app_labels.js" %}
+{% endblock script %}

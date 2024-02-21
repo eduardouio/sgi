@@ -1,0 +1,101 @@
+{% extends 'base/base.html' %}
+{% block title_content %}
+<div class="row border">
+   <div class="col-4">
+      <i class="fa fa-folder"></i>
+      Ficha de Pedido {{ data.nro_order }}
+     {% if data.order_info.order.regimen == '10' %}
+        a Consumo
+     {% else %}
+        Regimen 70 Almagro
+     {% endif %}
+      <small>| Pedido</small> 
+      {% if data.order_info.order.bg_isclosed %}
+        <span class="badge badge-dark">Cerrado</span>
+      {% else %}
+        <span class="badge badge-success">Abierto</span>
+      {% endif %}
+   </div>
+   <div class="col-8 text-right">
+      <span>
+        <a href="{{ data.order_info.order.url_dai_1 if data.order_info.order.url_dai_1 is not none else '#' }}"> 
+        Ref: {{ data.order_info.order.nro_refrendo if data.order_info.order.nro_fefrendo is not none else 'Sin DAI'}} </a></span>
+        {% if data.order_info.order.regimen == '10' %}
+            <span>| Exaduana </span>
+            <span>| Liq: {{ data.order_info.order.nro_liquidacion if data.order_info.order.nro_liquidacion is not none else 'Sin Liquidación'}} </span>
+            <span>| F. Llegada: {{ data.order_info.order.fecha_llegada_cliente }} </span>
+        {% else %}
+            <span> | Nro Matricula: {{ data.order_info.order.nro_matricula if data.order_info.order.nro_matricula is not none else 'No Registrado' }} </span>
+            <span> | Parciales: {{ data.order_info.partials.__len__() }} </span>
+        {% endif %}
+      <span></span>
+   </div>
+</div>
+{% endblock title_content %}
+{% block content %}
+<div class="containder">
+<div class="row">
+<div class="col-12">
+    <table class="table table-bordered table-condensed">
+        <tbody>
+              <tr>
+                  <td style="width:100px;" class="text-right bg-light">Pedido:</td>
+                  <td>{{ data.order_info.order.nro_pedido }}</td>
+                  <td style="width:100px;" class="text-right bg-light">Proveedor:</td>
+                  <td>{{ data.order_info.order_invoice.supplier }} ID:{{ data.order_info.order_invoice.supplier.identificacion_proveedor }} </td>
+                  <td style="width:100px;" class="text-right bg-light">Factura:</td>
+                  <td>
+                     {{ data.order_info.order_invoice.order_invoice.id_factura_proveedor | upper }}
+                  </td>
+                  <td style="width:100px;" class="text-right bg-light">Moneda:</td>
+                  <td>{{ data.order_info.order_invoice.order_invoice.moneda }}</td>
+                  <td style="width:100px;" class="text-right bg-light">T/C:</td>
+                  <td>{{ data.order_info.order_invoice.order_invoice.tipo_cambio }}</td>
+               </tr>
+               <tr>
+                  <td style="width:100px;" class="text-right bg-light">Comentarios:</td>
+                  <td colspan="9">{{ data.order_info.order.observaciones }} {{ data.order_info.order.comentarios }}</td>
+               </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <div class="nav nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+      <a class="nav-link my-tabs" id="v-pills-products-tab" data-toggle="pill" href="#v-pills-products" role="tab" aria-controls="v-pills-products" aria-selected="false"><i class="fa fa-boxes"></i> Detalle de Productos</a>
+      {% if data.order_info.order.regimen == '70' %}
+         <a class="nav-link show active my-tabs" id="v-pills-partials-tab" data-toggle="pill" href="#v-pills-partials" role="tab" aria-controls="v-pills-partials" aria-selected="false"><i class="fa fa-list"></i> Parciales Pedido</a>
+      {% endif %}
+      <!--
+      <a class="nav-link" id="v-pills-sale-tab" data-toggle="pill" href="#v-pills-sale" role="tab" aria-controls="v-pills-sale" aria-selected="false"><i class="fas fa-chart-area"></i> Saldos Pedido</a>
+      -->
+    </div>
+    <br>
+    <div class="tab-content bordered" id="v-pills-tabContent">
+      <div
+      {% if data.order_info.order.regimen == '70' %}
+         class="tab-pane fade"
+         {% else %}
+            class="tab-pane fade show active"
+      {% endif %}
+       id="v-pills-products" role="tabpanel" aria-labelledby="v-pills-products-tab">
+      {% include 'orders/sections/detalle_productos.html' %}
+      </div>
+      {% if data.order_info.order.regimen == '70' %}
+      <div class="tab-pane fade show active" id="v-pills-partials" role="tabpanel" aria-labelledby="v-pills-partials-tab">
+      {% include 'orders/sections/parciales_pedido.html' %}
+     </div>
+     {% endif %}
+      <!--
+      <div class="tab-pane fade" id="v-pills-sale" role="tabpanel" aria-labelledby="v-pills-sale-tab">
+      Saldos del Pedido
+      </div>
+      -->
+      <br>
+    </div>
+  </div>
+</div>
+</div>
+{% endblock content %}

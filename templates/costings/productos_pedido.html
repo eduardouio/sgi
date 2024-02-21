@@ -1,0 +1,158 @@
+<div class="row">
+    <div class="col-12">
+    <div class="text-tittle-success"> PARAMETROS DE LIQUIDACION </div>
+    <table class="table table-bordered table-condensed table-striped">
+        <tr>
+        <td style="width:10%" class="bg-light text-right">T/C Trim:</td> <td class="text-right"> {{ data.complete_order_info.order_invoice.order_invoice.tipo_cambio}}</td>
+        <td style="width:10%" class="bg-light text-right">Moneda Pedido:</td> <td class="text-right">  {{ data.complete_order_info.order_invoice.order_invoice.moneda }}</td>
+        <td style="width:10%" class="bg-light text-right">Fecha Llegada:</td><td class="text-right">  {{ data.complete_order_info.order.fecha_llegada_cliente.strftime('%d/%m/%Y') if data.complete_order_info.order.fecha_llegada_cliente is not none else '' }}</td>
+        <td style="width:10%" class="bg-light text-right">Items:</td> <td class="text-right">  {{ data.complete_order_info.order_invoice.totals['items'] }}</td>
+        <td style="width:10%" class="bg-light text-right">Cajas:</td> <td class="text-right">  {{ data.complete_order_info.order_invoice.totals['boxes'] }}</td>
+        <td style="width:10%" class="bg-light text-right">Botellas:</td> <td class="text-right">  {{ data.complete_order_info.order_invoice.totals['bottles'] }}</td>
+        </tr>
+        <tr>
+        <td style="width:10%" class="bg-light text-right">F Pago Liquidacion:</td> <td class="text-right">  {{ data.complete_order_info.order.fecha_liquidacion.strftime('%d/%m/%Y')}}</td>
+        <td style="width:10%" class="bg-light text-right">Base Advalorem: </td> <td class="text-right">  {{ data.complete_order_info.order.base_ice_advalorem }}</td>
+        <td style="width:10%" class="bg-light text-right">Base ICE:</td> <td class="text-right">  {{ data.complete_order_info.order.base_ice_especifico}}</td>
+        <td style="width:10%" class="bg-light text-right">Base IVA:</td> <td class="text-right">  {{ data.complete_order_info.order.base_iva }}</td>
+        <td style="width:10%" class="bg-light text-right">Liberacion A.:</td> <td class="text-right">  {{ data.complete_order_info.order.exoneracion_arancel}} %</td>
+        <td style="width:10%" class="bg-light text-right">Diferencia Senae:</td> <td class="text-right text-danger"> {{ data.complete_order_info.order.diferencia_ice_senae }}</td>
+        </tr>
+        <tr>
+        <td style="width:10%" class="bg-light text-right">Mayor SAP:</td> <td class="text-right">${ current_ledger.mayor_sap | money }</td>
+        <td style="width:10%" class="bg-light text-right">Mayor SGI: </td> <td class="text-right">${ current_ledger.mayor_sgi | money }</td>
+        <td style="width:10%" class="bg-warning text-right">Precion Entrega:</td> <td class="text-right">${ current_ledger.precio_entrega | money }</td>
+        <td style="width:10%" class="bg-warning text-right">Costo Producto:</td> <td class="text-right">${ current_ledger.costo_producto | money }</td>
+        <td style="width:10%" class="bg-light text-right">Provisiones SGI:</td> <td class="text-right">${ current_ledger.provisiones_sgi | money }</td>
+        <td style="width:10%" class="bg-light text-right text-primary">Mayor Liquidado.:</td> <td class="text-right text-primary" v-if="liquidated_order">$ ${ complete_order_info.ledger.mayor_sap | money }</td>
+        </tr>
+    </table>    
+    </div>
+</div>
+<br>
+<div class="row">    
+    <div class="col-6 text-secondary">
+    </div>
+    <div class="col-6 text-danger text-right">
+        ICE RELIQUIDADO: <strong>$ ${ ice_reliquidado.provision | money }</strong>
+    </div>
+</div>
+<div class="row">
+<div class="col-12">
+<div class="table-responsive" style="height:235px">
+<table class="table table-bordered table-condensed">
+    <thead>
+    <tr class="bg-light">
+               <th>#</th>
+               <th>Cod Contable</th>
+               <th>Producto</th>
+               <th>Cajas</th>
+               <th>UxC</th>
+               <th>Unds</th>
+               <th>FOB TCT</th>
+               <th>Seguro A</th>
+               <th>Flete A</th>
+               <th>CIF</th>
+               <th>Fodinfa</th>
+               <th>Ar Advalorem</th>
+               <th>Ar Espec&iacute;fico</th>
+               <th>Etiquetas F</th>
+                <th>Exaduana U</th>
+               <th>Cap.</th>
+               <th>% Alch</th>              
+               <th>ICE Esp U</th>
+               <th>ICE Adv U</th>
+               <th>ICE Esp</th>
+               <th>ICE Adv</th>
+               <th>Total ICE</th>
+               <th class="text-info">P Indirectos</th>
+               <th class="text-primary">Indirectos PE</th>
+               <th class="text-success">T Costos</th>
+               <th>Costo Caja</th>
+               <th>C/U</th>
+            </tr>
+    </thead>
+    <tbody>
+    {% for  item in data.complete_order_info.order_invoice.order_invoice_details  %}
+            <tr>
+            <td nowrap> {{ item }} {# {{ loop.index }} #}</td>            
+            <td nowrap>  {{ item.cod_contable_id }}</td>
+            <td nowrap>  {{ item.product }}</td>
+            <td class="text-right"> {{ "%.0f" | format(item.nro_cajas) if item.nro_cajas else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.cantidad_x_caja) if item.cantidad_x_caja else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.0f" | format(item.unidades) if item.unidades else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.fob_tasa_trimestral) if item.fob_tasa_trimestral else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.seguro_aduana) if item.seguro_aduana else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.flete_aduana) if item.flete_aduana else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.cif) if item.cif else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.fodinfa) if item.fodinfa else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.arancel_advalorem_pagar) if item.arancel_advalorem_pagar else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.arancel_especifico_pagar) if item.arancel_especifico_pagar else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.etiquetas_fiscales) if item.etiquetas_fiscales else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.ex_aduana_unitario) if item.ex_aduana_unitario else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.0f" | format(item.capacidad_ml) if item.capacidad_ml else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.grado_alcoholico) if item.grado_alcoholico else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.ice_especifico_unitario) if item.ice_especifico_unitario else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.ice_advalorem_unitario )if  item.ice_advalorem_unitario  else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.ice_especifico) if item.ice_especifico else '0.00'  }}</td> 
+            <td class="text-right"> {{ "%.2f" | format(item.ice_advalorem) if item.ice_advalorem else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.total_ice) if item.total_ice else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.indirectos) if item.total_ice else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.prorrateo_pedido) if item.prorrateo_pedido else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.costo_total) if item.costo_total else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.costo_caja_final) if item.costo_caja_final else '0.00'  }}</td>
+            <td class="text-right"> {{ "%.2f" | format(item.costo_caja_final / item.cantidad_x_caja) if (item.costo_caja_final / item.cantidad_x_caja) else '0.00'  }}</td>
+            </tr>
+             {% endfor %}
+        <tr>
+        <th nowrap colspan="3" class="text-right"> <strong>Sumas:</strong></th>
+        <th nowrap class="text-right">   {{ data.costings.sums.nro_cajas if data.costings.sums.nro_cajas  else '0.00' }} </th>
+        <th nowrap class="text-center">-</th>
+        <th nowrap class="text-right">   {{ "%.2f" | format(data.costings.sums.unidades) if data.costings.sums.unidades else '0.00' }} </th>
+        <th nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.fob_tasa_trimestral) if data.costings.sums.fob_tasa_trimestral else '0.00' }} </th>
+        <th nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.seguro_aduana) if data.costings.sums.seguro_aduana else '0.00' }} </th>
+        <th nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.flete_aduana) if data.costings.sums.flete_aduana else '0.00' }} </th>
+        <th nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.cif) if data.costings.sums.cif else '0.00' }} </th>
+        <th nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.fodinfa) if data.costings.sums.fodinfa else '0.00' }} </th>
+        <th nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.arancel_advalorem_pagar_pagado) if data.costings.sums.arancel_advalorem_pagar else '0.00' }} </th>
+        <th nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.arancel_especifico_pagar_pagado) if data.costings.sums.arancel_especifico_pagar else '0.00' }} </th>
+        <th nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.etiquetas_fiscales) if data.costings.sums.etiquetas_fiscales else '0.00' }} </th>
+        <th nowrap class="text-center">--</th>
+        <th nowrap class="text-center">--</th>
+        <th nowrap class="text-center">--</th>
+        <th nowrap class="text-center">--</th>
+        <th nowrap class="text-center">--</th>
+        <th nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.ice_especifico)  if data.costings.sums.ice_especifico else '0.00'}} </th>
+        <th nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.ice_advalorem_pagado)  if data.costings.sums.ice_advalorem_pagado else '0.00'}} </th>
+        <th nowrap class="text-right">$  {{ "%.2f" | format(data.costings.sums.total_ice)  if data.costings.sums.total_ice else '0.00'}} </th>
+        <th nowrap class="text-right text-info">$  {{ "%.2f" | format(data.costings.sums.indirectos)  if data.costings.sums.indirectos else '0.00'}} </th>
+        <th nowrap class="text-right text-primary">$  {{ "%.2f" | format(data.costings.sums.prorrateo_pedido)  if data.costings.sums.prorrateo_pedido else '0.00'}} </th>
+        <th nowrap class="text-right text-success">$  {{ "%.2f" | format(data.costings.sums.costo_total)  if data.costings.sums.costo_total else '0.00'}} </th>
+        <th nowrap class="text-center">--</th>
+        <th nowrap class="text-center">--</th>
+        </tr>
+    </tbody>
+</table>    
+</div>
+</div>
+</div>
+<div class="row animate" v-if="show_form_liquidated" v-bind:class="{'fadeInDown' : show_form_liquidated}">
+    <div class="col-12 bg-light border border-primary">
+    <div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="basic-addon1">Comentarios:</span>
+  </div>
+  <input type="text" class="form-control" v-model="comentarios" placeholder="Ingrese comentarios de cierre">
+</div>
+    </div>
+</div>
+<br>
+<div class="row">
+<div class="col-12 text-right">
+    <strong class="text-danger" v-if="liquidated_order == true" style="margin-right:1rem"><i class="fas fa-exclamation-triangle"></i> LIQUIDADO Y CERRADO</strong>
+    <button class="btn btn-sm btn-outline-dark" @click="show_costings=false"><i class="fa fa-arrow-left"></i> Volver a Gastos</button>
+    <button v-if="show_form_liquidated == false && liquidated_order == false"   class="btn btn-sm btn-outline-primary" @click="show_form_liquidated = true"><i class="fa fa-check"></i> Liquidar Pedido</button>
+    <button v-if="show_form_liquidated == true" class="btn btn-sm btn-outline-danger" @click="show_form_liquidated = false"><i class="fa fa-ban"></i> Cancelar</button>
+    <button v-if="show_form_liquidated == true" class="btn btn-sm btn-outline-primary" @click="liquidateOrder()"><i class="fa fa-check"></i> Confirmar y Continuar </button>
+</div>
+</div>

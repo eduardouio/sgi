@@ -1,0 +1,436 @@
+{% extends 'base/base.html' %}
+{% block header %}
+<script src="{{ static("js/vue.js") }}"></script>
+<script src="{{ static("js/vue-resource.js") }}"></script>
+<!--cARGAMOS LIBRERIAS ADICIONALES PARA MOSTRAR LA TABLA-->
+<link rel="stylesheet" href="/static/css/jquery.dataTables.min.css">
+<script src="/static/js/jquery.dataTables.min.js"></script>
+{% endblock header %}
+{% block title_content %}
+    <div class="row border">
+   <div class="col-8">
+      <i class="fas fa-chart-line"></i>
+      Análisi de Costos Por Producto, los valores están considerados por unidad (botella)
+   </div>
+   <div class="col-4 text-right">SGI <small>[Sistema Gestón de Importaciones] AUDITORIA</small></div>
+</div>
+{% endblock title_content %}
+{% block content %}
+<main role="main" id="app">
+ <div class="container">
+      <div class="row">
+      <div class="col-8">
+      <form action="" method="get">
+        <div class="row">
+          <div class="col-8">
+            {{data.form.products}}
+          </div>
+          <div class="col-3">
+            {{ data.form.deep }}
+          </div>
+          <div class="col-1">
+            <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+          </div>
+        </div>
+        </form>
+      </div>
+      <div class="col-4">
+            <div class="btn-toolbar mb-2 mb-md-0">
+              <div class="btn-group mr-2">
+                {% if data.product %}
+                  <span class="btn btn-sm btn-outline-dark">{{ data.product.capacidad_ml }} ML</span>
+                  <span class="btn btn-sm btn-outline-dark">Caja X {{ data.product.cantidad_x_caja }}</span>
+                  {% if data.report.__len__() > 0 %}
+                    <span class="btn btn-sm btn-outline-dark">{{ data.report[0].grado_alcoholico }} <sup>o</sup></span>
+                    <span class="btn btn-sm btn-outline-dark">{{data.report[0].incoterm}}</span>
+                    <span class="btn btn-sm btn-success">{{ data.report[0].moneda }}</span>
+                    <span class="btn btn-sm btn-outline-dark">{{ data.report[0].pais_origen }}</span>
+                  {% else %}
+                    <span class="btn btn-sm btn-outline-danger"> <i class="fas fa-ban"></i> No registra Importaciones en SGI</span>
+                  {% endif %}
+                {% else %}
+                  <span class="btn btn-sm btn-outline-danger"> <i class="fas fa-arrow-left"></i> Seleccione un producto de la lista</span>
+                {% endif %}
+              </div>
+      </div>
+            </div>
+         </div>
+         </div>
+         <div class="container-fluid">
+         {% if data.show_error %}
+         <div class="row bordered shadow">
+           <div class="col text-center">
+            <h3 class="text-danger"><br/>Producto no Encontrado<br/></h3>
+           </div>
+         </div>
+         {% endif %}
+         <div class="row">
+           <div class="col-12">
+          <canvas class="my-4" id="myChart" width="950" height="280"></canvas>
+           </div>
+         </div>
+         </div>
+        {% if  data.report  %}
+         <div class="container-fluid" style="width:85%">
+         <div class="row">
+           <div class="col-4 text-center">
+            <h6 class="text-secondary">{{ data.report[0].producto }}</h6>
+           </div>
+           <div class="col-4 text-center">
+           <h6 class="text-secondary">{{ data.report[0].proveedor }}</h6>
+           </div>
+           <div class="col-4 text-center">
+           <h6 class="text-secondary"> {{ data.report[0].incoterm }} / {{ data.report[0].moneda }} / {{ data.report[0].pais_origen }} </h6>
+           </div>
+         </div>
+         <div class="row">          
+          <div class="col-12">
+          <div class="table-responsive">
+            <table class="table table-striped table-sm table-bordered" id="reporte">
+              <thead>
+              <tr>
+                <th colspan="9" class="bg-primary text-light">Datos Pedido</th>
+                <th colspan="7" class="bg-info text-light">Base Aduana</th>
+                <th colspan="4" class="bg-secondary text-light">Costos</th>
+              </tr>
+                <tr>
+                  <th class="bg-light text-primary">#</th>
+                  <th class="bg-light text-primary">Pedido</th>
+                  <th class="bg-light text-primary">Parcial</th>
+                  <th class="bg-light text-primary">Regimen</th>
+                  <th class="bg-light text-primary">F Arribo Pueto</th>
+                  <th class="bg-light text-primary">Nacionalización</th>
+                  <th class="bg-light text-primary">Días</th>
+                  <th class="bg-light text-primary">Unds</th>
+                  <th class="bg-light text-primary">Costo</th>
+                  <th class="bg-light text-info">FOB</th>
+                  <th class="bg-light text-info">CIF</th>
+                  <th class="bg-light text-info">Exaduana</th>
+                  <th class="bg-light text-info">Ar Adv</th>
+                  <th class="bg-light text-info">Ar Esp</th>
+                  <th class="bg-light text-info">Fond</th>
+                  <th class="bg-light text-info">ICE</th>
+                  <th class="bg-light text-secondary">Tributos</th>
+                  <th class="bg-light text-secondary">Valor SAP</th>
+                  <th class="bg-light text-secondary">Indirectos</th>
+                  <th class="bg-light text-secondary">Costo</th>
+                </tr>
+              </thead>
+              <tbody>
+                 <tr style="color:#F5210A;" class="bg-light">
+                <th style=" border-color: #000;"colspan="6">Máximo</th>
+                <th style=" border-color: #000;"class="text-right">{{ data.stats.dias_transito | max }}</th>
+                <th style=" border-color: #000;"class="text-right">{{ data.stats.unidades | max }}</th>
+                <th style=" border-color: #000;"class="text-right">{{ data.stats.costo_unidad | max | round(2)}}</th>
+                <th style=" border-color: #000;"class="text-right">{{ data.stats.fob | max | round(2)}}</th>
+                <th style=" border-color: #000;"class="text-right">{{ data.stats.cif | max | round(2)}}</th>
+                <th style=" border-color: #000;"class="text-right">{{ data.stats.ex_aduana_unitario | max | round(2)}}</th>
+                <th style=" border-color: #000;"class="text-right">{{ data.stats.arancel_advalorem | max | round(2) }}</th>
+                <th style=" border-color: #000;"class="text-right">{{ data.stats.arancel_especifico | max | round(2) }}</th>
+                <th style=" border-color: #000;"class="text-right">{{ data.stats.fodinfa | max | round(2)}}</th>
+                <th style=" border-color: #000;"class="text-right">{{ data.stats.total_ice | max | round(2)}}</th>
+                <th style=" border-color: #000;"class="text-right">{{ data.stats.tributos | max | round(2)}}</th>
+                <th style=" border-color: #000;"class="text-right">{{ data.stats.costo_sap | max | round(2)}}</th>
+                <th style=" border-color: #000;"class="text-right">{{ data.stats.indirectos | max | round(2)}}</th>
+                <th style=" border-color: #000;"class="text-right">{{ data.stats.costo_botella | max | round(2)}}</th>
+              </tr>
+              <tr style="color: #D37F0D;" class="bg-light">
+                <th style=" border-color: #000;" colspan="6">Mínimo</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.stats.dias_transito | min | round(2)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.stats.unidades | min | round(2)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.stats.costo_unidad | min | round(2)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.stats.fob | min | round(2)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.stats.cif | min | round(2)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.stats.ex_aduana_unitario | min | round(2)}}</th>
+                <th style=" border-color: #000;"class="text-right">{{ data.stats.arancel_advalorem | min | round(2) }}</th>
+                <th style=" border-color: #000;"class="text-right">{{ data.stats.arancel_especifico | min | round(2) }}</th>
+                <th style=" border-color: #000;"class="text-right">{{ data.stats.fodinfa | min | round(2)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.stats.total_ice | min | round(2)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.stats.tributos | min | round(2)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.stats.costo_sap | min | round(2)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.stats.indirectos | min | round(2)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.stats.costo_botella | min | round(2)}}</th>
+              </tr>
+              <tr style="color: #046670;" class="bg-light">
+                <th style=" border-color: #000;" colspan="6">Promedio</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.averages.dias_transito | round(1)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.averages.unidades | round(2)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.averages.costo_unidad | round(2)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.averages.fob | round(2)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.averages.cif | round(2)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.averages.ex_aduana_unitario | round(2)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.averages.arancel_advalorem | round(2)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.averages.arancel_especifico | round(2)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.averages.fodinfa | round(2)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.averages.total_ice | round(2)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.averages.tributos | round(2)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.averages.costo_sap | round(2)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.averages.indirectos | round(2)}}</th>
+                <th style=" border-color: #000;" class="text-right">{{ data.averages.costo_botella | round(2)}}</th>
+              </tr>
+              {% for item in data.report %}
+                <tr>
+                  <td nowrap class="text-center" @click="selectItem({{loop.index - 1}})">
+                  <a data-toggle="modal" data-target="#exampleModal" class="text-info">   
+                        <i class="fas fa-plus-circle"></i> {{ loop.index }}
+                  </a>
+                  </td>
+                  <td nowrap class="text-center"> {{ item.nro_pedido }}</td>
+                  <td nowrap class="text-center"> {% if item.id_parcial != '0' %} {{ item.id_parcial }} </a> {% else %} S/N {% endif %}</td>
+                  <td nowrap class="text-center">{% if item.regimen == '10' %}Consumo {% else %} Almagro{% endif %}</td>
+                  <td nowrap class="text-center">{{ item.fecha_arribo }}</td>
+                  <td nowrap class="text-center text-primary">{{ item.fecha_llegada_cliente }}</td>
+                  <td nowrap class="text-center">{{ item.dias_transito }}</td>
+                  <td nowrap class="text-center">{{ item.unidades | round(0)}}</td>
+                  <td nowrap class="text-right" style="border-right-color:#17A2B8;">{{ item.costo_unidad | round(2)}}</td>
+                  <td nowrap class="text-right" style="border-color:#17A2B8;">{{ item.fob | round(2)}}</td>
+                  <td nowrap class="text-right" style="border-color:#17A2B8;">{{ item.cif | round(2)}}</td>
+                  <td nowrap class="text-right" style="border-color:#17A2B8;">{{ item.ex_aduana_unitario | round(2) }}</td>
+                  <td nowrap class="text-right" style="border-color:#17A2B8;">{{ item.arancel_advalorem | round(2) }}</td>
+                  <td nowrap class="text-right" style="border-color:#17A2B8;">{{ item.arancel_especifico | round(2) }}</td>
+                  <td nowrap class="text-right" style="border-color:#17A2B8;">{{ item.fodinfa | round(2) }}</td>
+                  <td nowrap class="text-right" style="border-color:#17A2B8;">{{ item.total_ice | round(2) }}</td>
+                  <td nowrap class="text-right">{{ item.tributos | round(2)}}</td>
+                  <td nowrap class="text-right">{{ item.costo_sap | round(2)}}</td>
+                  <td nowrap class="text-right">{{ item.indirectos | round(2) }}</td>
+                  <td nowrap class="text-right">{{ item.costo_botella | round(2)}}</td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+            </div>
+          </div>
+      </div>
+    </div>
+    {% endif %}
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" v-if="selected_item">
+ <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-secondary" id="exampleModalLongTitle">${ current_item.producto } <small class="text-secondary">${ current_item.nro_pedido } / ${ current_item.proveedor}</small></h5> 
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <table class="table table-bordered table-striped table-condensed">
+            <thead>
+              <tr class="bg-info text-light">
+                <th>#</th>
+                <th colspan="2">Base Tributos</th>
+                <th>Observaciones</th>
+              </tr>
+              </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>Liberaci&oacute;n Aranceles</td>
+                    <td class="text-right">${ current_item.exoneracion_arancel | int }%</td>
+                    <td>Indica el portcentaje liberado de los Arcanceles Advalorem y Específico</td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>Base Fondinfa</td>
+                    <td class="text-right">${ current_item.base_fodinfa * 100 | number} %</td>
+                    <td>Tributo aporte INFA sobre el CIF</td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>Base Ice Específico</td>
+                    <td class="text-right">${ current_item.base_ice_especifico | number }</td>
+                    <td>Por grado alcohólico y capacidad el cálculo es por litro de bebida al 100% de alcohól</td>
+                  </tr>
+                  <tr>
+                    <td>4</td>
+                    <td>Base Ice Advalorem</td>
+                    <td class="text-right">${ current_item.base_ice_advalorem | number}</td>
+                    <td>Se paga cuando el exaduana del producto [${current_item.ex_aduana_unitario | number}] excede la base [${ current_item.base_ice_advalorem }] paga el 25% del excedente</td>
+                  </tr>
+                   <tr class="bg-info text-light">
+                <th>#</th>
+                <th colspan="2">Características de Pedido ${ current_item.nro_pedido }</th>
+                <th>Observaciones</th>
+              </tr>
+               <tr>
+                <td>1</td>
+                <td>Proveedor</td>
+                <td>${ current_item.proveedor }</td>
+                <td></td>
+              </tr>
+               <tr>
+                <td>2</td>
+                <td>Costo de Compra</td>
+                <td> ${ current_item.costo_unidad | number } ${ current_item.moneda }</td>
+                <td></td>
+              </tr>
+               <tr>
+                <td>3</td>
+                <td>Tipo Cambio Flat</td>
+                <td>${ current_item.tipo_cambio | number }</td>
+                <td>Tipo de cambio con el que se carga el producto en SAP</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>Valor en SAP por Unidad USD</td>
+                <td>${ current_item.costo_sap | number}</td>
+                <td>Es el costo registrado en SAP, para Euros se usa el Tipo de Cambio flat</td>
+              </tr>
+               <tr>
+                <td>5</td>
+                <td>Pais Origen</td>
+                <td>${ current_item.pais_origen}</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>Regimen</td>
+                <td>${ current_item.regimen} [<span class="text-info" v-if="current_item.regimen === '70'">Almagro</span> <span class="text-success" v-else="">Consumo</span>]</td>
+                <td>Regimen 70 es a Almagro / Regimen 10 es a Consumo o Directo </td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td>Incoterm</td>
+                <td>${ current_item.incoterm}</td>
+                <td>Término de negociación</td>
+              </tr>
+               <tr class="bg-info text-light">
+                <th>#</th>
+                <th colspan="2">Fechas e Información Adicional</th>
+                <th>Observaciones</th>
+              </tr>
+               <tr>
+                <td>1</td>
+                <td>Arribo</td>
+                <td>${ current_item.fecha_arribo}</td>
+                <td>Fecha de llegada a Puerto</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Llegada Almagro</td>
+                <td>${ current_item.fecha_ingreso_almacenera}</td>
+                <td>Fecha de llegada a las bodegas de Almagro en Quito</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>LLegada a Vinesa</td>
+                <td>${ current_item.fecha_llegada_cliente}</td>
+                <td>Fecha de llegada a a las bodegas de Vinesa</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>Dias Permanencia Puerto</td>
+                <td>${ current_item.dias_transito_puerto} días <i class="fa fa-exclamation-triangle text-warning"></i></td>
+                <td>Tiempo en Puerto, si el valor es mayor a 15 días genralmente se paga demoraje</td>
+              </tr>
+               <tr>
+                <td>4</td>
+                <td>Dias Permanencia Almagro</td>
+                <td>${ current_item.dias_permanencia_almagro} días  <i class="fa fa-exclamation-triangle text-warning"></i></td>
+                <td>Tiempo en Almagro, mientras mayor el tiempo mayor el costo de almacenaje</td>
+              </tr>
+               <tr>
+                <td>4</td>
+                <td>Total días tránsito</td>
+                <td>${ current_item.dias_transito} días</td>
+                <td>Tiempo total transcurrido desde la llegada a puerto hasta la nacionalización de la mercadería</td>
+              </tr>
+                </tbody>
+          </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+</main>
+{% endblock %}
+{% block footer %}
+{% if  data.report  %}
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <!-- Graphs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+    <script>
+      var ctx = document.getElementById("myChart");
+      var myChart = new Chart(ctx, {
+        type: 'line',
+        grid: {
+          drawOnChartArea: false, // only want the grid lines for one axis to show up
+        },
+        data: {
+          labels: [{% for item in data.report %} "{{ item.nro_pedido }}",{% endfor %}],
+          datasets: [
+          {
+            label: 'COMPRA SAP',
+            data: [{% for item in data.report %} {{ item.costo_sap | round(2) }},{% endfor %} ],
+            lineTension: 0.09,
+            fill:false,
+            borderColor: '#76D7C4',
+            pointBackgroundColor: '#76D7C4'
+          },
+          {
+            label: 'CIF',
+            data: [{% for item in data.report %} {{ item.cif | round(2)}},{% endfor %} ],
+            lineTension: 0.09,
+            fill:false,
+            borderColor: '#76D004',
+            pointBackgroundColor: '#76D004'
+          },
+          {
+            label: 'TRIBUTOS',
+            data: [{% for item in data.report %} {{ item.tributos | round(2)}},{% endfor %} ],
+            lineTension: 0.09,
+            fill:false,
+            borderColor: '#C70039',
+            pointBackgroundColor: '#C70039'
+          },
+          {
+            label: 'INDIRECTOS',
+            data: [{% for item in data.report %} {{ item.indirectos | round(2)}},{% endfor %} ],
+            lineTension: 0.09,
+            fill:false,
+            borderColor: '#CA9600',
+            pointBackgroundColor: '#CA9600'
+          },
+          {
+            label: 'COSTO FINAL',
+            data: [{% for item in data.report %} {{ item.costo_botella | round(3)}},{% endfor %} ],
+            lineTension: 0.09,
+            fill:false,
+            borderColor: '#006350',
+            pointBackgroundColor: '#006350'
+          },
+          ],
+        },
+        options: {
+          responsive:true,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: false
+              }
+            }]
+          },
+          legend: {
+            display: true,
+          },
+          title: {
+        display: true,
+        text: 'Todos los valores están por unidad (Botella), Valores en USD'
+      }
+        }
+      });
+    </script>
+{% endif %}
+{% endblock footer %}
+{% if data.report %}
+{% block script %}
+  let data = JSON.parse('{{ data.json_report | tojson  }}');
+  {% include "js/app_analysis.js" %}
+{% endblock script %}
+{% endif %}

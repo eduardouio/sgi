@@ -1,0 +1,99 @@
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+    <div v-if="current_paid">
+      <div class="modal-header">        
+      <h6 class="modal-title"> ${ current_paid.supplier.nombre }     [F: ${ current_paid.invoice.nro_factura }] </h6>        
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">       
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">      
+      <div class="container-fluid">
+      <div class="row">
+      <div class="col-12">
+        <table class="table table-bordered table-condensed">
+          <tbody>
+            <tr>
+              <td class="text-right bg-light" style="width: 100px;">Proveedor:</td> 
+              <td>${ current_paid.supplier.nombre } </td>
+              <td class="text-right bg-light" style="width: 100px;">RUC:</td> 
+              <td>${ current_paid.supplier.identificacion_proveedor } </td>
+              <td class="text-right bg-light" style="width: 100px;">N. Factura:</td> 
+              <td>${ current_paid.invoice.nro_factura } </td>
+              <td class="text-right bg-light" style="width: 100px;">F. Emision:</td> 
+              <td>${ current_paid.invoice.fecha_emision } </td>
+            </tr>
+            <tr>
+              <td class="text-right bg-light" style="width: 100px;">Valor:</td> 
+              <td class="text-right">$ ${ current_paid.value | money } </td>
+              <td class="text-right bg-light" style="width: 100px;">Cruzado:</td> 
+              <td class="text-right">${ current_paid.cross_value | money }</td>
+              <td class="text-right bg-light" style="width: 100px;">Saldo:</td> 
+              <td class="text-right">${ current_paid.sale | money } </td>
+              <td class="text-right bg-light" style="width: 100px;">F. Registro:</td> 
+              <td>${ current_paid.invoice.date_create } </td>
+            </tr>
+            <tr>
+              <td class="text-right bg-light" style="width: 100px;">Observaciones:</td>               
+              <td colspan="4">${ current_paid.invoice.comentarios } </td>
+              <td class="text-right bg-light" style="width: 100px;">Estado:</td> 
+              <td colspan="2" class="text-right">              
+              <span class="text-success" v-if="current_paid.sale == 0">
+              <i class="fa fa-check"></i> Factura Completa
+              </span>
+              <span class="text-danger" v-else="">
+              <i class="fa fa-warning"></i> Factura Incompleta
+              </span>
+              </td>
+            </tr>             
+      </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+        <table class="table table-striped table-condensed table-bordered">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>Concepto</th>
+          <th>Tipo</th>
+          <th>Pedido</th>
+          <th>Parcial</th>
+          <th>Fecha</th>
+          <th>F. Fin</th>
+          <th>Comentarios</th>
+          <th>Valor</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(item, index) in current_paid.details" v-bind:class="{ 'table-primary': (nro_order === item.expense.nro_pedido) }">
+        <td> ${ index + 1 } </td>
+        <td> ${ item.expense.concepto } </td>
+        <td> ${ item.expense.tipo } </td>
+        <td> ${ item.expense.nro_pedido } </td>
+        <td> ${ item.expense.ordinal_parcial } </td>
+        <td> ${ item.expense.fecha } </td>
+        <td> ${ item.expense.fecha_fin } </td>
+        <td> ${ item.expense.comentarios } </td>
+        <td class="text-right"> ${ item.detail.valor | money } </td>
+        </tr>
+        <tr>
+        <th colspan="8">
+        Sumas:
+        </th>
+        <th class="text-right">$ ${ current_paid.cross_value | money } </th>
+        </tr>
+        </tbody>
+        </table>
+        </div>
+      </div>  
+            
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-dark btn-sm" data-dismiss="modal"> <i class="fa fa-check"></i>  Ok</button>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>

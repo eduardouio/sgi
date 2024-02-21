@@ -1,0 +1,13 @@
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+*/__pycache__/
+.env
+db.sqlite3
+/sgi/settings.py
+sgi/settings.py
+*.pdf
+/media/
+.idea/
