@@ -23,11 +23,11 @@ DATOS_EMPRESAS = {
         'url_app_importaciones': 'http://179.49.60.158:8888/cordovez/',
         'url_bottle_sap': 'http://192.168.0.198:8000/cordovez/',
         'admin_title': 'TEST',
-        'database': 'cordovezApp',
-        'db_host': 'localhost',
+        'database': 'appCordovez',
+        'db_host': 'host.docker.internal',
         'db_port': '3306',
-        'db_user': 'root',
-        'db_passwd': 'elian.2011',
+        'db_user': 'cordovez',
+        'db_passwd': 'E##$%%lian.2011',
         'secret_key': 'sj-z02b^$ifmzup+&qb+6!fi4mgbah_n3ddss@9m4=e0u$fdrr',
         'url_almagro_report': 'https://almanet.almagro.com.ec/almCryReport.aspx?Enlace=0021790023516001{}/{}/{}',
         'almagro_user': 'MSALA',
@@ -195,8 +195,7 @@ DATOS_EMPRESAS = {
 
 CMT_DEBUG = True
 NAME_ENTERPRISE = BASE_DIR.split('/')[-1]
-ENTERPRISE_CONF = 'test' if NAME_ENTERPRISE == 'sgi' else NAME_ENTERPRISE
-EMPRESA = DATOS_EMPRESAS[ENTERPRISE_CONF]
+EMPRESA = DATOS_EMPRESAS['test']
 
 if EMPRESA['empresa'] != 'test':
     CMT_DEBUG = True
