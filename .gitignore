@@ -11,3 +11,4 @@ sgi/settings.py
 *.pdf
 /media/
 .idea/
+.DS_Store
