@@ -18,10 +18,10 @@ class SAPImporter(object):
     def check_orders(self, data):
         data = json.loads(data)
 
-        if not data['data']:
+        if not data:
             return []
 
-        orders_verified = self.verify_orders(data['data'])
+        orders_verified = self.verify_orders(data)
 
         return orders_verified
 
@@ -136,7 +136,7 @@ class SAPImporter(object):
                 order_invoice.delete()
                 loggin('i', 'Se elimina la factura creada con sus items')
 
-            return(status, message)
+            return (status, message)
 
         except IntegrityError as e:
             loggin('e', 'informacion incompleta {}'.format(e))
@@ -197,3 +197,10 @@ class SAPImporter(object):
                 ))
 
         return(True, 'Productos importados correctamente')
+
+    def create_product(self, data):
+        pass
+
+
+    def create_supplier(self, data):
+        pass
