@@ -46,14 +46,14 @@ class Model(object):
                 'date_create': row[6].strftime("%Y-%m-%d %H:%M:%S"),
                 'nro_refrendo': row[7],
                 'ciudad_origen': row[8],
-                'flete_aduana': row[9],
-                'seguro_aduana': row[10],
-                'total_pedido': row[11],
+                'flete_aduana': str(row[9]),
+                'seguro_aduana': str(row[10]),
+                'total_pedido': str(row[11]),
                 'doc_date': row[12].strftime("%Y-%m-%d %H:%M:%S"),
                 'order_items': self.get_order_items(row[0]),
                 'supplier': self.get_supplier(row[4]),
                 'product': self.get_product(row[1], row[0]),
-                'invoice': self.get_invoice(row[1]),
+                'invoice' : self.get_invoice(row[1]),
                 'invoice_detail': self.get_invoice_details(row[1]),
             }
             orders_array.append(new_row)
@@ -77,9 +77,9 @@ class Model(object):
             new_row = {
                 'doc_entry': row[0],
                 'cod_contable' : row[1],
-                'cantidad_x_caja' : str(row[2]),
-                'nro_cajas' : str(row[3]),
-                'costo_caja' : str(row[4]),
+                'cantidad_x_caja' : int(row[2]),
+                'nro_cajas' : int(row[3]),
+                'costo_caja' : float(row[4]),
             }
             items_array.append(new_row)
 
@@ -104,8 +104,8 @@ class Model(object):
             new_row = {
                 'doc_entry': row[0],
                 'cod_contable': row[1],
-                'nro_cajas': row[2],
-                'costo_caja': row[3],
+                'nro_cajas': str(row[2]),
+                'costo_caja': str(row[3]),
                 'base_doc_num': row[4],
             }
 
@@ -144,7 +144,7 @@ class Model(object):
                 'fecha_emision': row[3].strftime("%Y-%m-%d %H:%M:%S"),
                 'venciemiento_pago': row[4].strftime("%Y-%m-%d %H:%M:%S"),
                 'identificacion_proveedor': row[5],
-                'valor': row[6],
+                'valor': str(row[6]),
                 'date_create': row[7].strftime("%Y-%m-%d %H:%M:%S"),
                 'observacioes': row[8],
             }
@@ -179,7 +179,6 @@ class Model(object):
         if(len(order_detail) > 0):
             detail = order_detail
 
-
         product_array = []
         for item in detail:
             if item['cod_contable'] != None:
@@ -189,10 +188,10 @@ class Model(object):
                     product_array.append({
                         'cod_contable': row[0],
                         'nombre': row[1],
-                        'cantidad_x_caja': row[2],
-                        'cod_ice': row[3],
-                        'capacidad': row[4],
-                        'grado_alcoholico': row[5],
+                        'cantidad_x_caja': int(row[2]) if row[2] else 1,
+                        'cod_ice': row[3] if row[3] else 'CODIGO-PENDIENTE',
+                        'capacidad': int(row[4]) if row[4] else 750,
+                        'grado_alcoholico': int(row[5]) if row[5] else 12,
                  })
 
         return product_array
