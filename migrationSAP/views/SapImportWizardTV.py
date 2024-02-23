@@ -25,7 +25,7 @@ class SapImportWizardTV(TemplateView):
 
     def post(self, request, *args, **kwargs):
         today = date.today()
-        context = self.get_context_data(**kwargs)        
+        context = self.get_context_data(**kwargs)
         data = request.POST.get('pedidos')
         sap_importer = SAPImporter().check_orders(data)
 
