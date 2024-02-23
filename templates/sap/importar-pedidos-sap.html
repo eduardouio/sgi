@@ -17,7 +17,7 @@
     <hr/>
     <form method="POST">
    {{ csrf_input }}
-    <textarea id="pedidos-sap" class="form-control" rows="15" name="pedidos"></textarea>
+    <textarea id="pedidos-sap" class="form-control" rows="15" name="pedidos">{{data.data}}</textarea>
     <br/>
     <button class="btn btn-primary btn-lg"> <i class="fas fa-cogs"></i> Evaluar Datos</button>
     </form>
