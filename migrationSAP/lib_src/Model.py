@@ -1,5 +1,4 @@
-from Con import Con
-
+from .Con import Con
 
 class Model(object):
     def __init__(self, enterprise, year):
@@ -22,10 +21,12 @@ class Model(object):
                     CardCode as 'identificacion_proveedor',
                     Comments as 'observaciones',
                     CreateDate as 'date_create',
+                    U_REFRENDO_REG as 'nro_refrendo',
                     U_CORDO_PTO_EMB as 'ciudad_origen',
                     U_CORDO_FLETE as 'flete_aduana',
                     U_CORDO_SEGURO as 'seguro_aduana',
-                    DocTotal as 'total_pedido'
+                    DocTotal as 'total_pedido',
+                    DocDate as 'date_create'
                 FROM OPOR
                 WHERE CreateDate > '{before_year}-12-31 23:59:29'
                 AND CreateDate < '{after_year}-01-01 00:00:00';
@@ -42,13 +43,18 @@ class Model(object):
                 'incoterm': row[3],
                 'identificacion_proveedor': row[4],
                 'observaciones': row[5],
-                'ciudad_origen': row[7],
-                'flete_aduana': str(row[8]),
-                'seguro_aduana': str(row[9]),
-                'total_pedido': str(row[10]),
+                'date_create': row[6].strftime("%Y-%m-%d %H:%M:%S"),
+                'nro_refrendo': row[7],
+                'ciudad_origen': row[8],
+                'flete_aduana': str(row[9]),
+                'seguro_aduana': str(row[10]),
+                'total_pedido': str(row[11]),
+                'doc_date': row[12].strftime("%Y-%m-%d %H:%M:%S"),
                 'order_items': self.get_order_items(row[0]),
                 'supplier': self.get_supplier(row[4]),
                 'product': self.get_product(row[1], row[0]),
+                'invoice' : self.get_invoice(row[1]),
+                'invoice_detail' : self.get_invoice_details(row[1]),
             }
             orders_array.append(new_row)
 
@@ -110,6 +116,39 @@ class Model(object):
 
         return items_invoice_array
 
+    def get_invoice(self, doc_num):
+        detail = self.get_invoice_details(doc_num, True)
+        query = '''SELECT
+                    DocEntry,
+                    DocNum,
+                    NumAtCard as 'id_factura_proveedor',
+                    DocDate as 'fecha_emision',
+                    DocDueDate as 'venciemiento_pago',
+                    CardCode as 'identificacion_proveedor',
+                    DocTotal as 'valor',
+                    CreateDate as 'date_create',
+                    Comments as 'observacioes'
+                FROM OPCH
+                WHERE DocEntry = {doc_entry};
+        '''
+        if len(detail) == 0:
+            return {}
+
+        query = query.replace('{doc_entry}', str(detail['doc_entry']))
+        invoice = self.con.run_query(query)
+        for row in invoice:
+            return {
+                'doc_entry': row[0],
+                'doc_num': row[1],
+                'id_factura_proveedor': row[2],
+                'fecha_emision': row[3].strftime("%Y-%m-%d %H:%M:%S"),
+                'venciemiento_pago': row[4].strftime("%Y-%m-%d %H:%M:%S"),
+                'identificacion_proveedor': row[5],
+                'valor': str(row[6]),
+                'date_create': row[7].strftime("%Y-%m-%d %H:%M:%S"),
+                'observacioes': row[8],
+            }
+
     def get_product(self, doc_num, doc_entry):
         detail = [];
 
@@ -149,7 +188,7 @@ class Model(object):
                 for row in product:
                     product_array.append({
                         'cod_contable': row[0],
-                        'nombre': row[1].encode('utf-8'),
+                        'nombre': row[1],
                         'cantidad_x_caja': str(row[2]),
                         'cod_ice': row[3],
                         'capacidad': str(row[4]),
@@ -175,7 +214,6 @@ class Model(object):
         for row in supplier:
             return {
                 'identificacion_proveedor': row[0],
-                'nombre': row[1],
-               # 'comentarios': row[2].decode(encoding='UTF-8'),
-                'comentarios': row[2],
+                'nombre': str(row[1]),
+                'comentarios': row[2]
             }
