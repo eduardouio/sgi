@@ -48,22 +48,22 @@ class ImportAlmagro():
         """
         sections = date_string.split('/')
         base = [
-            {'mont': 'jan', 'val':  1},
-            {'mont': 'feb', 'val':  2},
-            {'mont': 'mar', 'val':  3},
-            {'mont': 'apr', 'val':  4},
-            {'mont': 'may', 'val':  5},
-            {'mont': 'jun', 'val':  6},
-            {'mont': 'jul', 'val':  7},
-            {'mont': 'aug', 'val':  8},
-            {'mont': 'sep', 'val':  9},
-            {'mont': 'oct', 'val':  10},
-            {'mont': 'nov', 'val':  11},
-            {'mont': 'dec', 'val':  12},
-            {'mont': 'ene', 'val':  1},
-            {'mont': 'abr', 'val':  4},
-            {'mont': 'ago', 'val':  8},
-            {'mont': 'dic', 'val':  12},
+            {'mont': 'jan.', 'val':  1},
+            {'mont': 'feb.', 'val':  2},
+            {'mont': 'mar.', 'val':  3},
+            {'mont': 'apr.', 'val':  4},
+            {'mont': 'may.', 'val':  5},
+            {'mont': 'jun.', 'val':  6},
+            {'mont': 'jul.', 'val':  7},
+            {'mont': 'aug.', 'val':  8},
+            {'mont': 'sep.', 'val':  9},
+            {'mont': 'oct.', 'val':  10},
+            {'mont': 'nov.', 'val':  11},
+            {'mont': 'dec.', 'val':  12},
+            {'mont': 'ene.', 'val':  1},
+            {'mont': 'abr.', 'val':  4},
+            {'mont': 'ago.', 'val':  8},
+            {'mont': 'dic.', 'val':  12},
         ]
         for item in base:
             if item['mont'].lower() == sections[1].lower():
