@@ -31,9 +31,7 @@
                 <th>Estado</th>
                 <th>Cod Contable</th>
                 <th>Proveedor</th>
-                <th>Cnt Caja</th>
                 <th>Reg San</th>
-                <th>Emisión</th>
                 <th>Expiración</th>
                 <th>Cod ICE</th>
             </tr>
@@ -42,30 +40,31 @@
             {% for item in object_list  %}
             <tr>
                 <td class="text-center">{{ loop.index }}</td>
-                <td><a class="text-info" href="/productos/ver/{{item.cod_contable}}/"><i class="fas fa-eye"></i></a> {{ item }}</td>
-                <td class="text-center">
-                    {% if item.estado %} 
-                        <span class="text-success">ACTIVO</span>
-                    {% else %}
-                        <span class="text-danger">INACTIVO</span>
-                    {% endif %}
+                <td>
+                    <a class="text-info" href="/productos/ver/{{item.cod_contable}}/">
+                        <i class="fas fa-eye"></i>
+                    </a>
+                    <span class="badge bg-dark text-white">[{{item.cantidad_x_caja}}]</span>
+                    {{ item.nombre }}
+                </td>
+                <td 
+                    class=
+                    "text-center 
+                    {%if item.estado == 'Activo' %} bg-success {% endif %}
+                    {%if item.estado == 'Inactivo' %} bg-dark text-white {% endif %}
+                    {%if item.estado == 'Caducado' %} bg-danger text-white {% endif %}
+                    {%if item.estado == 'Por Caducar' %} bg-warning {% endif %}
+                    ">
+                    {{ item.estado }}
                 </td>
                 <td>{{item.cod_contable}}</td>
                 <td><a class='text-info' href="/admin/suppliers/supplier/{{item.identificacion_proveedor_id}}/change/"><i class="fas fa-user"></i></a> {{ item.identificacion_proveedor }}</td>
-                <td class="text-right">{{ item.cantidad_x_caja }} Unds</td>
                 <td class="">
                     {% if  item.nro_registro_sanitario  %}
                     <a href="/media/{{ item.registro_sanitario }}">
                         <i class="fas fa-file-pdf"></i>
                     </a>  
                         {{ item.nro_registro_sanitario }}
-                    {% else %}
-                        --
-                    {% endif %}
-                </td>
-                <td class="">
-                    {% if  item.fecha_emision_registro  %}
-                        {{ item.fecha_emision_registro.strftime('%d/%m/%Y') }}
                     {% else %}
                         --
                     {% endif %}
