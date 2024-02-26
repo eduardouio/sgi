@@ -92,8 +92,12 @@ class OrderDetailProductSale():
                         ingresada
         """
         if order.regimen == '10':
-            init_sale = self.get_init_sale(order.nro_pedido) 
-            if not ignore_liquidated and order.bg_isliquidated:
+            init_sale = self.get_init_sale(order.nro_pedido)
+
+            if order.bg_isclosed:
+                return init_sale
+
+            if order.bg_isliquidated and not ignore_liquidated:
                 detail = []
                 for item in init_sale:
                     detail.append({
@@ -102,7 +106,9 @@ class OrderDetailProductSale():
                         'nro_cajas': 0,
                         'costo_caja': item['costo_caja'],
                     })
-            else:
+                return detail
+
+            if order.bg_isliquidated:
                 return init_sale
 
         nationalized = []
