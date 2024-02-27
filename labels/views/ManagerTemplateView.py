@@ -22,7 +22,7 @@ class ManagerTemplateView(LoginRequiredMixin, TemplateView):
 
         labels = Label.objects.all().select_related(
             'id_factura_detalle',
-            ).values(
+            ).values(   
             'id_label',
             'initial_range',
             'end_range',
@@ -43,8 +43,6 @@ class ManagerTemplateView(LoginRequiredMixin, TemplateView):
             'id_user',
         )
 
-        # from django.http import JsonResponse
-        # return JsonResponse(list(labels), safe=False)
         context = self.get_context_data(**kwargs)
         context['data'] = {
             'title_page': 'Manager Etiquetas',
