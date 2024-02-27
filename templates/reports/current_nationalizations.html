@@ -35,19 +35,39 @@
             <div class="row">
                <div class="col-3">
                   <div class="form-group">
-                     <label for="start_date">Fecha Inicio <small class="text-info"> <strong>{{request.GET.start_date }}</strong></small></label>
+                     <label for="start_date">
+                           Fecha Inicio 
+                           {% if request.GET.start_date %}
+                              <small class="text-info">
+                                 <strong> {{request.GET.start_date }}</strong>
+                              </small>
+                           {%endif %}
+                     </label>
                      <input type="date" class="form-control form-control-sm" name="start_date" required value='{{request.GET.start_date}}'>
                   </div>
                </div>
                <div class="col-3">
                   <div class="form-group">
-                     <label for="end_date">Fecha Fin <small class="text-info"> <strong>{{request.GET.end_date }}</strong></small></label>
+                     <label for="end_date">
+                        Fecha Fin
+                        {% if request.GET.end_date %}
+                        <small class="text-info">
+                           <strong>{{ request.GET.end_date }}</strong>
+                        </small>
+                        {%endif%}
+                     </label>
                      <input type="date" class="form-control form-control-sm" name="end_date" required value='{{request.GET.end_date}}'>
                   </div>
                </div>
                <div class="col-3">
                <div class="form-group">
-                <label for="option">Seleccione <small class="text-info"> <strong>{{ data.params[request.GET.option] }}</strong></small> </label>
+                <label for="option">Seleccione
+                  {% if data.params[request.GET.option] %}
+                  <small class="text-info">
+                     <strong>{{ data.params[request.GET.option] }}</strong>
+                  </small>
+                  {%endif%}   
+               </label>
                 <select name="option" class="form-control form-control-sm">
                   {% if request.GET.option %}
                      <option selected value='{{request.GET.option}}' class="text-success bg-light">{{ data.params[request.GET.option] }}</option>
@@ -176,7 +196,11 @@
                         <i class="fas fa-calendar-times"></i>
                         {% endif %}
                         {% else %}
-                        {{ (data.today - item.fecha_liquidacion).days }}
+                           {% if item.fecha_liquidacion %}
+                            {{ (data.today - item.fecha_liquidacion).days }}
+                           {% else %}
+                              <i class="fas fa-calendar-times"></i> 
+                           {% endif %}
                         {% endif %}
                      </td>
                   </tr>

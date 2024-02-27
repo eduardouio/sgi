@@ -148,8 +148,8 @@
         <td nowrap="" class="text-right">{{ item.cod_contable.capacidad_ml | round(0) }}</td>
         <td nowrap="" class="text-right">{{ item.grado_alcoholico | round(2) }}</td>
         <td nowrap="" class="text-right">{{ item.ex_aduana_unitario }}</td>
-        <td nowrap="" class="text-right">{{ item.ice_especifico / item.unidades }}</td>
-        <td nowrap="" class="text-right">{{ item.ice_advalorem / item.unidades }}</td>
+        <td nowrap="" class="text-right">{{ item.ice_especifico }}</td>
+        <td nowrap="" class="text-right">{{ item.ice_advalorem }}</td>
         <td nowrap="" class="text-right">{{ (item.ice_especifico + item.ice_advalorem) / item.unidades }}</td>
         <td nowrap="" class="text-right">{{ (item.ice_advalorem +  item.ice_especifico) | round(3)}}</td>
         <td nowrap="" class="text-right">{{ item.costo_total }}</td>

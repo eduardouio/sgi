@@ -22,60 +22,72 @@
     </div>
     <div class="row">
         <div class="col-12">
+            <div class="table-responsive">
     <table class="table table-bordered table-striped" id="reporte">
         <thead>
-            <tr>
+        <tr>
                 <th>#</th>
                 <th>Producto</th>
+                <th>Estado</th>
                 <th>Cod Contable</th>
                 <th>Proveedor</th>
-                <th>Grado A</th>
-                <th>Capacidad</th>
-                <th>Costo Caja</th>
-                <th>Cnt Caja</th>
-                <th>Partida</th>
                 <th>Reg San</th>
-                <th>File</th>
+                <th>Expiración</th>
+                <th>Cod ICE</th>
             </tr>
         </thead>
         <tbody>
             {% for item in object_list  %}
             <tr>
                 <td class="text-center">{{ loop.index }}</td>
-                <td><a class="text-info" href="/productos/ver/{{item.cod_contable}}/"><i class="fas fa-file-alt"></i></a> {{ item }}</td>
-                <td><a class="text-info" href="/productos/editar/{{item.cod_contable}}/">{{item.cod_contable}}</a></td>
-                <td><a class='text-info' href="/admin/suppliers/supplier/{{item.identificacion_proveedor_id}}/change/"><i class="fas fa-user"></i></a> {{ item.identificacion_proveedor }}</td>
-                <td class="text-right">{{ item.grado_alcoholico | round(1) }}</td>
-                <td class="text-right">{{ item.capacidad_ml }} Ml</td>
-                <td class="text-right">{{ item.costo_caja | round(2) }}</td>
-                <td class="text-right">{{ item.cantidad_x_caja }} Unds</td>
-                <td class="text-right">
-                    {% if item.partida_arancelaria  %}
-                        {{ item.partida_arancelaria }}
-                    {% else %}
-                            --
-                    {% endif %}
+                <td>
+                    <a class="text-info" href="/productos/ver/{{item.cod_contable}}/">
+                        <i class="fas fa-eye"></i>
+                    </a>
+                    <span class="badge bg-dark text-white">[{{item.cantidad_x_caja}}]</span>
+                    {{ item.nombre }}
                 </td>
-                <td class="text-right">
+                <td 
+                    class=
+                    "text-center 
+                    {%if item.estado == 'Activo' %} bg-success {% endif %}
+                    {%if item.estado == 'Inactivo' %} bg-dark text-white {% endif %}
+                    {%if item.estado == 'Caducado' %} bg-danger text-white {% endif %}
+                    {%if item.estado == 'Por Caducar' %} bg-warning {% endif %}
+                    ">
+                    {{ item.estado }}
+                </td>
+                <td>{{item.cod_contable}}</td>
+                <td><a class='text-info' href="/admin/suppliers/supplier/{{item.identificacion_proveedor_id}}/change/"><i class="fas fa-user"></i></a> {{ item.identificacion_proveedor }}</td>
+                <td class="">
                     {% if  item.nro_registro_sanitario  %}
+                    <a href="/media/{{ item.registro_sanitario }}">
+                        <i class="fas fa-file-pdf"></i>
+                    </a>  
                         {{ item.nro_registro_sanitario }}
                     {% else %}
                         --
                     {% endif %}
                 </td>
-                <td class="text-center">
-                    {% if  item.registro_sanitario  %}
-                    <a href="/media/{{ item.registro_sanitario }}">
-                        <i class="fas fa-file-pdf"></i>
-                    </a>  
+                <td class="">
+                    {% if  item.fecha_vencimiento_registro  %}
+                        {{ item.fecha_vencimiento_registro.strftime('%d/%m/%Y') }}
                     {% else %}
                         --
-                    {% endif %}                    
+                    {% endif %}
+                </td>
+                <td class="text-right" nowrap>
+                    {% if item.cod_ice  %}
+                        {{ item.cod_ice }}
+                    {% else %}
+                            --
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+</div>
 
 </div>
 </div>

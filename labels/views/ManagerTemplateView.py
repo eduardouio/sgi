@@ -4,6 +4,7 @@ from django.views.generic import TemplateView
 from labels.lib_src import ActivateRangeSafeTrack, LoginSafeTrack
 from labels.models import Label
 from lib_src.sgi_utlils import get_host
+from django.contrib.auth.models import User
 from logs.app_log import loggin
 
 
@@ -19,7 +20,29 @@ class ManagerTemplateView(LoginRequiredMixin, TemplateView):
             self.activate(action, pk, deep=pk)
             return HttpResponseRedirect('/etiquetas/manager/')
 
-        labels = Label.objects.all().exclude(bg_status='A')
+        labels = Label.objects.all().select_related(
+            'id_factura_detalle',
+            ).values(   
+            'id_label',
+            'initial_range',
+            'end_range',
+            'quantity',
+            'parcial',
+            'notas',
+            'bg_status',
+            'activated_date',
+            'date_created',
+            'validated_date',
+            'signed_date',
+            'id_user',
+            'id_factura_detalle',
+            'id_factura_detalle__cod_contable',
+            'id_factura_detalle__cod_contable__nombre',
+            'id_factura_detalle__cod_contable__cod_ice',
+            'id_factura_detalle__id_pedido_factura__nro_pedido',
+            'id_user',
+        )
+
         context = self.get_context_data(**kwargs)
         context['data'] = {
             'title_page': 'Manager Etiquetas',
@@ -43,18 +66,18 @@ class ManagerTemplateView(LoginRequiredMixin, TemplateView):
             return data
 
         for label in labels:
-            if label.bg_status == 'I':
+            if label['bg_status'] == 'I':
                 data['inactive'].append(label)
-                data['total_inactive'] += label.quantity
-            elif label.bg_status == 'A':
+                data['total_inactive'] += label['quantity']
+            elif label['bg_status'] == 'A':
                 data['active'].append(label)
-                data['total_active'] += label.quantity
-            elif label.bg_status == 'E' or label.bg_status == 'S':
+                data['total_active'] += label['quantity']
+            elif label['bg_status'] == 'E' or label['bg_status'] == 'S':
                 data['error'].append(label)
-                data['total_error'] += label.quantity
+                data['total_error'] += label['quantity']
             else:
                 data['rejected'].append(label)
-                data['total_rejected'] += label.quantity
+                data['total_rejected'] += label['quantity']
 
         return data
 

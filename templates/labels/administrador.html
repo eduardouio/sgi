@@ -65,25 +65,25 @@
                <tr>
                   <td>{{ loop.index }}</td>
                   <td class="text-center">
-                     <a href="/etiquetas/detalle/{{ etiqueta.id_factura_detalle.id_pedido_factura.nro_pedido }}/"
+                     <a href="/etiquetas/detalle/{{ etiqueta.id_factura_detalle__id_pedido_factura__nro_pedido }}/"
                         class="text-dark">
-                        {{ etiqueta.id_factura_detalle.id_pedido_factura.nro_pedido }}
+                        {{ etiqueta.id_factura_detalle__id_pedido_factura__nro_pedido }}
                      </a> -->
                      <a
-                        href="{{request.enterprise.url_app_importaciones}}index.php/pedido/presentar/{{ etiqueta.id_factura_detalle.id_pedido_factura.nro_pedido }}">
+                        href="{{request.enterprise.url_app_importaciones}}index.php/pedido/presentar/{{ etiqueta.id_factura_detalle__id_pedido_factura__nro_pedido }}">
                         [{{ etiqueta.parcial }}]
 
                      </a>
                   </td>
                   <td>
                      <a href="/admin/labels/label/{{etiqueta.id_label}}" target="_blank" rel="noopener noreferrer">
-                        {{ etiqueta.id_factura_detalle.product[:60] if etiqueta.id_factura_detalle.product}}
+                        {{ etiqueta.id_factura_detalle__cod_contable__nombre }}
                      </a>
-                        <a href="/productos/ver/{{etiqueta.id_factura_detalle.cod_contable_id}}" target="_blank" rel="noopener">
-                           {{ etiqueta.id_factura_detalle.cod_contable.cod_ice }}
+                        <a href="/productos/ver/{{etiqueta.id_factura_detalle__cod_contable}}" target="_blank" rel="noopener">
+                           {{ etiqueta.id_factura_detalle__cod_contable__cod_ice }}
                         </a>
                      </td>
-                  <td class="">{{ etiqueta.notas[:60] if etiqueta.notas else '--' }}</td>
+                  <td class="">{{ etiqueta.notas if etiqueta.notas else '--' }}</td>
                   <td class="text-center">
                      <a href="http://s4t.io/{{ etiqueta.initial_range }}" target="_blank" rel="noopener noreferrer">
                         {{ etiqueta.initial_range }}
@@ -104,9 +104,6 @@
                {% endfor %}
             </tbody>
          </table>
-         <a href="?action/activate_all/pk=0" class="btn btn-outline-dark btn-sm">
-            <i class="fa fa-check"></i> Activar Todo
-         </a>
       </div>
       <div class="tab-pane fade" id="invalidated_tags" role="tabpanel" aria-labelledby="invalidated_tags-tab">
          <table class="table table-striped table-condensed table-bordered" id="table_labels_error">
@@ -130,24 +127,25 @@
                <tr>
                   <td>{{ loop.index }}</td>
                   <td class="text-center">
-                     <a href="/etiquetas/detalle/{{ etiqueta.id_factura_detalle.id_pedido_factura.nro_pedido }}/"
+                     <a href="/etiquetas/detalle/{{ etiqueta.id_factura_detalle__id_pedido_factura__nro_pedido }}/"
                         class="text-dark">
-                        {{ etiqueta.id_factura_detalle.id_pedido_factura.nro_pedido }}
+                        {{ etiqueta.id_factura_detalle__id_pedido_factura__nro_pedido }}
                      </a> -->
                      <a
-                        href="{{request.enterprise.url_app_importaciones}}index.php/pedido/presentar/{{ etiqueta.id_factura_detalle.id_pedido_factura.nro_pedido }}">
+                        href="{{request.enterprise.url_app_importaciones}}index.php/pedido/presentar/{{ etiqueta.id_factura_detalle__id_pedido_factura__nro_pedido }}">
                         [{{ etiqueta.parcial }}]
+
                      </a>
                   </td>
                   <td>
-                     <a href="/admin/labels/label/{{etiqueta.id_label}}" target="_blank" rel="noopener noreferrer">{{
-			     etiqueta.id_factura_detalle.product[:60] }}
+                     <a href="/admin/labels/label/{{etiqueta.id_label}}" target="_blank" rel="noopener noreferrer">
+                        {{ etiqueta.id_factura_detalle__cod_contable__nombre }}
                      </a>
-                     <a href="/productos/ver/{{etiqueta.id_factura_detalle.cod_contable_id}}" target="_blank" rel="noopener">
-                           {{ etiqueta.id_factura_detalle.cod_contable.cod_ice }}
-                     </a>
+                        <a href="/productos/ver/{{etiqueta.id_factura_detalle__cod_contable}}" target="_blank" rel="noopener">
+                           {{ etiqueta.id_factura_detalle__cod_contable__cod_ice }}
+                        </a>
                      </td>
-                  <td class="">{{ etiqueta.notas[:60] if etiqueta.notas else '--' }}</td>
+                  <td class="">{{ etiqueta.notas if etiqueta.notas else '--' }}</td>
                   <td class="text-center">
                      <a href="http://s4t.io/{{ etiqueta.initial_range }}" target="_blank" rel="noopener noreferrer">
                         {{ etiqueta.initial_range }}
@@ -206,25 +204,26 @@
                   {% for etiqueta in data.labels['rejected'] %}
                   <tr>
                      <td>{{ loop.index }}</td>
-                     <td class="text-center">
-                        <a href="/etiquetas/detalle/{{ etiqueta.id_factura_detalle.id_pedido_factura.nro_pedido }}/"
-                           class="text-dark">
-                           {{ etiqueta.id_factura_detalle.id_pedido_factura.nro_pedido }}
-                        </a> -->
-                        <a
-                           href="{{request.enterprise.url_app_importaciones}}index.php/pedido/presentar/{{ etiqueta.id_factura_detalle.id_pedido_factura.nro_pedido }}">
-                           [{{ etiqueta.parcial }}]
+                  <td class="text-center">
+                     <a href="/etiquetas/detalle/{{ etiqueta.id_factura_detalle__id_pedido_factura__nro_pedido }}/"
+                        class="text-dark">
+                        {{ etiqueta.id_factura_detalle__id_pedido_factura__nro_pedido }}
+                     </a> -->
+                     <a
+                        href="{{request.enterprise.url_app_importaciones}}index.php/pedido/presentar/{{ etiqueta.id_factura_detalle__id_pedido_factura__nro_pedido }}">
+                        [{{ etiqueta.parcial }}]
+
+                     </a>
+                  </td>
+                  <td>
+                     <a href="/admin/labels/label/{{etiqueta.id_label}}" target="_blank" rel="noopener noreferrer">
+                        {{ etiqueta.id_factura_detalle__cod_contable__nombre }}
+                     </a>
+                        <a href="/productos/ver/{{etiqueta.id_factura_detalle__cod_contable}}" target="_blank" rel="noopener">
+                           {{ etiqueta.id_factura_detalle__cod_contable__cod_ice }}
                         </a>
                      </td>
-                     <td>
-                        <a href="/admin/labels/label/{{etiqueta.id_label}}" target="_blank" rel="noopener noreferrer">{{
-                           etiqueta.id_factura_detalle.product[:60] }}
-                        </a>
-                        <a href="/productos/ver/{{etiqueta.id_factura_detalle.cod_contable_id}}" target="_blank" rel="noopener">
-                           {{ etiqueta.id_factura_detalle.cod_contable.cod_ice }}
-                        </a>
-                        </td>
-                     <td class="">{{ etiqueta.notas[:60] if etiqueta.notas else '--' }}</td>
+                     <td class="">{{ etiqueta.notas if etiqueta.notas else '--' }}</td>
                      <td class="text-center">
                         <a href="http://s4t.io/{{ etiqueta.initial_range }}" target="_blank" rel="noopener noreferrer">
                            {{ etiqueta.initial_range }}
@@ -270,8 +269,6 @@
          <th>Rango</th>
          <th>Unidades</th>
          <th>Registro</th>
-         <th>Firma</th>
-         <th>Validación</th>
          <th>Activación</th>
          <th>STS</th>
       </tr>
@@ -281,23 +278,25 @@
       <tr>
          <td>{{ loop.index }}</td>
          <td class="text-center">
-            <a href="/etiquetas/detalle/{{ etiqueta.id_factura_detalle.id_pedido_factura.nro_pedido }}/"
+            <a href="/etiquetas/detalle/{{ etiqueta.id_factura_detalle__id_pedido_factura__nro_pedido }}/"
                class="text-dark">
-               {{ etiqueta.id_factura_detalle.id_pedido_factura.nro_pedido }}
+               {{ etiqueta.id_factura_detalle__id_pedido_factura__nro_pedido }}
             </a> -->
             <a
-               href="{{request.enterprise.url_app_importaciones}}index.php/pedido/presentar/{{ etiqueta.id_factura_detalle.id_pedido_factura.nro_pedido }}">
+               href="{{request.enterprise.url_app_importaciones}}index.php/pedido/presentar/{{ etiqueta.id_factura_detalle__id_pedido_factura__nro_pedido }}">
                [{{ etiqueta.parcial }}]
+
             </a>
          </td>
          <td>
-            <a href="/admin/labels/label/{{etiqueta.id_label}}" target="_blank" rel="noopener noreferrer">{{
-               etiqueta.id_factura_detalle.product[:80] }}</a>
-               <a href="/productos/ver/{{etiqueta.id_factura_detalle.cod_contable_id}}" target="_blank" rel="noopener">
-                           {{ etiqueta.id_factura_detalle.cod_contable.cod_ice }}
+            <a href="/admin/labels/label/{{etiqueta.id_label}}" target="_blank" rel="noopener noreferrer">
+               {{ etiqueta.id_factura_detalle__cod_contable__nombre }}
+            </a>
+               <a href="/productos/ver/{{etiqueta.id_factura_detalle__cod_contable}}" target="_blank" rel="noopener">
+                  {{ etiqueta.id_factura_detalle__cod_contable__cod_ice }}
                </a>
             </td>
-         <td class="">{{ etiqueta.notas[:60] if etiqueta.notas else '--' }}</td>
+         <td class="">{{ etiqueta.notas if etiqueta.notas else '--' }}</td>
          <td class="text-center">
             <a href="http://s4t.io/{{ etiqueta.initial_range }}" target="_blank" rel="noopener noreferrer">
                {{ etiqueta.initial_range }}
@@ -308,9 +307,7 @@
             </a>
          </td>
          <td class="text-right">{% if etiqueta.quantity %}{{ etiqueta.quantity }}{%endif%}</td>
-         <td class="text-right">{% if etiqueta.date_created %}{{ etiqueta.date_created.strftime('%d/%h/%Y %H:%M') }}{%endif%}</td>
-         <td class="text-right">{% if etiqueta.validated_date %}{{ etiqueta.validated_date.strftime('%d/%h/%Y %H:%M') }}{%endif%}</td>
-         <td class="text-right">{% if etiqueta.signed_date %}{{ etiqueta.signed_date.strftime('%d/%h/%Y %H:%M') }}{%endif%}</td>
+         <td class="text-right">{% if etiqueta.activated_date %}{{ etiqueta.activated_date.strftime('%d/%h/%Y %H:%M') }}{%endif%}</td>
          <td class="text-right">
             {%if etiqueta.activated_date %}
                {{ etiqueta.activated_date.strftime('%d/%h/%Y %H:%M') }}

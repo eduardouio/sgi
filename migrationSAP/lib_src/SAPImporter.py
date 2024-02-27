@@ -18,10 +18,10 @@ class SAPImporter(object):
     def check_orders(self, data):
         data = json.loads(data)
 
-        if not data['data']:
+        if not data:
             return []
 
-        orders_verified = self.verify_orders(data['data'])
+        orders_verified = self.verify_orders(data)
 
         return orders_verified
 
@@ -32,6 +32,8 @@ class SAPImporter(object):
         Args:
             ordes (list): Listado de pedidos retornados por SAP
         """
+        self.verify_supplier(orders)
+        self.verify_product(orders)
         created_orders = []
         orders = [o for o in orders if o['nro_pedido'] is not None]
         for order in orders:
@@ -82,7 +84,9 @@ class SAPImporter(object):
                     })
 
                 except IntegrityError as e:
-                    print("Informacion Incompleta {}".format(order_sgi.nro_pedido))
+                    print("Informacion Incompleta {}".format(
+                        order_sgi.nro_pedido)
+                    )
                     loggin('e', 'informacion incompleta {}'.format(e))
 
                 except DataError as e:
@@ -136,7 +140,7 @@ class SAPImporter(object):
                 order_invoice.delete()
                 loggin('i', 'Se elimina la factura creada con sus items')
 
-            return(status, message)
+            return (status, message)
 
         except IntegrityError as e:
             loggin('e', 'informacion incompleta {}'.format(e))
@@ -154,7 +158,7 @@ class SAPImporter(object):
             order (dict): All order sap information
         """
         if not order['order_items'].__len__():
-            return(False, 'El pedido no tiene productos')
+            return (False, 'El pedido no tiene productos')
 
         for item in order['order_items']:
             product = Product.get_by_cod_contable(item['cod_contable'])
@@ -196,4 +200,48 @@ class SAPImporter(object):
                     product
                 ))
 
-        return(True, 'Productos importados correctamente')
+        return (True, 'Productos importados correctamente')
+
+    def verify_product(self, data):
+        """Verificamos el producto sino existe lo creamos"""
+        for order in data:
+            for item in order['product']:
+                my_product = Product.get_by_cod_contable(item['cod_contable'])
+                if my_product is None:
+                    my_supplier = Supplier.get_by_ruc(
+                        order['supplier']['identificacion_proveedor']
+                    )
+                    print(order)
+                    Product.objects.create(
+                        identificacion_proveedor=my_supplier,
+                        nombre=item['nombre'],
+                        cod_contable=item['cod_contable'],
+                        cantidad_x_caja=int(float(item['cantidad_x_caja'])),
+                        capacidad_ml=int(item['capacidad']) if item['capacidad'] != 'None' else 750,
+                        grado_alcoholico=float(item['grado_alcoholico']),
+                        cod_ice=item['cod_ice'],
+                        id_producto=Product.get_new_id_producto(),
+                        id_user=1,
+                        peso=0,
+                        nro_registro_sanitario='PENDIENTE',
+                        solicitud_aucp='PENDIENTE',
+
+                    )
+
+    def verify_supplier(self, data):
+        """Verificamos el proveedor sino existe lo creamos"""
+        for order in data:
+            supplier = Supplier.get_by_ruc(order['supplier']['identificacion_proveedor'])
+            if supplier is None:
+                last_id = Supplier.objects.all().order_by(
+                    'id_proveedor').latest('id_proveedor')
+                Supplier.objects.create(
+                    identificacion_proveedor=order['supplier']['identificacion_proveedor'],
+                    nombre=order['supplier']['nombre'],
+                    id_proveedor=last_id.id_proveedor + 1,
+                    tipo_provedor='INTERNACIONAL',
+                    moneda_transaccion='DOLARES',
+                    categoria='licores;',
+                    id_user=1,
+                    comentarios='PENDIENTE'
+                )
