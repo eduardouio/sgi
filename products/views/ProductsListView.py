@@ -36,6 +36,7 @@ class ProductListView(LoginRequiredMixin, ListView):
                 'estado': estado,
                 'identificacion_proveedor': item.identificacion_proveedor.nombre,
                 'cantidad_x_caja': item.cantidad_x_caja,
+                'registro_sanitario': item.registro_sanitario,
                 'nro_registro_sanitario': item.nro_registro_sanitario,
                 'fecha_vencimiento_registro': item.fecha_vencimiento_registro,
                 'cod_ice': item.cod_ice,

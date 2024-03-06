@@ -30,6 +30,8 @@ def loggin(type_log , message, request=None):
     user_name = ''
     user_email = ''
 
+    return None
+
     if request is not None:
         user_naiime = request.user
 

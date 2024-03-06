@@ -12,7 +12,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATOS_EMPRESAS = {
     'test': {
         'nombre': 'AMBIENTE DE PRUEBAS TEST',
-        'empresa': 'test',
+        'empresa': 'cordovez',
         'ruc': '1722919725001',
         'direccion': 'AV COLO 1133 Y AMAZONAS EDF ARISTA OF 500 ',
         'telefono': '022405911',
