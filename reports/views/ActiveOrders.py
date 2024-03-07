@@ -38,7 +38,7 @@ class ActiveOrdersTemplateView(LoginRequiredMixin, TemplateView):
                 'EN ALMAGRO': 'text-primary',
                 'CERRADO': 'text-dark',
                 'SIN CONFIRMAR': 'text-danger',
-                'EN BODEGAS PARA COSTEO': 'text-primary',
+                'EN BODEGAS PARA COSTEO': 'text-info',
             }
 
             for item in my_order_sale['sale']:
