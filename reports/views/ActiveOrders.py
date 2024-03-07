@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
 from lib_src import OrderDetailProductSale
-from orders.models import Order
+from orders.models import Order, OrderInvoice
 from logs.app_log import loggin
 from paids.models import Expense
 
@@ -28,23 +28,54 @@ class ActiveOrdersTemplateView(LoginRequiredMixin, TemplateView):
         data = []
 
         for my_ord in orders:
-            my_order_sale = order_sale.get(my_ord.nro_pedido, ignore_liquidated)
+            my_order_sale = order_sale.get(
+                my_ord.nro_pedido, ignore_liquidated)
+            order_invoice = OrderInvoice.get_by_order(my_ord.nro_pedido)
             my_order_sale['total_sale'] = 0
+            # colores de texto en reporte
+            text_color = {
+                'EN TRANSITO': 'text-warning',
+                'EN ALMAGRO': 'text-primary',
+                'CERRADO': 'text-dark',
+                'SIN CONFIRMAR': 'text-danger',
+                'EN BODEGAS PARA COSTEO': 'text-primary',
+            }
 
             for item in my_order_sale['sale']:
                 my_order_sale['total_sale'] += item['nro_cajas']
 
             if my_order_sale['total_sale']:
+                status = 'EN TRANSITO'
+
+                if order_invoice.id_factura_proveedor.startswith('SF-'):
+                    status = 'SIN CONFIRMAR'
+                else:
+                    # VERIFICAMOS EL STATUS DEL PEDIDO POR DEFECTO ES TRANSITO
+                    if my_ord.regimen == '70' and my_ord.bg_isclosed:
+                        status = 'CERRADO'
+
+                    if my_ord.regimen == '70' and my_ord.fecha_ingreso_almacenera:
+                        status = 'EN ALMAGRO'
+
+                    if my_ord.regimen == '70' and not my_ord.fecha_ingreso_almacenera:
+                        status = 'EN TRANSITO'
+
+                    if my_ord.regimen == '10' and my_ord.fecha_llegada_cliente:
+                        status = 'EN BODEGAS PARA COSTEO'
+
                 data.append({
                     'order': my_ord,
+                    'invoice': order_invoice,
                     'sale': my_order_sale,
-                    'monts': Expense.get_months_storage(my_ord.nro_pedido)
+                    'monts': Expense.get_months_storage(my_ord.nro_pedido),
+                    'status': status,
+                    'text_color': text_color[status],
                 })
 
         context['data'] = {
             'title_page': 'Pedidos Activos',
             'data': data,
-            }
+        }
         return self.render_to_response(context)
 
     def check_all_orders(self):
@@ -69,4 +100,3 @@ class ActiveOrdersTemplateView(LoginRequiredMixin, TemplateView):
                 if order.regimen == '70':
                     order.bg_isclosed = 0
                     order.save()
-

@@ -47,11 +47,11 @@
                         <th>Reg</th>
                         <th>DAI</th>
                         <th>Proveedor</th>
+                        <th>Factura</th>
                         <th>Matrícula</th>
                         <th>Producto</th>
                         <th>Cap Ml</th>
                         <th>Cajas</th>
-                        <th>CxC</th>
                         <th>Unds</th>
                         <th>Costo Caja</th>
                         <th>F Arribo</th>
@@ -74,6 +74,7 @@
                         <td>R{{ det.order.regimen }}</td>
                         <td>{{ det.order.nro_refrendo }}</td>
                         <td>{{ det.order.proveedor }}</td>
+                        <td>{{ det.invoice }}</td>
                         <td>
                             {% if det.order.regimen == '10' %}
                                 ---
@@ -84,7 +85,6 @@
                         <td>{{ sale.product.cod_contable }}</td>
                         <td class="text-right">{{ sale.product.cod_contable.capacidad_ml }}ml</td>
                         <td class="text-right">{{ sale.nro_cajas }}</td>
-                        <td class="text-right">{{ sale.product.cod_contable.cantidad_x_caja }}</td>
                         <td class="text-right">{{ sale.product.cod_contable.cantidad_x_caja *  sale.nro_cajas }}</td>
                         <td class="text-right">{{ sale.costo_caja }}</td>
                         <td class="text-right text-center">
@@ -122,19 +122,11 @@
                             ---
                             {% endif %}
                         </td>
-                        {% if det.order.regimen == '70' %}
-                            {% if det.order.fecha_ingreso_almacenera %}
-                                <td class="text-success">DISPONIBLE</td>
-                            {% else %}
-                                <td class="text-primary">TRANSITO</td>
-                            {% endif %}
-                        {% else %}
-                            {% if det.order.fecha_llegada_cliente %}
-                            <td>NACIONALIZADO</td>
-                            {% else %}
-                            <td class="text-primary">TRANSITO</td>
-                            {% endif %}
-                        {% endif %}
+                        <td class="{{det.text_color}}">
+                            <small class="font-weight-bold">
+                                {{ det.status }}
+                            </small>
+                        </td>
                          </tr>
                     {% endfor %}
                     {% endfor %}
