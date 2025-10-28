@@ -6,3 +6,5 @@ from .ActiveOrders import ActiveOrdersTemplateView
 from .CostAnalysisTemplateView import CostAnalysisTemplateView
 from .CurrentNationalizationTV import CurrentNationalizationTV
 from .LastCostTemplateView import LastCostTemplateView
+from .CurrentNationalizationAPI import CurrentNationalizationAPI
+from .ActiveOrdersAPI import ActiveOrdersAPI
