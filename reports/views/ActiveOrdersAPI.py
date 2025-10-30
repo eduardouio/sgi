@@ -107,6 +107,7 @@ class ActiveOrdersAPI(View):
                         if item['code'] == product_data['code']:
                             item['onHandStock'] += product_data['onHandStock']
                             item['transitStock'] += product_data['transitStock']
+                            item['inProduction'] = item.get('inProduction', 0) + product_data.get('inProduction', 0)
 
         data = self.append_zero_stocks(data)
         # unificar por sku
@@ -123,6 +124,8 @@ class ActiveOrdersAPI(View):
                 # Si el producto ya existe, sumar el onHandStock
                 index = code_map[code]
                 unified_data[index]['onHandStock'] += item['onHandStock']
+                unified_data[index]['transitStock'] = unified_data[index].get('transitStock', 0) + item.get('transitStock', 0)
+                unified_data[index]['inProduction'] = unified_data[index].get('inProduction', 0) + item.get('inProduction', 0)
             else:
                 # Si es la primera vez que aparece, agregarlo a la lista
                 code_map[code] = len(unified_data)
